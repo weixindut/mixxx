@@ -33,7 +33,7 @@ public:
     bool clashesWith(const ChannelGroup &other) const;
     unsigned int getHash() const;
 private:
-    unsigned char m_channelBase; // base (first) channel used on device 
+    unsigned char m_channelBase; // base (first) channel used on device
     unsigned char m_channels; // number of channels used (s/b 2 in most cases)
 };
 
@@ -57,6 +57,7 @@ public:
         VINYLCONTROL,
         MICROPHONE,
         PASSTHROUGH,
+        LIGHTCONTROL
     };
     AudioPath(unsigned char channelBase, unsigned char channels);
     AudioPathType getType() const;

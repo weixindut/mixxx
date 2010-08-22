@@ -159,6 +159,8 @@ QString AudioPath::getStringFromType(AudioPathType type) {
         return QString::fromAscii("Microphone");
     case PASSTHROUGH:
         return QString::fromAscii("Passthrough");
+    case LIGHTCONTROL:
+        return QString::fromAscii("Light Control");
     }
     return QString::fromAscii("Unknown path type %1").arg(type);
 }
@@ -181,6 +183,8 @@ AudioPathType AudioPath::getTypeFromString(QString string) {
         return AudioPath::MICROPHONE;
     } else if (string == AudioPath::getStringFromType(AudioPath::PASSTHROUGH).toLower()) {
         return AudioPath::PASSTHROUGH;
+    } else if (string == AudioPath::getStringFromType(AudioPath::PASSTHROUGH).toLower()) {
+        return AudioPath::LIGHTCONTROL;
     } else {
         return AudioPath::INVALID;
     }
@@ -197,6 +201,7 @@ bool AudioPath::isIndexed(AudioPathType type) {
     case PASSTHROUGH:
     case MICROPHONE:
         return true;
+    case LIGHTCONTROL:
     default:
         break;
     }
@@ -221,6 +226,8 @@ AudioPathType AudioPath::getTypeFromInt(int typeInt) {
         return AudioPath::PASSTHROUGH;
     case AudioPath::MICROPHONE:
         return AudioPath::MICROPHONE;
+    case AudioPath::LIGHTCONTROL:
+        return AudioPath::LIGHTCONTROL;
     default:
         return AudioPath::INVALID;
     }
@@ -352,6 +359,7 @@ QList<AudioPathType> AudioInput::getSupportedTypes() {
     // (prefs, etc), minimal ifdefs :) -- bkgood
     types.append(VINYLCONTROL);
 #endif
+    types.append(LIGHTCONTROL);
     return types;
 }
 

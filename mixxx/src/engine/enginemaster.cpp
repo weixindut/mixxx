@@ -33,6 +33,7 @@
 #include "enginexfader.h"
 #include "enginesidechain.h"
 #include "sampleutil.h"
+#include "lights/lightcontroller.h"
 
 #ifdef __LADSPA__
 #include "engineladspa.h"
@@ -88,6 +89,8 @@ EngineMaster::EngineMaster(ConfigObject<ConfigValue> * _config,
 
     m_pHead = SampleUtil::alloc(MAX_BUFFER_LEN);
     m_pMaster = SampleUtil::alloc(MAX_BUFFER_LEN);
+
+    m_pLightController = new LightController();
 
     sidechain = new EngineSideChain(_config);
 
@@ -296,6 +299,22 @@ void EngineMaster::process(const CSAMPLE *, const CSAMPLE *pOut, const int iBuff
 
     //Master/headphones interleaving is now done in
     //SoundManager::requestBuffer() - Albert Nov 18/07
+
+    static SAMPLE* scratch = NULL;
+    int scratchlen = 0;
+
+    if (scratch != NULL && scratchlen < iBufferSize) {
+        delete [] scratch;
+        scratch = NULL;
+    }
+    if (scratch == NULL) {
+        scratch = new SAMPLE[iBufferSize];
+        scratchlen = iBufferSize;
+    }
+    for (int i = 0; i < iBufferSize; ++i) {
+        scratch[i] = m_pMaster[i];
+    }
+    m_pLightController->process(scratch, iBufferSize);
 
     // We're close to the end of the callback. Schedule the workers. Hopefully
     // the work thread doesn't get scheduled between now and then.

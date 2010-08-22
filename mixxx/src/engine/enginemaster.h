@@ -36,6 +36,7 @@ class ControlPushButton;
 class ControlObject;
 class EngineVinylSoundEmu;
 class EngineSideChain;
+class LightController;
 
 class EngineMaster : public EngineObject {
 public:
@@ -79,6 +80,8 @@ public:
 #endif
     EngineVuMeter *vumeter;
     EngineSideChain *sidechain;
+
+    LightController* m_pLightController;
 
     ControlPotmeter *crossfader, *head_mix,
         *m_pBalance, *xFaderCurve, *xFaderCalibration;

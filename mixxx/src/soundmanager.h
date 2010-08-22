@@ -31,6 +31,7 @@ class SoundDevice;
 class EngineMaster;
 class AudioOutput;
 class AudioInput;
+class LightController;
 
 #define MIXXX_PORTAUDIO_JACK_STRING "JACK Audio Connection Kit"
 #define MIXXX_PORTAUDIO_ALSA_STRING "ALSA"
@@ -42,7 +43,7 @@ class AudioInput;
 class SoundManager : public QObject
 {
     Q_OBJECT
-    
+
     public:
         SoundManager(ConfigObject<ConfigValue> *pConfig, EngineMaster *_master);
         ~SoundManager();
@@ -59,7 +60,7 @@ class SoundManager : public QObject
         void checkConfig();
         QHash<AudioOutput, const CSAMPLE*>
             requestBuffer(QList<AudioOutput> outputs, unsigned long iFramesPerBuffer);
-        void pushBuffer(QList<AudioInput> inputs, short *inputBuffer, 
+        void pushBuffer(QList<AudioInput> inputs, short *inputBuffer,
                         unsigned long iFramesPerBuffer, unsigned int iFrameSize);
     signals:
         void devicesUpdated(); // emitted when all the pointers to SoundDevices go stale
@@ -75,7 +76,9 @@ class SoundManager : public QObject
         QHash<AudioInput, short*> m_inputBuffers; /** Audio received from input */
 #ifdef __VINYLCONTROL__
         QList<VinylControlProxy*> m_VinylControl;
-#endif        
+#endif
+        LightController* m_pLightController;
+
         unsigned int iNumDevicesOpenedForOutput;
         unsigned int iNumDevicesOpenedForInput;
         unsigned int iNumDevicesHaveRequestedBuffer;

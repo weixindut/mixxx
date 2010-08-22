@@ -25,6 +25,7 @@
 #include "engine/enginemaster.h"
 #include "controlobjectthreadmain.h"
 #include "audiopath.h"
+#include "lights/lightcontroller.h"
 
 /** Initializes Mixxx's audio core
  *  @param pConfig The config key table
@@ -88,6 +89,8 @@ SoundManager::SoundManager(ConfigObject<ConfigValue> * pConfig, EngineMaster * _
     // SoundDevicePortAudio::open
     pControlObjectLatency->slotSet(m_config.getFramesPerBuffer() / m_config.getSampleRate() * 1000);
     pControlObjectSampleRate->slotSet(m_config.getSampleRate());
+
+    m_pLightController = new LightController();
 }
 
 /** Destructor for the SoundManager class. Closes all the devices, cleans up their pointers
@@ -242,7 +245,7 @@ void SoundManager::clearDeviceList()
         SoundDevice* dev = m_devices.takeLast();
         delete dev;
     }
-    
+
 #ifdef __PORTAUDIO__
     if (m_paInitialized) {
         Pa_Terminate();
@@ -577,6 +580,8 @@ void SoundManager::pushBuffer(QList<AudioInput> inputs, short * inputBuffer,
                 if (m_VinylControl[index] && m_inputBuffers.contains(in)) {
                     m_VinylControl[index]->AnalyseSamples(m_inputBuffers[in], iFramesPerBuffer);
                 }
+            } else if (in.getType() == AudioInput::LIGHTCONTROL) {
+                m_pLightController->process(m_inputBuffers[in], iFramesPerBuffer);
             }
         }
 #endif
