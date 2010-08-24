@@ -70,7 +70,7 @@ LightController::LightController() {
     Light* pLight = m_pLightBrickManager->newLight("192.168.1.2", "12344");
     //Light* pLight = m_pLightBrickManager->newLight("192.168.1.125", "12344");
     pLight->setColor(Qt::black);
-    m_pLightBrickManager->sync();
+    //m_pLightBrickManager->sync();
     m_lights.append(pLight);
 
 
@@ -123,7 +123,7 @@ void LightController::process_onset() {
             //pLight->animate();
         }
 
-        //m_pLightBrickManager->sync();
+        m_pLightBrickManager->sync();
     }
 
     //qDebug() << "beat: " << is_beat << " onset: " << is_onset;
@@ -141,11 +141,10 @@ void LightController::process_onset() {
 
 void LightController::setColor(QColor color) {
     QMutexLocker locker(&m_mutex);
-    qDebug() << "Setting light to color" << color;
 
     foreach (Light* pLight, m_lights) {
-        //pLight->fadeTo(color);
-        pLight->setColor(color);
+        pLight->fadeTo(color);
+        //pLight->setColor(color);
     }
     //m_pDMXManager->sync();
 }

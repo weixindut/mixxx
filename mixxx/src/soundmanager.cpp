@@ -90,7 +90,8 @@ SoundManager::SoundManager(ConfigObject<ConfigValue> * pConfig, EngineMaster * _
     pControlObjectLatency->slotSet(m_config.getFramesPerBuffer() / m_config.getSampleRate() * 1000);
     pControlObjectSampleRate->slotSet(m_config.getSampleRate());
 
-    m_pLightController = new LightController();
+    //m_pLightController = new LightController();
+    m_pLightController = NULL;
 }
 
 /** Destructor for the SoundManager class. Closes all the devices, cleans up their pointers
@@ -581,7 +582,8 @@ void SoundManager::pushBuffer(QList<AudioInput> inputs, short * inputBuffer,
                     m_VinylControl[index]->AnalyseSamples(m_inputBuffers[in], iFramesPerBuffer);
                 }
             } else if (in.getType() == AudioInput::LIGHTCONTROL) {
-                m_pLightController->process(m_inputBuffers[in], iFramesPerBuffer);
+                if (m_pLightController)
+                    m_pLightController->process(m_inputBuffers[in], iFramesPerBuffer);
             }
         }
 #endif

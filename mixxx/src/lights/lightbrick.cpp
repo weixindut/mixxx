@@ -19,7 +19,7 @@ void LightBrick::sync() {
     float g = color.greenF();
     float b = color.blueF();
 
-    qDebug() << "LIGHTBRICK Sending" << r << g << b;
+    //qDebug() << "LIGHTBRICK Sending" << r << g << b;
 
     if (lo_send(m_osc_destination, location_format,
                 "fff", r, g, b) < 0) {

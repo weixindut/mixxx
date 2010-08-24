@@ -69,7 +69,7 @@ void Light::animate() {
                 setState(LIGHT_OFF);
             }
 
-            //m_color.setHsvF(h, s, v, a);
+            m_color.setHsvF(h, s, v, a);
             break;
         case LIGHT_FADE_UP:
             th = m_target_hue;
@@ -107,7 +107,7 @@ void Light::animate() {
             }
 
             //qDebug() << dh << ds << dv << h << s << v << a;
-            //m_color.setHsvF(h, s, v, a);
+            m_color.setHsvF(h, s, v, a);
             break;
         case LIGHT_CYCLE:
         case LIGHT_FFT:
