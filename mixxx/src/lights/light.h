@@ -7,6 +7,7 @@
 #include <QColor>
 
 #include "lights/lightstate.h"
+#include "lights/tweener.h"
 
 class Light : public QObject {
 
@@ -34,6 +35,10 @@ class Light : public QObject {
     QColor m_color;
     QColor m_animation_arg1;
     qreal m_target_hue, m_target_sat, m_target_val;
+
+    Tweener* m_hueTweener;
+    Tweener* m_satTweener;
+    Tweener* m_valTweener;
 };
 
 

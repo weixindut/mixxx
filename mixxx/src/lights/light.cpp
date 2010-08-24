@@ -4,7 +4,12 @@
 
 #include "mathstuff.h"
 
-Light::Light(QObject* pParent) {
+#include "lights/lineartweener.h"
+
+Light::Light(QObject* pParent)
+        : m_hueTweener(new LinearTweener()),
+          m_satTweener(new LinearTweener()),
+          m_valTweener(new LinearTweener()) {
 
 }
 
@@ -30,6 +35,7 @@ void Light::fadeTo(const QColor& targetColor) {
     m_animation_arg1 = targetColor;
     qreal scratch;
     targetColor.getHsvF(&m_target_hue, &m_target_sat, &m_target_val, &scratch);
+
 }
 
 void Light::fadeToHue(qreal hue) {
