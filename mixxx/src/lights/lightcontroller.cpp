@@ -5,9 +5,12 @@
 #define AUBIO_UNSTABLE 1
 #include <aubio/aubio.h>
 #include <lo/lo.h>
+#include <QMutexLocker>
 
 
 #include "lights/lightcontroller.h"
+#include "lights/rgbcycler.h"
+#include "lights/hsvspinner.h"
 
 #define ANALYZER_BEAT_BUFSIZE 1024
 #define ANALYZER_BEAT_OLAPSIZE 512
@@ -18,9 +21,13 @@
 #define ANALYZER_BEAT_DCTHRESHOLD 0.8
 #define ANALYZER_BEAT_SILENCE -60.
 
+LightController* LightController::sInstance = NULL;
+
 LightController::LightController() {
     const uint_t channels = 2;
     const uint_t samplerate = 48000;
+
+    sInstance = this;
 
     QString host = "localhost";
     QString port = "2447";
@@ -57,6 +64,25 @@ LightController::LightController() {
     aubio_pitch_set_unit(m_aubio_pitch, "midi");
     m_pitch_output = new_fvec(1, channels);
 
+    m_pDMXManager = new DMXLightManager(this, QString("10.0.170.6"));
+
+    m_pLightBrickManager = new LightBrickManager(this);
+    Light* pLight = m_pLightBrickManager->newLight("192.168.1.2", "12344");
+    //Light* pLight = m_pLightBrickManager->newLight("192.168.1.125", "12344");
+    pLight->setColor(Qt::black);
+    m_pLightBrickManager->sync();
+    m_lights.append(pLight);
+
+
+    const int numDmxLights = 12;
+    for (int i = 0; i < numDmxLights; i++) {
+        Light* pLight = m_pDMXManager->newLight(i);
+        pLight->setColor(Qt::black);
+        m_lights.append(pLight);
+    }
+
+    // Turn off the lights
+    m_pDMXManager->sync();
 
     is_beat = is_onset = false;
 
@@ -83,10 +109,27 @@ void LightController::process_onset() {
     is_onset = fvec_read_sample(m_tempo_output, 0, 1) > 0;
     m_currentPitch = fvec_read_sample(m_pitch_output, 0, 0);
 
-    qDebug() << "beat: " << is_beat << " onset: " << is_onset;
-    qDebug() << "pitch:" << m_currentPitch;
+    static RGBCycler cycler(20, 200, 70, 50, 100, 20);
+    // You spin me right round.
+    static HSVSpinner spinner(1.0, 1.0, 1.0, 0.05);
+    ColorGenerator* pGenerator = &cycler;
 
-    qDebug() << "fft:" << m_fft_output->norm[0][0] << m_fft_output->norm[0][1];
+    if (is_beat) {
+        QColor color = pGenerator->nextColor();
+        foreach (Light* pLight, m_lights) {
+            //pLight->fadeTo(color);
+            pLight->setColor(color);
+            //pLight->fadeDown();
+            //pLight->animate();
+        }
+
+        //m_pLightBrickManager->sync();
+    }
+
+    //qDebug() << "beat: " << is_beat << " onset: " << is_onset;
+    //qDebug() << "pitch:" << m_currentPitch;
+
+    //qDebug() << "fft:" << m_fft_output->norm[0][0] << m_fft_output->norm[0][1];
     // if (fvec_read_sample(m_onset_output, 0, 0) == 1) {
     //     // processed frame has an onset
     // } else {
@@ -95,9 +138,20 @@ void LightController::process_onset() {
 
 }
 
+
+void LightController::setColor(QColor color) {
+    QMutexLocker locker(&m_mutex);
+    qDebug() << "Setting light to color" << color;
+
+    foreach (Light* pLight, m_lights) {
+        //pLight->fadeTo(color);
+        pLight->setColor(color);
+    }
+    //m_pDMXManager->sync();
+}
+
 void LightController::process(SAMPLE* pSample, int iFramesPerBuffer) {
-    static char r=0, g=128, b=200;
-    const int num_lights = 11;
+    QMutexLocker locker(&m_mutex);
 
     for (int i = 0; i < iFramesPerBuffer; i += 2) {
         for (int j = 0; j < 2; ++j) {
@@ -113,21 +167,20 @@ void LightController::process(SAMPLE* pSample, int iFramesPerBuffer) {
         m_iCurInput++;
     }
 
-    r = 128; g = 128; b = 128;
-    if (is_beat) {
-        r = 200;
-        g = 200;
-        b = 200;
-    }
 
-    for (int i = 0; i < num_lights; i++) {
-        send_light_update(i, r, g, b);
+    static int count = 0;
+    if (count == 0) {
+        foreach (Light* pLight, m_lights) {
+            pLight->animate();
+            // if (pLight == m_lights[0])
+            //     qDebug() << pLight->getColor();
+        }
+        m_pDMXManager->sync();
+        m_pLightBrickManager->sync();
+        count = 0;
+    } else {
+        count--;
     }
-
-    // r = (r+1) % 255;
-    // g = (g+1) % 255;
-    // b = (b+1) % 255;
-    // r++; g++; b++;
 }
 
 bool LightController::send_light_update(char light_number, char red, char green, char blue) {

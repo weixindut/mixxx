@@ -68,6 +68,8 @@
 #include "library/rhythmboxplaylistmodel.h"
 #include "library/browsetablemodel.h"
 
+#include "widget/wlightcontroller.h"
+
 MixxxView::MixxxView(QWidget* parent, ConfigObject<ConfigValueKbd>* kbdconfig,
                      QString qSkinPath, ConfigObject<ConfigValue>* pConfig,
                      PlayerManager* pPlayerManager,
@@ -808,7 +810,7 @@ void MixxxView::createAllWidgets(QDomElement docElem,
 
                     //Create the tab widget to store the various panes in
                     //(library, effects, etc.)
-                    m_pTabWidget = new QStackedWidget(this);
+                    m_pTabWidget = new QTabWidget(this);
 
                     // Create the pages that go in the tab widget
                     m_pTabWidgetLibraryPage = new QWidget(this);
@@ -890,12 +892,14 @@ void MixxxView::createAllWidgets(QDomElement docElem,
                     // 1.7.0 release.
 
                     // Add the library page to the tab widget.
-                    //m_pTabWidget->addTab(m_pTabWidgetLibraryPage, tr("Library"));
-                    m_pTabWidget->addWidget(m_pTabWidgetLibraryPage);
+                    m_pTabWidget->addTab(m_pTabWidgetLibraryPage, tr("Library"));
+                    //m_pTabWidget->addTab(m_pTabWidgetLibraryPage);
+
+                    m_pTabWidget->addTab(new WLightController(m_pTabWidget), tr("Lights"));
 
                     // Add the effects page to the tab widget.
                     //m_pTabWidget->addTab(m_pTabWidgetEffectsPage, tr("Effects"));
-                    m_pTabWidget->addWidget(m_pTabWidgetEffectsPage);
+                    //m_pTabWidget->addWidget(m_pTabWidgetEffectsPage);
                 }
 
                 //Move the tab widget into position and size it properly.
