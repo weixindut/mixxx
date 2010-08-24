@@ -8,6 +8,7 @@
 #include "lights/lightcontroller.h"
 #include "widget/qcolorpicker.h"
 
+class SolidColor;
 
 class WLightController : public QWidget, public Ui::DlgLights {
     Q_OBJECT
@@ -24,6 +25,7 @@ class WLightController : public QWidget, public Ui::DlgLights {
   private:
     LightController* m_pLightController;
     QColorPicker* m_pColorPicker;
+    SolidColor* m_pSolidColor;
 };
 
 #endif /* WLIGHTCONTROLLER_H */

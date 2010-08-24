@@ -11,6 +11,7 @@
 #include "lights/lightcontroller.h"
 #include "lights/rgbcycler.h"
 #include "lights/hsvspinner.h"
+#include "lights/colorgenerator.h"
 
 #define ANALYZER_BEAT_BUFSIZE 1024
 #define ANALYZER_BEAT_OLAPSIZE 512
@@ -64,7 +65,6 @@ LightController::LightController() {
     aubio_pitch_set_unit(m_aubio_pitch, "midi");
     m_pitch_output = new_fvec(1, channels);
 
-    m_pDMXManager = new DMXLightManager(this, QString("10.0.170.6"));
 
     m_pLightBrickManager = new LightBrickManager(this);
     Light* pLight = m_pLightBrickManager->newLight("192.168.1.2", "12344");
@@ -73,7 +73,7 @@ LightController::LightController() {
     //m_pLightBrickManager->sync();
     m_lights.append(pLight);
 
-
+    m_pDMXManager = new DMXLightManager(this, QString("10.0.170.6"));
     const int numDmxLights = 12;
     for (int i = 0; i < numDmxLights; i++) {
         Light* pLight = m_pDMXManager->newLight(i);
@@ -85,6 +85,11 @@ LightController::LightController() {
     m_pDMXManager->sync();
 
     is_beat = is_onset = false;
+
+    static RGBCycler cycler(20, 200, 70, 50, 100, 20);
+    // You spin me right round.
+    static HSVSpinner spinner(1.0, 1.0, 1.0, 0.05);
+    m_pColorGenerator = &cycler;
 
 }
 
@@ -109,13 +114,8 @@ void LightController::process_onset() {
     is_onset = fvec_read_sample(m_tempo_output, 0, 1) > 0;
     m_currentPitch = fvec_read_sample(m_pitch_output, 0, 0);
 
-    static RGBCycler cycler(20, 200, 70, 50, 100, 20);
-    // You spin me right round.
-    static HSVSpinner spinner(1.0, 1.0, 1.0, 0.05);
-    ColorGenerator* pGenerator = &cycler;
-
     if (is_beat) {
-        QColor color = pGenerator->nextColor();
+        QColor color = m_pColorGenerator->nextColor();
         foreach (Light* pLight, m_lights) {
             //pLight->fadeTo(color);
             pLight->setColor(color);
@@ -136,6 +136,11 @@ void LightController::process_onset() {
     //     // no onset detected in processed frame
     // }
 
+}
+
+void LightController::setColorGenerator(ColorGenerator* pGenerator) {
+    QMutexLocker locker(&m_mutex);
+    m_pColorGenerator = pGenerator;
 }
 
 
@@ -167,6 +172,7 @@ void LightController::process(SAMPLE* pSample, int iFramesPerBuffer) {
     }
 
 
+    // Animate the lights and synchronize them with their hardware.
     static int count = 0;
     if (count == 0) {
         foreach (Light* pLight, m_lights) {
@@ -182,6 +188,7 @@ void LightController::process(SAMPLE* pSample, int iFramesPerBuffer) {
     }
 }
 
+// unused
 bool LightController::send_light_update(char light_number, char red, char green, char blue) {
     QString locationFormat = "/simulator/lights/set";
     if (lo_send(m_osc_destination, locationFormat.toAscii().data(),

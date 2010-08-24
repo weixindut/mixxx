@@ -15,6 +15,8 @@
 #include "lights/dmxlightmanager.h"
 #include "lights/lightbrickmanager.h"
 
+class ColorGenerator;
+
 class LightController : public QObject {
     Q_OBJECT
   public:
@@ -24,6 +26,7 @@ class LightController : public QObject {
     void process(SAMPLE* pBuffer, int iFramesPerBuffer);
 
     void setColor(QColor color);
+    void setColorGenerator(ColorGenerator* pGenerator);
 
 
   private:
@@ -54,6 +57,7 @@ class LightController : public QObject {
 
     DMXLightManager* m_pDMXManager;
     LightBrickManager* m_pLightBrickManager;
+    ColorGenerator* m_pColorGenerator;
 
     QList<Light*> m_lights;
 
