@@ -1,4 +1,3 @@
-
 #ifndef CUBICEASEINTWEENER_H
 #define CUBICEASEINTWEENER_H
 
@@ -14,7 +13,7 @@ class CubicEaseInTweener : public Tweener {
         time = time / m_duration;
         return m_change * time * time * time + m_initial;
     }
-}
+};
 
 
 #endif /* CUBICEASEINTWEENER_H */

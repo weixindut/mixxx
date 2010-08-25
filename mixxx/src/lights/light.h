@@ -24,18 +24,23 @@ class Light : public QObject {
     }
 
     void animate();
-    void fadeDown();
-    void fadeTo(const QColor& targetColor);
-    void fadeToHue(qreal hue);
+    void fadeDown(int steps);
+    void fadeTo(const QColor& targetColor, int steps);
+    void fadeToHue(qreal hue, int steps);
+    void fadeToValue(qreal value, int steps);
 
   private:
     void setState(LightState state);
 
     LightState m_state;
     QColor m_color;
-    QColor m_animation_arg1;
-    qreal m_target_hue, m_target_sat, m_target_val;
 
+    // Fade parameters
+    qreal m_target_hue, m_target_sat, m_target_val;
+    qreal m_hue_parameter, m_sat_parameter, m_val_parameter;
+    qreal m_hue_stepsize, m_sat_stepsize, m_val_stepsize;
+
+    // Tweeners for fading and transitions
     Tweener* m_hueTweener;
     Tweener* m_satTweener;
     Tweener* m_valTweener;

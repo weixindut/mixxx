@@ -117,25 +117,23 @@ void LightController::process_onset() {
     if (is_beat) {
         QColor color = m_pColorGenerator->nextColor();
         foreach (Light* pLight, m_lights) {
-            //pLight->fadeTo(color);
-            pLight->setColor(color);
-            //pLight->fadeDown();
-            //pLight->animate();
-        }
+            // Fade to the color in 20 steps
+            pLight->fadeTo(color, 50);
 
-        m_pLightBrickManager->sync();
+            // Immediately switch to color
+            //pLight->setColor(color);
+
+            // Fade to black in 100 steps
+            //pLight->fadeDown(100);
+        }
+        // Only enable if you want to lessen the frequency of updates to the
+        // bricks. (Combine with commenting the sync() call below)
+        //m_pLightBrickManager->sync();
     }
 
     //qDebug() << "beat: " << is_beat << " onset: " << is_onset;
     //qDebug() << "pitch:" << m_currentPitch;
-
     //qDebug() << "fft:" << m_fft_output->norm[0][0] << m_fft_output->norm[0][1];
-    // if (fvec_read_sample(m_onset_output, 0, 0) == 1) {
-    //     // processed frame has an onset
-    // } else {
-    //     // no onset detected in processed frame
-    // }
-
 }
 
 void LightController::setColorGenerator(ColorGenerator* pGenerator) {
@@ -148,10 +146,9 @@ void LightController::setColor(QColor color) {
     QMutexLocker locker(&m_mutex);
 
     foreach (Light* pLight, m_lights) {
-        pLight->fadeTo(color);
+        pLight->fadeTo(color, 20);
         //pLight->setColor(color);
     }
-    //m_pDMXManager->sync();
 }
 
 void LightController::process(SAMPLE* pSample, int iFramesPerBuffer) {
@@ -177,8 +174,6 @@ void LightController::process(SAMPLE* pSample, int iFramesPerBuffer) {
     if (count == 0) {
         foreach (Light* pLight, m_lights) {
             pLight->animate();
-            // if (pLight == m_lights[0])
-            //     qDebug() << pLight->getColor();
         }
         m_pDMXManager->sync();
         m_pLightBrickManager->sync();
@@ -188,7 +183,7 @@ void LightController::process(SAMPLE* pSample, int iFramesPerBuffer) {
     }
 }
 
-// unused
+// this method is unused!
 bool LightController::send_light_update(char light_number, char red, char green, char blue) {
     QString locationFormat = "/simulator/lights/set";
     if (lo_send(m_osc_destination, locationFormat.toAscii().data(),
