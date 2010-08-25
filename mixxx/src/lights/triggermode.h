@@ -1,6 +1,9 @@
 #ifndef TRIGGERMODE_H
 #define TRIGGERMODE_H
 
+#include <QObject>
+#include <QString>
+
 enum TriggerMode {
     CONTINUOUS = 0,
     BEAT,

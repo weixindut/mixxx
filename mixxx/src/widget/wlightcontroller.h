@@ -4,6 +4,7 @@
 #include "ui_dlglights.h"
 
 #include <QWidget>
+#include <QDomNode>
 
 #include "lights/lightcontroller.h"
 #include "widget/qcolorpicker.h"
@@ -15,6 +16,8 @@ class WLightController : public QWidget, public Ui::DlgLights {
   public:
     WLightController(QWidget *pParent);
     virtual ~WLightController();
+
+    void setup(QDomNode node);
 
   private slots:
     // void on_beat();

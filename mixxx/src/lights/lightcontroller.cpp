@@ -211,3 +211,11 @@ bool LightController::send_light_update(char light_number, char red, char green,
     }
     return true;
 }
+
+int LightController::numControlGroups() {
+    return m_controlGroups.size();
+}
+
+ControlGroup* LightController::getControlGroup(int group) {
+    return m_controlGroups.at(group);
+}

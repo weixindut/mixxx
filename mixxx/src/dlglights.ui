@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>652</width>
-    <height>218</height>
+    <height>300</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,7 +15,7 @@
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
    <item>
-    <widget class="QListWidget" name="listWidget"/>
+    <widget class="QTableView" name="m_controlGroupTable"/>
    </item>
    <item>
     <widget class="QWidget" name="m_colorPickerPlaceholder" native="true">

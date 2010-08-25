@@ -895,7 +895,9 @@ void MixxxView::createAllWidgets(QDomElement docElem,
                     m_pTabWidget->addTab(m_pTabWidgetLibraryPage, tr("Library"));
                     //m_pTabWidget->addTab(m_pTabWidgetLibraryPage);
 
-                    m_pTabWidget->addTab(new WLightController(m_pTabWidget), tr("Lights"));
+                    WLightController* pController = new WLightController(m_pTabWidget);
+                    pController->setup(node);
+                    m_pTabWidget->addTab(pController, tr("Lights"));
 
                     // Add the effects page to the tab widget.
                     //m_pTabWidget->addTab(m_pTabWidgetEffectsPage, tr("Effects"));

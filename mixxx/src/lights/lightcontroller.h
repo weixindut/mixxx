@@ -30,6 +30,8 @@ class LightController : public QObject {
     void setColor(QColor color);
     void setColorGenerator(ColorGenerator* pGenerator);
 
+    ControlGroup* getControlGroup(int i);
+    int numControlGroups();
 
   private:
     bool send_light_update(char light_number, char red, char green, char blue);
@@ -66,8 +68,6 @@ class LightController : public QObject {
 
   public:
     // Dirty dirty
-
-
     static LightController* sInstance;
 };
 

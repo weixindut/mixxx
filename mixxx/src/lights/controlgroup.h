@@ -65,4 +65,7 @@ class ControlGroup : public QObject {
     ColorGenerator* m_pColorGenerator;
 };
 
+QString triggerModeToString(TriggerMode mode);
+QString controlModeToString(ControlMode mode);
+
 #endif /* CONTROLGROUP_H */

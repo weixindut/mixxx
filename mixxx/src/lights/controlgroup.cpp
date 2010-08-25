@@ -125,3 +125,63 @@ void ControlGroup::process(FeatureState* pState) {
         pLight->animate();
     }
 }
+
+QString triggerModeToString(TriggerMode mode) {
+    switch(mode) {
+        case CONTINUOUS:
+            return QObject::tr("Continuous");
+            break;
+        case BEAT:
+            return QObject::tr("Beat");
+            break;
+        case ONSET:
+            return QObject::tr("Onset");
+            break;
+        case PITCH:
+            return QObject::tr("Pitch");
+            break;
+        case FFTBIN:
+            return QObject::tr("FFTBIN");
+            break;
+        case TIMER:
+            return QObject::tr("Timer");
+            break;
+        case BEAT_DIV_4:
+            return QObject::tr("Beat/4");
+            break;
+    }
+    return QObject::tr("Unknown");
+}
+
+QString controlModeToString(ControlMode mode) {
+    switch(mode) {
+        case CONTROL_CHASER:
+            return QObject::tr("Chaser");
+            break;
+        case CONTROL_CYCLE_SET:
+            return QObject::tr("Cycle-Set");
+            break;
+
+        case CONTROL_CYCLE_FADE:
+            return QObject::tr("Cycle-Fade");
+            break;
+
+        case CONTROL_CYCLE_FLASH:
+            return QObject::tr("Cycle-Flash");
+            break;
+
+        case CONTROL_TWINKLE:
+            return QObject::tr("Twinkle");
+            break;
+        case CONTROL_GLOW:
+            return QObject::tr("Glow");
+            break;
+        case CONTROL_FLASH:
+            return QObject::tr("Flash");
+            break;
+        case CONTROL_FLASH_WHITE:
+            return QObject::tr("Flash-White");
+            break;
+    }
+    return QObject::tr("Unknown");
+}
