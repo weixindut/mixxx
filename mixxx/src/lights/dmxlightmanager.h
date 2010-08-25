@@ -8,7 +8,7 @@
 #include "lights/light.h"
 #include "lights/lightmanager.h"
 
-class DMXLightManager : LightManager {
+class DMXLightManager : public LightManager {
   public:
     DMXLightManager(QObject* pParent, QString ip_address);
     virtual ~DMXLightManager();

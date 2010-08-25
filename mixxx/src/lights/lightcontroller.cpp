@@ -50,6 +50,7 @@ LightController::LightController() {
 
     m_aubio_fft = new_aubio_fft (ANALYZER_BEAT_WINSIZE, channels);
     m_fft_output = new_cvec(ANALYZER_BEAT_WINSIZE/2, channels);
+    m_features.fft = m_fft_output;
 
     // beattracking
     m_aubio_tempo = new_aubio_tempo(onset_method,
@@ -67,6 +68,7 @@ LightController::LightController() {
 
 
     m_pLightBrickManager = new LightBrickManager(this);
+    m_lightManagers.append(m_pLightBrickManager);
     Light* pLight = m_pLightBrickManager->newLight("192.168.1.2", "12344");
     //Light* pLight = m_pLightBrickManager->newLight("192.168.1.125", "12344");
     pLight->setColor(Qt::black);
@@ -74,6 +76,7 @@ LightController::LightController() {
     m_lights.append(pLight);
 
     m_pDMXManager = new DMXLightManager(this, QString("10.0.170.6"));
+    m_lightManagers.append(m_pDMXManager);
     const int numDmxLights = 12;
     for (int i = 0; i < numDmxLights; i++) {
         Light* pLight = m_pDMXManager->newLight(i);
@@ -83,8 +86,6 @@ LightController::LightController() {
 
     // Turn off the lights
     m_pDMXManager->sync();
-
-    is_beat = is_onset = false;
 
     static RGBCycler cycler(20, 200, 70, 50, 100, 20);
     // You spin me right round.
@@ -110,11 +111,11 @@ void LightController::process_onset() {
     aubio_pitch_do(m_aubio_pitch, m_input_buf, m_pitch_output);
     aubio_fft_do(m_aubio_fft, m_input_buf, m_fft_output);
 
-    is_beat = fvec_read_sample(m_tempo_output, 0, 0) > 0;
-    is_onset = fvec_read_sample(m_tempo_output, 0, 1) > 0;
-    m_currentPitch = fvec_read_sample(m_pitch_output, 0, 0);
+    m_features.is_beat = fvec_read_sample(m_tempo_output, 0, 0) > 0;
+    m_features.is_onset = fvec_read_sample(m_tempo_output, 0, 1) > 0;
+    m_features.pitch = fvec_read_sample(m_pitch_output, 0, 0);
 
-    if (is_beat) {
+    if (m_features.is_beat) {
         QColor color = m_pColorGenerator->nextColor();
         foreach (Light* pLight, m_lights) {
             // Fade to the color in 20 steps
@@ -131,8 +132,8 @@ void LightController::process_onset() {
         //m_pLightBrickManager->sync();
     }
 
-    //qDebug() << "beat: " << is_beat << " onset: " << is_onset;
-    //qDebug() << "pitch:" << m_currentPitch;
+    //qDebug() << "beat: " << m_features.is_beat << " onset: " << m_state.is_onset;
+    //qDebug() << "pitch:" << m_features.pitch;
     //qDebug() << "fft:" << m_fft_output->norm[0][0] << m_fft_output->norm[0][1];
 }
 

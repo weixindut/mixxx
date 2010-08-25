@@ -12,6 +12,8 @@
 #include "defs.h"
 
 #include "lights/light.h"
+#include "lights/controlgroup.h"
+#include "lights/lightmanager.h"
 #include "lights/dmxlightmanager.h"
 #include "lights/lightbrickmanager.h"
 
@@ -45,21 +47,22 @@ class LightController : public QObject {
     aubio_tempo_t* m_aubio_tempo;
     aubio_pitch_t* m_aubio_pitch;
 
+    int m_iCurInput;
     fvec_t* m_input_buf;
     fvec_t* m_tempo_output;
     fvec_t* m_onset_output;
     fvec_t* m_pitch_output;
     cvec_t* m_fft_output;
 
-    int m_iCurInput;
-    bool is_beat, is_onset;
-    float m_currentPitch;
+    FeatureState m_features;
 
     DMXLightManager* m_pDMXManager;
     LightBrickManager* m_pLightBrickManager;
     ColorGenerator* m_pColorGenerator;
 
+    QList<LightManager*> m_lightManagers;
     QList<Light*> m_lights;
+    QList<ControlGroup*> m_controlGroups;
 
   public:
     // Dirty dirty
