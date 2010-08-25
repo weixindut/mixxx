@@ -89,20 +89,75 @@ QVariant ControlGroupModel::data(const QModelIndex& index, int role) const {
     return QVariant();
 }
 
-// ComboBoxDelegate::ComboBoxDelegate(QStringList choices)
-//         : m_choices(choices) {
+bool ControlGroupModel::setData(const QModelIndex& index, const QVariant& value, int role) {
+    if (!index.isValid())
+        return false;
 
-// }
+    if (role == Qt::EditRole) {
+        ControlGroup* pGroup = m_pLightController->getControlGroup(index.row());
+        switch (index.column()) {
+            case ControlGroupModel::TRIGGER_MODE:
+                pGroup->setTriggerMode((TriggerMode)value.toInt());
+                return true;
+            case ControlGroupModel::CONTROL_MODE:
+                pGroup->setControlMode((ControlMode)value.toInt());
+                return true;
+            case ControlGroupModel::NAME:
+            case ControlGroupModel::NUM_LIGHTS:
+            case ControlGroupModel::COLOR_GENERATOR:
+            default:
+                return false;
+        }
+    }
+    return false;
+}
 
-// QWidget* ComboBoxDelegate::createEditor(QWidget *parent,
-//                                         const QStyleOptionViewItem &option,
-//                                         const QModelIndex &index) const {
-//     QComboBox* pCombo = new QComboBox(parent);
-//     QStringListModel* choices = new QStringListModel(m_choices);
-//     pCombo->setModel(choices);
-// }
+Qt::ItemFlags	ControlGroupModel::flags(const QModelIndex& index) const {
+    if (!index.isValid()) {
+        return Qt::NoItemFlags;
+    }
 
-// void ComboBoxDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const {
-//     QComboBox* pCombo = dynamic_cast<QComboBox*>(editor);
-//     pCombo->setCurrentIndex(combo->findText(sqlModel->data(index).toString()));
-// }
+    Qt::ItemFlags flags = Qt::ItemIsEnabled | Qt::ItemIsSelectable;
+
+    switch (index.column()) {
+        case ControlGroupModel::TRIGGER_MODE:
+        case ControlGroupModel::CONTROL_MODE:
+            flags |= Qt::ItemIsEditable;
+            break;
+        case ControlGroupModel::NAME:
+        case ControlGroupModel::NUM_LIGHTS:
+        case ControlGroupModel::COLOR_GENERATOR:
+        default:
+            break;
+    }
+
+    return flags;
+}
+
+
+ComboBoxDelegate::ComboBoxDelegate(QStringList choices)
+        : m_choices(choices) {
+
+}
+
+QWidget* ComboBoxDelegate::createEditor(QWidget *parent,
+                                        const QStyleOptionViewItem &option,
+                                        const QModelIndex &index) const {
+    QComboBox* pCombo = new QComboBox(parent);
+    QStringListModel* choices = new QStringListModel(m_choices);
+    pCombo->setModel(choices);
+    return pCombo;
+}
+
+void ComboBoxDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const {
+    QComboBox* pCombo = dynamic_cast<QComboBox*>(editor);
+    QString value = index.data().toString();
+    pCombo->setCurrentIndex(pCombo->findText(value));
+}
+
+void ComboBoxDelegate::setModelData(QWidget* editor, QAbstractItemModel *model,
+                                    const QModelIndex& index) const {
+    QComboBox* pCombo = dynamic_cast<QComboBox*>(editor);
+    model->setData(index, pCombo->currentIndex(), Qt::EditRole);
+}
+

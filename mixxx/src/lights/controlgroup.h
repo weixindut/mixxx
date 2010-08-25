@@ -67,5 +67,7 @@ class ControlGroup : public QObject {
 
 QString triggerModeToString(TriggerMode mode);
 QString controlModeToString(ControlMode mode);
+QList<QString> getTriggerModeOptions();
+QList<QString> getControlModeOptions();
 
 #endif /* CONTROLGROUP_H */

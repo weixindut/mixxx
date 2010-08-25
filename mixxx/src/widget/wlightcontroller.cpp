@@ -29,6 +29,12 @@ WLightController::WLightController(QWidget* pParent) : QWidget(pParent) {
 
     m_pSolidColor = new SolidColor(Qt::black);
     m_controlGroupTable->setModel(new ControlGroupModel(m_pLightController));
+    QStringList controlModeOptions = getControlModeOptions();
+    QStringList triggerModeOptions = getTriggerModeOptions();
+    m_controlGroupTable->setItemDelegateForColumn(ControlGroupModel::TRIGGER_MODE,
+                                                  new ComboBoxDelegate(triggerModeOptions));
+    m_controlGroupTable->setItemDelegateForColumn(ControlGroupModel::CONTROL_MODE,
+                                                  new ComboBoxDelegate(controlModeOptions));
 }
 
 WLightController::~WLightController() {
