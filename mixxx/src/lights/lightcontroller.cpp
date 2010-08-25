@@ -69,11 +69,15 @@ LightController::LightController() {
 
     m_pLightBrickManager = new LightBrickManager(this);
     m_lightManagers.append(m_pLightBrickManager);
+
+    ControlGroup* pGroup1 = new ControlGroup(this, "Control Group 1");
+    ControlGroup* pGroup2 = new ControlGroup(this, "Control Group 2");
+
     Light* pLight = m_pLightBrickManager->newLight("192.168.1.2", "12344");
-    //Light* pLight = m_pLightBrickManager->newLight("192.168.1.125", "12344");
     pLight->setColor(Qt::black);
-    //m_pLightBrickManager->sync();
+    m_pLightBrickManager->sync();
     m_lights.append(pLight);
+    pGroup2->addLight(pLight);
 
     m_pDMXManager = new DMXLightManager(this, QString("10.0.170.6"));
     m_lightManagers.append(m_pDMXManager);
@@ -82,6 +86,7 @@ LightController::LightController() {
         Light* pLight = m_pDMXManager->newLight(i);
         pLight->setColor(Qt::black);
         m_lights.append(pLight);
+        pGroup1->addLight(pLight);
     }
 
     // Turn off the lights
@@ -92,6 +97,16 @@ LightController::LightController() {
     static HSVSpinner spinner(1.0, 1.0, 1.0, 0.05);
     m_pColorGenerator = &cycler;
 
+    pGroup1->setColorGenerator(&cycler);
+    pGroup1->setTriggerMode(BEAT);
+    pGroup1->setControlMode(CONTROL_CYCLE_FADE);
+
+    pGroup2->setColorGenerator(&spinner);
+    pGroup2->setTriggerMode(BEAT);
+    pGroup2->setControlMode(CONTROL_CYCLE_FLASH);
+
+    m_controlGroups.append(pGroup1);
+    m_controlGroups.append(pGroup2);
 }
 
 LightController::~LightController() {
@@ -117,22 +132,22 @@ void LightController::process_buffer() {
     m_features.pitch = fvec_read_sample(m_pitch_output, 0, 0);
 
 
-    if (m_features.is_beat) {
-        QColor color = m_pColorGenerator->nextColor();
-        foreach (Light* pLight, m_lights) {
-            // Fade to the color in 20 steps
-            pLight->fadeTo(color, 50);
+    // if (m_features.is_beat) {
+    //     QColor color = m_pColorGenerator->nextColor();
+    //     foreach (Light* pLight, m_lights) {
+    //         // Fade to the color in 20 steps
+    //         pLight->fadeTo(color, 50);
 
-            // Immediately switch to color
-            //pLight->setColor(color);
+    //         // Immediately switch to color
+    //         //pLight->setColor(color);
 
-            // Fade to black in 100 steps
-            //pLight->fadeDown(100);
-        }
-        // Only enable if you want to lessen the frequency of updates to the
-        // bricks. (Combine with commenting the sync() call below)
-        //m_pLightBrickManager->sync();
-    }
+    //         // Fade to black in 100 steps
+    //         //pLight->fadeDown(100);
+    //     }
+    //     // Only enable if you want to lessen the frequency of updates to the
+    //     // bricks. (Combine with commenting the sync() call below)
+    //     //m_pLightBrickManager->sync();
+    // }
 
     //qDebug() << "beat: " << m_features.is_beat << " onset: " << m_state.is_onset;
     //qDebug() << "pitch:" << m_features.pitch;
@@ -172,42 +187,18 @@ void LightController::process(SAMPLE* pSample, int iFramesPerBuffer) {
         m_iCurInput++;
     }
 
-    // for (int i = 0; i < iFramesPerBuffer; i += 2) {
-    //     for (int j = 0; j < 2; ++j) {
-    //         fvec_write_sample(m_input_buf, pSample[i+j], j, m_iCurInput);
-    //         //m_input_buf[j][m_iCurInput] = pSample[i+j];;
-    //     }
+    // Process state updates for all the lights in each control group
+    foreach (ControlGroup* pGroup, m_controlGroups) {
+        pGroup->process(&m_features);
+    }
 
-    //     // We filled up the buffer, process it.
-    //     if (m_iCurInput == ANALYZER_BEAT_OLAPSIZE - 1) {
-    //         process_buffer();
-    //         m_iCurInput = -1; // gets inc'd to 0 below
-    //     }
-    //     m_iCurInput++;
-    // }
-
-    // foreach (ControlGroup* pGroup, m_controlGroups) {
-    //     pGroup->process(&m_features);
-    // }
-
-    // foreach (LightManager* pManager, m_lightManagers) {
-    //     pManager->sync();
-    // }
-
-
-    // Animate the lights and synchronize them with their hardware.
-    static int count = 0;
-    if (count == 0) {
-        foreach (Light* pLight, m_lights) {
-            pLight->animate();
-        }
-        m_pDMXManager->sync();
-        m_pLightBrickManager->sync();
-        count = 0;
-    } else {
-        count--;
+    // Tell all the light managers to synchronize their lights with their
+    // physical counterparts.
+    foreach (LightManager* pManager, m_lightManagers) {
+        pManager->sync();
     }
 }
+
 
 // this method is unused!
 bool LightController::send_light_update(char light_number, char red, char green, char blue) {

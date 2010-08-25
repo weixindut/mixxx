@@ -49,11 +49,11 @@ void ControlGroup::update_cycle(FeatureState* pState) {
                 pLight->setColor(nextColor);
                 break;
             case CONTROL_CYCLE_FADE:
-                pLight->fadeTo(nextColor, 20);
+                pLight->fadeTo(nextColor, 50);
                 break;
             case CONTROL_CYCLE_FLASH:
                 pLight->setColor(nextColor);
-                pLight->fadeDown(50);
+                pLight->fadeDown(100);
                 break;
             default:
                 qDebug() << "update_cycle called while not in a cycle!";
@@ -110,11 +110,18 @@ void ControlGroup::process(FeatureState* pState) {
             if (pState->is_onset && !pState->is_silence) {
                 trigger(pState);
             }
+            break;
         case PITCH:
         case FFTBIN:
         case TIMER:
         case BEAT_DIV_4:
             // ????
             break;
+    }
+
+    // Animate all our light, regardless of we triggered a state update. They
+    // may need to complete a fade or something
+    foreach (Light* pLight, m_lights) {
+        pLight->animate();
     }
 }
