@@ -33,7 +33,7 @@ class LightController : public QObject {
 
   private:
     bool send_light_update(char light_number, char red, char green, char blue);
-    void process_onset();
+    void process_buffer();
 
     // OSC address
     QString m_base_location;

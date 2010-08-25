@@ -25,7 +25,8 @@
 LightController* LightController::sInstance = NULL;
 
 LightController::LightController() {
-    const uint_t channels = 2;
+
+    const uint_t channels = 1;
     const uint_t samplerate = 48000;
 
     sInstance = this;
@@ -66,7 +67,6 @@ LightController::LightController() {
     aubio_pitch_set_unit(m_aubio_pitch, "midi");
     m_pitch_output = new_fvec(1, channels);
 
-
     m_pLightBrickManager = new LightBrickManager(this);
     m_lightManagers.append(m_pLightBrickManager);
     Light* pLight = m_pLightBrickManager->newLight("192.168.1.2", "12344");
@@ -105,15 +105,17 @@ LightController::~LightController() {
     m_aubio_fft = NULL;
 }
 
-void LightController::process_onset() {
+void LightController::process_buffer() {
     //aubio_onset_do(m_aubio_onset, m_input_buf, m_onset_output);
     aubio_tempo_do(m_aubio_tempo, m_input_buf, m_tempo_output);
     aubio_pitch_do(m_aubio_pitch, m_input_buf, m_pitch_output);
     aubio_fft_do(m_aubio_fft, m_input_buf, m_fft_output);
 
+    m_features.is_silence = aubio_silence_detection(m_input_buf, ANALYZER_BEAT_SILENCE);
     m_features.is_beat = fvec_read_sample(m_tempo_output, 0, 0) > 0;
     m_features.is_onset = fvec_read_sample(m_tempo_output, 0, 1) > 0;
     m_features.pitch = fvec_read_sample(m_pitch_output, 0, 0);
+
 
     if (m_features.is_beat) {
         QColor color = m_pColorGenerator->nextColor();
@@ -155,19 +157,42 @@ void LightController::setColor(QColor color) {
 void LightController::process(SAMPLE* pSample, int iFramesPerBuffer) {
     QMutexLocker locker(&m_mutex);
 
-    for (int i = 0; i < iFramesPerBuffer; i += 2) {
-        for (int j = 0; j < 2; ++j) {
-            fvec_write_sample(m_input_buf, pSample[i+j], j, m_iCurInput);
-            //m_input_buf[j][m_iCurInput] = pSample[i+j];;
-        }
+    Q_ASSERT(iFramesPerBuffer % 2 == 0);
+    int monoSamples = iFramesPerBuffer / 2;
+
+    for (int i = 0; i < monoSamples; ++i) {
+        float monoSample = 0.5f * (float(pSample[i*2+0]) + float(pSample[i*2+1]));
+        fvec_write_sample(m_input_buf, monoSample, 0, m_iCurInput);
 
         // We filled up the buffer, process it.
         if (m_iCurInput == ANALYZER_BEAT_OLAPSIZE - 1) {
-            process_onset();
+            process_buffer();
             m_iCurInput = -1; // gets inc'd to 0 below
         }
         m_iCurInput++;
     }
+
+    // for (int i = 0; i < iFramesPerBuffer; i += 2) {
+    //     for (int j = 0; j < 2; ++j) {
+    //         fvec_write_sample(m_input_buf, pSample[i+j], j, m_iCurInput);
+    //         //m_input_buf[j][m_iCurInput] = pSample[i+j];;
+    //     }
+
+    //     // We filled up the buffer, process it.
+    //     if (m_iCurInput == ANALYZER_BEAT_OLAPSIZE - 1) {
+    //         process_buffer();
+    //         m_iCurInput = -1; // gets inc'd to 0 below
+    //     }
+    //     m_iCurInput++;
+    // }
+
+    // foreach (ControlGroup* pGroup, m_controlGroups) {
+    //     pGroup->process(&m_features);
+    // }
+
+    // foreach (LightManager* pManager, m_lightManagers) {
+    //     pManager->sync();
+    // }
 
 
     // Animate the lights and synchronize them with their hardware.

@@ -37,6 +37,9 @@ class ControlGroup : public QObject {
     void setColorGenerator(ColorGenerator* pGenerator);
     ColorGenerator* getColorGenerator();
 
+    void addLight(Light* pLight);
+    bool removeLight(Light* pLight);
+
     int numLights() {
         QMutexLocker locker(&m_mutex);
         return m_lights.size();
@@ -48,6 +51,10 @@ class ControlGroup : public QObject {
     void attributeChanged();
 
   private:
+    void trigger(FeatureState* pState);
+    void update_cycle(FeatureState* pState);
+    void update_chaser(FeatureState* pState);
+
     QMutex m_mutex;
     QString m_name;
     QList<Light*> m_lights;

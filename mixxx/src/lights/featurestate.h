@@ -15,6 +15,7 @@ class FeatureState {
 
     bool is_beat;
     bool is_onset;
+    bool is_silence;
     float pitch;
     cvec_t* fft;
 };

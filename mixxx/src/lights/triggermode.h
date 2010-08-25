@@ -2,7 +2,8 @@
 #define TRIGGERMODE_H
 
 enum TriggerMode {
-    BEAT = 0,
+    CONTINUOUS = 0,
+    BEAT,
     ONSET,
     PITCH,
     FFTBIN,
