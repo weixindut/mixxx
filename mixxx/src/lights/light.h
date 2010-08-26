@@ -16,8 +16,10 @@ class Light : public QObject {
     Light(QObject* pParent = NULL);
     virtual ~Light();
 
+    virtual QString getName() = 0;
     void setColor(const QColor& color);
     QColor getColor();
+    LightState getState();
 
     virtual bool isSegmented() {
         return false;

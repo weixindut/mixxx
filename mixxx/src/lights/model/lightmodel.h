@@ -1,27 +1,22 @@
-#ifndef CONTROLGROUPMODEL_H
-#define CONTROLGROUPMODEL_H
+#ifndef LIGHTMODEL_H
+#define LIGHTMODEL_H
 
 #include <QVariant>
 #include <QModelIndex>
 #include <QAbstractItemModel>
-#include <QItemDelegate>
 #include <QComboBox>
-#include <QStringList>
-#include <QStringListModel>
 
 class LightController;
 
-class ControlGroupModel : public QAbstractItemModel {
+class LightModel : public QAbstractItemModel {
   public:
-    ControlGroupModel(LightController* pLightController);
-    virtual ~ControlGroupModel();
+    LightModel(LightController* pLightController);
+    virtual ~LightModel();
 
-    enum ControlGroupColumns {
+    enum LightModelColumns {
         NAME = 0,
-        TRIGGER_MODE,
-        CONTROL_MODE,
-        COLOR_GENERATOR,
-        NUM_LIGHTS,
+        STATE,
+        COLOR,
         NUM_COLUMNS
     };
 
@@ -38,4 +33,6 @@ class ControlGroupModel : public QAbstractItemModel {
     mutable LightController* m_pLightController;
 };
 
-#endif /* CONTROLGROUPMODEL_H */
+
+
+#endif /* LIGHTMODEL_H */

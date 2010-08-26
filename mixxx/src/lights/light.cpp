@@ -126,6 +126,10 @@ void Light::animate() {
     }
 }
 
+LightState Light::getState() {
+    return m_state;
+}
+
 void Light::setState(LightState state) {
     m_state = state;
 }

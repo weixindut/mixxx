@@ -35,6 +35,9 @@ class LightController : public QObject {
     ControlGroup* getControlGroup(int i);
     int numControlGroups();
 
+    Light* getLight(int i);
+    int numLights();
+
   private:
     bool send_light_update(char light_number, char red, char green, char blue);
     void process_buffer();

@@ -12,8 +12,11 @@ class LightBrick : public Light {
     LightBrick(QObject* pParent, QString ip_address, QString port);
     virtual ~LightBrick();
 
+    virtual QString getName();
+
     void sync();
   private:
+    QString m_ip_address, m_port;
     lo_address m_osc_destination;
 };
 

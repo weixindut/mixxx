@@ -13,6 +13,8 @@ class DMXLight : public Light {
     DMXLight(DMXLightManager* pManager, int light_number);
     virtual ~DMXLight();
 
+    virtual QString getName();
+
     int getLightNumber() {
         return m_iLightNumber;
     }

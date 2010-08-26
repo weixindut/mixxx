@@ -224,3 +224,11 @@ int LightController::numControlGroups() {
 ControlGroup* LightController::getControlGroup(int group) {
     return m_controlGroups.at(group);
 }
+
+int LightController::numLights() {
+    return m_controlGroups.size();
+}
+
+Light* LightController::getLight(int light) {
+    return m_lights.at(light);
+}

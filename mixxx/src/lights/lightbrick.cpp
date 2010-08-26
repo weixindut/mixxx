@@ -3,13 +3,19 @@
 #include "lights/lightbrick.h"
 
 LightBrick::LightBrick(QObject* pParent, QString ip_address, QString port)
-        : Light(pParent) {
+        : Light(pParent),
+          m_ip_address(ip_address),
+          m_port(port) {
     m_osc_destination = lo_address_new(ip_address.toAscii().data(),
                                        port.toAscii().data());
 }
 
 LightBrick::~LightBrick() {
 
+}
+
+QString LightBrick::getName() {
+    return QString("%1:%2").arg(m_ip_address).arg(m_port);
 }
 
 void LightBrick::sync() {

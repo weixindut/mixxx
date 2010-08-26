@@ -9,6 +9,7 @@
 
 #include "lights/solidcolor.h"
 #include "lights/model/controlgroupmodel.h"
+#include "lights/model/comboboxdelegate.h"
 #include "lights/triggermode.h"
 #include "lights/controlmode.h"
 
