@@ -1,5 +1,5 @@
-#ifndef LIGHTGROUPMODEL_H
-#define LIGHTGROUPMODEL_H
+#ifndef CONTROLGROUPMODEL_H
+#define CONTROLGROUPMODEL_H
 
 #include <QVariant>
 #include <QModelIndex>
@@ -53,4 +53,4 @@ class ComboBoxDelegate : public QItemDelegate {
 };
 
 
-#endif /* LIGHTGROUPMODEL_H */
+#endif /* CONTROLGROUPMODEL_H */
