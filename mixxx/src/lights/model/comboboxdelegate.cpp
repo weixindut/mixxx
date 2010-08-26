@@ -1,3 +1,4 @@
+#include <QtDebug>
 
 #include "lights/model/comboboxdelegate.h"
 
@@ -12,6 +13,7 @@ QWidget* ComboBoxDelegate::createEditor(QWidget *parent,
     QComboBox* pCombo = new QComboBox(parent);
     QStringListModel* choices = new QStringListModel(m_choices);
     pCombo->setModel(choices);
+    connect(pCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(comboBoxIndexChanged(int)));
     return pCombo;
 }
 
@@ -27,3 +29,10 @@ void ComboBoxDelegate::setModelData(QWidget* editor, QAbstractItemModel *model,
     model->setData(index, pCombo->currentIndex(), Qt::EditRole);
 }
 
+void ComboBoxDelegate::comboBoxIndexChanged(int index) {
+    qDebug() << "comboBoxIndexChanged" << index;
+    QComboBox* pCombo = dynamic_cast<QComboBox*>(sender());
+    if (pCombo) {
+        pCombo->clearFocus();
+    }
+}

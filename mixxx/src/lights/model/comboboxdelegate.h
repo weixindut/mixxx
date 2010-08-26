@@ -7,6 +7,7 @@
 #include <QComboBox>
 
 class ComboBoxDelegate : public QItemDelegate {
+    Q_OBJECT
   public:
     ComboBoxDelegate(QStringList choices);
 
@@ -16,6 +17,8 @@ class ComboBoxDelegate : public QItemDelegate {
 
     void setEditorData(QWidget *editor, const QModelIndex &index) const;
     void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const;
+  private slots:
+    void comboBoxIndexChanged(int index);
   private:
     QStringList m_choices;
 };

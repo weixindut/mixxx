@@ -1,5 +1,3 @@
-
-
 #ifndef LIGHT_H
 #define LIGHT_H
 
@@ -10,7 +8,6 @@
 #include "lights/tweener.h"
 
 class Light : public QObject {
-
     Q_OBJECT
   public:
     Light(QObject* pParent = NULL);
@@ -30,6 +27,9 @@ class Light : public QObject {
     void fadeTo(const QColor& targetColor, int steps);
     void fadeToHue(qreal hue, int steps);
     void fadeToValue(qreal value, int steps);
+
+  signals:
+    void updated();
 
   private:
     void setState(LightState state);

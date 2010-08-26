@@ -25,8 +25,11 @@ Light::~Light() {
 }
 
 void Light::setColor(const QColor& color) {
+    bool changed = m_color != color;
     m_color = color;
     setState(LIGHT_ON);
+    if (changed)
+        emit(updated());
 }
 
 QColor Light::getColor() {
@@ -131,5 +134,8 @@ LightState Light::getState() {
 }
 
 void Light::setState(LightState state) {
+    bool changed = m_state != state;
     m_state = state;
+    if (changed)
+        emit(updated());
 }

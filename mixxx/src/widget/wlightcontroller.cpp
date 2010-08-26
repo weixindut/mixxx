@@ -9,6 +9,7 @@
 
 #include "lights/solidcolor.h"
 #include "lights/model/controlgroupmodel.h"
+#include "lights/model/lightmodel.h"
 #include "lights/model/comboboxdelegate.h"
 #include "lights/triggermode.h"
 #include "lights/controlmode.h"
@@ -39,6 +40,9 @@ WLightController::WLightController(QWidget* pParent) : QWidget(pParent) {
                                                   new ComboBoxDelegate(triggerModeOptions));
     m_controlGroupTable->setItemDelegateForColumn(ControlGroupModel::CONTROL_MODE,
                                                   new ComboBoxDelegate(controlModeOptions));
+
+    m_lightsTable->setModel(new LightModel(m_pLightController));
+
 }
 
 WLightController::~WLightController() {
@@ -69,8 +73,6 @@ void WLightController::setup(QDomNode node) {
         // the future this should be configurable from the skin with this as the
         // fallback option
         QColor text(255 - r1.red(), 255 - r1.green(), 255 - r1.blue());
-
-        //setAlternatingRowColors ( true );
 
         pal.setColor(QPalette::Base, r1);
         pal.setColor(QPalette::AlternateBase, r2);

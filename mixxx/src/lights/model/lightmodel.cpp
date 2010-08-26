@@ -1,3 +1,4 @@
+#include <QtDebug>
 
 #include "lights/model/lightmodel.h"
 #include "lights/lightcontroller.h"
@@ -9,10 +10,20 @@
 LightModel::LightModel(LightController* pController)
         : m_pLightController(pController) {
 
+    for (int i = 0; i < m_pLightController->numLights(); ++i) {
+        Light* pLight = m_pLightController->getLight(i);
+        m_mapper.setMapping(pLight, i);
+        connect(pLight, SIGNAL(updated()), &m_mapper, SLOT(map()));
+    }
+    connect(&m_mapper, SIGNAL(mapped(int)), this, SLOT(lightUpdated(int)));
 }
 
 LightModel::~LightModel() {
 
+}
+
+void LightModel::lightUpdated(int lightNumber) {
+    emit(dataChanged(index(lightNumber, 0), index(lightNumber, NUM_COLUMNS-1)));
 }
 
 int LightModel::rowCount(const QModelIndex& index) const {
@@ -108,11 +119,11 @@ Qt::ItemFlags	LightModel::flags(const QModelIndex& index) const {
         return Qt::NoItemFlags;
     }
 
-    Qt::ItemFlags flags = Qt::ItemIsEnabled | Qt::ItemIsSelectable;
+    Qt::ItemFlags flags = Qt::ItemIsEnabled;
 
     switch (index.column()) {
         case LightModel::COLOR:
-            flags |= Qt::ItemIsEditable;
+            flags |= Qt::ItemIsEditable;;
             break;
         case LightModel::NAME:
         case LightModel::STATE:

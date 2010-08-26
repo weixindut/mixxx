@@ -1,6 +1,7 @@
 #ifndef LIGHTMODEL_H
 #define LIGHTMODEL_H
 
+#include <QSignalMapper>
 #include <QVariant>
 #include <QModelIndex>
 #include <QAbstractItemModel>
@@ -9,6 +10,7 @@
 class LightController;
 
 class LightModel : public QAbstractItemModel {
+    Q_OBJECT
   public:
     LightModel(LightController* pLightController);
     virtual ~LightModel();
@@ -29,7 +31,10 @@ class LightModel : public QAbstractItemModel {
     virtual bool setData(const QModelIndex& index, const QVariant& value, int role=Qt::EditRole);
     virtual Qt::ItemFlags	flags(const QModelIndex& index) const;
 
+  private slots:
+    void lightUpdated(int number);
   private:
+    QSignalMapper m_mapper;
     mutable LightController* m_pLightController;
 };
 
