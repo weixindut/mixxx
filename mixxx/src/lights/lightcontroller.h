@@ -1,6 +1,7 @@
 #ifndef LIGHTCONTROLLER_H
 #define LIGHTCONTROLLER_H
 
+#include <QColor>
 #include <QString>
 #include <QObject>
 #include <QList>
@@ -11,13 +12,14 @@
 
 #include "defs.h"
 
-#include "lights/light.h"
-#include "lights/controlgroup.h"
-#include "lights/lightmanager.h"
-#include "lights/dmxlightmanager.h"
-#include "lights/lightbrickmanager.h"
+#include "lights/featurestate.h"
 
+class Light;
+class ControlGroup;
 class ColorGenerator;
+class LightManager;
+class DMXLightManager;
+class LightBrickManager;
 
 class LightController : public QObject {
     Q_OBJECT

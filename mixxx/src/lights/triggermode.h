@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QString>
+#include <QList>
 
 enum TriggerMode {
     CONTINUOUS = 0,
@@ -13,5 +14,8 @@ enum TriggerMode {
     TIMER,
     BEAT_DIV_4
 };
+
+QString triggerModeToString(TriggerMode mode);
+QList<QString> getTriggerModeOptions();
 
 #endif /* TRIGGERMODE_H */

@@ -10,8 +10,9 @@
 #include "lights/colorgenerator.h"
 #include "lights/controlmode.h"
 #include "lights/triggermode.h"
-#include "lights/featurestate.h"
 #include "lights/light.h"
+
+class FeatureState;
 
 class ControlGroup : public QObject {
     Q_OBJECT
@@ -64,10 +65,5 @@ class ControlGroup : public QObject {
 
     ColorGenerator* m_pColorGenerator;
 };
-
-QString triggerModeToString(TriggerMode mode);
-QString controlModeToString(ControlMode mode);
-QList<QString> getTriggerModeOptions();
-QList<QString> getControlModeOptions();
 
 #endif /* CONTROLGROUP_H */

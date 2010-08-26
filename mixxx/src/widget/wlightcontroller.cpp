@@ -8,10 +8,13 @@
 #include "widget/wskincolor.h"
 
 #include "lights/solidcolor.h"
-#include "lights/controlgroupmodel.h"
+#include "lights/model/controlgroupmodel.h"
+#include "lights/triggermode.h"
+#include "lights/controlmode.h"
 
 
 WLightController::WLightController(QWidget* pParent) : QWidget(pParent) {
+    // TODO(XXX) kill this someday
     m_pLightController = LightController::sInstance;
 
     // We should have been setup after the engine

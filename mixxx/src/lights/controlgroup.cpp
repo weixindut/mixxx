@@ -1,6 +1,8 @@
 
 #include "lights/controlgroup.h"
 
+#include "lights/featurestate.h"
+
 ControlGroup::ControlGroup(QObject* pParent, QString name)
         : QObject(pParent),
           m_name(name) {
@@ -131,72 +133,5 @@ void ControlGroup::process(FeatureState* pState) {
     }
 }
 
-QString triggerModeToString(TriggerMode mode) {
-    switch(mode) {
-        case CONTINUOUS:
-            return QObject::tr("Continuous");
-        case BEAT:
-            return QObject::tr("Beat");
-        case ONSET:
-            return QObject::tr("Onset");
-        case PITCH:
-            return QObject::tr("Pitch");
-        case FFTBIN:
-            return QObject::tr("FFTBIN");
-        case TIMER:
-            return QObject::tr("Timer");
-        case BEAT_DIV_4:
-            return QObject::tr("Beat/4");
-    }
-    return QObject::tr("Unknown");
-}
 
-QString controlModeToString(ControlMode mode) {
-    switch(mode) {
-        case CONTROL_OFF:
-            return QObject::tr("Off");
-        case CONTROL_CHASER:
-            return QObject::tr("Chaser");
-        case CONTROL_CYCLE_SET:
-            return QObject::tr("Cycle-Set");
-        case CONTROL_CYCLE_FADE:
-            return QObject::tr("Cycle-Fade");
-        case CONTROL_CYCLE_FLASH:
-            return QObject::tr("Cycle-Flash");
-        case CONTROL_TWINKLE:
-            return QObject::tr("Twinkle");
-        case CONTROL_GLOW:
-            return QObject::tr("Glow");
-        case CONTROL_FLASH:
-            return QObject::tr("Flash");
-        case CONTROL_FLASH_WHITE:
-            return QObject::tr("Flash-White");
-    }
-    return QObject::tr("Unknown");
-}
 
-QList<QString> getControlModeOptions() {
-    QList<QString> options;
-    options.append(controlModeToString(CONTROL_OFF));
-    options.append(controlModeToString(CONTROL_CHASER));
-    options.append(controlModeToString(CONTROL_CYCLE_SET));
-    options.append(controlModeToString(CONTROL_CYCLE_FADE));
-    options.append(controlModeToString(CONTROL_CYCLE_FLASH));
-    options.append(controlModeToString(CONTROL_TWINKLE));
-    options.append(controlModeToString(CONTROL_GLOW));
-    options.append(controlModeToString(CONTROL_FLASH));
-    options.append(controlModeToString(CONTROL_FLASH_WHITE));
-    return options;
-}
-
-QList<QString> getTriggerModeOptions() {
-    QList<QString> options;
-    options.append(triggerModeToString(CONTINUOUS));
-    options.append(triggerModeToString(BEAT));
-    options.append(triggerModeToString(ONSET));
-    options.append(triggerModeToString(PITCH));
-    options.append(triggerModeToString(FFTBIN));
-    options.append(triggerModeToString(TIMER));
-    options.append(triggerModeToString(BEAT_DIV_4));
-    return options;
-}

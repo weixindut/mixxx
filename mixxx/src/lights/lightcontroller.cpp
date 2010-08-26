@@ -7,6 +7,11 @@
 #include <lo/lo.h>
 #include <QMutexLocker>
 
+#include "lights/light.h"
+#include "lights/controlgroup.h"
+#include "lights/lightmanager.h"
+#include "lights/dmxlightmanager.h"
+#include "lights/lightbrickmanager.h"
 
 #include "lights/lightcontroller.h"
 #include "lights/rgbcycler.h"

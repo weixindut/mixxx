@@ -1,6 +1,7 @@
 
-#include "lights/controlgroupmodel.h"
+#include "lights/model/controlgroupmodel.h"
 #include "lights/lightcontroller.h"
+#include "lights/controlgroup.h"
 
 #include "lights/triggermode.h"
 #include "lights/controlmode.h"
