@@ -37,6 +37,13 @@ class LightController : public QObject {
     Light* getLight(int i);
     int numLights();
 
+    ColorGenerator* getColorGenerator(int i);
+    int numColorGenerators();
+    void addColorGenerator(ColorGenerator* pGenerator);
+
+  signals:
+    void stateUpdated();
+
   private:
     void process_buffer();
 
@@ -67,6 +74,7 @@ class LightController : public QObject {
     QList<LightManager*> m_lightManagers;
     QList<Light*> m_lights;
     QList<ControlGroup*> m_controlGroups;
+    QList<ColorGenerator*> m_colorGenerators;
 
   public:
     // Dirty dirty

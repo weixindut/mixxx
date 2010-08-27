@@ -25,16 +25,17 @@ WLightController::WLightController(QWidget* pParent) : QWidget(pParent) {
 
     setupUi(this);
 
-    QBoxLayout* box = dynamic_cast<QBoxLayout*>(layout());
-    Q_ASSERT(box); //Assumes the form layout is a QVBox/QHBoxLayout!
-    box->removeWidget(m_colorPickerPlaceholder);
-    m_colorPickerPlaceholder->hide();
-    m_pColorPicker = new QColorPicker(this);
-    box->insertWidget(1, m_pColorPicker);
     connect(m_pColorPicker, SIGNAL(newCol(int, int)), this, SLOT(slotSetColor(int, int)));
 
-    m_pSolidColor = new SolidColor(Qt::black);
-    m_controlGroupTable->setModel(new ControlGroupModel(m_pLightController));
+    m_pSolidColor = new SolidColor("ColorPicker", Qt::black);
+    m_pLightController->addColorGenerator(m_pSolidColor);
+
+    // Setup the controlgroup table.
+    ControlGroupModel* pControlGroupModel = new ControlGroupModel(m_pLightController);
+    connect(m_pLightController, SIGNAL(stateUpdated()),
+            pControlGroupModel, SLOT(controlGroupsUpdated()));
+
+    m_controlGroupTable->setModel(pControlGroupModel);
     QStringList controlModeOptions = getControlModeOptions();
     QStringList triggerModeOptions = getTriggerModeOptions();
     m_controlGroupTable->setItemDelegateForColumn(ControlGroupModel::TRIGGER_MODE,
@@ -42,7 +43,20 @@ WLightController::WLightController(QWidget* pParent) : QWidget(pParent) {
     m_controlGroupTable->setItemDelegateForColumn(ControlGroupModel::CONTROL_MODE,
                                                   new ComboBoxDelegate(controlModeOptions));
 
-    m_lightsTable->setModel(new LightModel(m_pLightController));
+    QStringList colorGeneratorOptions;
+    for (int i = 0; i < m_pLightController->numColorGenerators(); ++i) {
+        ColorGenerator* pColorGenerator = m_pLightController->getColorGenerator(i);
+        colorGeneratorOptions << pColorGenerator->getName();
+    }
+    m_controlGroupTable->setItemDelegateForColumn(ControlGroupModel::COLOR_GENERATOR,
+                                                  new ComboBoxDelegate(colorGeneratorOptions));
+
+
+    // Setup the light table
+    LightModel* pLightModel = new LightModel(m_pLightController);
+    m_lightsTable->setModel(pLightModel);
+    connect(m_pLightController, SIGNAL(stateUpdated()),
+            pLightModel, SLOT(lightsUpdated()));
     m_lightsTable->setItemDelegateForColumn(LightModel::COLOR,
                                             new ColorDelegate());
 
@@ -53,8 +67,8 @@ WLightController::~WLightController() {
 
 void WLightController::slotSetColor(int hue, int value) {
     QColor color = QColor::fromHsv(hue, 255, value);
-    qDebug() << "Setting to hue:" << hue << "value" << value;
-    m_pLightController->setColor(color);
+    //qDebug() << "Setting to hue:" << hue << "value" << value;
+    //m_pLightController->setColor(color);
     m_pSolidColor->setColor(color);
 }
 

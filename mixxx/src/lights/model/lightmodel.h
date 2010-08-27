@@ -32,6 +32,8 @@ class LightModel : public QAbstractItemModel {
     virtual bool setData(const QModelIndex& index, const QVariant& value, int role=Qt::EditRole);
     virtual Qt::ItemFlags	flags(const QModelIndex& index) const;
 
+  public slots:
+    void lightsUpdated();
   private slots:
     void lightUpdated(int number);
   private:

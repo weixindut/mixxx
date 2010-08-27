@@ -3,8 +3,9 @@
 class RGBCycler : public ColorGenerator {
 
   public:
-    RGBCycler(int r, int g, int b, int dr, int dg, int db)
-            : m_r(r),
+    RGBCycler(QString name, int r, int g, int b, int dr, int dg, int db)
+            : ColorGenerator(name),
+              m_r(r),
               m_g(g),
               m_b(b),
               m_dr(dr),

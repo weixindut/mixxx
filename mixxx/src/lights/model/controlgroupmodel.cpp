@@ -5,6 +5,7 @@
 
 #include "lights/triggermode.h"
 #include "lights/controlmode.h"
+#include "lights/colorgenerator.h"
 
 ControlGroupModel::ControlGroupModel(LightController* pController)
         : m_pLightController(pController) {
@@ -13,6 +14,10 @@ ControlGroupModel::ControlGroupModel(LightController* pController)
 
 ControlGroupModel::~ControlGroupModel() {
 
+}
+
+void ControlGroupModel::controlGroupsUpdated() {
+    emit(dataChanged(index(0, 0), index(m_pLightController->numControlGroups()-1, NUM_COLUMNS-1)));
 }
 
 int ControlGroupModel::rowCount(const QModelIndex& index) const {
@@ -56,7 +61,7 @@ QVariant ControlGroupModel::headerData(int section, Qt::Orientation orientation,
             case ControlGroupModel::CONTROL_MODE:
                 return QString(tr("Mode"));
             case ControlGroupModel::COLOR_GENERATOR:
-                return QString(tr("Color Generator"));
+                return QString(tr("Color Gen."));
             case ControlGroupModel::NUM_LIGHTS:
                 return QString(tr("# Lights"));
             default:
@@ -70,6 +75,7 @@ QVariant ControlGroupModel::headerData(int section, Qt::Orientation orientation,
 QVariant ControlGroupModel::data(const QModelIndex& index, int role) const {
 
     ControlGroup* pGroup = m_pLightController->getControlGroup(index.row());
+    ColorGenerator* pGenerator = NULL;
 
     if (role == Qt::DisplayRole) {
         switch (index.column()) {
@@ -82,6 +88,8 @@ QVariant ControlGroupModel::data(const QModelIndex& index, int role) const {
             case ControlGroupModel::NUM_LIGHTS:
                 return pGroup->numLights();
             case ControlGroupModel::COLOR_GENERATOR:
+                pGenerator = pGroup->getColorGenerator();
+                return pGenerator->getName();
             default:
                 return QString(tr("Unknown"));
         }
@@ -96,6 +104,8 @@ bool ControlGroupModel::setData(const QModelIndex& index, const QVariant& value,
 
     if (role == Qt::EditRole) {
         ControlGroup* pGroup = m_pLightController->getControlGroup(index.row());
+        ColorGenerator* pGenerator = NULL;
+        int generatorIndex;
         switch (index.column()) {
             case ControlGroupModel::TRIGGER_MODE:
                 pGroup->setTriggerMode((TriggerMode)value.toInt());
@@ -103,9 +113,16 @@ bool ControlGroupModel::setData(const QModelIndex& index, const QVariant& value,
             case ControlGroupModel::CONTROL_MODE:
                 pGroup->setControlMode((ControlMode)value.toInt());
                 return true;
+            case ControlGroupModel::COLOR_GENERATOR:
+                generatorIndex = value.toInt();
+                pGenerator = m_pLightController->getColorGenerator(generatorIndex);
+                if (pGenerator) {
+                    pGroup->setColorGenerator(pGenerator);
+                    return true;
+                }
             case ControlGroupModel::NAME:
             case ControlGroupModel::NUM_LIGHTS:
-            case ControlGroupModel::COLOR_GENERATOR:
+
             default:
                 return false;
         }
@@ -123,11 +140,11 @@ Qt::ItemFlags	ControlGroupModel::flags(const QModelIndex& index) const {
     switch (index.column()) {
         case ControlGroupModel::TRIGGER_MODE:
         case ControlGroupModel::CONTROL_MODE:
+        case ControlGroupModel::COLOR_GENERATOR:
             flags |= Qt::ItemIsEditable;
             break;
         case ControlGroupModel::NAME:
         case ControlGroupModel::NUM_LIGHTS:
-        case ControlGroupModel::COLOR_GENERATOR:
         default:
             break;
     }

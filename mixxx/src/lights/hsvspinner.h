@@ -5,8 +5,8 @@
 
 class HSVSpinner : public ColorGenerator {
   public:
-    HSVSpinner(qreal h, qreal s, qreal v, qreal dh)
-            : m_h(h), m_s(s), m_v(v), m_dh(dh) {
+    HSVSpinner(QString name, qreal h, qreal s, qreal v, qreal dh)
+            : ColorGenerator(name), m_h(h), m_s(s), m_v(v), m_dh(dh) {
     }
 
     QColor nextColor() {

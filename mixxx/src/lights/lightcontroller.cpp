@@ -53,7 +53,6 @@ LightController::LightController() {
                                      channels, samplerate);
     m_onset_output = new_fvec(ANALYZER_BEAT_OLAPSIZE, channels);
 
-
     m_aubio_fft = new_aubio_fft (ANALYZER_BEAT_WINSIZE, channels);
     m_fft_output = new_cvec(ANALYZER_BEAT_WINSIZE/2, channels);
     m_features.fft = m_fft_output;
@@ -97,15 +96,23 @@ LightController::LightController() {
     // Turn off the lights
     m_pDMXManager->sync();
 
-    static RGBCycler cycler(20, 200, 70, 50, 100, 20);
-    // You spin me right round.
-    static HSVSpinner spinner(1.0, 1.0, 1.0, 0.05);
+    RGBCycler* cycler = new RGBCycler("RGBCycle", 20, 200, 70, 50, 100, 20);
+    addColorGenerator(cycler);
 
-    pGroup1->setColorGenerator(&cycler);
+    // You spin me right round.
+    HSVSpinner* spinner = new HSVSpinner("Wash20", 1.0, 1.0, 1.0, 0.05);
+    addColorGenerator(spinner);
+
+    addColorGenerator(new HSVSpinner("Wash10", 1.0, 1.0, 1.0, 0.1));
+    addColorGenerator(new HSVSpinner("Wash100", 1.0, 1.0, 1.0, 0.01));
+    addColorGenerator(new HSVSpinner("Wash1000", 1.0, 1.0, 1.0, 0.001));
+    addColorGenerator(new HSVSpinner("Wash10000", 1.0, 1.0, 1.0, 0.0001));
+
+    pGroup1->setColorGenerator(cycler);
     pGroup1->setTriggerMode(BEAT);
     pGroup1->setControlMode(CONTROL_CYCLE_FADE);
 
-    pGroup2->setColorGenerator(&spinner);
+    pGroup2->setColorGenerator(spinner);
     pGroup2->setTriggerMode(BEAT);
     pGroup2->setControlMode(CONTROL_CYCLE_FLASH);
 
@@ -178,6 +185,8 @@ void LightController::process(SAMPLE* pSample, int iFramesPerBuffer) {
     foreach (LightManager* pManager, m_lightManagers) {
         pManager->sync();
     }
+
+    emit(stateUpdated());
 }
 
 int LightController::numControlGroups() {
@@ -185,6 +194,10 @@ int LightController::numControlGroups() {
 }
 
 ControlGroup* LightController::getControlGroup(int group) {
+    if (group < 0 || group >= m_controlGroups.size()) {
+        return NULL;
+    }
+
     return m_controlGroups.at(group);
 }
 
@@ -193,5 +206,24 @@ int LightController::numLights() {
 }
 
 Light* LightController::getLight(int light) {
+    if (light < 0 || light >= m_lights.size()) {
+        return NULL;
+    }
     return m_lights.at(light);
+}
+
+void LightController::addColorGenerator(ColorGenerator* pColorGenerator) {
+    Q_ASSERT(pColorGenerator);
+    m_colorGenerators.append(pColorGenerator);
+}
+
+ColorGenerator* LightController::getColorGenerator(int generator) {
+    if (generator < 0 || generator >= m_colorGenerators.size()) {
+        return NULL;
+    }
+    return m_colorGenerators.at(generator);
+}
+
+int LightController::numColorGenerators() {
+    return m_colorGenerators.size();
 }

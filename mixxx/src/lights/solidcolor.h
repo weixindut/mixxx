@@ -10,7 +10,7 @@
 class SolidColor : public QObject, public ColorGenerator {
     Q_OBJECT
   public:
-    SolidColor(QColor color);
+    SolidColor(QString name, QColor color);
     virtual ~SolidColor();
     QColor nextColor();
   public slots:

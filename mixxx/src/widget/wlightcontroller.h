@@ -18,16 +18,10 @@ class WLightController : public QWidget, public Ui::DlgLights {
     virtual ~WLightController();
 
     void setup(QDomNode node);
-
   private slots:
-    // void on_beat();
-    // void on_onset();
-    // void on_pitch(float newPitch);
-    // void receive_fft();
     void slotSetColor(int hue, int sat);
   private:
     LightController* m_pLightController;
-    QColorPicker* m_pColorPicker;
     SolidColor* m_pSolidColor;
 };
 

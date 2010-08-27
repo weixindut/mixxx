@@ -62,18 +62,25 @@
     </widget>
    </item>
    <item>
-    <widget class="QWidget" name="m_colorPickerPlaceholder" native="true">
+    <widget class="QColorPicker" name="m_pColorPicker" native="true">
      <property name="minimumSize">
       <size>
        <width>220</width>
        <height>200</height>
       </size>
      </property>
-     <zorder>tabWidget</zorder>
     </widget>
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QColorPicker</class>
+   <extends>QWidget</extends>
+   <header>widget/qcolorpicker.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

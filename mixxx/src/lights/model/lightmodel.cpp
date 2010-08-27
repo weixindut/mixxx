@@ -10,16 +10,23 @@
 LightModel::LightModel(LightController* pController)
         : m_pLightController(pController) {
 
-    for (int i = 0; i < m_pLightController->numLights(); ++i) {
-        Light* pLight = m_pLightController->getLight(i);
-        m_mapper.setMapping(pLight, i);
-        connect(pLight, SIGNAL(updated()), &m_mapper, SLOT(map()));
-    }
-    connect(&m_mapper, SIGNAL(mapped(int)), this, SLOT(lightUpdated(int)));
+    // This method is too spammy and causes the table to be updated O(n) times
+    // per frame where n is lights.
+
+    // for (int i = 0; i < m_pLightController->numLights(); ++i) {
+    //     Light* pLight = m_pLightController->getLight(i);
+    //     m_mapper.setMapping(pLight, i);
+    //     connect(pLight, SIGNAL(updated()), &m_mapper, SLOT(map()));
+    // }
+    // connect(&m_mapper, SIGNAL(mapped(int)), this, SLOT(lightUpdated(int)));
 }
 
 LightModel::~LightModel() {
 
+}
+
+void LightModel::lightsUpdated() {
+    emit(dataChanged(index(0, 0), index(m_pLightController->numLights()-1, NUM_COLUMNS-1)));
 }
 
 void LightModel::lightUpdated(int lightNumber) {
