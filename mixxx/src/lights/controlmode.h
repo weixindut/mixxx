@@ -5,9 +5,13 @@
 #include <QList>
 #include <QObject>
 
+// WARNING: If you add a new control mode you must update controlmode.cpp to
+// provide a string version of the mode and add it to the available mode list.
+
 enum ControlMode {
     CONTROL_OFF = 0,
     CONTROL_CHASER,
+    CONTROL_SHIFTER,
     CONTROL_CYCLE_SET,
     CONTROL_CYCLE_FADE,
     CONTROL_CYCLE_FLASH,

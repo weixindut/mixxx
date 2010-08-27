@@ -6,6 +6,7 @@
 #include <QMutex>
 #include <QMutexLocker>
 #include <QMap>
+#include <QLinkedList>
 
 #include "lights/colorgenerator.h"
 #include "lights/controlmode.h"
@@ -55,6 +56,7 @@ class ControlGroup : public QObject {
     void trigger(FeatureState* pState);
     void update_cycle(FeatureState* pState);
     void update_chaser(FeatureState* pState);
+    void update_shifter(FeatureState* pState);
 
     QMutex m_mutex;
     QString m_name;
@@ -64,6 +66,8 @@ class ControlGroup : public QObject {
     TriggerMode m_triggerMode;
 
     ColorGenerator* m_pColorGenerator;
+
+    QLinkedList<QColor> m_shifterQueue;
 };
 
 #endif /* CONTROLGROUP_H */

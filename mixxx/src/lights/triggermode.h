@@ -5,6 +5,9 @@
 #include <QString>
 #include <QList>
 
+// WARNING: If you add a new trigger mode you must update triggermode.cpp to
+// provide a string version of the mode and add it to the available mode list.
+
 enum TriggerMode {
     CONTINUOUS = 0,
     BEAT,

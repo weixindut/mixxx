@@ -65,7 +65,27 @@ void ControlGroup::update_cycle(FeatureState* pState) {
 }
 
 void ControlGroup::update_chaser(FeatureState* pState) {
-    // TODO(XXX) um, this
+
+}
+
+void ControlGroup::update_shifter(FeatureState* pState) {
+    QColor nextColor = m_pColorGenerator->nextColor();
+    m_shifterQueue.push_front(nextColor);
+
+    // Keep only the last N colors where N is the number of lights
+    while (m_shifterQueue.size() > m_lights.size()) {
+        m_shifterQueue.pop_back();
+    }
+
+    int i = 0;
+    foreach(QColor color, m_shifterQueue) {
+        if (i >= m_lights.size()) {
+            break;
+        }
+        Light* pLight = m_lights[i];
+        pLight->setColor(color);
+        i++;
+    }
 }
 
 void ControlGroup::addLight(Light* pLight) {
@@ -89,6 +109,9 @@ void ControlGroup::trigger(FeatureState* pState) {
             break;
         case CONTROL_CHASER:
             update_chaser(pState);
+            break;
+        case CONTROL_SHIFTER:
+            update_shifter(pState);
             break;
         case CONTROL_CYCLE_SET:
         case CONTROL_CYCLE_FADE:

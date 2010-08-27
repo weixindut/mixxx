@@ -5,6 +5,9 @@
 #include <QString>
 #include <QObject>
 
+// WARNING: If you add a new light state you must update lightstate.cpp to
+// provide a string version of the mode and add it to the available mode list.
+
 enum LightState {
     LIGHT_OFF = 0,
     LIGHT_ON,
