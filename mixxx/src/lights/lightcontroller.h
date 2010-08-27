@@ -30,7 +30,6 @@ class LightController : public QObject {
     void process(SAMPLE* pBuffer, int iFramesPerBuffer);
 
     void setColor(QColor color);
-    void setColorGenerator(ColorGenerator* pGenerator);
 
     ControlGroup* getControlGroup(int i);
     int numControlGroups();
@@ -39,7 +38,6 @@ class LightController : public QObject {
     int numLights();
 
   private:
-    bool send_light_update(char light_number, char red, char green, char blue);
     void process_buffer();
 
     // OSC address
@@ -65,7 +63,6 @@ class LightController : public QObject {
 
     DMXLightManager* m_pDMXManager;
     LightBrickManager* m_pLightBrickManager;
-    ColorGenerator* m_pColorGenerator;
 
     QList<LightManager*> m_lightManagers;
     QList<Light*> m_lights;

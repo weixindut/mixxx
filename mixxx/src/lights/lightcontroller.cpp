@@ -100,7 +100,6 @@ LightController::LightController() {
     static RGBCycler cycler(20, 200, 70, 50, 100, 20);
     // You spin me right round.
     static HSVSpinner spinner(1.0, 1.0, 1.0, 0.05);
-    m_pColorGenerator = &cycler;
 
     pGroup1->setColorGenerator(&cycler);
     pGroup1->setTriggerMode(BEAT);
@@ -136,38 +135,15 @@ void LightController::process_buffer() {
     m_features.is_onset = fvec_read_sample(m_tempo_output, 0, 1) > 0;
     m_features.pitch = fvec_read_sample(m_pitch_output, 0, 0);
 
-
-    // if (m_features.is_beat) {
-    //     QColor color = m_pColorGenerator->nextColor();
-    //     foreach (Light* pLight, m_lights) {
-    //         // Fade to the color in 20 steps
-    //         pLight->fadeTo(color, 50);
-
-    //         // Immediately switch to color
-    //         //pLight->setColor(color);
-
-    //         // Fade to black in 100 steps
-    //         //pLight->fadeDown(100);
-    //     }
-    //     // Only enable if you want to lessen the frequency of updates to the
-    //     // bricks. (Combine with commenting the sync() call below)
-    //     //m_pLightBrickManager->sync();
-    // }
-
     //qDebug() << "beat: " << m_features.is_beat << " onset: " << m_state.is_onset;
     //qDebug() << "pitch:" << m_features.pitch;
     //qDebug() << "fft:" << m_fft_output->norm[0][0] << m_fft_output->norm[0][1];
 }
 
-void LightController::setColorGenerator(ColorGenerator* pGenerator) {
-    QMutexLocker locker(&m_mutex);
-    m_pColorGenerator = pGenerator;
-}
-
-
 void LightController::setColor(QColor color) {
     QMutexLocker locker(&m_mutex);
 
+    // This is kind of a hack. The request should go to a light group
     foreach (Light* pLight, m_lights) {
         pLight->fadeTo(color, 20);
         //pLight->setColor(color);
@@ -202,19 +178,6 @@ void LightController::process(SAMPLE* pSample, int iFramesPerBuffer) {
     foreach (LightManager* pManager, m_lightManagers) {
         pManager->sync();
     }
-}
-
-
-// this method is unused!
-bool LightController::send_light_update(char light_number, char red, char green, char blue) {
-    QString locationFormat = "/simulator/lights/set";
-    if (lo_send(m_osc_destination, locationFormat.toAscii().data(),
-                "cccc", light_number, red, green, blue) < 0) {
-        qDebug() << "OSC error " << lo_address_errno(m_osc_destination)
-                 << ": " << lo_address_errstr(m_osc_destination);
-        return false;
-    }
-    return true;
 }
 
 int LightController::numControlGroups() {
