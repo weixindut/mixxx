@@ -57,6 +57,11 @@ class ControlGroup : public QObject {
     void update_cycle(FeatureState* pState);
     void update_chaser(FeatureState* pState);
     void update_shifter(FeatureState* pState);
+    void update_mirror(FeatureState* pState);
+
+    void initialize_mode();
+    void init_shifter();
+    void init_mirror();
 
     QMutex m_mutex;
     QString m_name;
@@ -68,6 +73,7 @@ class ControlGroup : public QObject {
     ColorGenerator* m_pColorGenerator;
 
     QLinkedList<QColor> m_shifterQueue;
+    QLinkedList<QColor> m_mirrorQueue;;
 };
 
 #endif /* CONTROLGROUP_H */

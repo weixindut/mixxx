@@ -61,13 +61,15 @@ QVariant LightModel::headerData(int section, Qt::Orientation orientation, int ro
     if (role == Qt::DisplayRole && orientation == Qt::Horizontal) {
         switch (section) {
             case LightModel::NAME:
-                return QString(tr("Name"));
+                return tr("Name");
             case LightModel::STATE:
-                return QString(tr("State"));
+                return tr("State");
             case LightModel::COLOR:
-                return QString(tr("Color"));
+                return tr("Color");
+            case LightModel::GROUP:
+                return tr("Group");
             default:
-                return QString(tr("Unknown"));
+                return tr("Unknown");
         }
     }
 
@@ -76,6 +78,7 @@ QVariant LightModel::headerData(int section, Qt::Orientation orientation, int ro
 
 QVariant LightModel::data(const QModelIndex& index, int role) const {
     Light* pLight = m_pLightController->getLight(index.row());
+    ControlGroup* pControlGroup = NULL;
 
     if (role == Qt::DisplayRole) {
         switch (index.column()) {
@@ -85,8 +88,13 @@ QVariant LightModel::data(const QModelIndex& index, int role) const {
                 return lightStateToString(pLight->getState());
             case LightModel::COLOR:
                 return pLight->getColor();
+            case LightModel::GROUP:
+                pControlGroup = pLight->getControlGroup();
+                if (pControlGroup) {
+                    return pControlGroup->getName();
+                }
             default:
-                return QString(tr("Unknown"));
+                return tr("Unknown");
         }
     }
 
@@ -107,6 +115,7 @@ bool LightModel::setData(const QModelIndex& index, const QVariant& value, int ro
                 }
             case LightModel::STATE:
             case LightModel::NAME:
+            case LightModel::GROUP: // Not supported ATM
             default:
                 break;
         }
@@ -127,6 +136,7 @@ Qt::ItemFlags	LightModel::flags(const QModelIndex& index) const {
             break;
         case LightModel::NAME:
         case LightModel::STATE:
+        case LightModel::GROUP:
         default:
             break;
     }

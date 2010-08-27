@@ -19,6 +19,7 @@ class LightModel : public QAbstractItemModel {
         NAME = 0,
         STATE,
         COLOR,
+        GROUP,
         NUM_COLUMNS
     };
 

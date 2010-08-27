@@ -1,15 +1,19 @@
 #include <QtDebug>
+#include <QMutexLocker>
 
 #include "lights/light.h"
 
 #include "mathstuff.h"
 
+#include "lights/controlgroup.h"
 #include "lights/lineartweener.h"
 #include "lights/cubiceaseouttweener.h"
 #include "lights/cubiceaseintweener.h"
 
 Light::Light(QObject* pParent)
-        : m_hueTweener(new CubicEaseOutTweener()),
+        : m_pControlGroup(NULL),
+
+          m_hueTweener(new CubicEaseOutTweener()),
           m_satTweener(new CubicEaseOutTweener()),
           m_valTweener(new CubicEaseOutTweener())
           // m_hueTweener(new LinearTweener()),
@@ -34,6 +38,16 @@ void Light::setColor(const QColor& color) {
 
 QColor Light::getColor() {
     return m_color;
+}
+
+ControlGroup* Light::getControlGroup() {
+    QMutexLocker locker(&m_mutex);
+    return m_pControlGroup;
+}
+
+void Light::setControlGroup(ControlGroup* pGroup) {
+    QMutexLocker locker(&m_mutex);
+    m_pControlGroup = pGroup;
 }
 
 void Light::fadeDown(int steps) {

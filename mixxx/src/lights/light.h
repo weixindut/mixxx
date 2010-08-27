@@ -3,9 +3,12 @@
 
 #include <QObject>
 #include <QColor>
+#include <QMutex>
 
 #include "lights/lightstate.h"
 #include "lights/tweener.h"
+
+class ControlGroup;
 
 class Light : public QObject {
     Q_OBJECT
@@ -17,6 +20,8 @@ class Light : public QObject {
     void setColor(const QColor& color);
     QColor getColor();
     LightState getState();
+    ControlGroup* getControlGroup();
+    void setControlGroup(ControlGroup* pGroup);
 
     virtual bool isSegmented() {
         return false;
@@ -34,8 +39,10 @@ class Light : public QObject {
   private:
     void setState(LightState state);
 
+    QMutex m_mutex;
     LightState m_state;
     QColor m_color;
+    ControlGroup* m_pControlGroup;
 
     // Fade parameters
     qreal m_target_hue, m_target_sat, m_target_val;

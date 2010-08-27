@@ -7,8 +7,14 @@ QString controlModeToString(ControlMode mode) {
             return QObject::tr("Off");
         case CONTROL_CHASER:
             return QObject::tr("Chaser");
-        case CONTROL_SHIFTER:
-            return QObject::tr("Shifter");
+        case CONTROL_SHIFTER_RIGHT:
+            return QObject::tr("ShiftRight");
+        case CONTROL_SHIFTER_LEFT:
+            return QObject::tr("ShiftLeft");
+        case CONTROL_MIRROR_INWARD:
+            return QObject::tr("MirrorIn");
+        case CONTROL_MIRROR_OUTWARD:
+            return QObject::tr("MirrorOut");
         case CONTROL_CYCLE_SET:
             return QObject::tr("Cycle-Set");
         case CONTROL_CYCLE_FADE:
@@ -31,7 +37,10 @@ QList<QString> getControlModeOptions() {
     QList<QString> options;
     options.append(controlModeToString(CONTROL_OFF));
     options.append(controlModeToString(CONTROL_CHASER));
-    options.append(controlModeToString(CONTROL_SHIFTER));
+    options.append(controlModeToString(CONTROL_SHIFTER_RIGHT));
+    options.append(controlModeToString(CONTROL_SHIFTER_LEFT));
+    options.append(controlModeToString(CONTROL_MIRROR_INWARD));
+    options.append(controlModeToString(CONTROL_MIRROR_OUTWARD));
     options.append(controlModeToString(CONTROL_CYCLE_SET));
     options.append(controlModeToString(CONTROL_CYCLE_FADE));
     options.append(controlModeToString(CONTROL_CYCLE_FLASH));
