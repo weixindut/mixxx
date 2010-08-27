@@ -52,9 +52,9 @@ QVariant ControlGroupModel::headerData(int section, Qt::Orientation orientation,
             case ControlGroupModel::NAME:
                 return QString(tr("Name"));
             case ControlGroupModel::TRIGGER_MODE:
-                return QString(tr("Trigger Mode"));
+                return QString(tr("Trigger"));
             case ControlGroupModel::CONTROL_MODE:
-                return QString(tr("Control Mode"));
+                return QString(tr("Mode"));
             case ControlGroupModel::COLOR_GENERATOR:
                 return QString(tr("Color Generator"));
             case ControlGroupModel::NUM_LIGHTS:

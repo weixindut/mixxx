@@ -14,5 +14,5 @@ DMXLight::~DMXLight() {
 }
 
 QString DMXLight::getName() {
-    return QString("DMX Light %1").arg(m_iLightNumber);
+    return QString("DMX%1").arg(m_iLightNumber);
 }

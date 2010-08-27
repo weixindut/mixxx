@@ -11,6 +11,7 @@
 #include "lights/model/controlgroupmodel.h"
 #include "lights/model/lightmodel.h"
 #include "lights/model/comboboxdelegate.h"
+#include "lights/model/colordelegate.h"
 #include "lights/triggermode.h"
 #include "lights/controlmode.h"
 
@@ -42,6 +43,8 @@ WLightController::WLightController(QWidget* pParent) : QWidget(pParent) {
                                                   new ComboBoxDelegate(controlModeOptions));
 
     m_lightsTable->setModel(new LightModel(m_pLightController));
+    m_lightsTable->setItemDelegateForColumn(LightModel::COLOR,
+                                            new ColorDelegate());
 
 }
 

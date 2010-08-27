@@ -119,7 +119,7 @@ Qt::ItemFlags	LightModel::flags(const QModelIndex& index) const {
         return Qt::NoItemFlags;
     }
 
-    Qt::ItemFlags flags = Qt::ItemIsEnabled;
+    Qt::ItemFlags flags = Qt::ItemIsEnabled | Qt::ItemIsSelectable;
 
     switch (index.column()) {
         case LightModel::COLOR:

@@ -75,8 +75,8 @@ LightController::LightController() {
     m_pLightBrickManager = new LightBrickManager(this);
     m_lightManagers.append(m_pLightBrickManager);
 
-    ControlGroup* pGroup1 = new ControlGroup(this, "Control Group 1");
-    ControlGroup* pGroup2 = new ControlGroup(this, "Control Group 2");
+    ControlGroup* pGroup1 = new ControlGroup(this, "Group 1");
+    ControlGroup* pGroup2 = new ControlGroup(this, "Group 2");
 
     Light* pLight = m_pLightBrickManager->newLight("192.168.1.2", "12344");
     pLight->setColor(Qt::black);
@@ -226,7 +226,7 @@ ControlGroup* LightController::getControlGroup(int group) {
 }
 
 int LightController::numLights() {
-    return m_controlGroups.size();
+    return m_lights.size();
 }
 
 Light* LightController::getLight(int light) {
