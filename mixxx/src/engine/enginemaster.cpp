@@ -86,9 +86,10 @@ EngineMaster::EngineMaster(ConfigObject<ConfigValue> * _config,
     head_clipping = new EngineClipping("");
 
     // Allocate buffers
-
     m_pHead = SampleUtil::alloc(MAX_BUFFER_LEN);
     m_pMaster = SampleUtil::alloc(MAX_BUFFER_LEN);
+    memset(m_pHead, 0, sizeof(CSAMPLE) * MAX_BUFFER_LEN);
+    memset(m_pMaster, 0, sizeof(CSAMPLE) * MAX_BUFFER_LEN);
 
     m_pLightController = new LightController();
 
