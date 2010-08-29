@@ -16,6 +16,8 @@ Light::Light(QObject* pParent, QString id)
         : QObject(pParent),
           m_name(QString("Light %1").arg(lightCount++)),
           m_id(id),
+          m_state(LIGHT_OFF),
+          m_color(Qt::black),
           m_pControlGroup(NULL),
           m_hueTweener(new CubicEaseOutTweener()),
           m_satTweener(new CubicEaseOutTweener()),

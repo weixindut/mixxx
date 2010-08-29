@@ -20,7 +20,9 @@ QWidget* ComboBoxDelegate::createEditor(QWidget *parent,
 void ComboBoxDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const {
     QComboBox* pCombo = dynamic_cast<QComboBox*>(editor);
     QString value = index.data().toString();
-    pCombo->setCurrentIndex(pCombo->findText(value));
+    int comboIndex = pCombo->findText(value);
+    if (comboIndex >= 0)
+        pCombo->setCurrentIndex(comboIndex);
 }
 
 void ComboBoxDelegate::setModelData(QWidget* editor, QAbstractItemModel *model,

@@ -4,20 +4,37 @@
       <LightBrick name="Brick1" ipaddress="192.168.1.2" port="12344" id="brick1"/>
     </LightBrickManager>
     <DMXLightManager ipaddress="192.168.0.3" universe="1">
-      <DMXLight name="" number="0" id="dmx0"/>
-      <DMXLight name="" number="1" id="dmx1"/>
-      <DMXLight name="" number="2" id="dmx2"/>
-      <DMXLight name="" number="3" id="dmx3"/>
+      <DMXLight name="Fresco1" number="0" id="dmx0"/>
+      <DMXLight name="Fresco2" number="1" id="dmx1"/>
+      <DMXLight name="Fresco3" number="2" id="dmx2"/>
+      <DMXLight name="Fresco4" number="3" id="dmx3"/>
+      <DMXLight name="Fresco5" number="4" id="dmx4"/>
+      <DMXLight name="Fresco6" number="5" id="dmx5"/>
+      <DMXLight name="Fresco7" number="6" id="dmx6"/>
+      <DMXLight name="Fresco8" number="7" id="dmx7"/>
     </DMXLightManager>
   </LightManagers>
 
   <ControlGroups>
-    <ControlGroup name="DMXs">
+    <ControlGroup name="Frontline">
       <Lights>
         <Light id="dmx0"/>
         <Light id="dmx1"/>
         <Light id="dmx2"/>
         <Light id="dmx3"/>
+        <Light id="dmx4"/>
+        <Light id="dmx5"/>
+        <Light id="dmx6"/>
+        <Light id="dmx7"/>
+      </Lights>
+      <TriggerState>
+      </TriggerState>
+      <ControlMode>
+      </ControlMode>
+    </ControlGroup>
+    <ControlGroup name="Bricks">
+      <Lights>
+        <Light id="brick1"/>
       </Lights>
       <TriggerState>
       </TriggerState>

@@ -6,7 +6,10 @@
 
 ControlGroup::ControlGroup(QObject* pParent, QString name)
         : QObject(pParent),
-          m_name(name) {
+          m_name(name),
+          m_controlMode(CONTROL_OFF),
+          m_triggerMode(CONTINUOUS),
+          m_pColorGenerator(NULL) {
 }
 
 ControlGroup::~ControlGroup() {
