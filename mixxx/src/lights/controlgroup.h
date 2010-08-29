@@ -12,6 +12,7 @@
 #include "lights/colorgenerator.h"
 #include "lights/controlmode.h"
 #include "lights/triggermode.h"
+#include "lights/transitionmode.h"
 #include "lights/light.h"
 
 class LightController;
@@ -37,6 +38,9 @@ class ControlGroup : public QObject {
 
     void setTriggerMode(TriggerMode triggerMode);
     TriggerMode getTriggerMode();
+
+    void setTransitionMode(TransitionMode transitionMode);
+    TransitionMode getTransitionMode();
 
     void setColorGenerator(ColorGenerator* pGenerator);
     ColorGenerator* getColorGenerator();
@@ -73,6 +77,7 @@ class ControlGroup : public QObject {
 
     ControlMode m_controlMode;
     TriggerMode m_triggerMode;
+    TransitionMode m_transitionMode;
 
     ColorGenerator* m_pColorGenerator;
 

@@ -19,6 +19,7 @@ class ControlGroupModel : public QAbstractItemModel {
     enum ControlGroupColumns {
         NAME = 0,
         TRIGGER_MODE,
+        TRANSITION_MODE,
         CONTROL_MODE,
         COLOR_GENERATOR,
         NUM_LIGHTS,

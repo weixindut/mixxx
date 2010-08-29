@@ -4,6 +4,7 @@
 #include "lights/controlgroup.h"
 
 #include "lights/triggermode.h"
+#include "lights/transitionmode.h"
 #include "lights/controlmode.h"
 #include "lights/colorgenerator.h"
 
@@ -58,6 +59,8 @@ QVariant ControlGroupModel::headerData(int section, Qt::Orientation orientation,
                 return QString(tr("Name"));
             case ControlGroupModel::TRIGGER_MODE:
                 return QString(tr("Trigger"));
+            case ControlGroupModel::TRANSITION_MODE:
+                return QString(tr("Transition"));
             case ControlGroupModel::CONTROL_MODE:
                 return QString(tr("Mode"));
             case ControlGroupModel::COLOR_GENERATOR:
@@ -83,6 +86,8 @@ QVariant ControlGroupModel::data(const QModelIndex& index, int role) const {
                 return pGroup->getName();
             case ControlGroupModel::TRIGGER_MODE:
                 return triggerModeToString(pGroup->getTriggerMode());
+            case ControlGroupModel::TRANSITION_MODE:
+                return transitionModeToString(pGroup->getTransitionMode());
             case ControlGroupModel::CONTROL_MODE:
                 return controlModeToString(pGroup->getControlMode());
             case ControlGroupModel::NUM_LIGHTS:
@@ -109,6 +114,9 @@ bool ControlGroupModel::setData(const QModelIndex& index, const QVariant& value,
         switch (index.column()) {
             case ControlGroupModel::TRIGGER_MODE:
                 pGroup->setTriggerMode((TriggerMode)value.toInt());
+                return true;
+            case ControlGroupModel::TRANSITION_MODE:
+                pGroup->setTransitionMode((TransitionMode)value.toInt());
                 return true;
             case ControlGroupModel::CONTROL_MODE:
                 pGroup->setControlMode((ControlMode)value.toInt());
@@ -139,6 +147,7 @@ Qt::ItemFlags	ControlGroupModel::flags(const QModelIndex& index) const {
 
     switch (index.column()) {
         case ControlGroupModel::TRIGGER_MODE:
+        case ControlGroupModel::TRANSITION_MODE:
         case ControlGroupModel::CONTROL_MODE:
         case ControlGroupModel::COLOR_GENERATOR:
             flags |= Qt::ItemIsEditable;

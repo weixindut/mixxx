@@ -9,6 +9,7 @@ ControlGroup::ControlGroup(QObject* pParent, QString name)
           m_name(name),
           m_controlMode(CONTROL_OFF),
           m_triggerMode(CONTINUOUS),
+          m_transitionMode(TRANSITION_SET),
           m_pColorGenerator(NULL) {
 }
 
@@ -35,6 +36,14 @@ void ControlGroup::setTriggerMode(TriggerMode triggerMode) {
 TriggerMode ControlGroup::getTriggerMode() {
     QMutexLocker locker(&m_mutex);
     return m_triggerMode;
+}
+
+void ControlGroup::setTransitionMode(TransitionMode transitionMode) {
+    m_transitionMode = transitionMode;
+}
+
+TransitionMode ControlGroup::getTransitionMode() {
+    return m_transitionMode;
 }
 
 void ControlGroup::setColorGenerator(ColorGenerator* pGenerator) {

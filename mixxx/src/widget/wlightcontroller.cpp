@@ -13,6 +13,7 @@
 #include "lights/model/comboboxdelegate.h"
 #include "lights/model/colordelegate.h"
 #include "lights/triggermode.h"
+#include "lights/transitionmode.h"
 #include "lights/controlmode.h"
 
 
@@ -38,8 +39,11 @@ WLightController::WLightController(QWidget* pParent) : QWidget(pParent) {
     m_controlGroupTable->setModel(pControlGroupModel);
     QStringList controlModeOptions = getControlModeOptions();
     QStringList triggerModeOptions = getTriggerModeOptions();
+    QStringList transitionModeOptions = getTransitionModeOptions();
     m_controlGroupTable->setItemDelegateForColumn(ControlGroupModel::TRIGGER_MODE,
                                                   new ComboBoxDelegate(triggerModeOptions));
+    m_controlGroupTable->setItemDelegateForColumn(ControlGroupModel::TRANSITION_MODE,
+                                                  new ComboBoxDelegate(transitionModeOptions));
     m_controlGroupTable->setItemDelegateForColumn(ControlGroupModel::CONTROL_MODE,
                                                   new ComboBoxDelegate(controlModeOptions));
 
