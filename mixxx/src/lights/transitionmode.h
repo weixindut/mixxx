@@ -14,7 +14,8 @@ enum TransitionMode {
     TRANSITION_FADE_50,
     TRANSITION_FADE_100,
     TRANSITION_FLASH_100,
-    TRANSITION_FADE_UP
+    TRANSITION_FADEUP_50,
+    TRANSITION_FADEUP_100
 };
 
 QString transitionModeToString(TransitionMode mode);

@@ -15,12 +15,8 @@ QString controlModeToString(ControlMode mode) {
             return QObject::tr("MirrorIn");
         case CONTROL_MIRROR_OUTWARD:
             return QObject::tr("MirrorOut");
-        case CONTROL_CYCLE_SET:
-            return QObject::tr("Cycle-Set");
-        case CONTROL_CYCLE_FADE:
-            return QObject::tr("Cycle-Fade");
-        case CONTROL_CYCLE_FLASH:
-            return QObject::tr("Cycle-Flash");
+        case CONTROL_CYCLE:
+            return QObject::tr("Cycle");
         case CONTROL_TWINKLE:
             return QObject::tr("Twinkle");
         case CONTROL_GLOW:
@@ -41,9 +37,7 @@ QList<QString> getControlModeOptions() {
     options.append(controlModeToString(CONTROL_SHIFTER_LEFT));
     options.append(controlModeToString(CONTROL_MIRROR_INWARD));
     options.append(controlModeToString(CONTROL_MIRROR_OUTWARD));
-    options.append(controlModeToString(CONTROL_CYCLE_SET));
-    options.append(controlModeToString(CONTROL_CYCLE_FADE));
-    options.append(controlModeToString(CONTROL_CYCLE_FLASH));
+    options.append(controlModeToString(CONTROL_CYCLE));
     options.append(controlModeToString(CONTROL_TWINKLE));
     options.append(controlModeToString(CONTROL_GLOW));
     options.append(controlModeToString(CONTROL_FLASH));

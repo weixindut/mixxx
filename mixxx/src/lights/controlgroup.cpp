@@ -56,25 +56,39 @@ ColorGenerator* ControlGroup::getColorGenerator() {
     return m_pColorGenerator;
 }
 
+void ControlGroup::setLightColor(Light* pLight, const QColor& color) {
+    switch (m_transitionMode) {
+        case TRANSITION_SET:
+            pLight->setColor(color);
+            break;
+        case TRANSITION_FADE_10:
+            pLight->fadeTo(color, 10);
+            break;
+        case TRANSITION_FADE_50:
+            pLight->fadeTo(color, 50);
+            break;
+        case TRANSITION_FADE_100:
+            pLight->fadeTo(color, 100);
+            break;
+        case TRANSITION_FLASH_100:
+            pLight->setColor(color);
+            pLight->fadeDown(100);
+            break;
+        case TRANSITION_FADEUP_50:
+            pLight->setColor(Qt::black);
+            pLight->fadeTo(color, 50);
+            break;
+        case TRANSITION_FADEUP_100:
+            pLight->setColor(Qt::black);
+            pLight->fadeTo(color, 100);
+            break;
+    }
+}
+
 void ControlGroup::update_cycle(FeatureState* pState) {
     QColor nextColor = m_pColorGenerator->nextColor();
-
     foreach (Light* pLight, m_lights) {
-        switch (m_controlMode) {
-            case CONTROL_CYCLE_SET:
-                pLight->setColor(nextColor);
-                break;
-            case CONTROL_CYCLE_FADE:
-                pLight->fadeTo(nextColor, 50);
-                break;
-            case CONTROL_CYCLE_FLASH:
-                pLight->setColor(nextColor);
-                pLight->fadeDown(100);
-                break;
-            default:
-                qDebug() << "update_cycle called while not in a cycle!";
-                break;
-        }
+        setLightColor(pLight, nextColor);
     }
 }
 
@@ -142,12 +156,14 @@ void ControlGroup::update_mirror(FeatureState* pState) {
 
         // Set i's light color
         Light* pLight = m_lights[i];
-        pLight->setColor(color);
+
+        // Respect the transition mode
+        setLightColor(pLight, color);
 
         // If it's not redundant, set j's light color
         if (i != j) {
             pLight = m_lights[j];
-            pLight->setColor(color);
+            setLightColor(pLight, color);
         }
 
         if (outward) {
@@ -182,7 +198,7 @@ void ControlGroup::update_shifter(FeatureState* pState) {
             break;
         }
         Light* pLight = m_lights[i];
-        pLight->setColor(color);
+        setLightColor(pLight, color);
         i = i + delta;
     }
 }

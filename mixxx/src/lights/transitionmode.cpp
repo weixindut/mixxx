@@ -13,8 +13,10 @@ QString transitionModeToString(TransitionMode mode) {
             return QObject::tr("Fade100");
         case TRANSITION_FLASH_100:
             return QObject::tr("Flash100");
-        case TRANSITION_FADE_UP:
-            return QObject::tr("FadeUp");
+        case TRANSITION_FADEUP_50:
+            return QObject::tr("FadeUp50");
+        case TRANSITION_FADEUP_100:
+            return QObject::tr("FadeUp100");
     }
     return QObject::tr("Unknown");
 }
@@ -26,7 +28,8 @@ QList<QString> getTransitionModeOptions() {
     options.append(transitionModeToString(TRANSITION_FADE_50));
     options.append(transitionModeToString(TRANSITION_FADE_100));
     options.append(transitionModeToString(TRANSITION_FLASH_100));
-    options.append(transitionModeToString(TRANSITION_FADE_UP));
+    options.append(transitionModeToString(TRANSITION_FADEUP_50));
+    options.append(transitionModeToString(TRANSITION_FADEUP_100));
     return options;
 }
 

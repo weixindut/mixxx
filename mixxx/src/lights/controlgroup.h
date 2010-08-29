@@ -67,6 +67,8 @@ class ControlGroup : public QObject {
     void update_shifter(FeatureState* pState);
     void update_mirror(FeatureState* pState);
 
+    void setLightColor(Light* pLight, const QColor& color);
+
     void initialize_mode();
     void init_shifter();
     void init_mirror();
