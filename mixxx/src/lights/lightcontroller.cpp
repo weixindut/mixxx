@@ -115,10 +115,14 @@ void LightController::process_buffer() {
     aubio_pitch_do(m_aubio_pitch, m_input_buf, m_pitch_output);
     aubio_fft_do(m_aubio_fft, m_input_buf, m_fft_output);
 
+
     m_features.is_silence = aubio_silence_detection(m_input_buf, ANALYZER_BEAT_SILENCE);
     m_features.is_beat = fvec_read_sample(m_tempo_output, 0, 0) > 0;
     m_features.is_onset = fvec_read_sample(m_tempo_output, 0, 1) > 0;
     m_features.pitch = fvec_read_sample(m_pitch_output, 0, 0);
+
+    // Indicate that the features were generated this frame.
+    m_features.is_fresh = true;
 
     //qDebug() << "beat: " << m_features.is_beat << " onset: " << m_state.is_onset;
     //qDebug() << "pitch:" << m_features.pitch;
@@ -137,6 +141,10 @@ void LightController::setColor(QColor color) {
 
 void LightController::process(SAMPLE* pSample, int iFramesPerBuffer) {
     QMutexLocker locker(&m_mutex);
+
+    // Set the feature struct to not be fresh. If new features are generated
+    // this frame, then it will be set appropriately.
+    m_features.is_fresh = false;
 
     Q_ASSERT(iFramesPerBuffer % 2 == 0);
     int monoSamples = iFramesPerBuffer / 2;

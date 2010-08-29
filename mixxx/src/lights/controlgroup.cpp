@@ -248,12 +248,12 @@ void ControlGroup::process(FeatureState* pState) {
             trigger(pState);
             break;
         case BEAT:
-            if (pState->is_beat && !pState->is_silence) {
+            if (pState->is_fresh && pState->is_beat && !pState->is_silence) {
                 trigger(pState);
             }
             break;
         case ONSET:
-            if (pState->is_onset && !pState->is_silence) {
+            if (pState->is_fresh && pState->is_onset && !pState->is_silence) {
                 trigger(pState);
             }
             break;

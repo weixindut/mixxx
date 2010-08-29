@@ -6,6 +6,7 @@
 class FeatureState {
   public:
     FeatureState() {
+        is_fresh = false;
         is_beat = false;
         is_onset = false;
         pitch = 0;
@@ -13,6 +14,7 @@ class FeatureState {
     }
     ~FeatureState() { }
 
+    bool is_fresh;
     bool is_beat;
     bool is_onset;
     bool is_silence;
