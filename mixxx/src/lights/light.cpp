@@ -76,7 +76,6 @@ void Light::fadeTo(const QColor& targetColor, int steps) {
     // smaller in absolute value.
     double dho = dh + (th < h ? 1.0f : -1.0f);
     if (fabs(dho) < fabs(dh)) {
-        qDebug() << "Faster to cycle hue around.";
         dh = dho;
     }
 

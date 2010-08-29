@@ -281,9 +281,7 @@ void ControlGroup::process(FeatureState* pState) {
             if (triggered)
                 update_mirror(pState);
             break;
-        case CONTROL_CYCLE_SET:
-        case CONTROL_CYCLE_FADE:
-        case CONTROL_CYCLE_FLASH:
+        case CONTROL_CYCLE:
             if (triggered)
                 update_cycle(pState);
             break;
