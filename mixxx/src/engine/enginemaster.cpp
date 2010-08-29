@@ -91,7 +91,7 @@ EngineMaster::EngineMaster(ConfigObject<ConfigValue> * _config,
     memset(m_pHead, 0, sizeof(CSAMPLE) * MAX_BUFFER_LEN);
     memset(m_pMaster, 0, sizeof(CSAMPLE) * MAX_BUFFER_LEN);
 
-    m_pLightController = new LightController();
+    m_pLightController = NULL;
 
     sidechain = new EngineSideChain(_config);
 
@@ -131,6 +131,10 @@ EngineMaster::~EngineMaster()
         delete channel;
     }
 
+}
+
+void EngineMaster::setLightController(LightController* pController) {
+    m_pLightController = pController;
 }
 
 void EngineMaster::setPitchIndpTimeStretch(bool b)
@@ -315,7 +319,8 @@ void EngineMaster::process(const CSAMPLE *, const CSAMPLE *pOut, const int iBuff
     for (int i = 0; i < iBufferSize; ++i) {
         scratch[i] = m_pMaster[i];
     }
-    m_pLightController->process(scratch, iBufferSize);
+    if (m_pLightController != NULL)
+        m_pLightController->process(scratch, iBufferSize);
 
     // We're close to the end of the callback. Schedule the workers. Hopefully
     // the work thread doesn't get scheduled between now and then.

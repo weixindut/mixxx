@@ -71,31 +71,6 @@ LightController::LightController() {
     aubio_pitch_set_unit(m_aubio_pitch, "midi");
     m_pitch_output = new_fvec(1, channels);
 
-    m_pLightBrickManager = new LightBrickManager(this);
-    m_lightManagers.append(m_pLightBrickManager);
-
-    ControlGroup* pGroup1 = new ControlGroup(this, "Group 1");
-    ControlGroup* pGroup2 = new ControlGroup(this, "Group 2");
-
-    Light* pLight = m_pLightBrickManager->newLight("192.168.1.2", "12344");
-    pLight->setColor(Qt::black);
-    m_pLightBrickManager->sync();
-    m_lights.append(pLight);
-    pGroup2->addLight(pLight);
-
-    m_pDMXManager = new DMXLightManager(this, QString("10.0.170.6"));
-    m_lightManagers.append(m_pDMXManager);
-    const int numDmxLights = 12;
-    for (int i = 0; i < numDmxLights; i++) {
-        Light* pLight = m_pDMXManager->newLight(i);
-        pLight->setColor(Qt::black);
-        m_lights.append(pLight);
-        pGroup1->addLight(pLight);
-    }
-
-    // Turn off the lights
-    m_pDMXManager->sync();
-
     RGBCycler* cycler = new RGBCycler("RGBCycle", 20, 200, 70, 50, 100, 20);
     addColorGenerator(cycler);
 
@@ -107,17 +82,6 @@ LightController::LightController() {
     addColorGenerator(new HSVSpinner("Wash100", 1.0, 1.0, 1.0, 0.01));
     addColorGenerator(new HSVSpinner("Wash1000", 1.0, 1.0, 1.0, 0.001));
     addColorGenerator(new HSVSpinner("Wash10000", 1.0, 1.0, 1.0, 0.0001));
-
-    pGroup1->setColorGenerator(cycler);
-    pGroup1->setTriggerMode(BEAT);
-    pGroup1->setControlMode(CONTROL_CYCLE_FADE);
-
-    pGroup2->setColorGenerator(spinner);
-    pGroup2->setTriggerMode(BEAT);
-    pGroup2->setControlMode(CONTROL_CYCLE_FLASH);
-
-    m_controlGroups.append(pGroup1);
-    m_controlGroups.append(pGroup2);
 }
 
 LightController::~LightController() {
@@ -130,6 +94,20 @@ LightController::~LightController() {
     del_aubio_fft(m_aubio_fft);
     m_aubio_fft = NULL;
 }
+
+Light* LightController::getLightById(QString id) {
+    if (m_lightMap.contains(id)) {
+        return m_lightMap[id];
+    }
+    return NULL;
+}
+
+void LightController::addLight(Light* pLight) {
+    Q_ASSERT(getLightById(pLight->getId()) == NULL);
+    m_lights.append(pLight);
+    m_lightMap.insert(pLight->getId(), pLight);
+}
+
 
 void LightController::process_buffer() {
     //aubio_onset_do(m_aubio_onset, m_input_buf, m_onset_output);
@@ -193,6 +171,14 @@ int LightController::numControlGroups() {
     return m_controlGroups.size();
 }
 
+void LightController::addControlGroup(ControlGroup* pGroup) {
+    // TODO Workaround for stupid bug.
+    if (pGroup->getColorGenerator() == NULL && m_colorGenerators.size() > 0) {
+        pGroup->setColorGenerator(m_colorGenerators[0]);
+    }
+    m_controlGroups.append(pGroup);
+}
+
 ControlGroup* LightController::getControlGroup(int group) {
     if (group < 0 || group >= m_controlGroups.size()) {
         return NULL;
@@ -226,4 +212,48 @@ ColorGenerator* LightController::getColorGenerator(int generator) {
 
 int LightController::numColorGenerators() {
     return m_colorGenerators.size();
+}
+
+void LightController::addLightManager(LightManager* pManager) {
+    Q_ASSERT(pManager);
+    m_lightManagers.append(pManager);
+}
+
+// static
+LightController* LightController::fromXml(QDomNode node) {
+    Q_ASSERT(node.nodeName() == "LightController");
+    QDomNodeList children = node.childNodes();
+
+    LightController* pController = new LightController();
+
+    for (int i = 0; i < children.count(); ++i) {
+        QDomNode child = children.at(i);
+        QString tag = child.nodeName();
+
+        if (tag == "LightManagers") {
+            QDomNodeList managers = child.childNodes();
+            for (int j = 0; j < managers.count(); ++j) {
+                QDomNode manager = managers.at(j);
+                LightManager* pManager = NULL;
+                if (manager.nodeName() == "LightBrickManager") {
+                    pManager = LightBrickManager::fromXml(pController, manager);
+                } else if (manager.nodeName() == "DMXLightManager") {
+                    pManager = DMXLightManager::fromXml(pController, manager);
+                }
+                if (pManager != NULL) {
+                    pController->addLightManager(pManager);
+                }
+            }
+        } else if (tag == "ControlGroups") {
+            QDomNodeList groups = child.childNodes();
+            for (int j = 0; j < groups.count(); ++j) {
+                QDomNode group = groups.at(j);
+                ControlGroup* pGroup = ControlGroup::fromXml(pController, group);
+                if (pGroup != NULL) {
+                    pController->addControlGroup(pGroup);
+                }
+            }
+        }
+    }
+    return pController;
 }

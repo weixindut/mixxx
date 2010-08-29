@@ -9,10 +9,8 @@
 class LightBrick : public Light {
     Q_OBJECT
   public:
-    LightBrick(QObject* pParent, QString ip_address, QString port);
+    LightBrick(QObject* pParent, QString id, QString ip_address, QString port);
     virtual ~LightBrick();
-
-    virtual QString getName();
 
     void sync();
   private:

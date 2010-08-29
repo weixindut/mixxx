@@ -89,12 +89,12 @@ QVariant ControlGroupModel::data(const QModelIndex& index, int role) const {
                 return pGroup->numLights();
             case ControlGroupModel::COLOR_GENERATOR:
                 pGenerator = pGroup->getColorGenerator();
-                return pGenerator->getName();
+                if (pGenerator != NULL)
+                    return pGenerator->getName();
             default:
                 return QString(tr("Unknown"));
         }
     }
-
     return QVariant();
 }
 

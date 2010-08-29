@@ -2,6 +2,7 @@
 #include "lights/controlgroup.h"
 
 #include "lights/featurestate.h"
+#include "lights/lightcontroller.h"
 
 ControlGroup::ControlGroup(QObject* pParent, QString name)
         : QObject(pParent),
@@ -268,5 +269,38 @@ void ControlGroup::process(FeatureState* pState) {
     }
 }
 
+// static
+ControlGroup* ControlGroup::fromXml(LightController* pController, QDomNode node) {
+    Q_ASSERT(node.nodeName() == "ControlGroup");
 
+    QDomElement element = node.toElement();
 
+    QString groupName = element.attribute("name", "");
+    ControlGroup* pGroup = new ControlGroup(pController, groupName);
+
+    QDomNodeList children = node.childNodes();
+
+    for (int i = 0; i < children.count(); ++i) {
+        QDomNode child = children.at(i);
+        QString tagName = child.nodeName();
+
+        if (tagName == "Lights") {
+            QDomNodeList lights = child.childNodes();
+            for (int j = 0; j < lights.count(); ++j) {
+                QDomElement light = lights.at(j).toElement();
+
+                QString lightId = light.attribute("id");
+                Light* pLight = pController->getLightById(lightId);
+
+                if (pLight != NULL) {
+                    pGroup->addLight(pLight);
+                }
+            }
+        } else if (tagName == "TriggerState") {
+
+        } else if (tagName == "ControlMode") {
+
+        }
+    }
+    return pGroup;
+}

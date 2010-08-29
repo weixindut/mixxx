@@ -1,0 +1,28 @@
+<LightController>
+  <LightManagers>
+    <LightBrickManager>
+      <LightBrick name="Brick1" ipaddress="192.168.1.2" port="12344" id="brick1"/>
+    </LightBrickManager>
+    <DMXLightManager ipaddress="192.168.0.3" universe="1">
+      <DMXLight name="" number="0" id="dmx0"/>
+      <DMXLight name="" number="1" id="dmx1"/>
+      <DMXLight name="" number="2" id="dmx2"/>
+      <DMXLight name="" number="3" id="dmx3"/>
+    </DMXLightManager>
+  </LightManagers>
+
+  <ControlGroups>
+    <ControlGroup name="DMXs">
+      <Lights>
+        <Light id="dmx0"/>
+        <Light id="dmx1"/>
+        <Light id="dmx2"/>
+        <Light id="dmx3"/>
+      </Lights>
+      <TriggerState>
+      </TriggerState>
+      <ControlMode>
+      </ControlMode>
+    </ControlGroup>
+  </ControlGroups>
+</LightController>

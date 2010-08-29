@@ -6,6 +6,8 @@
 #include <QObject>
 #include <QList>
 #include <QMutex>
+#include <QMap>
+#include <QDomNode>
 
 #include <aubio/aubio.h>
 #include <lo/lo.h>
@@ -31,15 +33,22 @@ class LightController : public QObject {
 
     void setColor(QColor color);
 
+    void addControlGroup(ControlGroup* pGroup);
     ControlGroup* getControlGroup(int i);
     int numControlGroups();
 
+    void addLight(Light* pLight);
     Light* getLight(int i);
+    Light* getLightById(QString id);
     int numLights();
 
     ColorGenerator* getColorGenerator(int i);
     int numColorGenerators();
     void addColorGenerator(ColorGenerator* pGenerator);
+
+    void addLightManager(LightManager* pManager);
+
+    static LightController* fromXml(QDomNode node);
 
   signals:
     void stateUpdated();
@@ -68,11 +77,9 @@ class LightController : public QObject {
 
     FeatureState m_features;
 
-    DMXLightManager* m_pDMXManager;
-    LightBrickManager* m_pLightBrickManager;
-
     QList<LightManager*> m_lightManagers;
     QList<Light*> m_lights;
+    QMap<QString, Light*> m_lightMap;
     QList<ControlGroup*> m_controlGroups;
     QList<ColorGenerator*> m_colorGenerators;
 

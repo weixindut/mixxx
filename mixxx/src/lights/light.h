@@ -13,10 +13,14 @@ class ControlGroup;
 class Light : public QObject {
     Q_OBJECT
   public:
-    Light(QObject* pParent = NULL);
+    Light(QObject* pParent, QString id);
     virtual ~Light();
 
-    virtual QString getName() = 0;
+    virtual QString getName();
+    virtual void setName(QString name);
+
+    QString getId();
+
     void setColor(const QColor& color);
     QColor getColor();
     LightState getState();
@@ -40,6 +44,7 @@ class Light : public QObject {
     void setState(LightState state);
 
     QMutex m_mutex;
+    QString m_name, m_id;
     LightState m_state;
     QColor m_color;
     ControlGroup* m_pControlGroup;

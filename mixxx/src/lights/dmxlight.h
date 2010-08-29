@@ -10,10 +10,8 @@ class DMXLightManager;
 class DMXLight : public Light {
     Q_OBJECT
   public:
-    DMXLight(DMXLightManager* pManager, int light_number);
+    DMXLight(DMXLightManager* pManager, QString id, int light_number);
     virtual ~DMXLight();
-
-    virtual QString getName();
 
     int getLightNumber() {
         return m_iLightNumber;

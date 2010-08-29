@@ -65,6 +65,7 @@
 #include "defs_mixxxcmetrics.h"
 #endif
 
+#include "lights/lightcontroller.h"
 
 extern "C" void crashDlg()
 {
@@ -170,6 +171,22 @@ MixxxApp::MixxxApp(QApplication * a, struct CmdlineArgs args)
 
     // Starting the master (mixing of the channels and effects):
     m_pEngine = new EngineMaster(config, "[Master]");
+
+    QString lightMappings = QDir::homePath().append("/").append(SETTINGS_PATH).append("lightmappings.xml");
+
+    if (QFile::exists(lightMappings)) {
+        qDebug() << "Trying to open" << lightMappings;
+        QDomDocument lightsDocument;
+        QFile lightMappingsFile(lightMappings);
+        lightMappingsFile.open(QIODevice::ReadOnly);
+        lightsDocument.setContent(&lightMappingsFile);
+        QDomElement root = lightsDocument.documentElement();
+        qDebug() << "ROOT" << root.nodeName();
+        LightController* pController = LightController::fromXml(root);
+        m_pEngine->setLightController(pController);
+    } else {
+        m_pEngine->setLightController(new LightController());
+    }
 
     // Initialize player device
     // while this is created here, setupDevices needs to be called sometime

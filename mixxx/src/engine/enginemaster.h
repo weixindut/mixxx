@@ -65,6 +65,8 @@ public:
                               double centerGain,
                               double rightGain);
 
+    void setLightController(LightController* pController);
+
   private:
     QList<EngineChannel*> m_channels;
 

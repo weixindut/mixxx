@@ -7,12 +7,14 @@
 #include <QMutexLocker>
 #include <QMap>
 #include <QLinkedList>
+#include <QDomNode>
 
 #include "lights/colorgenerator.h"
 #include "lights/controlmode.h"
 #include "lights/triggermode.h"
 #include "lights/light.h"
 
+class LightController;
 class FeatureState;
 
 class ControlGroup : public QObject {
@@ -48,6 +50,8 @@ class ControlGroup : public QObject {
     }
 
     void process(FeatureState* pFrame);
+
+    static ControlGroup* fromXml(LightController* pController, QDomNode node);
 
   signals:
     void attributeChanged();

@@ -10,16 +10,19 @@
 #include "lights/cubiceaseouttweener.h"
 #include "lights/cubiceaseintweener.h"
 
-Light::Light(QObject* pParent)
-        : m_pControlGroup(NULL),
+static int lightCount = 0;
 
+Light::Light(QObject* pParent, QString id)
+        : QObject(pParent),
+          m_name(QString("Light %1").arg(lightCount++)),
+          m_id(id),
+          m_pControlGroup(NULL),
           m_hueTweener(new CubicEaseOutTweener()),
           m_satTweener(new CubicEaseOutTweener()),
           m_valTweener(new CubicEaseOutTweener())
           // m_hueTweener(new LinearTweener()),
           // m_satTweener(new LinearTweener()),
           // m_valTweener(new LinearTweener())
-
 {
 
 }
@@ -152,4 +155,16 @@ void Light::setState(LightState state) {
     m_state = state;
     if (changed)
         emit(updated());
+}
+
+void Light::setName(QString name) {
+    m_name = name;
+}
+
+QString Light::getName() {
+    return m_name;
+}
+
+QString Light::getId() {
+    return m_id;
 }
