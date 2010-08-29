@@ -71,6 +71,15 @@ void Light::fadeTo(const QColor& targetColor, int steps) {
     ts = m_target_sat;
 
     dh = (th - h);
+
+    // Measure the distance to take the 'other way' and take whichever path is
+    // smaller in absolute value.
+    double dho = dh + (th < h ? 1.0f : -1.0f);
+    if (fabs(dho) < fabs(dh)) {
+        qDebug() << "Faster to cycle hue around.";
+        dh = dho;
+    }
+
     ds = (ts - s);
     dv = (tv - v);
 
@@ -126,8 +135,16 @@ void Light::animate() {
             s = m_satTweener->getValue(m_sat_parameter);
             v = m_valTweener->getValue(m_val_parameter);
 
-            // For sanity, clamp 0..1
-            h = math_min(math_max(0.0f, h), 1.0f);
+            // For sanity, clamp 0..1, except for hue, which take mod 1.0f.
+
+            //h = math_min(math_max(0.0f, h), 1.0f);
+            while (h < 0) {
+                h += 1.0f;
+            }
+            while (h > 1.0f) {
+                h -= 1.0f;
+            }
+
             s = math_min(math_max(0.0f, s), 1.0f);
             v = math_min(math_max(0.0f, v), 1.0f);
 
