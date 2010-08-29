@@ -57,7 +57,7 @@ class ControlGroup : public QObject {
     void attributeChanged();
 
   private:
-    void trigger(FeatureState* pState);
+    bool isTriggered(FeatureState* pState);
     void update_cycle(FeatureState* pState);
     void update_chaser(FeatureState* pState);
     void update_shifter(FeatureState* pState);

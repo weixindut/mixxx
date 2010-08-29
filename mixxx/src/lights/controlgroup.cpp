@@ -195,37 +195,6 @@ bool ControlGroup::removeLight(Light* pLight) {
     return removed == 1;
 }
 
-void ControlGroup::trigger(FeatureState* pState) {
-    switch (m_controlMode) {
-        case CONTROL_OFF:
-            foreach(Light* pLight, m_lights) {
-                pLight->fadeDown(20);
-            }
-            break;
-        case CONTROL_CHASER:
-            update_chaser(pState);
-            break;
-        case CONTROL_SHIFTER_RIGHT:
-        case CONTROL_SHIFTER_LEFT:
-            update_shifter(pState);
-            break;
-        case CONTROL_MIRROR_INWARD:
-        case CONTROL_MIRROR_OUTWARD:
-            update_mirror(pState);
-            break;
-        case CONTROL_CYCLE_SET:
-        case CONTROL_CYCLE_FADE:
-        case CONTROL_CYCLE_FLASH:
-            update_cycle(pState);
-            break;
-        case CONTROL_TWINKLE:
-        case CONTROL_GLOW:
-        case CONTROL_FLASH:
-        case CONTROL_FLASH_WHITE:
-            break;
-    }
-}
-
 void ControlGroup::initialize_mode() {
     switch (m_controlMode) {
         case CONTROL_SHIFTER_RIGHT:
@@ -242,20 +211,17 @@ void ControlGroup::initialize_mode() {
     }
 }
 
-void ControlGroup::process(FeatureState* pState) {
+bool ControlGroup::isTriggered(FeatureState* pState) {
     switch (m_triggerMode) {
         case CONTINUOUS:
-            trigger(pState);
-            break;
+            return true;
         case BEAT:
-            if (pState->is_fresh && pState->is_beat && !pState->is_silence) {
-                trigger(pState);
-            }
+            if (pState->is_fresh && pState->is_beat && !pState->is_silence)
+                return true;
             break;
         case ONSET:
-            if (pState->is_fresh && pState->is_onset && !pState->is_silence) {
-                trigger(pState);
-            }
+            if (pState->is_fresh && pState->is_onset && !pState->is_silence)
+                return true;
             break;
         case PITCH:
         case FFTBIN:
@@ -264,9 +230,46 @@ void ControlGroup::process(FeatureState* pState) {
             // ????
             break;
     }
+    return false;
+}
 
-    // Animate all our light, regardless of we triggered a state update. They
-    // may need to complete a fade or something
+void ControlGroup::process(FeatureState* pState) {
+    bool triggered = isTriggered(pState);
+
+    switch (m_controlMode) {
+        case CONTROL_OFF:
+            foreach(Light* pLight, m_lights) {
+                pLight->fadeDown(20);
+            }
+            break;
+        case CONTROL_CHASER:
+            if (triggered)
+                update_chaser(pState);
+            break;
+        case CONTROL_SHIFTER_RIGHT:
+        case CONTROL_SHIFTER_LEFT:
+            if (triggered)
+                update_shifter(pState);
+            break;
+        case CONTROL_MIRROR_INWARD:
+        case CONTROL_MIRROR_OUTWARD:
+            if (triggered)
+                update_mirror(pState);
+            break;
+        case CONTROL_CYCLE_SET:
+        case CONTROL_CYCLE_FADE:
+        case CONTROL_CYCLE_FLASH:
+            if (triggered)
+                update_cycle(pState);
+            break;
+        case CONTROL_TWINKLE:
+        case CONTROL_GLOW:
+        case CONTROL_FLASH:
+        case CONTROL_FLASH_WHITE:
+            break;
+    }
+
+    // Animate all our lights, regardless of whether we underwent a state update.
     foreach (Light* pLight, m_lights) {
         pLight->animate();
     }
