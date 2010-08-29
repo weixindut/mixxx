@@ -183,7 +183,7 @@ AudioPathType AudioPath::getTypeFromString(QString string) {
         return AudioPath::MICROPHONE;
     } else if (string == AudioPath::getStringFromType(AudioPath::PASSTHROUGH).toLower()) {
         return AudioPath::PASSTHROUGH;
-    } else if (string == AudioPath::getStringFromType(AudioPath::PASSTHROUGH).toLower()) {
+    } else if (string == AudioPath::getStringFromType(AudioPath::LIGHTCONTROL).toLower()) {
         return AudioPath::LIGHTCONTROL;
     } else {
         return AudioPath::INVALID;
