@@ -581,9 +581,8 @@ void SoundManager::pushBuffer(QList<AudioInput> inputs, short * inputBuffer,
                 if (m_VinylControl[index] && m_inputBuffers.contains(in)) {
                     m_VinylControl[index]->AnalyseSamples(m_inputBuffers[in], iFramesPerBuffer);
                 }
-            } else if (in.getType() == AudioInput::LIGHTCONTROL) {
-                if (m_pLightController)
-                    m_pLightController->process(m_inputBuffers[in], iFramesPerBuffer);
+            } else if (in.getType() == AudioInput::LIGHTCONTROL && m_pLightController) {
+                m_pLightController->process(m_inputBuffers[in], iFramesPerBuffer);
             }
         }
 #endif
