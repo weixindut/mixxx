@@ -42,4 +42,32 @@ QList<QString> getControlModeOptions() {
     return options;
 }
 
+ControlMode controlModeFromString(QString mode) {
+    ControlMode result = CONTROL_OFF;
 
+    if (mode == "CONTROL_OFF") {
+        result = CONTROL_OFF;
+    } else if (mode == "CONTROL_CHASER") {
+        result = CONTROL_CHASER;
+    } else if (mode == "CONTROL_SHIFTER_RIGHT") {
+        result = CONTROL_SHIFTER_RIGHT;
+    } else if (mode == "CONTROL_SHIFTER_LEFT") {
+        result = CONTROL_SHIFTER_LEFT;
+    } else if (mode == "CONTROL_MIRROR_INWARD") {
+        result = CONTROL_MIRROR_INWARD;
+    } else if (mode == "CONTROL_MIRROR_OUTWARD") {
+        result = CONTROL_MIRROR_OUTWARD;
+    } else if (mode == "CONTROL_CYCLE") {
+        result = CONTROL_CYCLE;
+    } else if (mode == "CONTROL_TWINKLE") {
+        result = CONTROL_TWINKLE;
+    } else if (mode == "CONTROL_GLOW") {
+        result = CONTROL_GLOW;
+    } else if (mode == "CONTROL_FLASH") {
+        result = CONTROL_FLASH;
+    } else if (mode == "CONTROL_FLASH_WHITE") {
+        result = CONTROL_FLASH_WHITE;
+    }
+
+    return result;
+}

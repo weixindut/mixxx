@@ -12,16 +12,14 @@ enum TriggerMode {
     CONTINUOUS = 0,
     BEAT,
     ONSET,
-    PITCH,
-    FFTBIN,
-    TIMER,
     BEAT_DIV2,
     BEAT_DIV4,
     BEAT_DIV8,
-    BEAT_X2,
+    BEAT_X2
 };
 
 QString triggerModeToString(TriggerMode mode);
 QList<QString> getTriggerModeOptions();
+TriggerMode triggerModeFromString(QString mode);
 
 #endif /* TRIGGERMODE_H */

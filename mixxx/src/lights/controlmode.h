@@ -24,5 +24,6 @@ enum ControlMode {
 
 QString controlModeToString(ControlMode mode);
 QList<QString> getControlModeOptions();
+ControlMode controlModeFromString(QString mode);
 
 #endif /* CONTROLMODE_H */

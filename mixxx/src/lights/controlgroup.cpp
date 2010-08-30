@@ -302,11 +302,6 @@ bool ControlGroup::isTriggered(FeatureState* pState) {
         case BEAT_DIV8:
             return pState->is_fresh && pState->is_beat &&
                     !pState->is_silence && pState->beat_count % 8 == 0;
-        case PITCH:
-        case FFTBIN:
-        case TIMER:
-            // ????
-            break;
     }
     return false;
 }
