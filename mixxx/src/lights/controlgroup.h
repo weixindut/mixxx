@@ -70,6 +70,7 @@ class ControlGroup : public QObject {
     void setLightColor(Light* pLight, const QColor& color);
 
     void initialize_mode();
+    void init_chaser();
     void init_shifter();
     void init_mirror();
 
@@ -83,6 +84,7 @@ class ControlGroup : public QObject {
 
     ColorGenerator* m_pColorGenerator;
 
+    int m_iChaserPosition, m_iChaserDirection;
     QLinkedList<QColor> m_shifterQueue;
     QLinkedList<QColor> m_mirrorQueue;;
 };

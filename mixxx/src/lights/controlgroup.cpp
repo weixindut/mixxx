@@ -10,7 +10,8 @@ ControlGroup::ControlGroup(QObject* pParent, QString name)
           m_controlMode(CONTROL_OFF),
           m_triggerMode(CONTINUOUS),
           m_transitionMode(TRANSITION_SET),
-          m_pColorGenerator(NULL) {
+          m_pColorGenerator(NULL),
+          m_iChaserPosition(0) {
 }
 
 ControlGroup::~ControlGroup() {
@@ -92,8 +93,32 @@ void ControlGroup::update_cycle(FeatureState* pState) {
     }
 }
 
-void ControlGroup::update_chaser(FeatureState* pState) {
+void ControlGroup::init_chaser() {
+    m_iChaserPosition = 0;
+    m_iChaserDirection = 1;
+}
 
+void ControlGroup::update_chaser(FeatureState* pState) {
+    QColor nextColor = m_pColorGenerator->nextColor();
+
+    for (int i = 0; i < m_lights.size(); ++i) {
+        Light* pLight = m_lights[i];
+        if (i == m_iChaserPosition) {
+            setLightColor(pLight, nextColor);
+        } else {
+            setLightColor(pLight, Qt::black);
+        }
+    }
+
+    m_iChaserPosition += m_iChaserDirection;
+
+    if (m_iChaserPosition >= m_lights.size()) {
+        m_iChaserPosition = m_lights.size() - 2;
+        m_iChaserDirection = -1;
+    } else if (m_iChaserPosition < 0) {
+        m_iChaserPosition = 1;
+        m_iChaserDirection = 1;
+    }
 }
 
 void ControlGroup::init_mirror() {
