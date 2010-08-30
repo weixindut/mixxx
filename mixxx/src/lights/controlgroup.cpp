@@ -83,6 +83,10 @@ void ControlGroup::setLightColor(Light* pLight, const QColor& color) {
             pLight->setColor(Qt::black);
             pLight->fadeTo(color, 100);
             break;
+        case TRANSITION_WHITEFLASH_100:
+            pLight->setColor(Qt::white);
+            pLight->fadeTo(color, 50);
+            break;
     }
 }
 
@@ -255,6 +259,9 @@ void ControlGroup::initialize_mode() {
         case CONTROL_MIRROR_OUTWARD:
             init_mirror();
             break;
+        case CONTROL_CHASER:
+            init_chaser();
+            break;
         default:
             // Do nothing
             break;
@@ -313,7 +320,6 @@ void ControlGroup::process(FeatureState* pState) {
         case CONTROL_TWINKLE:
         case CONTROL_GLOW:
         case CONTROL_FLASH:
-        case CONTROL_FLASH_WHITE:
             break;
     }
 

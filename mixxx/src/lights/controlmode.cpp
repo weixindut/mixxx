@@ -23,8 +23,6 @@ QString controlModeToString(ControlMode mode) {
             return QObject::tr("Glow");
         case CONTROL_FLASH:
             return QObject::tr("Flash");
-        case CONTROL_FLASH_WHITE:
-            return QObject::tr("Flash-White");
     }
     return QObject::tr("Unknown");
 }
@@ -41,7 +39,6 @@ QList<QString> getControlModeOptions() {
     options.append(controlModeToString(CONTROL_TWINKLE));
     options.append(controlModeToString(CONTROL_GLOW));
     options.append(controlModeToString(CONTROL_FLASH));
-    options.append(controlModeToString(CONTROL_FLASH_WHITE));
     return options;
 }
 

@@ -26,7 +26,14 @@ LightModel::~LightModel() {
 }
 
 void LightModel::lightsUpdated() {
-    emit(dataChanged(index(0, 0), index(m_pLightController->numLights()-1, NUM_COLUMNS-1)));
+    static int counter = 0;
+    counter++;
+
+    // Update at 30hz, 5ms latency means 200
+    if (counter > 10) {
+        emit(dataChanged(index(0, 0), index(m_pLightController->numLights()-1, NUM_COLUMNS-1)));
+        counter = 0;
+    }
 }
 
 void LightModel::lightUpdated(int lightNumber) {

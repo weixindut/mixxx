@@ -896,6 +896,7 @@ void MixxxView::createAllWidgets(QDomElement docElem,
                     //m_pTabWidget->addTab(m_pTabWidgetLibraryPage);
 
                     WLightController* pController = new WLightController(m_pTabWidget);
+                    pController->installEventFilter(m_pKeyboard);
                     pController->setup(node);
                     m_pTabWidget->addTab(pController, tr("Lights"));
 
