@@ -62,33 +62,33 @@ void ControlGroup::setLightColor(Light* pLight, const QColor& color) {
         case TRANSITION_SET:
             pLight->setColor(color);
             break;
-        case TRANSITION_FADE_10:
+        case TRANSITION_FADE_50MS:
             // 10 times 5 millis
             pLight->fadeTo(color, 50);
             break;
-        case TRANSITION_FADE_50:
+        case TRANSITION_FADE_250MS:
             // 50 times 5
             pLight->fadeTo(color, 250);
             break;
-        case TRANSITION_FADE_100:
+        case TRANSITION_FADE_500MS:
             // 100 times 5
             pLight->fadeTo(color, 500);
             break;
-        case TRANSITION_FLASH_100:
+        case TRANSITION_FLASH_500MS:
             pLight->setColor(color);
             pLight->fadeDown(500);
             break;
-        case TRANSITION_FADEUP_50:
+        case TRANSITION_FADEUP_250MS:
             pLight->setColor(Qt::black);
             pLight->fadeTo(color, 250);
             break;
-        case TRANSITION_FADEUP_100:
+        case TRANSITION_FADEUP_500MS:
             pLight->setColor(Qt::black);
             pLight->fadeTo(color, 500);
             break;
-        case TRANSITION_WHITEFLASH_100:
+        case TRANSITION_WHITEFLASH_500MS:
             pLight->setColor(Qt::white);
-            pLight->fadeTo(color, 250);
+            pLight->fadeTo(color, 500);
             break;
     }
 }

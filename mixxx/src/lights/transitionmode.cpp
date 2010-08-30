@@ -5,20 +5,20 @@ QString transitionModeToString(TransitionMode mode) {
     switch(mode) {
         case TRANSITION_SET:
             return QObject::tr("Set");
-        case TRANSITION_FADE_10:
-            return QObject::tr("Fade10");
-        case TRANSITION_FADE_50:
-            return QObject::tr("Fade50");
-        case TRANSITION_FADE_100:
-            return QObject::tr("Fade100");
-        case TRANSITION_FLASH_100:
-            return QObject::tr("Flash100");
-        case TRANSITION_FADEUP_50:
-            return QObject::tr("FadeUp50");
-        case TRANSITION_FADEUP_100:
-            return QObject::tr("FadeUp100");
-        case TRANSITION_WHITEFLASH_100:
-            return QObject::tr("WhiteFlash100");
+        case TRANSITION_FADE_50MS:
+            return QObject::tr("Fade 50ms");
+        case TRANSITION_FADE_250MS:
+            return QObject::tr("Fade 250ms");
+        case TRANSITION_FADE_500MS:
+            return QObject::tr("Fade 500ms");
+        case TRANSITION_FLASH_500MS:
+            return QObject::tr("Flash 500ms");
+        case TRANSITION_FADEUP_250MS:
+            return QObject::tr("FadeUp 250ms");
+        case TRANSITION_FADEUP_500MS:
+            return QObject::tr("FadeUp 500ms");
+        case TRANSITION_WHITEFLASH_500MS:
+            return QObject::tr("WhiteFlash 500ms");
     }
     return QObject::tr("Unknown");
 }
@@ -26,13 +26,13 @@ QString transitionModeToString(TransitionMode mode) {
 QList<QString> getTransitionModeOptions() {
     QList<QString> options;
     options.append(transitionModeToString(TRANSITION_SET));
-    options.append(transitionModeToString(TRANSITION_FADE_10));
-    options.append(transitionModeToString(TRANSITION_FADE_50));
-    options.append(transitionModeToString(TRANSITION_FADE_100));
-    options.append(transitionModeToString(TRANSITION_FLASH_100));
-    options.append(transitionModeToString(TRANSITION_FADEUP_50));
-    options.append(transitionModeToString(TRANSITION_FADEUP_100));
-    options.append(transitionModeToString(TRANSITION_WHITEFLASH_100));
+    options.append(transitionModeToString(TRANSITION_FADE_50MS));
+    options.append(transitionModeToString(TRANSITION_FADE_250MS));
+    options.append(transitionModeToString(TRANSITION_FADE_500MS));
+    options.append(transitionModeToString(TRANSITION_FLASH_500MS));
+    options.append(transitionModeToString(TRANSITION_FADEUP_250MS));
+    options.append(transitionModeToString(TRANSITION_FADEUP_500MS));
+    options.append(transitionModeToString(TRANSITION_WHITEFLASH_500MS));
     return options;
 }
 
