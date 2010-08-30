@@ -15,7 +15,10 @@ enum TriggerMode {
     PITCH,
     FFTBIN,
     TIMER,
-    BEAT_DIV_4
+    BEAT_DIV2,
+    BEAT_DIV4,
+    BEAT_DIV8,
+    BEAT_X2,
 };
 
 QString triggerModeToString(TriggerMode mode);

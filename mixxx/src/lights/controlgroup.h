@@ -78,6 +78,10 @@ class ControlGroup : public QObject {
     QString m_name;
     QList<Light*> m_lights;
 
+
+    // Trigger x2
+    bool m_bBeatX2Triggered;
+
     ControlMode m_controlMode;
     TriggerMode m_triggerMode;
     TransitionMode m_transitionMode;

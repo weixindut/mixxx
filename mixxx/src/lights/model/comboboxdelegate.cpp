@@ -32,7 +32,6 @@ void ComboBoxDelegate::setModelData(QWidget* editor, QAbstractItemModel *model,
 }
 
 void ComboBoxDelegate::comboBoxIndexChanged(int index) {
-    qDebug() << "comboBoxIndexChanged" << index;
     QComboBox* pCombo = dynamic_cast<QComboBox*>(sender());
     if (pCombo) {
         pCombo->clearFocus();

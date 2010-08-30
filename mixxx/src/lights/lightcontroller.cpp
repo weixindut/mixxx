@@ -121,6 +121,17 @@ void LightController::process_buffer() {
     m_features.is_onset = fvec_read_sample(m_tempo_output, 0, 1) > 0;
     m_features.pitch = fvec_read_sample(m_pitch_output, 0, 0);
 
+    if (m_features.is_beat) {
+        m_features.beat_count++;
+
+        m_features.previous_beat_time = m_features.current_beat_time;
+        m_features.current_beat_time = QTime::currentTime();
+
+        m_features.previous_beat_length = m_features.current_beat_length;
+        m_features.current_beat_length =
+                m_features.previous_beat_time.msecsTo(m_features.current_beat_time);
+    }
+
     // Indicate that the features were generated this frame.
     m_features.is_fresh = true;
 

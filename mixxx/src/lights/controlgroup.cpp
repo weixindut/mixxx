@@ -280,10 +280,31 @@ bool ControlGroup::isTriggered(FeatureState* pState) {
             if (pState->is_fresh && pState->is_onset && !pState->is_silence)
                 return true;
             break;
+        case BEAT_X2:
+            if (pState->is_fresh && pState->is_beat && !pState->is_silence) {
+                m_bBeatX2Triggered = false;
+                return true;
+            } else if (!m_bBeatX2Triggered && !pState->is_silence) {
+                int millisElapsedSinceBeat = pState->current_beat_time.msecsTo(pState->current_time);
+                if (millisElapsedSinceBeat >= pState->current_beat_length / 2.0f) {
+                    m_bBeatX2Triggered = true;
+                    return true;
+                }
+            }
+            break;
+
+        case BEAT_DIV2:
+            return pState->is_fresh && pState->is_beat &&
+                    !pState->is_silence && pState->beat_count % 2 == 0;
+        case BEAT_DIV4:
+            return pState->is_fresh && pState->is_beat &&
+                    !pState->is_silence && pState->beat_count % 4 == 0;
+        case BEAT_DIV8:
+            return pState->is_fresh && pState->is_beat &&
+                    !pState->is_silence && pState->beat_count % 8 == 0;
         case PITCH:
         case FFTBIN:
         case TIMER:
-        case BEAT_DIV_4:
             // ????
             break;
     }
@@ -321,6 +342,7 @@ void ControlGroup::process(FeatureState* pState) {
         case CONTROL_TWINKLE:
         case CONTROL_GLOW:
         case CONTROL_FLASH:
+        case CONTROL_FLASH_WHITE:
             break;
     }
 
