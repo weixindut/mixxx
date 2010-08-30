@@ -12,6 +12,7 @@
 class LightController;
 
 class ControlGroupModel : public QAbstractItemModel {
+    Q_OBJECT
   public:
     ControlGroupModel(LightController* pLightController);
     virtual ~ControlGroupModel();

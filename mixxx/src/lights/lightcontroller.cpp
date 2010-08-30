@@ -129,16 +129,6 @@ void LightController::process_buffer() {
     //qDebug() << "fft:" << m_fft_output->norm[0][0] << m_fft_output->norm[0][1];
 }
 
-void LightController::setColor(QColor color) {
-    QMutexLocker locker(&m_mutex);
-
-    // This is kind of a hack. The request should go to a light group
-    foreach (Light* pLight, m_lights) {
-        pLight->fadeTo(color, 20);
-        //pLight->setColor(color);
-    }
-}
-
 void LightController::process(SAMPLE* pSample, int iFramesPerBuffer) {
     QMutexLocker locker(&m_mutex);
 

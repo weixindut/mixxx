@@ -1,7 +1,7 @@
 <LightController>
   <LightManagers>
     <LightBrickManager>
-      <LightBrick name="Brick1" ipaddress="192.168.1.2" port="12344" id="brick1"/>
+      <LightBrick name="Brick1" ipaddress="192.168.0.8" port="12344" id="brick1"/>
     </LightBrickManager>
     <DMXLightManager ipaddress="192.168.0.3" universe="1">
       <DMXLight name="Fresco1" number="0" id="dmx0"/>

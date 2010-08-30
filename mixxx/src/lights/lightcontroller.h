@@ -31,8 +31,6 @@ class LightController : public QObject {
 
     void process(SAMPLE* pBuffer, int iFramesPerBuffer);
 
-    void setColor(QColor color);
-
     void addControlGroup(ControlGroup* pGroup);
     ControlGroup* getControlGroup(int i);
     int numControlGroups();

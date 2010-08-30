@@ -10,7 +10,6 @@
 
 ControlGroupModel::ControlGroupModel(LightController* pController)
         : m_pLightController(pController) {
-
 }
 
 ControlGroupModel::~ControlGroupModel() {

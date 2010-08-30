@@ -15,6 +15,7 @@
 #include "lights/triggermode.h"
 #include "lights/transitionmode.h"
 #include "lights/controlmode.h"
+#include "lights/controlgroup.h"
 
 
 WLightController::WLightController(QWidget* pParent) : QWidget(pParent) {
@@ -71,9 +72,22 @@ WLightController::~WLightController() {
 
 void WLightController::slotSetColor(int hue, int value) {
     QColor color = QColor::fromHsv(hue, 255, value);
-    //qDebug() << "Setting to hue:" << hue << "value" << value;
-    //m_pLightController->setColor(color);
     m_pSolidColor->setColor(color);
+
+    QModelIndexList selectedGroups = m_controlGroupTable->selectionModel()->selectedIndexes();
+
+    if (selectedGroups.size() == 0) {
+        // Do to all? Do to none?
+    } else {
+        foreach (QModelIndex index, selectedGroups) {
+            int groupRow = index.row();
+            ControlGroup* pGroup = m_pLightController->getControlGroup(groupRow);
+            pGroup->setColorGenerator(m_pSolidColor);
+            if (pGroup->getControlMode() == CONTROL_OFF) {
+                pGroup->setControlMode(CONTROL_CYCLE);
+            }
+        }
+    }
 }
 
 
