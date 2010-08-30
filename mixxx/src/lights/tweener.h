@@ -11,6 +11,10 @@ class Tweener {
 
     virtual double getValue(double time) = 0;
 
+    double getDuration() { return m_duration; }
+    double getInitial() { return m_initial; }
+    double getChange() { return m_change; }
+
   protected:
     double m_initial, m_change, m_duration;
 };

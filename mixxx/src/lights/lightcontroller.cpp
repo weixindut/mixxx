@@ -161,6 +161,9 @@ void LightController::process(SAMPLE* pSample, int iFramesPerBuffer) {
         m_iCurInput++;
     }
 
+    m_features.previous_time = m_features.current_time;
+    m_features.current_time = QTime::currentTime();
+
     // Process state updates for all the lights in each control group
     foreach (ControlGroup* pGroup, m_controlGroups) {
         pGroup->process(&m_features);

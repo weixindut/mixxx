@@ -60,15 +60,12 @@ void Light::fadeDown(int steps) {
 }
 
 void Light::fadeTo(const QColor& targetColor, int steps) {
-    targetColor.getHsvF(&m_target_hue, &m_target_sat, &m_target_val);
-
     double h, s, v;
     double th, ts, tv;
     double dh, ds, dv;
+
     m_color.getHsvF(&h, &s, &v);
-    th = m_target_hue;
-    tv = m_target_val;
-    ts = m_target_sat;
+    targetColor.getHsvF(&th, &ts, &tv);
 
     dh = (th - h);
 
@@ -85,17 +82,9 @@ void Light::fadeTo(const QColor& targetColor, int steps) {
     // The parameters all range from 0.0 to 1.0f for now. This could be a
     // time parameter int the future.
     m_hue_parameter = m_sat_parameter = m_val_parameter = 0.0f;
-    m_hueTweener->init(h, dh, 1.0f);
-    m_satTweener->init(s, ds, 1.0f);
-    m_valTweener->init(v, dv, 1.0f);
-
-    // 0.05 is a 20 step animation given a 1.0f timescale
-    // 0.01 is a 100 step animation
-    double gain = 1.0f / steps;
-
-    m_hue_stepsize = gain;
-    m_sat_stepsize = gain;
-    m_val_stepsize = gain;
+    m_hueTweener->init(h, dh, steps);
+    m_satTweener->init(s, ds, steps);
+    m_valTweener->init(v, dv, steps);
 
     setState(LIGHT_FADE);
 }
@@ -112,11 +101,9 @@ void Light::fadeToValue(qreal target_value, int steps) {
     fadeTo(QColor::fromHsvF(h, s, target_value), steps);
 }
 
-void Light::animate() {
+void Light::animate(qreal deltaMillis) {
     double h, s, v;
-    // double dh, ds, dv;
-    double gain;
-
+    double h_duration, s_duration, v_duration;
     m_color.getHsvF(&h, &s, &v);
 
     switch (m_state) {
@@ -125,10 +112,14 @@ void Light::animate() {
             // Do nothing
             break;
         case LIGHT_FADE:
+            h_duration = m_hueTweener->getDuration();
+            s_duration = m_satTweener->getDuration();
+            v_duration = m_valTweener->getDuration();
+
             // Make sure they stay below 1.0f
-            m_hue_parameter = math_min(1.0f, m_hue_parameter + m_hue_stepsize);
-            m_sat_parameter = math_min(1.0f, m_sat_parameter + m_sat_stepsize);
-            m_val_parameter = math_min(1.0f, m_val_parameter + m_val_stepsize);
+            m_hue_parameter = math_min(h_duration, m_hue_parameter + deltaMillis);
+            m_sat_parameter = math_min(s_duration, m_sat_parameter + deltaMillis);
+            m_val_parameter = math_min(v_duration, m_val_parameter + deltaMillis);
 
             h = m_hueTweener->getValue(m_hue_parameter);
             s = m_satTweener->getValue(m_sat_parameter);
@@ -148,9 +139,9 @@ void Light::animate() {
             v = math_min(math_max(0.0f, v), 1.0f);
 
             // If parameters have all reached their end, state transition.
-            if (m_hue_parameter == 1.0f &&
-                m_val_parameter == 1.0f &&
-                m_sat_parameter == 1.0f) {
+            if (m_hue_parameter >= h_duration &&
+                m_sat_parameter >= s_duration &&
+                m_val_parameter >= v_duration) {
                 setState(LIGHT_ON);
             }
 

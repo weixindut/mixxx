@@ -1,6 +1,8 @@
 #ifndef FEATURESTATE_H
 #define FEATURESTATE_H
 
+#include <QTime>
+
 #include <aubio/aubio.h>
 
 class FeatureState {
@@ -13,6 +15,9 @@ class FeatureState {
         fft = NULL;
     }
     ~FeatureState() { }
+
+    QTime current_time;
+    QTime previous_time;
 
     bool is_fresh;
     bool is_beat;

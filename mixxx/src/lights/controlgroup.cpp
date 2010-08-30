@@ -63,29 +63,32 @@ void ControlGroup::setLightColor(Light* pLight, const QColor& color) {
             pLight->setColor(color);
             break;
         case TRANSITION_FADE_10:
-            pLight->fadeTo(color, 10);
-            break;
-        case TRANSITION_FADE_50:
+            // 10 times 5 millis
             pLight->fadeTo(color, 50);
             break;
+        case TRANSITION_FADE_50:
+            // 50 times 5
+            pLight->fadeTo(color, 250);
+            break;
         case TRANSITION_FADE_100:
-            pLight->fadeTo(color, 100);
+            // 100 times 5
+            pLight->fadeTo(color, 500);
             break;
         case TRANSITION_FLASH_100:
             pLight->setColor(color);
-            pLight->fadeDown(100);
+            pLight->fadeDown(500);
             break;
         case TRANSITION_FADEUP_50:
             pLight->setColor(Qt::black);
-            pLight->fadeTo(color, 50);
+            pLight->fadeTo(color, 250);
             break;
         case TRANSITION_FADEUP_100:
             pLight->setColor(Qt::black);
-            pLight->fadeTo(color, 100);
+            pLight->fadeTo(color, 500);
             break;
         case TRANSITION_WHITEFLASH_100:
             pLight->setColor(Qt::white);
-            pLight->fadeTo(color, 50);
+            pLight->fadeTo(color, 250);
             break;
     }
 }
@@ -296,7 +299,8 @@ void ControlGroup::process(FeatureState* pState) {
     switch (m_controlMode) {
         case CONTROL_OFF:
             foreach(Light* pLight, m_lights) {
-                pLight->fadeDown(20);
+                // 20 * 5 millis = 100
+                pLight->fadeDown(100);
             }
             break;
         case CONTROL_CHASER:
@@ -323,9 +327,11 @@ void ControlGroup::process(FeatureState* pState) {
             break;
     }
 
+    int millisElapsed = pState->previous_time.msecsTo(pState->current_time);
+
     // Animate all our lights, regardless of whether we underwent a state update.
     foreach (Light* pLight, m_lights) {
-        pLight->animate();
+        pLight->animate(millisElapsed);
     }
 }
 

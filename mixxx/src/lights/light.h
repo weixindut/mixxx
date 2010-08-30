@@ -31,7 +31,7 @@ class Light : public QObject {
         return false;
     }
 
-    void animate();
+    void animate(qreal deltaMillis);
     void fadeDown(int steps);
     void fadeTo(const QColor& targetColor, int steps);
     void fadeToHue(qreal hue, int steps);
@@ -50,9 +50,7 @@ class Light : public QObject {
     ControlGroup* m_pControlGroup;
 
     // Fade parameters
-    qreal m_target_hue, m_target_sat, m_target_val;
     qreal m_hue_parameter, m_sat_parameter, m_val_parameter;
-    qreal m_hue_stepsize, m_sat_stepsize, m_val_stepsize;
 
     // Tweeners for fading and transitions
     Tweener* m_hueTweener;
