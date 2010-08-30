@@ -2,7 +2,7 @@
 
 #include <QPainter>
 
-static int pWidth = 500;
+static int pWidth = 430;
 static int pHeight = 220;
 
 QPoint QColorPicker::colPt() {

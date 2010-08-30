@@ -32,10 +32,10 @@ class Light : public QObject {
     }
 
     void animate(qreal deltaMillis);
-    void fadeDown(int steps);
-    void fadeTo(const QColor& targetColor, int steps);
-    void fadeToHue(qreal hue, int steps);
-    void fadeToValue(qreal value, int steps);
+    void fadeDown(int millis);
+    void fadeTo(const QColor& targetColor, int millis);
+    void fadeToHue(qreal hue, int millis);
+    void fadeToValue(qreal value, int millis);
 
   signals:
     void updated();

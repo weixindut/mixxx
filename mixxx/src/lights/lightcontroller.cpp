@@ -75,13 +75,13 @@ LightController::LightController() {
     addColorGenerator(cycler);
 
     // You spin me right round.
-    HSVSpinner* spinner = new HSVSpinner("Wash20", 1.0, 1.0, 1.0, 0.05);
+    HSVSpinner* spinner = new HSVSpinner("Wash20Step", 1.0, 1.0, 1.0, 0.05);
     addColorGenerator(spinner);
 
-    addColorGenerator(new HSVSpinner("Wash10", 1.0, 1.0, 1.0, 0.1));
-    addColorGenerator(new HSVSpinner("Wash100", 1.0, 1.0, 1.0, 0.01));
-    addColorGenerator(new HSVSpinner("Wash1000", 1.0, 1.0, 1.0, 0.001));
-    addColorGenerator(new HSVSpinner("Wash10000", 1.0, 1.0, 1.0, 0.0001));
+    addColorGenerator(new HSVSpinner("Wash10Step", 1.0, 1.0, 1.0, 0.1));
+    addColorGenerator(new HSVSpinner("Wash100Step", 1.0, 1.0, 1.0, 0.01));
+    addColorGenerator(new HSVSpinner("Wash1000Step", 1.0, 1.0, 1.0, 0.001));
+    addColorGenerator(new HSVSpinner("Wash10000Step", 1.0, 1.0, 1.0, 0.0001));
 }
 
 LightController::~LightController() {

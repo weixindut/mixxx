@@ -63,15 +63,12 @@ void ControlGroup::setLightColor(Light* pLight, const QColor& color) {
             pLight->setColor(color);
             break;
         case TRANSITION_FADE_50MS:
-            // 10 times 5 millis
             pLight->fadeTo(color, 50);
             break;
         case TRANSITION_FADE_250MS:
-            // 50 times 5
             pLight->fadeTo(color, 250);
             break;
         case TRANSITION_FADE_500MS:
-            // 100 times 5
             pLight->fadeTo(color, 500);
             break;
         case TRANSITION_FLASH_500MS:

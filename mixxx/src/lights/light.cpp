@@ -55,11 +55,11 @@ void Light::setControlGroup(ControlGroup* pGroup) {
     m_pControlGroup = pGroup;
 }
 
-void Light::fadeDown(int steps) {
-    fadeToValue(0.0f, steps);
+void Light::fadeDown(int millis) {
+    fadeToValue(0.0f, millis);
 }
 
-void Light::fadeTo(const QColor& targetColor, int steps) {
+void Light::fadeTo(const QColor& targetColor, int millis) {
     double h, s, v;
     double th, ts, tv;
     double dh, ds, dv;
@@ -82,23 +82,23 @@ void Light::fadeTo(const QColor& targetColor, int steps) {
     // The parameters all range from 0.0 to 1.0f for now. This could be a
     // time parameter int the future.
     m_hue_parameter = m_sat_parameter = m_val_parameter = 0.0f;
-    m_hueTweener->init(h, dh, steps);
-    m_satTweener->init(s, ds, steps);
-    m_valTweener->init(v, dv, steps);
+    m_hueTweener->init(h, dh, millis);
+    m_satTweener->init(s, ds, millis);
+    m_valTweener->init(v, dv, millis);
 
     setState(LIGHT_FADE);
 }
 
-void Light::fadeToHue(qreal target_hue, int steps) {
+void Light::fadeToHue(qreal target_hue, int millis) {
     double h, s, v;
     m_color.getHsvF(&h, &s, &v);
-    fadeTo(QColor::fromHsvF(target_hue, s, v), steps);
+    fadeTo(QColor::fromHsvF(target_hue, s, v), millis);
 }
 
-void Light::fadeToValue(qreal target_value, int steps) {
+void Light::fadeToValue(qreal target_value, int millis) {
     double h, s, v;
     m_color.getHsvF(&h, &s, &v);
-    fadeTo(QColor::fromHsvF(h, s, target_value), steps);
+    fadeTo(QColor::fromHsvF(h, s, target_value), millis);
 }
 
 void Light::animate(qreal deltaMillis) {
