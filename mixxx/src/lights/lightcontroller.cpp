@@ -12,6 +12,7 @@
 #include "lights/lightmanager.h"
 #include "lights/dmxlightmanager.h"
 #include "lights/lightbrickmanager.h"
+#include "lights/lightshowcontroller.h"
 
 #include "lights/lightcontroller.h"
 #include "lights/rgbcycler.h"
@@ -82,6 +83,8 @@ LightController::LightController() {
     addColorGenerator(new HSVSpinner("Wash100Step", 1.0, 1.0, 1.0, 0.01));
     addColorGenerator(new HSVSpinner("Wash1000Step", 1.0, 1.0, 1.0, 0.001));
     addColorGenerator(new HSVSpinner("Wash10000Step", 1.0, 1.0, 1.0, 0.0001));
+
+    m_pLightShowController = new LightShowController(this);
 }
 
 LightController::~LightController() {
@@ -165,6 +168,8 @@ void LightController::process(SAMPLE* pSample, int iFramesPerBuffer) {
     m_features.previous_time = m_features.current_time;
     m_features.current_time = QTime::currentTime();
 
+    m_pLightShowController->process(&m_features);
+
     // Process state updates for all the lights in each control group
     foreach (ControlGroup* pGroup, m_controlGroups) {
         pGroup->process(&m_features);
@@ -188,6 +193,7 @@ void LightController::addControlGroup(ControlGroup* pGroup) {
     if (pGroup->getColorGenerator() == NULL && m_colorGenerators.size() > 0) {
         pGroup->setColorGenerator(m_colorGenerators[0]);
     }
+    m_pLightShowController->addControlGroup(pGroup);
     m_controlGroups.append(pGroup);
 }
 

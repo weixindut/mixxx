@@ -35,6 +35,16 @@ class FeatureState {
     bool is_silence;
     float pitch;
     cvec_t* fft;
+
+    qreal m_rmsVolumeAverage;
+    qreal m_lowFftAverage;
+    qreal m_midFftAverage;
+    qreal m_highFftAverage;
+
+    static const int kVolumeWindowSize;
+    static const int kFFTLowWindowSize;
+    static const int kFFTMidWindowSize;
+    static const int kFFTHighWindowSize;
 };
 
 

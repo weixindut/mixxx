@@ -22,6 +22,7 @@ class ColorGenerator;
 class LightManager;
 class DMXLightManager;
 class LightBrickManager;
+class LightShowController;
 
 class LightController : public QObject {
     Q_OBJECT
@@ -75,6 +76,7 @@ class LightController : public QObject {
 
     FeatureState m_features;
 
+    LightShowController* m_pLightShowController;
     QList<LightManager*> m_lightManagers;
     QList<Light*> m_lights;
     QMap<QString, Light*> m_lightMap;
