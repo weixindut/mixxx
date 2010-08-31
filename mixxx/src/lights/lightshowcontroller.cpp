@@ -34,7 +34,7 @@ void LightShowController::process(FeatureState* pState) {
         high_sum += cvec_read_norm(pState->fft, 0, 2*bins_per_group + i);
     }
 
-    qDebug() << "bins per group" << bins_per_group << "fft_bins" << fft_bins;
+    //qDebug() << "bins per group" << bins_per_group << "fft_bins" << fft_bins;
 
     low_sum /= bins_per_group;
     mid_sum /= bins_per_group;
