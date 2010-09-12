@@ -301,20 +301,6 @@ void TrackDAO::addTrack(TrackInfoObject* pTrack)
     pTrack->setId(trackId);
     pTrack->setDirty(false);
 
-    //If addTrack() is called on a track that already exists in the library but
-    //has been "removed" (ie. mixxx_deleted is 1), then the above INSERT will
-    //fail silently. What we really want to do is just mark the track as
-    //undeleted, by setting mixxx_deleted to 0.  addTrack() will not get called
-    //on files that are already in the library during a rescan (even if
-    //mixxx_deleted=1). However, this function WILL get called when a track is
-    //dragged and dropped onto the library or when manually imported from the
-    //File... menu.  This allows people to re-add tracks that they "removed"...
-    query.prepare("UPDATE library "
-                  "SET mixxx_deleted=0 "
-                  "WHERE id = " + QString("%1").arg(trackId));
-    if (!query.exec()) {
-        qDebug() << "Failed to set track" << trackId << "as undeleted" << query.lastError();
-    }
     //query.finish();
 
     //Commit the transaction
@@ -339,6 +325,24 @@ void TrackDAO::removeTrack(int id)
     //Print out any SQL error, if there was one.
     if (query.lastError().isValid()) {
         qDebug() << query.lastError();
+    }
+}
+/*** If a track has been manually "removed" from Mixxx's library by the user via
+     Mixxx's interface, this lets you add it back. When a track is removed,
+     mixxx_deleted in the DB gets set to 1. This clears that, and makes it show
+     up in the library views again. 
+     This function should get called if you drag-and-drop a file that's been
+     "removed" from Mixxx back into the library view.
+*/
+void TrackDAO::unremoveTrack(int trackId)
+{
+    Q_ASSERT(trackId >= 0);
+    QSqlQuery query(m_database);
+    query.prepare("UPDATE library "
+                  "SET mixxx_deleted=0 "
+                  "WHERE id = " + QString("%1").arg(trackId));
+    if (!query.exec()) {
+        qDebug() << "Failed to set track" << trackId << "as undeleted" << query.lastError();
     }
 }
 
@@ -396,7 +400,7 @@ TrackPointer TrackDAO::getTrackFromDB(QSqlQuery &query) const
         QString location = query.value(query.record().indexOf("location")).toString();
         bool header_parsed = query.value(query.record().indexOf("header_parsed")).toBool();
 
-        TrackInfoObject* track = new TrackInfoObject(location);
+        TrackInfoObject* track = new TrackInfoObject(location, false);
 
         // TIO already stats the file to see if it exists, what its length is,
         // etc. So don't bother setting it.
@@ -441,6 +445,13 @@ TrackPointer TrackDAO::getTrackFromDB(QSqlQuery &query) const
         // Automatic conversion to a weak pointer
         m_tracks[trackId] = pTrack;
         m_trackCache.insert(trackId, new TrackPointer(pTrack));
+
+        // If the header hasn't been parsed, parse it but only after we set the
+        // track clean and hooked it up to the track cache, because this will
+        // dirty it.
+        if (!header_parsed) {
+            pTrack->parse();
+        }
 
         return pTrack;
     }
