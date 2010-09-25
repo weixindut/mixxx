@@ -1,16 +1,15 @@
 <LightController>
   <LightManagers>
     <LightBrickManager>
-      <LightBrick name="Brick1" ipaddress="192.168.0.8" port="12344" id="brick1"/>
-      <LightBrick name="Brick2" ipaddress="192.168.0.9" port="12344" id="brick2"/>
-      <LightBrick name="Brick3" ipaddress="192.168.0.10" port="12344" id="brick3"/>
-      <LightBrick name="Brick4" ipaddress="192.168.0.11" port="12344" id="brick4"/>
-      <LightBrick name="Brick5" ipaddress="192.168.0.12" port="12344" id="brick5"/>
-      <LightBrick name="Brick6" ipaddress="192.168.0.13" port="12344" id="brick6"/>
-      <LightBrick name="Brick7" ipaddress="192.168.0.14" port="12344" id="brick7"/>
-      <LightBrick name="Brick8" ipaddress="192.168.0.15" port="12344" id="brick8"/>
-      <LightBrick name="Brick9" ipaddress="192.168.0.16" port="12344" id="brick9"/>
-      <LightBrick name="Brick10" ipaddress="192.168.0.17" port="12344" id="brick10"/>
+      <LightBrick name="Brick1" ipaddress="192.168.0.8" port="12344" id="brick8"/>
+      <LightBrick name="Brick2" ipaddress="192.168.0.9" port="12344" id="brick9"/>
+      <LightBrick name="Brick3" ipaddress="192.168.0.10" port="12344" id="brick10"/>
+      <LightBrick name="Brick4" ipaddress="192.168.0.11" port="12344" id="brick11"/>
+      <LightBrick name="Brick5" ipaddress="192.168.0.12" port="12344" id="brick12"/>
+      <LightBrick name="Brick6" ipaddress="192.168.0.13" port="12344" id="brick13"/>
+      <LightBrick name="Brick7" ipaddress="192.168.0.14" port="12344" id="brick14"/>
+      <LightBrick name="Brick9" ipaddress="192.168.0.16" port="12344" id="brick16"/>
+      <LightBrick name="Brick10" ipaddress="192.168.0.17" port="12344" id="brick17"/>
     </LightBrickManager>
     <DMXLightManager ipaddress="192.168.0.3" universe="1">
       <DMXLight name="Fresco1" number="0" id="dmx0"/>
@@ -43,16 +42,15 @@
     </ControlGroup>
     <ControlGroup name="Bricks">
       <Lights>
-        <Light id="brick1"/>
-        <Light id="brick2"/>
-        <Light id="brick3"/>
-        <Light id="brick4"/>
-        <Light id="brick5"/>
-        <Light id="brick6"/>
-        <Light id="brick7"/>
-        <Light id="brick8"/>
+        <Light id="brick13"/>
+        <Light id="brick14"/>
         <Light id="brick9"/>
+        <Light id="brick12"/>
+        <Light id="brick17"/>
+        <Light id="brick11"/>
+        <Light id="brick16"/>
         <Light id="brick10"/>
+        <Light id="brick8"/>
       </Lights>
       <TriggerState>
       </TriggerState>
