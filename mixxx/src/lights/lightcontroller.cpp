@@ -168,7 +168,9 @@ void LightController::process(SAMPLE* pSample, int iFramesPerBuffer) {
     m_features.previous_time = m_features.current_time;
     m_features.current_time = QTime::currentTime();
 
-    m_pLightShowController->process(&m_features);
+    // If you want the LightShowController to automatically switch the modes of
+    // control groups, uncomment this.
+    //m_pLightShowController->process(&m_features);
 
     // Process state updates for all the lights in each control group
     foreach (ControlGroup* pGroup, m_controlGroups) {

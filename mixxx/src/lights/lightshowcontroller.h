@@ -21,7 +21,7 @@ class LightShowController : public QObject {
   private:
     LightController* m_pLightController;
     QList<ControlGroup*> m_controlGroups;
-
+    QTime m_timeSinceLastUpdate;
     QMap<ControlGroup*, QTime> m_lastTransitions;
 };
 
