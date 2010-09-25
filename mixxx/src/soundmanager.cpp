@@ -90,8 +90,11 @@ SoundManager::SoundManager(ConfigObject<ConfigValue> * pConfig, EngineMaster * _
     pControlObjectLatency->slotSet(m_config.getFramesPerBuffer() / m_config.getSampleRate() * 1000);
     pControlObjectSampleRate->slotSet(m_config.getSampleRate());
 
-    //m_pLightController = new LightController();
     m_pLightController = NULL;
+}
+
+void SoundManager::setLightController(LightController *pController) {
+  m_pLightController = pController;
 }
 
 /** Destructor for the SoundManager class. Closes all the devices, cleans up their pointers
@@ -473,7 +476,7 @@ SoundManager::requestBuffer(QList<AudioOutput> outputs, unsigned long iFramesPer
             //number of samples for one channel, but the EngineObject
             //architecture expects number of samples for two channels
             //as input (buffer size) so...
-            m_pMaster->process(0, 0, iFramesPerBuffer*2);
+            //m_pMaster->process(0, 0, iFramesPerBuffer*2);
 
         }
         iNumDevicesHaveRequestedBuffer++;
