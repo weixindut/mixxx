@@ -476,7 +476,7 @@ SoundManager::requestBuffer(QList<AudioOutput> outputs, unsigned long iFramesPer
             //number of samples for one channel, but the EngineObject
             //architecture expects number of samples for two channels
             //as input (buffer size) so...
-            //m_pMaster->process(0, 0, iFramesPerBuffer*2);
+            m_pMaster->process(0, 0, iFramesPerBuffer*2);
 
         }
         iNumDevicesHaveRequestedBuffer++;
