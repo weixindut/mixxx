@@ -2,6 +2,8 @@
 
 import os
 import util
+import subprocess
+
 from mixxx import Dependence, Feature
 import SCons.Script as SCons
 
@@ -304,6 +306,34 @@ class TagLib(Dependence):
         # it, though might cause issues. This is safe to remove once we
         # deprecate Karmic support. rryan 2/2011
         build.env.Append(CPPPATH='/usr/include/taglib/')
+
+class CLucene(Dependence):
+    CLUCENE_PATH = "#lib/clucene-2.3.3.4"
+
+    def configure(self, build, conf):
+        # TODO(XXX) Build CLucene using SCons?
+
+        clucene_dir = os.path.join(os.getcwd(), '../lib/clucene-2.3.3.4')
+        p = subprocess.Popen(['cmake', '.'], cwd=clucene_dir)
+        p.wait()
+        result = True if p.returncode == 0 else False
+
+        p = subprocess.Popen(['make', '.'], cwd=clucene_dir)
+        p.wait()
+        result = result and (True if p.returncode == 0 else False)
+
+        if not result:
+            raise Exception('Failed to properly build clucene')
+
+        build.env.Append(CPPPATH=os.path.join(self.CLUCENE_PATH, 'src/core'))
+        build.env.Append(LIBPATH=os.path.join(self.CLUCENE_PATH, 'bin'))
+
+        if not conf.CheckLib('clucene-core'):
+            raise Exception('Failed to properly build clucene')
+
+    def sources(self, build):
+        return []
+
 class MixxxCore(Feature):
 
     def description(self):
@@ -738,7 +768,7 @@ class MixxxCore(Feature):
 
     def depends(self, build):
         return [SoundTouch, KissFFT, ReplayGain, PortAudio, PortMIDI, Qt,
-                FidLib, SndFile, FLAC, OggVorbis, OpenGL, TagLib]
+                FidLib, SndFile, FLAC, OggVorbis, OpenGL, TagLib, CLucene]
 
     def post_dependency_check_configure(self, build, conf):
         """Sets up additional things in the Environment that must happen
@@ -755,3 +785,4 @@ class MixxxCore(Feature):
                 # Makes the program not launch a shell first
                 build.env.Append(LINKFLAGS = '--subsystem,windows')
                 build.env.Append(LINKFLAGS = '-mwindows')
+
