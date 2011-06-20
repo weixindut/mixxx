@@ -141,6 +141,9 @@ void BrowseThread::populateModel() {
         item = new QStandardItem(tio.getGenre());
         row_data.insert(COLUMN_GENRE, item);
 
+        item = new QStandardItem(QString::number(tio.getRating()));
+        row_data.insert(COLUMN_RATING, item);
+
         item = new QStandardItem(tio.getComment());
         row_data.insert(COLUMN_COMMENT, item);
 

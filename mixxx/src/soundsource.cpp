@@ -57,6 +57,7 @@ SoundSource::SoundSource(QString qFilename)
     m_iDuration = 0;
     m_iBitrate = 0;
     m_iChannels = 0;
+    m_iRating = 0;
     m_sKey = "";
 }
 
@@ -105,6 +106,10 @@ QString SoundSource::getComment()
 QString SoundSource::getYear()
 {
     return m_sYear;
+}
+int SoundSource::getRating()
+{
+    return m_iRating;
 }
 QString SoundSource::getGenre()
 {
@@ -178,6 +183,13 @@ void SoundSource::setReplayGain(float replaygain)
 void SoundSource::setBPM(float bpm)
 {
     m_fBPM = bpm;
+}
+void SoundSource::setRating(int rating)
+{
+    //According to ID3 spec
+    // rating is an Integer having a range [0, 255]
+    if(rating > 0 && rating < 256)
+        m_iRating = rating;
 }
 void SoundSource::setDuration(int duration)
 {
@@ -326,6 +338,35 @@ bool SoundSource::processID3v2Tag(TagLib::ID3v2::Tag* id3v2) {
             }
         }
     }
+    //Check if the track has been rated by Traktor, iTunes or another piece of software
+    TagLib::ID3v2::FrameList ratingFrame = id3v2->frameListMap()["POPM"];
+    int rating = 0;
+    if(!ratingFrame.isEmpty()) {
+        // RatingString "traktor@native-instruments.de rating=255 counter=2"
+        qDebug() << "RatingString" << TStringToQString(ratingFrame.front()->toString());
+        // RatingSectionString "rating=255"
+        QString sRating = TStringToQString(ratingFrame.front()->toString()).section(' ', 1, 1);
+        qDebug() << "RatingSectionString" << sRating;
+
+        // Rating "255"
+        sRating = sRating.section('=', 1, 1);
+        qDebug() << "Rating" << sRating;
+        // Calc rating
+        // NI - Rating
+        // 255 = 5 | 204 = 4 | 153 = 3 | 102 = 2 | 51 = 1 | 0 = 0
+        //
+        // Banshee - Rating
+        // 255 = 5 | 192 = 4 | 128 = 3 | 64 = 2 | 1 = 1
+        //
+        //  ==> Rating = ceil ( X / 51 )
+        float fRating = sRating.toInt();
+        qDebug() << "Float: " << fRating;
+
+        rating = ceil(fRating/51);
+        qDebug() << "Final int() Rating" << rating;
+    }
+    setRating(rating);
+
     return true;
 }
 

@@ -85,6 +85,7 @@ public:
     Q_PROPERTY(QString bpmFormatted READ getBpmStr STORED false)
     Q_PROPERTY(int duration READ getDuration WRITE setDuration)
     Q_PROPERTY(QString durationFormatted READ getDurationStr STORED false)
+    Q_PROPERTY(int rating READ getRating WRITE setRating);
 
 
     // Returns absolute path to the file, including the filename.

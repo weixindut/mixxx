@@ -13,7 +13,7 @@
 #include "controlobject.h"
 #include "library/dao/trackdao.h"
 #include "audiotagger.h"
-
+#include "library/starrating.h"
 
 BrowseTableModel::BrowseTableModel(QObject* parent, TrackCollection* pTrackCollection,
                                    RecordingManager* pRecordingManager)
@@ -30,6 +30,7 @@ BrowseTableModel::BrowseTableModel(QObject* parent, TrackCollection* pTrackColle
     header_data.insert(COLUMN_TRACK_NUMBER, tr("Track #"));
     header_data.insert(COLUMN_YEAR, tr("Year"));
     header_data.insert(COLUMN_GENRE, tr("Genre"));
+    header_data.insert(COLUMN_RATING, tr("Rating"));
     header_data.insert(COLUMN_COMMENT, tr("Comment"));
     header_data.insert(COLUMN_DURATION, tr("Duration"));
     header_data.insert(COLUMN_BPM, tr("BPM"));
@@ -301,7 +302,19 @@ bool BrowseTableModel::isTrackInUse(QString &track_location) const
 
     return false;
 }
+QVariant BrowseTableModel::data(const QModelIndex &index, int role) const
+{
+    QStandardItem* item = this->item(index.row(), index.column());
 
+    if(item && item->column() == COLUMN_RATING && role == Qt::DisplayRole)
+    {
+        if (qVariantCanConvert<int>(item->text()))
+            return qVariantFromValue(StarRating(item->text().toInt()));
+
+    }
+
+    return QStandardItemModel::data(index,role);
+}
 bool BrowseTableModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
     if(!index.isValid())

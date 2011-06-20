@@ -299,7 +299,7 @@ int SoundSourceProxy::ParseHeader(TrackInfoObject* p)
         p->setType(sndsrc->getType());
         p->setYear(sndsrc->getYear());
         p->setGenre(sndsrc->getGenre());
-	p->setComment(sndsrc->getComment());
+        p->setComment(sndsrc->getComment());
         p->setTrackNumber(sndsrc->getTrackNumber());
         p->setReplayGain(sndsrc->getReplayGain());
         p->setBpm(sndsrc->getBPM());
@@ -307,7 +307,8 @@ int SoundSourceProxy::ParseHeader(TrackInfoObject* p)
         p->setBitrate(sndsrc->getBitrate());
         p->setSampleRate(sndsrc->getSampleRate());
         p->setChannels(sndsrc->getChannels());
-	p->setKey(sndsrc->getKey());
+        p->setKey(sndsrc->getKey());
+        p->setRating(sndsrc->getRating());
         p->setHeaderParsed(true);
     }
     else

@@ -71,6 +71,7 @@ public:
     virtual QString getType();
     virtual QString getComment();
     virtual QString getYear();
+    virtual int getRating();
     virtual QString getGenre();
     virtual QString getTrackNumber();
     virtual float getReplayGain();
@@ -96,6 +97,7 @@ public:
     virtual void setBitrate(int);
     virtual void setSampleRate(unsigned int);
     virtual void setChannels(int);
+    virtual void setRating(int rating);
 protected:
 
     // Automatically collects generic data from a TagLib File: title, artist,
@@ -128,6 +130,7 @@ protected:
     /** Sample rate of the file */
     unsigned int m_iSampleRate;
     int m_iChannels;
+    int m_iRating;
     //Dontcha be forgettin' to initialize these variables.... arr
 
     static const bool s_bDebugMetadata;

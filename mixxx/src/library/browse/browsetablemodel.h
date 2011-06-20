@@ -18,13 +18,14 @@ const int COLUMN_ALBUM = 3;
 const int COLUMN_TRACK_NUMBER = 4;
 const int COLUMN_YEAR = 5;
 const int COLUMN_GENRE = 6;
-const int COLUMN_COMMENT = 7;
-const int COLUMN_DURATION = 8;
-const int COLUMN_BPM = 9;
-const int COLUMN_KEY = 10;
-const int COLUMN_TYPE = 11;
-const int COLUMN_BITRATE = 12;
-const int COLUMN_LOCATION = 13;
+const int COLUMN_RATING = 7;
+const int COLUMN_COMMENT = 8;
+const int COLUMN_DURATION = 9;
+const int COLUMN_BPM = 10;
+const int COLUMN_KEY = 11;
+const int COLUMN_TYPE = 12;
+const int COLUMN_BITRATE = 13;
+const int COLUMN_LOCATION = 14;
 
 /*
  * The BrowseTable models displays tracks
@@ -57,6 +58,7 @@ class BrowseTableModel : public QStandardItemModel, public virtual TrackModel {
     virtual const QList<int>& searchColumns() const;
     virtual Qt::ItemFlags flags(const QModelIndex &index) const;
     virtual bool setData(const QModelIndex& index, const QVariant& value, int role=Qt::EditRole);
+    virtual QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const;
 
   public slots:
     void slotClear(BrowseTableModel*);
