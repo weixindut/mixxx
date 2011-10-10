@@ -149,6 +149,8 @@ public:
     /** Output a formatted string with all the info */
     QString getInfo() const;
 
+    QDateTime getDateAdded() const;
+    void setDateAdded(QDateTime dateAdded);
 
     /** Getter/Setter methods for metadata */
     /** Return title */
@@ -361,6 +363,8 @@ public:
     float m_fCuePoint;
     /** Date. creation date of file */
     QDateTime m_dCreateDate;
+    // Date the track was added to the library
+    QDateTime m_dateAdded;
 
     QString m_key;
 
