@@ -347,6 +347,7 @@ class MixxxCore(Feature):
                    "dlgprepare.cpp",
                    "dlgautodj.cpp",
 
+                   "engine/callbackcontrolmanager.cpp",
                    "engine/engineworker.cpp",
                    "engine/engineworkerscheduler.cpp",
                    "engine/syncworker.cpp",

@@ -21,10 +21,12 @@
 #include "engine/enginebuffer.h"
 #include "cachingreader.h"
 
+
 #include "controlpushbutton.h"
 #include "controlobjectthreadmain.h"
 #include "configobject.h"
 #include "controlpotmeter.h"
+#include "engine/callbackcontrolmanager.h"
 #include "engine/enginebufferscalest.h"
 #include "engine/enginebufferscalelinear.h"
 #include "engine/enginebufferscalereal.h"
@@ -54,7 +56,8 @@
 const double kMaxPlayposRange = 1.14;
 const double kMinPlayposRange = -0.14;
 
-EngineBuffer::EngineBuffer(const char * _group, ConfigObject<ConfigValue> * _config) :
+EngineBuffer::EngineBuffer(const char * _group, ConfigObject<ConfigValue> * _config,
+                           CallbackControlManager* pCallbackControlManager) :
     m_engineLock(QMutex::Recursive),
     group(_group),
     m_pConfig(_config),
@@ -71,8 +74,6 @@ EngineBuffer::EngineBuffer(const char * _group, ConfigObject<ConfigValue> * _con
     m_iSamplesCalculated(0),
     m_pTrackEnd(NULL),
     m_pRepeat(NULL),
-    startButton(NULL),
-    endButton(NULL),
     m_pScale(NULL),
     m_pScaleLinear(NULL),
     m_pScaleST(NULL),
@@ -94,79 +95,106 @@ EngineBuffer::EngineBuffer(const char * _group, ConfigObject<ConfigValue> * _con
             Qt::DirectConnection);
 
     // Play button
-    playButton = new ControlPushButton(ConfigKey(group, "play"));
-    playButton->setToggleButton(true);
-    connect(playButton, SIGNAL(valueChanged(double)),
+    ControlPushButton* pPlayButton = new ControlPushButton(
+        ConfigKey(group, "play"));
+    pPlayButton->setToggleButton(true);
+
+    playButton = pCallbackControlManager->addControl(pPlayButton, 1);
+    connect(playButton, SIGNAL(valueChanged(double, double)),
             this, SLOT(slotControlPlay(double)),
             Qt::DirectConnection);
-    playButtonCOT = new ControlObjectThreadMain(playButton);
+    playButtonCOT = new ControlObjectThreadMain(pPlayButton);
 
-    //Play from Start Button (for sampler)
-    playStartButton = new ControlPushButton(ConfigKey(group, "start_play"));
-    connect(playStartButton, SIGNAL(valueChanged(double)),
+    // Play from Start Button
+    CallbackControl *pStartPlayButton =
+            pCallbackControlManager->addControl(
+                new ControlPushButton(ConfigKey(group, "start_play")), 1);
+    pStartPlayButton->setParent(this);
+    connect(pStartPlayButton, SIGNAL(valueChanged(double)),
             this, SLOT(slotControlPlayFromStart(double)),
             Qt::DirectConnection);
-    playStartButton->set(0);
-    playStartButtonCOT = new ControlObjectThreadMain(playStartButton);
 
     // Jump to start and stop button
-    stopStartButton = new ControlPushButton(ConfigKey(group, "start_stop"));
-    connect(stopStartButton, SIGNAL(valueChanged(double)),
+    CallbackControl* pStartStopButton =
+            pCallbackControlManager->addControl(new ControlPushButton(
+        ConfigKey(group, "start_stop")), 1);
+    pStartStopButton->setParent(this);
+    connect(pStartStopButton, SIGNAL(valueChanged(double)),
             this, SLOT(slotControlJumpToStartAndStop(double)),
             Qt::DirectConnection);
-    stopStartButton->set(0);
-    stopStartButtonCOT = new ControlObjectThreadMain(stopStartButton);
 
-    //Stop playback (for sampler)
-    stopButton = new ControlPushButton(ConfigKey(group, "stop"));
-    connect(stopButton, SIGNAL(valueChanged(double)),
+    // Stop playback
+    CallbackControl* pStopButton = pCallbackControlManager->addControl(
+        new ControlPushButton(ConfigKey(group, "stop")), 1);
+    pStopButton->setParent(this);
+    connect(pStopButton, SIGNAL(valueChanged(double)),
             this, SLOT(slotControlStop(double)),
             Qt::DirectConnection);
-    stopButton->set(0);
-    stopButtonCOT = new ControlObjectThreadMain(stopButton);
 
     // Start button
-    startButton = new ControlPushButton(ConfigKey(group, "start"));
-    connect(startButton, SIGNAL(valueChanged(double)),
+    CallbackControl* pStartButton = pCallbackControlManager->addControl(
+        new ControlPushButton(ConfigKey(group, "start")), 1);
+    pStartButton->setParent(this);
+    connect(pStartButton, SIGNAL(valueChanged(double)),
             this, SLOT(slotControlStart(double)),
             Qt::DirectConnection);
 
     // End button
-    endButton = new ControlPushButton(ConfigKey(group, "end"));
-    connect(endButton, SIGNAL(valueChanged(double)),
+    CallbackControl* pEndButton = pCallbackControlManager->addControl(
+        new ControlPushButton(ConfigKey(group, "end")), 1);
+    pEndButton->setParent(this);
+    connect(pEndButton, SIGNAL(valueChanged(double)),
             this, SLOT(slotControlEnd(double)),
             Qt::DirectConnection);
 
-    // Actual rate (used in visuals, not for control)
-    rateEngine = new ControlObject(ConfigKey(group, "rateEngine"));
+    // Eject button
+    CallbackControl* pEjectButton = pCallbackControlManager->addControl(
+        new ControlPushButton(ConfigKey(group, "eject")), 1);
+    pEjectButton->setParent(this);
+    connect(pEjectButton, SIGNAL(valueChanged(double)),
+            this, SLOT(slotEjectTrack(double)),
+            Qt::DirectConnection);
 
-    // Slider to show and change song position
-    //these bizarre choices map conveniently to the 0-127 range of midi
-    playposSlider = new ControlPotmeter(
-        ConfigKey(group, "playposition"), kMinPlayposRange, kMaxPlayposRange);
+    // Actual rate (used in visuals, not for control)
+    rateEngine = pCallbackControlManager->addControl(
+        new ControlObject(ConfigKey(group, "rateEngine")), 1);
+
+    // Slider to show and change song position these bizarre choices map
+    // conveniently to the 0-127 range of midi
+    playposSlider = pCallbackControlManager->addControl(
+        new ControlPotmeter(ConfigKey(group, "playposition"),
+                            kMinPlayposRange, kMaxPlayposRange), 1);
     connect(playposSlider, SIGNAL(valueChanged(double)),
             this, SLOT(slotControlSeek(double)),
             Qt::DirectConnection);
 
     // Control used to communicate ratio playpos to GUI thread
-    visualPlaypos = new ControlPotmeter(
-        ConfigKey(group, "visual_playposition"), kMinPlayposRange, kMaxPlayposRange);
+    visualPlaypos = pCallbackControlManager->addControl(
+        new ControlPotmeter(ConfigKey(group, "visual_playposition"),
+                            kMinPlayposRange, kMaxPlayposRange), 1);
+
 
     // m_pTrackEnd is used to signal when at end of file during
     // playback. TODO(XXX) This should not even be a control object because it
     // is an internal flag used only by the EngineBuffer.
-    m_pTrackEnd = new ControlObject(ConfigKey(group, "TrackEnd"));
-    //A COTM for use in slots that are called by the GUI thread.
-    m_pTrackEndCOT = new ControlObjectThreadMain(m_pTrackEnd);
+    ControlObject* pTrackEndControl =
+            new ControlObject(ConfigKey(group, "TrackEnd"));
 
-    m_pRepeat = new ControlPushButton(ConfigKey(group, "repeat"));
-    m_pRepeat->setToggleButton(true);
+    m_pTrackEnd = pCallbackControlManager->addControl(pTrackEndControl, 1);
+    // A COTM for use in slots that are called by the GUI thread.
+    m_pTrackEndCOT = new ControlObjectThreadMain(pTrackEndControl);
+
+    ControlPushButton* pRepeatButton = new ControlPushButton(ConfigKey(group, "repeat"));
+    pRepeatButton->setToggleButton(true);
+    m_pRepeat = pCallbackControlManager->addControl(pRepeatButton, 1);
 
     // Sample rate
     m_pSampleRate = ControlObject::getControl(ConfigKey("[Master]","samplerate"));
 
-    m_pTrackSamples = new ControlObject(ConfigKey(group, "track_samples"));
-    m_pTrackSampleRate = new ControlObject(ConfigKey(group, "track_samplerate"));
+    m_pTrackSamples = pCallbackControlManager->addControl(
+        new ControlObject(ConfigKey(group, "track_samples")), 1);
+    m_pTrackSampleRate = pCallbackControlManager->addControl(
+        new ControlObject(ConfigKey(group, "track_samplerate")), 1);
 
     // Quantization Controller for enabling and disabling the
     // quantization (alignment) of loop in/out positions and (hot)cues with
@@ -180,15 +208,17 @@ EngineBuffer::EngineBuffer(const char * _group, ConfigObject<ConfigValue> * _con
 #ifdef __VINYLCONTROL__
     // If VinylControl is enabled, add a VinylControlControl. This must be done
     // before RateControl is created.
-    addControl(new VinylControlControl(group, _config));
+    addControl(new VinylControlControl(group, _config,
+                                       pCallbackControlManager));
 #endif
 
     // Create the Rate Controller
-    m_pRateControl = new RateControl(_group, _config);
+    m_pRateControl = new RateControl(_group, _config, pCallbackControlManager);
     addControl(m_pRateControl);
 
-    fwdButton = ControlObject::getControl(ConfigKey(_group, "fwd"));
-    backButton = ControlObject::getControl(ConfigKey(_group, "back"));
+    fwdButton = pCallbackControlManager->getControl(ConfigKey(_group, "fwd"));
+    backButton = pCallbackControlManager->getControl(
+        ConfigKey(_group, "back"));
 
     // Create the BPM Controller
     m_pBpmControl = new BpmControl(_group, _config);
@@ -206,16 +236,14 @@ EngineBuffer::EngineBuffer(const char * _group, ConfigObject<ConfigValue> * _con
 
     setNewPlaypos(0.);
 
-    m_pKeylock = new ControlPushButton(ConfigKey(group, "keylock"));
-    m_pKeylock->setToggleButton(true);
-    m_pKeylock->set(false);
+    ControlPushButton* pKeylockButton =
+            new ControlPushButton(ConfigKey(group, "keylock"));
+    pKeylockButton->setToggleButton(true);
+    pKeylockButton->set(false);
 
-    m_pEject = new ControlPushButton(ConfigKey(group, "eject"));
-    connect(m_pEject, SIGNAL(valueChanged(double)),
-            this, SLOT(slotEjectTrack(double)),
-            Qt::DirectConnection);
+    m_pKeylock = pCallbackControlManager->addControl(pKeylockButton, 1);
 
-    //m_iRampIter = 0;
+
 
     /*df.setFileName("mixxx-debug.csv");
     df.open(QIODevice::WriteOnly | QIODevice::Text);
@@ -229,14 +257,7 @@ EngineBuffer::~EngineBuffer()
     delete m_pReadAheadManager;
     delete m_pReader;
 
-    delete playButtonCOT;
     delete playButton;
-    delete playStartButtonCOT;
-    delete playStartButton;
-    delete startButton;
-    delete endButton;
-    delete stopButtonCOT;
-    delete stopButton;
     delete rateEngine;
     delete playposSlider;
     delete visualPlaypos;
@@ -253,7 +274,6 @@ EngineBuffer::~EngineBuffer()
     delete m_pScaleST;
 
     delete m_pKeylock;
-    delete m_pEject;
 
     while (m_engineControls.size() > 0) {
         EngineControl* pControl = m_engineControls.takeLast();
@@ -301,11 +321,9 @@ void EngineBuffer::setOtherEngineBuffer(EngineBuffer * pOtherEngineBuffer)
         qCritical("EngineBuffer: Other engine buffer already set!");
 }
 
-void EngineBuffer::setNewPlaypos(double newpos)
-{
-    //qDebug() << "engine new pos " << newpos;
-
+void EngineBuffer::setNewPlaypos(double newpos) {
     filepos_play = newpos;
+    playposSlider->set(filepos_play / file_length_old);
 
     // Ensures that the playpos slider gets updated in next process call
     m_iSamplesCalculated = 1000000;
@@ -389,13 +407,17 @@ void EngineBuffer::ejectTrack() {
 // WARNING: This method runs in both the GUI thread and the Engine Thread
 void EngineBuffer::slotControlSeek(double change)
 {
-    if(isnan(change) || change > kMaxPlayposRange || change < kMinPlayposRange) {
+    qDebug() << this << "slotControlSeek()" << change;
+    if (isnan(change)) {
         // This seek is ridiculous.
         return;
     }
 
     // Find new playpos, restrict to valid ranges.
     double new_playpos = round(change*file_length_old);
+    double min_playpos = kMinPlayposRange * file_length_old;
+    double max_playpos = kMaxPlayposRange * file_length_old;
+    new_playpos = math_max(math_min(new_playpos, max_playpos), min_playpos);
 
     // TODO(XXX) currently not limiting seeks file_length_old instead of
     // kMaxPlayposRange.
@@ -403,8 +425,9 @@ void EngineBuffer::slotControlSeek(double change)
         new_playpos = file_length_old;
 
     // Ensure that the file position is even (remember, stereo channel files...)
-    if (!even((int)new_playpos))
+    if (!even((int)new_playpos)) {
         new_playpos--;
+    }
 
     // Give EngineControl's a chance to veto or correct the seek target.
 
@@ -472,6 +495,7 @@ void EngineBuffer::slotControlStop(double v)
 
 void EngineBuffer::process(const CSAMPLE *, const CSAMPLE * pOut, const int iBufferSize)
 {
+    //qDebug() << "EngineBuffer::process()" << filepos_play;
 
     m_pReader->process();
     // Steps:

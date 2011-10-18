@@ -21,6 +21,7 @@
 #include <QMap>
 
 #include "controlobject.h"
+#include "engine/callbackcontrolmanager.h"
 #include "engine/engineobject.h"
 #include "engine/enginechannel.h"
 #include "soundmanagerutil.h"
@@ -78,6 +79,10 @@ class EngineMaster : public EngineObject, public AudioSource {
     const CSAMPLE* getDeckBuffer(unsigned int i) const;
     const CSAMPLE* getChannelBuffer(QString name) const;
 
+    CallbackControlManager* getCallbackControlManager() {
+        return &m_callbackControlManager;
+    }
+
   signals:
     void bytesRecorded(int);
     void isRecording(bool);
@@ -86,7 +91,7 @@ class EngineMaster : public EngineObject, public AudioSource {
     struct ChannelInfo {
         EngineChannel* m_pChannel;
         CSAMPLE* m_pBuffer;
-        ControlObject* m_pVolumeControl;
+        CallbackControl* m_pVolumeControl;
     };
 
     class GainCalculator {
@@ -128,6 +133,7 @@ class EngineMaster : public EngineObject, public AudioSource {
     void mixChannels(unsigned int channelBitvector, unsigned int maxChannels,
                      CSAMPLE* pOutput, unsigned int iBufferSize, GainCalculator* pGainCalculator);
 
+    CallbackControlManager m_callbackControlManager;
     QList<ChannelInfo*> m_channels;
 
     CSAMPLE *m_pMaster, *m_pHead;
@@ -135,11 +141,11 @@ class EngineMaster : public EngineObject, public AudioSource {
     EngineWorkerScheduler *m_pWorkerScheduler;
     SyncWorker* m_pSyncWorker;
 
-    ControlObject* m_pMasterVolume;
-    ControlObject* m_pHeadVolume;
-    ControlObject* m_pMasterSampleRate;
-    ControlObject* m_pMasterLatency;
-    ControlPotmeter* m_pMasterRate;
+    CallbackControl* m_pMasterVolume;
+    CallbackControl* m_pHeadVolume;
+    CallbackControl* m_pMasterSampleRate;
+    CallbackControl* m_pMasterLatency;
+    CallbackControl* m_pMasterRate;
     EngineClipping *clipping, *head_clipping;
 
 #ifdef __LADSPA__
@@ -148,11 +154,12 @@ class EngineMaster : public EngineObject, public AudioSource {
     EngineVuMeter *vumeter;
     EngineSideChain *sidechain;
 
-    ControlPotmeter *crossfader, *head_mix,
+    CallbackControl *crossfader, *head_mix,
         *m_pBalance, *xFaderCurve, *xFaderCalibration;
 
     ConstantGainCalculator m_headphoneGain;
     OrientationVolumeGainCalculator m_masterGain;
+
 };
 
 #endif

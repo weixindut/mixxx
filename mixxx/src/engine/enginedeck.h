@@ -22,20 +22,22 @@
 #include "engine/enginechannel.h"
 #include "configobject.h"
 
-class EngineBuffer;
-class EnginePregain;
-class EngineBuffer;
-class EngineFilterBlock;
-class EngineClipping;
-class EngineFlanger;
-class EngineVuMeter;
-class EngineVinylSoundEmu;
 class ControlPushButton;
+class EngineBuffer;
+class EngineBuffer;
+class EngineClipping;
+class EngineFilterBlock;
+class EngineFlanger;
+class EngineMaster;
+class EnginePregain;
+class EngineVinylSoundEmu;
+class EngineVuMeter;
 
 class EngineDeck : public EngineChannel {
     Q_OBJECT
   public:
     EngineDeck(const char *group, ConfigObject<ConfigValue>* pConfig,
+               EngineMaster* pMixingEngine,
                EngineChannel::ChannelOrientation defaultOrientation = CENTER);
     virtual ~EngineDeck();
 

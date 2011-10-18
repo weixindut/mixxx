@@ -15,10 +15,8 @@ const int RATE_SENSITIVITY_MIN = 100;
 const int RATE_SENSITIVITY_MAX = 2500;
 
 class Rotary;
-class ControlTTRotary;
-class ControlObject;
-class ControlPotmeter;
-class ControlPushButton;
+class CallbackControl;
+class CallbackControlManager;
 class PositionScratchController;
 
 // RateControl is an EngineControl that is in charge of managing the rate of
@@ -27,7 +25,8 @@ class PositionScratchController;
 class RateControl : public EngineControl {
     Q_OBJECT
 public:
-    RateControl(const char* _group, ConfigObject<ConfigValue>* _config);
+    RateControl(const char* _group, ConfigObject<ConfigValue>* _config,
+                CallbackControlManager* pCallbackControlManager);
     virtual ~RateControl();
 
     // Must be called during each callback of the audio thread so that
@@ -86,27 +85,26 @@ public:
     /** Values used when temp and perm rate buttons are pressed */
     static double m_dTemp, m_dTempSmall, m_dPerm, m_dPermSmall;
 
-    ControlPushButton *buttonRateTempDown, *buttonRateTempDownSmall,
+    CallbackControl *buttonRateTempDown, *buttonRateTempDownSmall,
         *buttonRateTempUp, *buttonRateTempUpSmall;
-    ControlPushButton *buttonRatePermDown, *buttonRatePermDownSmall,
+    CallbackControl *buttonRatePermDown, *buttonRatePermDownSmall,
         *buttonRatePermUp, *buttonRatePermUpSmall;
-    ControlObject *m_pRateDir, *m_pRateRange;
-    ControlPotmeter* m_pRateSlider;
-    ControlPotmeter* m_pRateSearch;
-    ControlPushButton* m_pReverseButton;
-    ControlObject* m_pBackButton;
-    ControlObject* m_pForwardButton;
+    CallbackControl* m_pRateDir;
+    CallbackControl* m_pRateRange;
+    CallbackControl* m_pRateSlider;
+    CallbackControl* m_pRateSearch;
+    CallbackControl* m_pReverseButton;
 
-    ControlTTRotary* m_pWheel;
-    ControlTTRotary* m_pScratch;
-    ControlTTRotary* m_pOldScratch;
+    CallbackControl* m_pWheel;
+    CallbackControl* m_pScratch;
+    CallbackControl* m_pOldScratch;
     PositionScratchController* m_pScratchController;
 
-    ControlPushButton* m_pScratchToggle;
-    ControlObject* m_pJog;
+    CallbackControl* m_pScratchToggle;
+    CallbackControl* m_pJog;
     Rotary* m_pJogFilter;
 
-    ControlObject *m_pSampleRate;
+    CallbackControl *m_pSampleRate;
 
     // Enumerations which hold the state of the pitchbend buttons.
     // These enumerations can be used like a bitmask.

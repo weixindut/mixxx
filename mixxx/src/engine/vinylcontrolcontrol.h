@@ -7,10 +7,14 @@
 #include "controlobject.h"
 #include "controlpushbutton.h"
 
+class CallbackControl;
+class CallbackControlManager;
+
 class VinylControlControl : public EngineControl {
     Q_OBJECT
   public:
-    VinylControlControl(const char* pGroup, ConfigObject<ConfigValue>* pConfig);
+    VinylControlControl(const char* pGroup, ConfigObject<ConfigValue>* pConfig,
+                        CallbackControlManager* pCallbackControlManager);
     virtual ~VinylControlControl();
 
     void trackLoaded(TrackPointer pTrack);
@@ -20,14 +24,9 @@ class VinylControlControl : public EngineControl {
     void slotControlVinylSeek(double value);
 
   private:
-    ControlObject* m_pControlVinylSeek;
-    ControlObject* m_pControlVinylSpeedType;
-    ControlObject* m_pControlVinylStatus;
-    ControlPushButton* m_pControlVinylMode;
-    ControlPushButton* m_pControlVinylEnabled;
-    ControlPushButton* m_pControlVinylWantEnabled;
-    ControlPushButton* m_pControlVinylCueing;
-    ControlPushButton* m_pControlVinylSignalEnabled;
+    CallbackControl* m_pControlVinylEnabled;
+    CallbackControl* m_pControlVinylMode;
+    CallbackControl* m_pControlVinylCueing;
     TrackPointer m_pCurrentTrack;
 };
 

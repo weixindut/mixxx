@@ -1,50 +1,75 @@
 #include "engine/vinylcontrolcontrol.h"
+
+#include "engine/callbackcontrolmanager.h"
+#include "library/dao/cue.h"
 #include "mathstuff.h"
 #include "vinylcontrol/vinylcontrol.h"
-#include "library/dao/cue.h"
 
-VinylControlControl::VinylControlControl(const char* pGroup, ConfigObject<ConfigValue>* pConfig)
+VinylControlControl::VinylControlControl(
+    const char* pGroup, ConfigObject<ConfigValue>* pConfig,
+    CallbackControlManager* pCallbackControlManager)
         : EngineControl(pGroup, pConfig) {
-    m_pControlVinylStatus = new ControlObject(ConfigKey(pGroup, "vinylcontrol_status"));
-    m_pControlVinylSpeedType = new ControlObject(ConfigKey(pGroup, "vinylcontrol_speed_type"));
-
-    //Convert the ConfigKey's value into a double for the CO (for fast reads).
-    QString strVinylSpeedType = pConfig->getValueString(ConfigKey(pGroup,
-                                                      "vinylcontrol_speed_type"));
+    pCallbackControlManager->addControl(
+        new ControlObject(ConfigKey(pGroup, "vinylcontrol_status")), 1)
+            ->setParent(this);
+    ControlObject* pControlVinylSpeedType =
+            new ControlObject(ConfigKey(pGroup, "vinylcontrol_speed_type"));
+    // Convert the ConfigKey's value into a double for the CO (for fast reads).
+    QString strVinylSpeedType = pConfig->getValueString(
+        ConfigKey(pGroup, "vinylcontrol_speed_type"));
     if (strVinylSpeedType == MIXXX_VINYL_SPEED_33) {
-        m_pControlVinylSpeedType->set(MIXXX_VINYL_SPEED_33_NUM);
+        pControlVinylSpeedType->set(MIXXX_VINYL_SPEED_33_NUM);
     } else if (strVinylSpeedType == MIXXX_VINYL_SPEED_45) {
-        m_pControlVinylSpeedType->set(MIXXX_VINYL_SPEED_45_NUM);
+        pControlVinylSpeedType->set(MIXXX_VINYL_SPEED_45_NUM);
     } else {
-        m_pControlVinylSpeedType->set(MIXXX_VINYL_SPEED_33_NUM);
+        pControlVinylSpeedType->set(MIXXX_VINYL_SPEED_33_NUM);
     }
+    pCallbackControlManager->addControl(pControlVinylSpeedType, 1)
+            ->setParent(this);
 
-    m_pControlVinylSeek = new ControlObject(ConfigKey(pGroup, "vinylcontrol_seek"));
-    connect(m_pControlVinylSeek, SIGNAL(valueChanged(double)),
+    CallbackControl* pControlVinylSeek = pCallbackControlManager->addControl(
+        new ControlObject(ConfigKey(pGroup, "vinylcontrol_seek")), 1);
+    connect(pControlVinylSeek, SIGNAL(valueChanged(double)),
             this, SLOT(slotControlVinylSeek(double)),
             Qt::DirectConnection);
 
-    m_pControlVinylEnabled = new ControlPushButton(ConfigKey(pGroup, "vinylcontrol_enabled"));
-    m_pControlVinylEnabled->set(0);
-    m_pControlVinylEnabled->setToggleButton(true);
-    m_pControlVinylWantEnabled = new ControlPushButton(ConfigKey(pGroup, "vinylcontrol_wantenabled"));
-    m_pControlVinylWantEnabled->set(0);
-    m_pControlVinylWantEnabled->setToggleButton(true);
-    m_pControlVinylMode = new ControlPushButton(ConfigKey(pGroup, "vinylcontrol_mode"));
-    m_pControlVinylMode->setStates(3);
-    m_pControlVinylMode->setToggleButton(true);
-    m_pControlVinylCueing = new ControlPushButton(ConfigKey(pGroup, "vinylcontrol_cueing"));
-    m_pControlVinylCueing->setStates(3);
-    m_pControlVinylCueing->setToggleButton(true);
-    m_pControlVinylSignalEnabled = new ControlPushButton(ConfigKey(pGroup, "vinylcontrol_signal_enabled"));
-    m_pControlVinylSignalEnabled->set(1);
-    m_pControlVinylSignalEnabled->setToggleButton(true);
+    ControlPushButton* pControlVinylEnabled =
+            new ControlPushButton(ConfigKey(pGroup, "vinylcontrol_enabled"));
+    pControlVinylEnabled->setToggleButton(true);
+    m_pControlVinylEnabled = pCallbackControlManager->addControl(
+        pControlVinylEnabled, 1);
+
+    ControlPushButton* pControlVinylWantEnabled = new ControlPushButton(
+        ConfigKey(pGroup, "vinylcontrol_wantenabled"));
+    pControlVinylWantEnabled->setToggleButton(true);
+    CallbackControl* pCallbackControlVinylWantEnabled =
+            pCallbackControlManager->addControl(pControlVinylWantEnabled, 1);
+    pCallbackControlVinylWantEnabled->setParent(this);
+
+    ControlPushButton* pControlVinylMode = new ControlPushButton(
+        ConfigKey(pGroup, "vinylcontrol_mode"));
+    pControlVinylMode->setStates(3);
+    pControlVinylMode->setToggleButton(true);
+    m_pControlVinylMode = pCallbackControlManager->addControl(
+        pControlVinylMode, 1);
+
+    ControlPushButton* pControlVinylCueing = new ControlPushButton(
+        ConfigKey(pGroup, "vinylcontrol_cueing"));
+    pControlVinylCueing->setStates(3);
+    pControlVinylCueing->setToggleButton(true);
+    m_pControlVinylCueing = pCallbackControlManager->addControl(
+        pControlVinylCueing, 1);
+
+    ControlPushButton* pControlVinylSignalEnabled = new ControlPushButton(
+        ConfigKey(pGroup, "vinylcontrol_signal_enabled"));
+    pControlVinylSignalEnabled->set(1);
+    pControlVinylSignalEnabled->setToggleButton(true);
+    CallbackControl* pCallbackControlVinylSignalEnabled =
+            pCallbackControlManager->addControl(pControlVinylSignalEnabled, 1);
+    pCallbackControlVinylSignalEnabled->setParent(this);
 }
 
 VinylControlControl::~VinylControlControl() {
-    delete m_pControlVinylSeek;
-    delete m_pControlVinylStatus;
-    delete m_pControlVinylSpeedType;
     delete m_pControlVinylEnabled;
     delete m_pControlVinylMode;
     delete m_pControlVinylCueing;

@@ -33,12 +33,10 @@ class BpmControl;
 class RateControl;
 class LoopingControl;
 class ReadAheadManager;
+class CallbackControl;
+class CallbackControlManager;
 class ControlObject;
-class ControlPushButton;
 class ControlObjectThreadMain;
-class ControlBeat;
-class ControlTTRotary;
-class ControlPotmeter;
 class CachingReader;
 class EngineBufferScale;
 class EngineBufferScaleLinear;
@@ -83,7 +81,8 @@ class EngineBuffer : public EngineObject
 {
      Q_OBJECT
 public:
-    EngineBuffer(const char *_group, ConfigObject<ConfigValue> *_config);
+    EngineBuffer(const char *_group, ConfigObject<ConfigValue> *_config,
+                 CallbackControlManager* pCallbackControlManager);
     ~EngineBuffer();
     bool getPitchIndpTimeStretch(void);
 
@@ -195,33 +194,26 @@ private:
     /** Used in update of playpos slider */
     int m_iSamplesCalculated;
 
-    ControlObject* m_pTrackSamples;
-    ControlObject* m_pTrackSampleRate;
+    CallbackControl* m_pTrackSamples;
+    CallbackControl* m_pTrackSampleRate;
 
-    ControlPushButton *playButton, *buttonBeatSync, *playStartButton, *stopStartButton, *stopButton;
-    ControlObjectThreadMain *playButtonCOT, *playStartButtonCOT, *stopStartButtonCOT, *m_pTrackEndCOT, *stopButtonCOT;
-    ControlObject *fwdButton, *backButton;
+    CallbackControl* playButton;
+    CallbackControl* fwdButton;
+    CallbackControl* backButton;
 
-    ControlObject *rateEngine;
-    ControlObject *m_pMasterRate;
-    ControlPotmeter *playposSlider;
-    ControlPotmeter *visualPlaypos;
-    ControlObject *m_pSampleRate;
-    ControlPushButton *m_pKeylock;
+    ControlObjectThreadMain *playButtonCOT, *m_pTrackEndCOT;
 
-    ControlPushButton *m_pEject;
+    CallbackControl* rateEngine;
+    CallbackControl* playposSlider;
+    CallbackControl* visualPlaypos;
+    ControlObject* m_pSampleRate;
+    CallbackControl* m_pKeylock;
 
     /** Control used to signal when at end of file */
-    ControlObject *m_pTrackEnd;
+    CallbackControl* m_pTrackEnd;
 
     // Whether or not to repeat the track when at the end
-    ControlPushButton* m_pRepeat;
-
-    ControlObject *m_pVinylStatus;  //Status of vinyl control
-    ControlObject *m_pVinylSeek;
-
-    /** Fwd and back controls, start and end of track control */
-    ControlPushButton *startButton, *endButton;
+    CallbackControl* m_pRepeat;
 
     /** Object used to perform waveform scaling (sample rate conversion) */
     EngineBufferScale *m_pScale;
@@ -242,8 +234,6 @@ private:
     //int m_iRampIter;
 
     TrackPointer m_pCurrentTrack;
-    /*QFile df;
-    QTextStream writer;*/
 };
 
 #endif

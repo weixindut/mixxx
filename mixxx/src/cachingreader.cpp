@@ -12,6 +12,11 @@
 #include "soundsourceproxy.h"
 #include "sampleutil.h"
 
+namespace {
+
+const bool sDebug = true;
+
+}  // namespace
 
 // There's a little math to this, but not much: 48khz stereo audio is 384kb/sec
 // if using float samples. We want the chunk size to be a power of 2 so it's
@@ -233,7 +238,7 @@ Chunk* CachingReader::lookupChunk(int chunk_number) {
 void CachingReader::processChunkReadRequest(ChunkReadRequest* request,
                                             ReaderStatusUpdate* update) {
     int chunk_number = request->chunk->chunk_number;
-    //qDebug() << "Processing ChunkReadRequest for" << chunk_number;
+    qDebug() << "Processing ChunkReadRequest for" << chunk_number;
     update->status = CHUNK_READ_INVALID;
     update->chunk = request->chunk;
     update->chunk->length = 0;

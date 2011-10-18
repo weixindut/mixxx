@@ -25,17 +25,20 @@
 #include "enginefilterblock.h"
 #include "enginevumeter.h"
 #include "enginefilteriir.h"
+#include "engine/enginemaster.h"
 
 EngineDeck::EngineDeck(const char* group,
-                             ConfigObject<ConfigValue>* pConfig,
-                             EngineChannel::ChannelOrientation defaultOrientation)
+                       ConfigObject<ConfigValue>* pConfig,
+                       EngineMaster* pMixingEngine,
+                       EngineChannel::ChannelOrientation defaultOrientation)
         : EngineChannel(group, defaultOrientation),
           m_pConfig(pConfig) {
     m_pPregain = new EnginePregain(group);
     m_pFilter = new EngineFilterBlock(group);
     m_pFlanger = new EngineFlanger(group);
     m_pClipping = new EngineClipping(group);
-    m_pBuffer = new EngineBuffer(group, pConfig);
+    m_pBuffer = new EngineBuffer(group, pConfig,
+                                 pMixingEngine->getCallbackControlManager());
     m_pVinylSoundEmu = new EngineVinylSoundEmu(pConfig, group);
     m_pVUMeter = new EngineVuMeter(group);
 }

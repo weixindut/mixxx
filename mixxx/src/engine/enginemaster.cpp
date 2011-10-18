@@ -45,17 +45,23 @@ EngineMaster::EngineMaster(ConfigObject<ConfigValue> * _config,
 
     m_pWorkerScheduler = new EngineWorkerScheduler(this);
     m_pWorkerScheduler->start();
-    m_pSyncWorker = new SyncWorker(m_pWorkerScheduler);
+    m_pSyncWorker = new SyncWorker(m_pWorkerScheduler,
+                                   &m_callbackControlManager);
 
     // Master sample rate
-    m_pMasterSampleRate = new ControlObject(ConfigKey(group, "samplerate"));
-    m_pMasterSampleRate->set(44100.);
+    ControlObject* pMasterSampleRate = new ControlObject(
+        ConfigKey(group, "samplerate"));
+    pMasterSampleRate->set(44100.);
+    m_pMasterSampleRate = m_callbackControlManager.addControl(
+        pMasterSampleRate, 1);
 
     // Latency control
-    m_pMasterLatency = new ControlObject(ConfigKey(group, "latency"));
+    m_pMasterLatency = m_callbackControlManager.addControl(
+        new ControlObject(ConfigKey(group, "latency")), 1);
 
     // Master rate
-    m_pMasterRate = new ControlPotmeter(ConfigKey(group, "rate"), -1.0, 1.0);
+    m_pMasterRate = m_callbackControlManager.addControl(
+        new ControlPotmeter(ConfigKey(group, "rate"), -1.0, 1.0), 1);
 
 #ifdef __LADSPA__
     // LADSPA
@@ -63,13 +69,16 @@ EngineMaster::EngineMaster(ConfigObject<ConfigValue> * _config,
 #endif
 
     // Crossfader
-    crossfader = new ControlPotmeter(ConfigKey(group, "crossfader"),-1.,1.);
+    crossfader = m_callbackControlManager.addControl(
+        new ControlPotmeter(ConfigKey(group, "crossfader"),-1.,1.), 1);
 
     // Balance
-    m_pBalance = new ControlPotmeter(ConfigKey(group, "balance"), -1., 1.);
+    m_pBalance = m_callbackControlManager.addControl(
+        new ControlPotmeter(ConfigKey(group, "balance"), -1., 1.), 1);
 
     // Master volume
-    m_pMasterVolume = new ControlLogpotmeter(ConfigKey(group, "volume"), 5.);
+    m_pMasterVolume = m_callbackControlManager.addControl(
+        new ControlLogpotmeter(ConfigKey(group, "volume"), 5.), 1);
 
     // Clipping
     clipping = new EngineClipping(group);
@@ -78,11 +87,14 @@ EngineMaster::EngineMaster(ConfigObject<ConfigValue> * _config,
     vumeter = new EngineVuMeter(group);
 
     // Headphone volume
-    m_pHeadVolume = new ControlLogpotmeter(ConfigKey(group, "headVolume"), 5.);
+    m_pHeadVolume = m_callbackControlManager.addControl(
+        new ControlLogpotmeter(ConfigKey(group, "headVolume"), 5.), 1);
 
     // Headphone mix (left/right)
-    head_mix = new ControlPotmeter(ConfigKey(group, "headMix"),-1.,1.);
-    head_mix->set(-1.);
+    ControlPotmeter* pHeadMix = new ControlPotmeter(
+        ConfigKey(group, "headMix"), -1., 1.);
+    pHeadMix->set(-1);
+    head_mix = m_callbackControlManager.addControl(pHeadMix, 1);
 
     // Headphone Clipping
     head_clipping = new EngineClipping("");
@@ -101,15 +113,17 @@ EngineMaster::EngineMaster(ConfigObject<ConfigValue> * _config,
             this, SIGNAL(bytesRecorded(int)));
 
     //X-Fader Setup
-    xFaderCurve = new ControlPotmeter(
-        ConfigKey("[Mixer Profile]", "xFaderCurve"), 0., 2.);
-    xFaderCalibration = new ControlPotmeter(
-        ConfigKey("[Mixer Profile]", "xFaderCalibration"), -2., 2.);
+    xFaderCurve = m_callbackControlManager.addControl(
+        new ControlPotmeter(
+            ConfigKey("[Mixer Profile]", "xFaderCurve"), 0., 2.), 1);
+
+    xFaderCalibration = m_callbackControlManager.addControl(
+        new ControlPotmeter(
+            ConfigKey("[Mixer Profile]", "xFaderCalibration"), -2., 2.), 1);
 }
 
-EngineMaster::~EngineMaster()
-{
-    qDebug() << "in ~EngineMaster()";
+EngineMaster::~EngineMaster() {
+    qDebug() << "~EngineMaster()";
     delete crossfader;
     delete m_pBalance;
     delete head_mix;
@@ -315,8 +329,10 @@ void EngineMaster::mixChannels(unsigned int channelBitvector, unsigned int maxCh
     }
 }
 
-void EngineMaster::process(const CSAMPLE *, const CSAMPLE *pOut, const int iBufferSize)
-{
+void EngineMaster::process(const CSAMPLE *, const CSAMPLE *pOut,
+                           const int iBufferSize) {
+    m_callbackControlManager.callbackProcessIncomingUpdates();
+
     CSAMPLE **pOutput = (CSAMPLE**)pOut;
     Q_UNUSED(pOutput);
 
@@ -418,6 +434,9 @@ void EngineMaster::process(const CSAMPLE *, const CSAMPLE *pOut, const int iBuff
 
     //Master/headphones interleaving is now done in
     //SoundManager::requestBuffer() - Albert Nov 18/07
+
+    // Publish all of our control changes.
+    m_callbackControlManager.callbackProcessOutgoingUpdates();
 
     // Schedule a ControlObject sync
     m_pSyncWorker->schedule();
