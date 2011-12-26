@@ -358,7 +358,7 @@ double RateControl::getWheelFactor() {
 
 double RateControl::getJogFactor() {
     // FIXME: Sensitivity should be configurable separately?
-    const double jogSensitivity = m_pRateRange->get();
+    const double jogSensitivity = 0.1;  // Nudges during playback
     double jogValue = m_pJog->get();
 
     // Since m_pJog is an accumulator, reset it since we've used its value.
@@ -375,7 +375,8 @@ double RateControl::getJogFactor() {
     return jogFactor;
 }
 
-double RateControl::calculateRate(double baserate, bool paused, int iSamplesPerBuffer) {
+double RateControl::calculateRate(double baserate, bool paused, int iSamplesPerBuffer,
+                                  bool* isScratching) {
     double rate = 0.0;
     double wheelFactor = getWheelFactor();
     double jogFactor = getJogFactor();
@@ -399,6 +400,7 @@ double RateControl::calculateRate(double baserate, bool paused, int iSamplesPerB
     if (m_pScratchController->isEnabled()) {
         scratchEnable = true;
         scratchFactor = m_pScratchController->getRate();
+        *isScratching = true;
     }
 
     if (searching) {
@@ -599,3 +601,6 @@ void RateControl::slotControlVinyl(double toggle)
     m_bVinylControlEnabled = (bool)toggle;
 }
 
+void RateControl::notifySeek(double playPos) {
+    m_pScratchController->notifySeek(playPos);
+}

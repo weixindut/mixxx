@@ -349,7 +349,9 @@ void DlgPrefMidiBindings::slotDeviceState(int state) {
 
 void DlgPrefMidiBindings::enableDevice()
 {
-    m_pMidiDevice->close();
+    if (m_pMidiDevice->isOpen()) {
+        m_pMidiDevice->close();
+    }
     m_pMidiDevice->open();
     m_pConfig->set(ConfigKey("[Midi]", m_pMidiDevice->getName().replace(" ", "_")), 1);
 
@@ -373,7 +375,11 @@ void DlgPrefMidiBindings::slotAddInputBinding()
 
     QStringList controlValues;
     if (controlGroup == CONTROLGROUP_CHANNEL1_STRING ||
-        controlGroup == CONTROLGROUP_CHANNEL2_STRING) {
+        controlGroup == CONTROLGROUP_CHANNEL2_STRING ||
+        controlGroup == CONTROLGROUP_SAMPLER1_STRING ||
+        controlGroup == CONTROLGROUP_SAMPLER2_STRING ||
+        controlGroup == CONTROLGROUP_SAMPLER3_STRING ||
+        controlGroup == CONTROLGROUP_SAMPLER4_STRING) {
         controlValues = ControlValueDelegate::getChannelControlValues();
     }
     else if (controlGroup == CONTROLGROUP_MASTER_STRING)
@@ -383,6 +389,14 @@ void DlgPrefMidiBindings::slotAddInputBinding()
     else if (controlGroup == CONTROLGROUP_PLAYLIST_STRING)
     {
         controlValues = ControlValueDelegate::getPlaylistControlValues();
+    }
+    else if (controlGroup == CONTROLGROUP_FLANGER_STRING)
+    {
+        controlValues = ControlValueDelegate::getFlangerControlValues();
+    }
+    else if (controlGroup == CONTROLGROUP_MICROPHONE_STRING)
+    {
+        controlValues = ControlValueDelegate::getMicrophoneControlValues();
     }
     else
     {
