@@ -202,11 +202,6 @@ private:
     CallbackControl* m_pTrackSampleRate;
 
     CallbackControl* playButton;
-    CallbackControl* playStartButton;
-    CallbackControl* stopStartButton;
-    CallbackControl* startButton;
-    CallbackControl* endButton;
-    CallbackControl* stopButton;
     CallbackControl* fwdButton;
     CallbackControl* backButton;
 
@@ -218,7 +213,6 @@ private:
     CallbackControl* visualBpm;
     ControlObject* m_pSampleRate;
     CallbackControl* m_pKeylock;
-    CallbackControl* m_pEject;
 
     /** Control used to signal when at end of file */
     CallbackControl* m_pTrackEnd;

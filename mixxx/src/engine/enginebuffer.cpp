@@ -273,20 +273,12 @@ EngineBuffer::~EngineBuffer()
     delete m_pTrackSampleRate;
 
     delete playButton;
-    delete playStartButton;
-    delete stopStartButton;
-    delete startButton;
-    delete stopButton;
-    delete endButton;
-    delete fwdButton;
-    delete backButton;
 
     delete rateEngine;
     delete playposSlider;
     delete visualPlaypos;
     delete visualBpm;
     delete m_pKeylock;
-    delete m_pEject;
 
     delete m_pTrackEndCOT;
     delete m_pTrackEnd;
