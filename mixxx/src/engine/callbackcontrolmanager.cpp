@@ -34,10 +34,6 @@ CallbackControl::CallbackControl(CallbackControlManager* pControlManager,
 CallbackControl::~CallbackControl() {
 }
 
-double CallbackControl::get() const {
-    return m_value.value;
-}
-
 void CallbackControl::set(double value) {
     // TODO(XXX) set time.
     m_value.value = value;

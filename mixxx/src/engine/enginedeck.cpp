@@ -38,7 +38,7 @@ EngineDeck::EngineDeck(const char* group,
     m_pFlanger = new EngineFlanger(group);
     m_pClipping = new EngineClipping(group);
     m_pBuffer = new EngineBuffer(group, pConfig,
-                                 pMixingEngine->getCallbackControlManager());
+                                 pMixingEngine->getState());
     m_pVinylSoundEmu = new EngineVinylSoundEmu(pConfig, group);
     m_pVUMeter = new EngineVuMeter(group);
 }

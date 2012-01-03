@@ -28,6 +28,7 @@
 #include "configobject.h"
 #include "controlpotmeter.h"
 #include "engine/callbackcontrolmanager.h"
+#include "engine/enginestate.h"
 #include "engine/enginebufferscalest.h"
 #include "engine/enginebufferscalelinear.h"
 #include "engine/enginebufferscaledummy.h"
@@ -57,7 +58,7 @@ const double kMaxPlayposRange = 1.14;
 const double kMinPlayposRange = -0.14;
 
 EngineBuffer::EngineBuffer(const char * _group, ConfigObject<ConfigValue> * _config,
-                           CallbackControlManager* pCallbackControlManager) :
+                           EngineState* pEngineState) :
     m_engineLock(QMutex::Recursive),
     group(_group),
     m_pConfig(_config),
@@ -92,6 +93,9 @@ EngineBuffer::EngineBuffer(const char * _group, ConfigObject<ConfigValue> * _con
 
     m_fLastSampleValue[0] = 0;
     m_fLastSampleValue[1] = 0;
+
+    CallbackControlManager* pCallbackControlManager =
+            pEngineState->getControlManager();
 
     m_pReader = new CachingReader(_group, _config);
     connect(m_pReader, SIGNAL(trackLoaded(TrackPointer, int, int)),
@@ -210,21 +214,20 @@ EngineBuffer::EngineBuffer(const char * _group, ConfigObject<ConfigValue> * _con
     // Quantization Controller for enabling and disabling the
     // quantization (alignment) of loop in/out positions and (hot)cues with
     // beats.
-    addControl(new QuantizeControl(_group, _config));
+    addControl(new QuantizeControl(_group, pEngineState));
 
     // Create the Loop Controller
-    m_pLoopingControl = new LoopingControl(_group, _config);
+    m_pLoopingControl = new LoopingControl(_group, pEngineState);
     addControl(m_pLoopingControl);
 
 #ifdef __VINYLCONTROL__
     // If VinylControl is enabled, add a VinylControlControl. This must be done
     // before RateControl is created.
-    addControl(new VinylControlControl(group, _config,
-                                       pCallbackControlManager));
+    addControl(new VinylControlControl(group, pEngineState));
 #endif
 
     // Create the Rate Controller
-    m_pRateControl = new RateControl(_group, _config, pCallbackControlManager);
+    m_pRateControl = new RateControl(_group, pEngineState);
     addControl(m_pRateControl);
 
     fwdButton = pCallbackControlManager->getControl(ConfigKey(_group, "fwd"));
@@ -232,7 +235,7 @@ EngineBuffer::EngineBuffer(const char * _group, ConfigObject<ConfigValue> * _con
         ConfigKey(_group, "back"));
 
     // Create the BPM Controller
-    m_pBpmControl = new BpmControl(_group, _config);
+    m_pBpmControl = new BpmControl(_group, _config, pEngineState);
     addControl(m_pBpmControl);
 
     m_pReadAheadManager = new ReadAheadManager(m_pReader);

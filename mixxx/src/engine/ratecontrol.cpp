@@ -1,16 +1,17 @@
 // ratecontrol.cpp
 // Created 7/4/2009 by RJ Ryan (rryan@mit.edu)
 
-#include "controlobject.h"
-#include "controlpushbutton.h"
-#include "controlpotmeter.h"
-#include "controlttrotary.h"
-#include "rotary.h"
+#include "engine/ratecontrol.h"
 
+#include "controlobject.h"
+#include "controlpotmeter.h"
+#include "controlpushbutton.h"
+#include "controlttrotary.h"
 #include "engine/callbackcontrolmanager.h"
 #include "engine/enginecontrol.h"
-#include "engine/ratecontrol.h"
+#include "engine/enginestate.h"
 #include "engine/positionscratchcontroller.h"
+#include "rotary.h"
 
 #ifdef _MSC_VER
 #include <float.h>  // for _isnan() on VC++
@@ -28,20 +29,21 @@ double RateControl::m_dPermSmall = 0.05;
 int RateControl::m_iRateRampSensitivity = 250;
 enum RateControl::RATERAMP_MODE RateControl::m_eRateRampMode = RateControl::RATERAMP_STEP;
 
-RateControl::RateControl(const char* _group,
-                         ConfigObject<ConfigValue>* _config,
-                         CallbackControlManager* pCallbackControlManager) :
-    EngineControl(_group, _config),
-    m_ePbCurrent(0),
-    m_ePbPressed(0),
-    m_bTempStarted(false),
-    m_dTempRateChange(0.0),
-    m_dRateTemp(0.0),
-    m_eRampBackMode(RATERAMP_RAMPBACK_NONE),
-    m_dRateTempRampbackChange(0.0),
-    m_dOldRate(0.0f),
-    m_pConfig(_config) {
+RateControl::RateControl(const char* _group, EngineState* pEngineState)
+        : EngineControl(_group, pEngineState->getConfig()),
+          m_ePbCurrent(0),
+          m_ePbPressed(0),
+          m_bTempStarted(false),
+          m_dTempRateChange(0.0),
+          m_dRateTemp(0.0),
+          m_eRampBackMode(RATERAMP_RAMPBACK_NONE),
+          m_dRateTempRampbackChange(0.0),
+          m_dOldRate(0.0f),
+          m_pConfig(pEngineState->getConfig()) {
     m_pScratchController = new PositionScratchController(_group);
+
+    CallbackControlManager* pCallbackControlManager =
+            pEngineState->getControlManager();
 
     m_pRateDir = pCallbackControlManager->addControl(
         new ControlObject(ConfigKey(_group, "rate_dir")), 1);
@@ -127,7 +129,8 @@ RateControl::RateControl(const char* _group,
 
     // We need the sample rate so we can guesstimate something close
     // what latency is.
-    m_pSampleRate = pCallbackControlManager->getControl(ConfigKey("[Master]","samplerate"));
+    m_pSampleRate = pCallbackControlManager->getControl(
+        ConfigKey("[Master]", "samplerate"));
 
     // Wheel to control playback position/speed
     m_pWheel = pCallbackControlManager->addControl(
@@ -451,8 +454,7 @@ double RateControl::calculateRate(double baserate, bool paused, int iSamplesPerB
 double RateControl::process(const double rate,
                             const double currentSample,
                             const double totalSamples,
-                            const int bufferSamples)
-{
+                            const int bufferSamples) {
     /*
      * Code to handle temporary rate change buttons.
      *
@@ -467,7 +469,7 @@ double RateControl::process(const double rate,
      * one.
      */
 
-    double latrate = ((double)bufferSamples / (double)m_pSampleRate->get());
+    double latrate = static_cast<double>(bufferSamples) / m_pSampleRate->get();
 
 
     if ((m_ePbPressed) && (!m_bTempStarted))
@@ -581,24 +583,20 @@ void RateControl::setRateTemp(double v)
         m_dRateTemp = 0;
 }
 
-void RateControl::addRateTemp(double v)
-{
+void RateControl::addRateTemp(double v) {
     setRateTemp(m_dRateTemp + v);
 }
 
-void RateControl::subRateTemp(double v)
-{
+void RateControl::subRateTemp(double v) {
     setRateTemp(m_dRateTemp - v);
 }
 
-void RateControl::resetRateTemp(void)
-{
+void RateControl::resetRateTemp(void) {
     setRateTemp(0.0);
 }
 
-void RateControl::slotControlVinyl(double toggle)
-{
-    m_bVinylControlEnabled = (bool)toggle;
+void RateControl::slotControlVinyl(double toggle) {
+    m_bVinylControlEnabled = static_cast<bool>(toggle);
 }
 
 void RateControl::notifySeek(double playPos) {

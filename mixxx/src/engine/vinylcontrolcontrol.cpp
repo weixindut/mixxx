@@ -1,21 +1,23 @@
 #include "engine/vinylcontrolcontrol.h"
 
 #include "engine/callbackcontrolmanager.h"
+#include "engine/enginestate.h"
 #include "library/dao/cue.h"
 #include "mathstuff.h"
 #include "vinylcontrol/vinylcontrol.h"
 
 VinylControlControl::VinylControlControl(
-    const char* pGroup, ConfigObject<ConfigValue>* pConfig,
-    CallbackControlManager* pCallbackControlManager)
-        : EngineControl(pGroup, pConfig) {
+    const char* pGroup, EngineState* pEngineState)
+        : EngineControl(pGroup, pEngineState->getConfig()) {
+    CallbackControlManager* pCallbackControlManager =
+            pEngineState->getControlManager();
     pCallbackControlManager->addControl(
         new ControlObject(ConfigKey(pGroup, "vinylcontrol_status")), 1)
             ->setParent(this);
     ControlObject* pControlVinylSpeedType =
             new ControlObject(ConfigKey(pGroup, "vinylcontrol_speed_type"));
     // Convert the ConfigKey's value into a double for the CO (for fast reads).
-    QString strVinylSpeedType = pConfig->getValueString(
+    QString strVinylSpeedType = pEngineState->getConfig()->getValueString(
         ConfigKey(pGroup, "vinylcontrol_speed_type"));
     if (strVinylSpeedType == MIXXX_VINYL_SPEED_33) {
         pControlVinylSpeedType->set(MIXXX_VINYL_SPEED_33_NUM);

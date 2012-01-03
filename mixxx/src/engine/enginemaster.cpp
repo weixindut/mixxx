@@ -42,8 +42,9 @@
 
 EngineMaster::EngineMaster(ConfigObject<ConfigValue> * _config,
                            const char * group,
-                           bool bEnableSidechain) {
-
+                           bool bEnableSidechain)
+        : m_state(_config),
+          m_callbackControlManager(*m_state.getControlManager()) {
     m_pWorkerScheduler = new EngineWorkerScheduler(this);
     m_pWorkerScheduler->start();
     m_pSyncWorker = new SyncWorker(m_pWorkerScheduler,

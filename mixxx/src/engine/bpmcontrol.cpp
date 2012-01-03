@@ -5,6 +5,7 @@
 #include "controlpushbutton.h"
 
 #include "engine/enginebuffer.h"
+#include "engine/enginestate.h"
 #include "engine/bpmcontrol.h"
 
 const int minBpm = 30;
@@ -12,11 +13,13 @@ const int maxInterval = (int)(1000.*(60./(CSAMPLE)minBpm));
 const int filterLength = 5;
 
 BpmControl::BpmControl(const char* _group,
-                       ConfigObject<ConfigValue>* _config) :
+                       ConfigObject<ConfigValue>* _config,
+                       EngineState* pEngineState) :
         EngineControl(_group, _config),
         m_tapFilter(this, filterLength, maxInterval) {
-    m_pPlayButton = ControlObject::getControl(ConfigKey(_group, "play"));
-    m_pRateSlider = ControlObject::getControl(ConfigKey(_group, "rate"));
+    CallbackControlManager* pControlManager = pEngineState->getControlManager();
+    m_pPlayButton = pControlManager->getControl(ConfigKey(_group, "play"));
+    m_pRateSlider = pControlManager->getControl(ConfigKey(_group, "rate"));
     connect(m_pRateSlider, SIGNAL(valueChanged(double)),
             this, SLOT(slotRateChanged(double)),
             Qt::DirectConnection);
@@ -24,7 +27,7 @@ BpmControl::BpmControl(const char* _group,
             this, SLOT(slotRateChanged(double)),
             Qt::DirectConnection);
 
-    m_pRateRange = ControlObject::getControl(ConfigKey(_group, "rateRange"));
+    m_pRateRange = pControlManager->getControl(ConfigKey(_group, "rateRange"));
     connect(m_pRateRange, SIGNAL(valueChanged(double)),
             this, SLOT(slotRateChanged(double)),
             Qt::DirectConnection);
@@ -32,7 +35,7 @@ BpmControl::BpmControl(const char* _group,
             this, SLOT(slotRateChanged(double)),
             Qt::DirectConnection);
 
-    m_pRateDir = ControlObject::getControl(ConfigKey(_group, "rate_dir"));
+    m_pRateDir = pControlManager->getControl(ConfigKey(_group, "rate_dir"));
     connect(m_pRateDir, SIGNAL(valueChanged(double)),
             this, SLOT(slotRateChanged(double)),
             Qt::DirectConnection);
@@ -40,38 +43,45 @@ BpmControl::BpmControl(const char* _group,
             this, SLOT(slotRateChanged(double)),
             Qt::DirectConnection);
 
-    m_pFileBpm = new ControlObject(ConfigKey(_group, "file_bpm"));
+    m_pFileBpm = pControlManager->addControl(
+        new ControlObject(ConfigKey(_group, "file_bpm")), 1);
     connect(m_pFileBpm, SIGNAL(valueChanged(double)),
             this, SLOT(slotFileBpmChanged(double)),
             Qt::DirectConnection);
 
-    m_pEngineBpm = new ControlObject(ConfigKey(_group, "bpm"));
+    m_pEngineBpm = pControlManager->addControl(
+        new ControlObject(ConfigKey(_group, "bpm")), 1);
     connect(m_pEngineBpm, SIGNAL(valueChanged(double)),
             this, SLOT(slotSetEngineBpm(double)),
             Qt::DirectConnection);
 
-    m_pButtonTap = new ControlPushButton(ConfigKey(_group, "bpm_tap"));
+    m_pButtonTap = pControlManager->addControl(
+        new ControlPushButton(ConfigKey(_group, "bpm_tap")), 1);
     connect(m_pButtonTap, SIGNAL(valueChanged(double)),
             this, SLOT(slotBpmTap(double)),
             Qt::DirectConnection);
 
     // Beat sync (scale buffer tempo relative to tempo of other buffer)
-    m_pButtonSync = new ControlPushButton(ConfigKey(_group, "beatsync"));
+    m_pButtonSync = pControlManager->addControl(
+        new ControlPushButton(ConfigKey(_group, "beatsync")), 1);
     connect(m_pButtonSync, SIGNAL(valueChanged(double)),
             this, SLOT(slotControlBeatSync(double)),
             Qt::DirectConnection);
 
-    m_pButtonSyncPhase = new ControlPushButton(ConfigKey(_group, "beatsync_phase"));
+    m_pButtonSyncPhase = pControlManager->addControl(
+        new ControlPushButton(ConfigKey(_group, "beatsync_phase")), 1);
     connect(m_pButtonSyncPhase, SIGNAL(valueChanged(double)),
             this, SLOT(slotControlBeatSyncPhase(double)),
             Qt::DirectConnection);
 
-    m_pButtonSyncTempo = new ControlPushButton(ConfigKey(_group, "beatsync_tempo"));
+    m_pButtonSyncTempo = pControlManager->addControl(
+        new ControlPushButton(ConfigKey(_group, "beatsync_tempo")), 1);
     connect(m_pButtonSyncTempo, SIGNAL(valueChanged(double)),
             this, SLOT(slotControlBeatSyncTempo(double)),
             Qt::DirectConnection);
 
-    m_pTranslateBeats = new ControlPushButton(ConfigKey(_group, "beats_translate_curpos"));
+    m_pTranslateBeats = pControlManager->addControl(
+        new ControlPushButton(ConfigKey(_group, "beats_translate_curpos")), 1);
     connect(m_pTranslateBeats, SIGNAL(valueChanged(double)),
             this, SLOT(slotBeatsTranslate(double)));
 

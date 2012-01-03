@@ -6,7 +6,6 @@
 
 #include <QObject>
 
-#include "configobject.h"
 #include "engine/enginecontrol.h"
 
 const int RATE_TEMP_STEP = 500;
@@ -15,8 +14,8 @@ const int RATE_SENSITIVITY_MIN = 100;
 const int RATE_SENSITIVITY_MAX = 2500;
 
 class Rotary;
+class EngineState;
 class CallbackControl;
-class CallbackControlManager;
 class PositionScratchController;
 
 // RateControl is an EngineControl that is in charge of managing the rate of
@@ -24,9 +23,8 @@ class PositionScratchController;
 // various controls, RateControl will calculate the current rate.
 class RateControl : public EngineControl {
     Q_OBJECT
-public:
-    RateControl(const char* _group, ConfigObject<ConfigValue>* _config,
-                CallbackControlManager* pCallbackControlManager);
+  public:
+    RateControl(const char* _group, EngineState* pEngineState);
     virtual ~RateControl();
 
     // Must be called during each callback of the audio thread so that
@@ -36,7 +34,8 @@ public:
                    const double totalSamples,
                    const int bufferSamples);
     // Returns the current engine rate.
-    double calculateRate(double baserate, bool paused, int iSamplesPerBuffer, bool* isScratching);
+    double calculateRate(double baserate, bool paused, int iSamplesPerBuffer,
+                         bool* isScratching);
     double getRawRate();
 
     // Set rate change when temp rate button is pressed
@@ -48,9 +47,9 @@ public:
     // Set rate change when perm rate small button is pressed
     static void setPermSmall(double v);
     /** Set Rate Ramp Mode */
-    static void setRateRamp(bool);
+    static void setRateRamp(bool bRateRampEnabled);
     /** Set Rate Ramp Sensitivity */
-    static void setRateRampSensitivity(int);
+    static void setRateRampSensitivity(int iSensitivity);
     virtual void notifySeek(double dNewPlaypos);
 
   public slots:
@@ -86,10 +85,14 @@ public:
     /** Values used when temp and perm rate buttons are pressed */
     static double m_dTemp, m_dTempSmall, m_dPerm, m_dPermSmall;
 
-    CallbackControl *buttonRateTempDown, *buttonRateTempDownSmall,
-        *buttonRateTempUp, *buttonRateTempUpSmall;
-    CallbackControl *buttonRatePermDown, *buttonRatePermDownSmall,
-        *buttonRatePermUp, *buttonRatePermUpSmall;
+    CallbackControl* buttonRateTempDown;
+    CallbackControl* buttonRateTempDownSmall;
+    CallbackControl* buttonRateTempUp;
+    CallbackControl* buttonRateTempUpSmall;
+    CallbackControl* buttonRatePermDown;
+    CallbackControl* buttonRatePermDownSmall;
+    CallbackControl* buttonRatePermUp;
+    CallbackControl* buttonRatePermUpSmall;
     CallbackControl* m_pRateDir;
     CallbackControl* m_pRateRange;
     CallbackControl* m_pRateSlider;
@@ -105,6 +108,7 @@ public:
     CallbackControl* m_pJog;
     Rotary* m_pJogFilter;
 
+    // Not owned by RateControl
     CallbackControl *m_pSampleRate;
 
     // Enumerations which hold the state of the pitchbend buttons.

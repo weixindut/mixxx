@@ -1,29 +1,39 @@
-// QuantizeControl.cpp
+// quantizecontrol.cpp
 // Created on Sat 5, 2011
 // Author: pwhelan
 
-#include <QtDebug>
 #include <QObject>
 
-#include "controlobject.h"
-#include "configobject.h"
-#include "controlpushbutton.h"
 #include "cachingreader.h"
-#include "engine/quantizecontrol.h"
+#include "configobject.h"
+#include "controlobject.h"
+#include "controlpushbutton.h"
+#include "engine/callbackcontrolmanager.h"
 #include "engine/enginecontrol.h"
+#include "engine/enginestate.h"
+#include "engine/quantizecontrol.h"
 #include "mathstuff.h"
 
 QuantizeControl::QuantizeControl(const char* pGroup,
-                                 ConfigObject<ConfigValue>* pConfig)
-        : EngineControl(pGroup, pConfig) {
+                                 EngineState* pEngineState)
+        : EngineControl(pGroup, pEngineState->getConfig()) {
+    CallbackControlManager* pCallbackControlManager =
+            pEngineState->getControlManager();
+
     // Turn quantize OFF by default. See Bug #898213
-    m_pCOQuantizeEnabled = new ControlPushButton(ConfigKey(pGroup, "quantize"));
-    m_pCOQuantizeEnabled->setToggleButton(true);
-    m_pCONextBeat = new ControlObject(ConfigKey(pGroup, "beat_next"));
+    ControlPushButton* pCOQuantizeEnabled = new ControlPushButton(
+        ConfigKey(pGroup, "quantize"));
+    pCOQuantizeEnabled->setToggleButton(true);
+    m_pCOQuantizeEnabled = pCallbackControlManager->addControl(
+        pCOQuantizeEnabled, 1);
+    m_pCONextBeat = pCallbackControlManager->addControl(
+        new ControlObject(ConfigKey(pGroup, "beat_next")), 1);
     m_pCONextBeat->set(-1);
-    m_pCOPrevBeat = new ControlObject(ConfigKey(pGroup, "beat_prev"));
+    m_pCOPrevBeat = pCallbackControlManager->addControl(
+        new ControlObject(ConfigKey(pGroup, "beat_prev")), 1);
     m_pCOPrevBeat->set(-1);
-    m_pCOClosestBeat = new ControlObject(ConfigKey(pGroup, "beat_closest"));
+    m_pCOClosestBeat = pCallbackControlManager->addControl(
+        new ControlObject(ConfigKey(pGroup, "beat_closest")), 1);
     m_pCOClosestBeat->set(-1);
 }
 

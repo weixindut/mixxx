@@ -34,7 +34,7 @@ class RateControl;
 class LoopingControl;
 class ReadAheadManager;
 class CallbackControl;
-class CallbackControlManager;
+class EngineState;
 class ControlObject;
 class ControlObjectThreadMain;
 class CachingReader;
@@ -84,8 +84,8 @@ class EngineBuffer : public EngineObject
      Q_OBJECT
 public:
     EngineBuffer(const char *_group, ConfigObject<ConfigValue> *_config,
-                 CallbackControlManager* pCallbackControlManager);
-    ~EngineBuffer();
+                 EngineState* pEngineState);
+    virtual ~EngineBuffer();
     bool getPitchIndpTimeStretch(void);
 
     void bindWorkers(EngineWorkerScheduler* pWorkerScheduler);
@@ -141,7 +141,7 @@ public:
     void slotTrackLoadFailed(TrackPointer pTrack,
                              QString reason);
 
-private:
+  private:
     void setPitchIndpTimeStretch(bool b);
 
     void updateIndicators(double rate, int iBufferSize);

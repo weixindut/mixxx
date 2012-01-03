@@ -11,71 +11,86 @@
 #include "library/dao/cue.h"
 #include "cachingreader.h"
 #include "mathstuff.h"
+#include "engine/enginestate.h"
+#include "engine/callbackcontrolmanager.h"
 
 #define NUM_HOT_CUES 37
 
 CueControl::CueControl(const char * _group,
-                       ConfigObject<ConfigValue> * _config) :
-        EngineControl(_group, _config),
+                       EngineState* pEngineState) :
+        EngineControl(_group, pEngineState->getConfig()),
         m_bPreviewing(false),
         m_bPreviewingHotcue(false),
-        m_pPlayButton(ControlObject::getControl(ConfigKey(_group, "play"))),
         m_iCurrentlyPreviewingHotcues(0),
         m_iNumHotCues(NUM_HOT_CUES),
         m_pLoadedTrack(),
         m_mutex(QMutex::Recursive),
         m_bHotcueCancel(false) {
-    createControls();
+    createControls(pEngineState);
 
-    m_pTrackSamples = ControlObject::getControl(ConfigKey(_group, "track_samples"));
+    CallbackControlManager* pCallbackControlManager =
+            pEngineState->getControlManager();
+    m_pPlayButton = pCallbackControlManager->getControl(
+        ConfigKey(_group, "play"));
+    connect(m_pPlayButton, SIGNAL(valueChanged(double)),
+            this, SLOT(cuePlay(double)),
+            Qt::DirectConnection);
+    m_pTrackSamples = pCallbackControlManager->getControl(
+        ConfigKey(_group, "track_samples"));
+    m_pQuantizeEnabled = pCallbackControlManager->getControl(
+        ConfigKey(_group, "quantize"));
+    m_pNextBeat = pCallbackControlManager->getControl(
+        ConfigKey(_group, "beat_next"));
+    m_pClosestBeat = pCallbackControlManager->getControl(
+        ConfigKey(_group, "beat_closest"));
 
-    m_pQuantizeEnabled = ControlObject::getControl(ConfigKey(_group, "quantize"));
-
-    m_pNextBeat = ControlObject::getControl(ConfigKey(_group, "beat_next"));
-    m_pClosestBeat = ControlObject::getControl(ConfigKey(_group, "beat_closest"));
-
-    m_pCuePoint = new ControlObject(ConfigKey(_group, "cue_point"));
-    m_pCueMode = new ControlObject(ConfigKey(_group,"cue_mode"));
+    m_pCuePoint = pCallbackControlManager->addControl(
+        new ControlObject(ConfigKey(_group, "cue_point")), 1);
     m_pCuePoint->set(-1);
 
-    m_pCueSet = new ControlPushButton(ConfigKey(_group, "cue_set"));
+    m_pCueMode = pCallbackControlManager->addControl(
+        new ControlObject(ConfigKey(_group, "cue_mode")), 1);
+
+    m_pCueSet = pCallbackControlManager->addControl(
+        new ControlPushButton(ConfigKey(_group, "cue_set")), 1);
     connect(m_pCueSet, SIGNAL(valueChanged(double)),
             this, SLOT(cueSet(double)),
             Qt::DirectConnection);
 
-    m_pCueGoto = new ControlPushButton(ConfigKey(_group, "cue_goto"));
+    m_pCueGoto = pCallbackControlManager->addControl(
+        new ControlPushButton(ConfigKey(_group, "cue_goto")), 1);
     connect(m_pCueGoto, SIGNAL(valueChanged(double)),
             this, SLOT(cueGoto(double)),
             Qt::DirectConnection);
 
-    m_pCueGotoAndStop =
-            new ControlPushButton(ConfigKey(_group, "cue_gotoandstop"));
+    m_pCueGotoAndStop = pCallbackControlManager->addControl(
+        new ControlPushButton(ConfigKey(_group, "cue_gotoandstop")), 1);
     connect(m_pCueGotoAndStop, SIGNAL(valueChanged(double)),
             this, SLOT(cueGotoAndStop(double)),
             Qt::DirectConnection);
 
-    m_pCueSimple = new ControlPushButton(ConfigKey(_group, "cue_simple"));
+    m_pCueSimple = pCallbackControlManager->addControl(
+        new ControlPushButton(ConfigKey(_group, "cue_simple")), 1);
     connect(m_pCueSimple, SIGNAL(valueChanged(double)),
             this, SLOT(cueSimple(double)),
             Qt::DirectConnection);
 
-    m_pCuePreview = new ControlPushButton(ConfigKey(_group, "cue_preview"));
+    m_pCuePreview = pCallbackControlManager->addControl(
+        new ControlPushButton(ConfigKey(_group, "cue_preview")), 1);
     connect(m_pCuePreview, SIGNAL(valueChanged(double)),
             this, SLOT(cuePreview(double)),
             Qt::DirectConnection);
 
-    m_pCueCDJ = new ControlPushButton(ConfigKey(_group, "cue_cdj"));
+    m_pCueCDJ = pCallbackControlManager->addControl(
+        new ControlPushButton(ConfigKey(_group, "cue_cdj")), 1);
     connect(m_pCueCDJ, SIGNAL(valueChanged(double)),
             this, SLOT(cueCDJ(double)),
             Qt::DirectConnection);
 
-    m_pCueDefault = new ControlPushButton(ConfigKey(_group, "cue_default"));
+    m_pCueDefault = pCallbackControlManager->addControl(
+        new ControlPushButton(ConfigKey(_group, "cue_default")), 1);
     connect(m_pCueDefault, SIGNAL(valueChanged(double)),
             this, SLOT(cueDefault(double)),
-            Qt::DirectConnection);
-
-    connect(m_pPlayButton, SIGNAL(valueChanged(double)),
-            this, SLOT(cuePlay(double)),
             Qt::DirectConnection);
 }
 
@@ -95,10 +110,10 @@ CueControl::~CueControl() {
     }
 }
 
-void CueControl::createControls() {
+void CueControl::createControls(EngineState* pEngineState) {
     for (int i = 0; i < m_iNumHotCues; ++i) {
-        HotcueControl* pControl = new HotcueControl(getGroup(), i);
-
+        HotcueControl* pControl = new HotcueControl(
+            getGroup(), i, pEngineState);
         connect(pControl, SIGNAL(hotcuePositionChanged(HotcueControl*, double)),
                 this, SLOT(hotcuePositionChanged(HotcueControl*, double)),
                 Qt::DirectConnection);
@@ -715,47 +730,59 @@ ConfigKey HotcueControl::keyForControl(int hotcue, QString name) {
     return key;
 }
 
-HotcueControl::HotcueControl(const char* pGroup, int i)
+HotcueControl::HotcueControl(const char* pGroup, int i,
+                             EngineState* pEngineState)
         : m_pGroup(pGroup),
           m_iHotcueNumber(i),
           m_pCue(NULL),
           m_bPreviewing(false),
           m_iPreviewingPosition(-1) {
-    m_hotcuePosition = new ControlObject(keyForControl(i, "position"));
+    CallbackControlManager* pCallbackControlManager =
+            pEngineState->getControlManager();
+
+    m_hotcuePosition = pCallbackControlManager->addControl(
+        new ControlObject(keyForControl(i, "position")), 1);
     connect(m_hotcuePosition, SIGNAL(valueChanged(double)),
             this, SLOT(slotHotcuePositionChanged(double)),
             Qt::DirectConnection);
     m_hotcuePosition->set(-1);
 
-    m_hotcueEnabled = new ControlObject(keyForControl(i, "enabled"));
+    m_hotcueEnabled = pCallbackControlManager->addControl(
+        new ControlObject(keyForControl(i, "enabled")), 1);
     m_hotcueEnabled->set(0);
 
-    m_hotcueSet = new ControlPushButton(keyForControl(i, "set"));
+    m_hotcueSet = pCallbackControlManager->addControl(
+        new ControlPushButton(keyForControl(i, "set")), 1);
     connect(m_hotcueSet, SIGNAL(valueChanged(double)),
             this, SLOT(slotHotcueSet(double)),
             Qt::DirectConnection);
 
-    m_hotcueGoto = new ControlPushButton(keyForControl(i, "goto"));
+    m_hotcueGoto = pCallbackControlManager->addControl(
+        new ControlPushButton(keyForControl(i, "goto")), 1);
     connect(m_hotcueGoto, SIGNAL(valueChanged(double)),
             this, SLOT(slotHotcueGoto(double)),
             Qt::DirectConnection);
 
-    m_hotcueGotoAndStop = new ControlPushButton(keyForControl(i, "gotoandstop"));
+    m_hotcueGotoAndStop = pCallbackControlManager->addControl(
+        new ControlPushButton(keyForControl(i, "gotoandstop")), 1);
     connect(m_hotcueGotoAndStop, SIGNAL(valueChanged(double)),
             this, SLOT(slotHotcueGotoAndStop(double)),
             Qt::DirectConnection);
 
-    m_hotcueActivate = new ControlPushButton(keyForControl(i, "activate"));
+    m_hotcueActivate = pCallbackControlManager->addControl(
+        new ControlPushButton(keyForControl(i, "activate")), 1);
     connect(m_hotcueActivate, SIGNAL(valueChanged(double)),
             this, SLOT(slotHotcueActivate(double)),
             Qt::DirectConnection);
 
-    m_hotcueActivatePreview = new ControlPushButton(keyForControl(i, "activate_preview"));
+    m_hotcueActivatePreview = pCallbackControlManager->addControl(
+        new ControlPushButton(keyForControl(i, "activate_preview")), 1);
     connect(m_hotcueActivatePreview, SIGNAL(valueChanged(double)),
             this, SLOT(slotHotcueActivatePreview(double)),
             Qt::DirectConnection);
 
-    m_hotcueClear = new ControlPushButton(keyForControl(i, "clear"));
+    m_hotcueClear = pCallbackControlManager->addControl(
+        new ControlPushButton(keyForControl(i, "clear")), 1);
     connect(m_hotcueClear, SIGNAL(valueChanged(double)),
             this, SLOT(slotHotcueClear(double)),
             Qt::DirectConnection);

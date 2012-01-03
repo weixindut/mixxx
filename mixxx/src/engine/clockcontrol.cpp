@@ -1,15 +1,21 @@
 #include "engine/clockcontrol.h"
 
-#include "controlobject.h"
-#include "configobject.h"
 #include "cachingreader.h"
+#include "configobject.h"
+#include "controlobject.h"
+#include "engine/callbackcontrolmanager.h"
 #include "engine/enginecontrol.h"
+#include "engine/enginestate.h"
 
-ClockControl::ClockControl(const char* pGroup, ConfigObject<ConfigValue>* pConfig)
-        : EngineControl(pGroup, pConfig) {
-    m_pCOBeatActive = new ControlObject(ConfigKey(pGroup, "beat_active"));
-    m_pCOBeatActive->set(0.0f);
-    m_pCOSampleRate = ControlObject::getControl(ConfigKey("[Master]","samplerate"));
+ClockControl::ClockControl(const char* pGroup,
+                           EngineState* pEngineState)
+        : EngineControl(pGroup, pEngineState->getConfig()) {
+    CallbackControlManager* pCallbackControlManager =
+            pEngineState->getControlManager();
+    m_pCOBeatActive = pCallbackControlManager->addControl(
+        new ControlObject(ConfigKey(pGroup, "beat_active")), 1);
+    m_pCOSampleRate = pCallbackControlManager->getControl(
+        ConfigKey("[Master]", "samplerate"));
 }
 
 ClockControl::~ClockControl() {
@@ -41,7 +47,7 @@ void ClockControl::trackUnloaded(TrackPointer pTrack) {
 }
 
 void ClockControl::slotBeatsUpdated() {
-    if(m_pTrack) {
+    if (m_pTrack) {
         m_pBeats = m_pTrack->getBeats();
     }
 }

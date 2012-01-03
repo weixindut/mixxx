@@ -7,22 +7,20 @@
 
 #include <QObject>
 
-#include "configobject.h"
 #include "engine/enginecontrol.h"
 #include "trackinfoobject.h"
 #include "track/beats.h"
 
 #define MINIMUM_AUDIBLE_LOOP_SIZE   30  // In samples
 
-class ControlPushButton;
-class ControlObject;
-
+class EngineState;
+class CallbackControl;
 class BeatLoopingControl;
 
 class LoopingControl : public EngineControl {
     Q_OBJECT
   public:
-    LoopingControl(const char * _group, ConfigObject<ConfigValue> * _config);
+    LoopingControl(const char * _group, EngineState* pEngineState);
     virtual ~LoopingControl();
 
     // process() updates the internal state of the LoopingControl to reflect the
@@ -77,28 +75,31 @@ class LoopingControl : public EngineControl {
     void setLoopingEnabled(bool enabled);
     void clearActiveBeatLoop();
 
-    ControlObject* m_pCOLoopStartPosition;
-    ControlObject* m_pCOLoopEndPosition;
-    ControlObject* m_pCOLoopEnabled;
-    ControlPushButton* m_pLoopInButton;
-    ControlPushButton* m_pLoopOutButton;
-    ControlPushButton* m_pReloopExitButton;
-    ControlObject* m_pCOLoopScale;
-    ControlPushButton* m_pLoopHalveButton;
-    ControlPushButton* m_pLoopDoubleButton;
+    CallbackControl* m_pCOLoopStartPosition;
+    CallbackControl* m_pCOLoopEndPosition;
+    CallbackControl* m_pCOLoopEnabled;
+    CallbackControl* m_pLoopInButton;
+    CallbackControl* m_pLoopOutButton;
+    CallbackControl* m_pReloopExitButton;
+    CallbackControl* m_pCOLoopScale;
+    CallbackControl* m_pLoopHalveButton;
+    CallbackControl* m_pLoopDoubleButton;
 
     bool m_bLoopingEnabled;
     int m_iLoopEndSample;
     int m_iLoopStartSample;
     int m_iCurrentSample;
-    ControlObject* m_pQuantizeEnabled;
-    ControlObject* m_pNextBeat;
-    ControlObject* m_pClosestBeat;
-    ControlObject* m_pTrackSamples;
+
+    // Controls not owned by LoopingControl
+    CallbackControl* m_pQuantizeEnabled;
+    CallbackControl* m_pNextBeat;
+    CallbackControl* m_pClosestBeat;
+    CallbackControl* m_pTrackSamples;
+
     BeatLoopingControl* m_pActiveBeatLoop;
 
     // Base BeatLoop Control Object.
-    ControlObject* m_pCOBeatLoop;
+    CallbackControl* m_pCOBeatLoop;
     // Different sizes for Beat Loops/Seeks.
     static double s_dBeatSizes[];
     // Array of BeatLoopingControls, one for each size.
@@ -113,7 +114,8 @@ class LoopingControl : public EngineControl {
 class BeatLoopingControl : public QObject {
     Q_OBJECT
   public:
-    BeatLoopingControl(const char* pGroup, double size);
+    BeatLoopingControl(const char* pGroup, double size,
+                       EngineState* pEngineState);
     virtual ~BeatLoopingControl();
 
     void activate();
@@ -136,10 +138,10 @@ class BeatLoopingControl : public QObject {
     ConfigKey keyForControl(const char * _group, QString ctrlName, double num);
     double m_dBeatLoopSize;
     bool m_bActive;
-    ControlPushButton* m_pLegacy;
-    ControlPushButton* m_pActivate;
-    ControlPushButton* m_pToggle;
-    ControlObject* m_pEnabled;
+    CallbackControl* m_pLegacy;
+    CallbackControl* m_pActivate;
+    CallbackControl* m_pToggle;
+    CallbackControl* m_pEnabled;
 };
 
 #endif /* LOOPINGCONTROL_H */

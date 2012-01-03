@@ -3,20 +3,17 @@
 
 #include <QObject>
 
-#include "configobject.h"
 #include "engine/enginecontrol.h"
-
-#include "trackinfoobject.h"
 #include "track/beats.h"
+#include "trackinfoobject.h"
 
-class ControlObject;
-class ControlPushButton;
-class ControlObjectThread;
+class CallbackControl;
+class EngineState;
 
 class QuantizeControl : public EngineControl {
     Q_OBJECT
   public:
-    QuantizeControl(const char* pGroup, ConfigObject<ConfigValue>* pConfig);
+    QuantizeControl(const char* pGroup, EngineState* pEngineState);
     virtual ~QuantizeControl();
 
     double process(const double dRate,
@@ -32,10 +29,10 @@ class QuantizeControl : public EngineControl {
     void slotBeatsUpdated();
 
   private:
-    ControlPushButton* m_pCOQuantizeEnabled;
-    ControlObject* m_pCONextBeat;
-    ControlObject* m_pCOPrevBeat;
-    ControlObject* m_pCOClosestBeat;
+    CallbackControl* m_pCOQuantizeEnabled;
+    CallbackControl* m_pCONextBeat;
+    CallbackControl* m_pCOPrevBeat;
+    CallbackControl* m_pCOClosestBeat;
 
     TrackPointer m_pTrack;
     BeatsPointer m_pBeats;

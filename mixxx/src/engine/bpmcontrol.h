@@ -8,19 +8,19 @@
 #include "engine/enginecontrol.h"
 #include "tapfilter.h"
 
-class ControlObject;
-class ControlPushButton;
+class CallbackControl;
+class EngineState;
 
 class BpmControl : public EngineControl {
     Q_OBJECT
 
   public:
-    BpmControl(const char* _group, ConfigObject<ConfigValue>* _config);
+    BpmControl(const char* _group, ConfigObject<ConfigValue>* _config,
+               EngineState* pEngineState);
     virtual ~BpmControl();
     double getBpm();
 
   public slots:
-
     virtual void trackLoaded(TrackPointer pTrack);
     virtual void trackUnloaded(TrackPointer pTrack);
 
@@ -40,29 +40,29 @@ class BpmControl : public EngineControl {
     bool syncTempo();
     bool syncPhase();
 
-    // ControlObjects that come from EngineBuffer
-    ControlObject* m_pPlayButton;
-    ControlObject* m_pRateSlider;
-    ControlObject* m_pRateRange;
-    ControlObject* m_pRateDir;
+    // CallbackControls that come from EngineBuffer
+    CallbackControl* m_pPlayButton;
+    CallbackControl* m_pRateSlider;
+    CallbackControl* m_pRateRange;
+    CallbackControl* m_pRateDir;
 
-    /** The current loaded file's detected BPM */
-    ControlObject* m_pFileBpm;
+    // The current loaded file's detected BPM
+    CallbackControl* m_pFileBpm;
 
-    /** The current effective BPM of the engine */
-    ControlObject* m_pEngineBpm;
+    // The current effective BPM of the engine
+    CallbackControl* m_pEngineBpm;
 
     // Used for bpm tapping from GUI and MIDI
-    ControlPushButton* m_pButtonTap;
+    CallbackControl* m_pButtonTap;
 
-    /** Button for sync'ing with the other EngineBuffer */
-    ControlPushButton* m_pButtonSync;
-    ControlPushButton* m_pButtonSyncPhase;
-    ControlPushButton* m_pButtonSyncTempo;
+    // Button for sync'ing with the other EngineBuffer
+    CallbackControl* m_pButtonSync;
+    CallbackControl* m_pButtonSyncPhase;
+    CallbackControl* m_pButtonSyncTempo;
 
     // Button that translates the beats so the nearest beat is on the current
     // playposition.
-    ControlPushButton* m_pTranslateBeats;
+    CallbackControl* m_pTranslateBeats;
 
     TapFilter m_tapFilter;
 

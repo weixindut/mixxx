@@ -26,7 +26,6 @@ BaseTrackPlayer::BaseTrackPlayer(QObject* pParent,
           m_pAnalyserQueue(pAnalyserQueue),
           m_pConfig(pConfig),
           m_pLoadedTrack() {
-
     // Need to strdup the string because EngineChannel will save the pointer,
     // but we might get deleted before the EngineChannel. TODO(XXX)
     // pSafeGroupName is leaked. It's like 5 bytes so whatever.
@@ -38,10 +37,12 @@ BaseTrackPlayer::BaseTrackPlayer(QObject* pParent,
     EngineBuffer* pEngineBuffer = pChannel->getEngineBuffer();
     pMixingEngine->addChannel(pChannel);
 
-    ClockControl* pClockControl = new ClockControl(pSafeGroupName, pConfig);
+    ClockControl* pClockControl = new ClockControl(pSafeGroupName,
+                                                   pMixingEngine->getState());
     pEngineBuffer->addControl(pClockControl);
 
-    CueControl* pCueControl = new CueControl(pSafeGroupName, pConfig);
+    CueControl* pCueControl = new CueControl(pSafeGroupName,
+                                             pMixingEngine->getState());
     connect(this, SIGNAL(newTrackLoaded(TrackPointer)),
             pCueControl, SLOT(loadTrack(TrackPointer)));
     connect(this, SIGNAL(unloadingTrack(TrackPointer)),

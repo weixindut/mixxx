@@ -21,6 +21,7 @@
 #include <QMap>
 
 #include "controlobject.h"
+#include "engine/enginestate.h"
 #include "engine/callbackcontrolmanager.h"
 #include "engine/engineobject.h"
 #include "engine/enginechannel.h"
@@ -80,8 +81,8 @@ class EngineMaster : public EngineObject, public AudioSource {
     const CSAMPLE* getDeckBuffer(unsigned int i) const;
     const CSAMPLE* getChannelBuffer(QString name) const;
 
-    CallbackControlManager* getCallbackControlManager() {
-        return &m_callbackControlManager;
+    inline EngineState* getState() {
+        return &m_state;
     }
 
   signals:
@@ -134,7 +135,8 @@ class EngineMaster : public EngineObject, public AudioSource {
     void mixChannels(unsigned int channelBitvector, unsigned int maxChannels,
                      CSAMPLE* pOutput, unsigned int iBufferSize, GainCalculator* pGainCalculator);
 
-    CallbackControlManager m_callbackControlManager;
+    EngineState m_state;
+    CallbackControlManager& m_callbackControlManager;
     QList<ChannelInfo*> m_channels;
 
     CSAMPLE *m_pMaster, *m_pHead;

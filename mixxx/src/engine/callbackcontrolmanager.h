@@ -1,5 +1,5 @@
-#ifndef ENGINEBUFFERCONTROL_H
-#define ENGINEBUFFERCONTROL_H
+#ifndef CALLBACKCONTROLMANAGER_H
+#define CALLBACKCONTROLMANAGER_H
 
 #include <QObject>
 #include <QScopedPointer>
@@ -60,7 +60,9 @@ class CallbackControl : public QObject {
         return m_control->getKey();
     }
 
-    double get() const;
+    inline double get() const {
+        return m_value.value;
+    }
     void set(double value);
     void add(double value);
     void sub(double value);
@@ -143,4 +145,4 @@ class CallbackControlManager : public QObject {
     FIFO<CallbackControlMessage> m_outgoingUpdateFifo;
 };
 
-#endif /* ENGINEBUFFERCONTROL_H */
+#endif /* CALLBACKCONTROLMANAGER_H */

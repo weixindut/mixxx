@@ -1,20 +1,18 @@
 #ifndef VINYLCONTROLCONTROL_H
 #define VINYLCONTROLCONTROL_H
 
-#include "engine/enginecontrol.h"
-#include "trackinfoobject.h"
-#include "configobject.h"
 #include "controlobject.h"
 #include "controlpushbutton.h"
+#include "engine/enginecontrol.h"
+#include "trackinfoobject.h"
 
 class CallbackControl;
-class CallbackControlManager;
+class EngineState;
 
 class VinylControlControl : public EngineControl {
     Q_OBJECT
   public:
-    VinylControlControl(const char* pGroup, ConfigObject<ConfigValue>* pConfig,
-                        CallbackControlManager* pCallbackControlManager);
+    VinylControlControl(const char* pGroup, EngineState* pEngineState);
     virtual ~VinylControlControl();
 
     void trackLoaded(TrackPointer pTrack);
