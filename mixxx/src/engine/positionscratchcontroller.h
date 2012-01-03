@@ -4,13 +4,13 @@
 #include <QObject>
 #include <QString>
 
-#include "controlobject.h"
-
+class CallbackControl;
+class EngineState;
 class VelocityController;
 
 class PositionScratchController : public QObject {
   public:
-    PositionScratchController(const char* pGroup);
+    PositionScratchController(const char* pGroup, EngineState* pEngineState);
     virtual ~PositionScratchController();
 
     void process(double currentSample, bool paused, int iBufferSize);
@@ -20,8 +20,8 @@ class PositionScratchController : public QObject {
 
   private:
     const QString m_group;
-    ControlObject* m_pScratchEnable;
-    ControlObject* m_pScratchPosition;
+    CallbackControl* m_pScratchEnable;
+    CallbackControl* m_pScratchPosition;
     VelocityController* m_pVelocityController;
     bool m_bScratching;
     bool m_bEnableInertia;

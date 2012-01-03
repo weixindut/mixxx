@@ -1,7 +1,11 @@
 #include <QtDebug>
 
 #include "engine/positionscratchcontroller.h"
+
+#include "controlobject.h"
+#include "engine/enginestate.h"
 #include "mathstuff.h"
+
 
 #ifdef _MSC_VER
 #include <float.h>  // for _finite() on VC++
@@ -105,10 +109,15 @@ class VelocityController {
     double m_p, m_i, m_d;
 };
 
-PositionScratchController::PositionScratchController(const char* pGroup)
+PositionScratchController::PositionScratchController(const char* pGroup,
+                                                     EngineState* pEngineState)
         : m_group(pGroup) {
-    m_pScratchEnable = new ControlObject(ConfigKey(pGroup, "scratch_position_enable"));
-    m_pScratchPosition = new ControlObject(ConfigKey(pGroup, "scratch_position"));
+    CallbackControlManager* pCallbackControlManager =
+            pEngineState->getControlManager();
+    m_pScratchEnable = pCallbackControlManager->addControl(
+        new ControlObject(ConfigKey(pGroup, "scratch_position_enable")), 1);
+    m_pScratchPosition = pCallbackControlManager->addControl(
+        new ControlObject(ConfigKey(pGroup, "scratch_position")), 1);
     m_pVelocityController = new VelocityController();
     m_bScratching = false;
     m_iScratchTime = 0;
