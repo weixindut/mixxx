@@ -22,7 +22,6 @@
 #include "engine/enginechannel.h"
 #include "configobject.h"
 
-class ControlPushButton;
 class EngineBuffer;
 class EngineBuffer;
 class EngineClipping;
@@ -41,7 +40,8 @@ class EngineDeck : public EngineChannel {
                EngineChannel::ChannelOrientation defaultOrientation = CENTER);
     virtual ~EngineDeck();
 
-    virtual void process(const CSAMPLE *pIn, const CSAMPLE *pOut, const int iBufferSize);
+    virtual void process(const CSAMPLE *pIn, const CSAMPLE *pOut,
+                         const int iBufferSize);
 
     // TODO(XXX) This hack needs to be removed.
     virtual EngineBuffer* getEngineBuffer();

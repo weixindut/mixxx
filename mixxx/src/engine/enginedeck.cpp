@@ -31,7 +31,7 @@ EngineDeck::EngineDeck(const char* group,
                        ConfigObject<ConfigValue>* pConfig,
                        EngineMaster* pMixingEngine,
                        EngineChannel::ChannelOrientation defaultOrientation)
-        : EngineChannel(group, defaultOrientation),
+        : EngineChannel(group, defaultOrientation, pMixingEngine->getState()),
           m_pConfig(pConfig) {
     m_pPregain = new EnginePregain(group);
     m_pFilter = new EngineFilterBlock(group);

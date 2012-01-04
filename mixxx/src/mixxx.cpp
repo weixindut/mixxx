@@ -206,7 +206,8 @@ MixxxApp::MixxxApp(QApplication *a, struct CmdlineArgs args)
     // after the players are added to the engine (as is done currently) -- bkgood
     m_pSoundManager = new SoundManager(m_pConfig, m_pEngine);
 
-    EngineMicrophone* pMicrophone = new EngineMicrophone("[Microphone]");
+    EngineMicrophone* pMicrophone = new EngineMicrophone("[Microphone]",
+                                                         m_pEngine->getState());
     AudioInput micInput = AudioInput(AudioPath::MICROPHONE, 0, 0); // What should channelbase be?
     m_pEngine->addChannel(pMicrophone);
     m_pSoundManager->registerInput(micInput, pMicrophone);
