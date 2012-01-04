@@ -12,8 +12,8 @@
 EngineMicrophone::EngineMicrophone(const char* pGroup,
                                    EngineState* pEngineState)
         : EngineChannel(pGroup, EngineChannel::CENTER, pEngineState),
-          m_clipping(pGroup),
-          m_vuMeter(pGroup),
+          m_clipping(pGroup, pEngineState),
+          m_vuMeter(pGroup, pEngineState),
           m_pConversionBuffer(SampleUtil::alloc(MAX_BUFFER_LEN)),
           // Need a +1 here because the CircularBuffer only allows its size-1
           // items to be held at once (it keeps a blank spot open persistently)

@@ -20,21 +20,22 @@
 #include "engineobject.h"
 #include "controlpotmeter.h"
 
-class EngineClipping : public EngineObject 
-{
-private:
-    bool clipped;
-    ControlPotmeter *m_ctrlClipping;
-public:
-    EngineClipping(const char *group);
-    ~EngineClipping();
-    void process(const CSAMPLE *pIn, const CSAMPLE *pOut, const int iBufferSize);
-    bool hasClipped();
+class CallbackControl;
+class EngineState;
+
+class EngineClipping : public EngineObject {
+  public:
+    EngineClipping(const char *group, EngineState* pEngineState);
+    virtual ~EngineClipping();
+
+    void process(const CSAMPLE *pIn, const CSAMPLE *pOut,
+                 const int iBufferSize);
+
+  private:
+    CallbackControl *m_ctrlClipping;
 };
 
 #endif
-
-
 
 
 

@@ -83,10 +83,10 @@ EngineMaster::EngineMaster(ConfigObject<ConfigValue> * _config,
         new ControlLogpotmeter(ConfigKey(group, "volume"), 5.), 1);
 
     // Clipping
-    clipping = new EngineClipping(group);
+    clipping = new EngineClipping(group, getState());
 
     // VU meter:
-    vumeter = new EngineVuMeter(group);
+    vumeter = new EngineVuMeter(group, getState());
 
     // Headphone volume
     m_pHeadVolume = m_callbackControlManager.addControl(
@@ -99,7 +99,7 @@ EngineMaster::EngineMaster(ConfigObject<ConfigValue> * _config,
     head_mix = m_callbackControlManager.addControl(pHeadMix, 1);
 
     // Headphone Clipping
-    head_clipping = new EngineClipping("");
+    head_clipping = new EngineClipping("[Headphone]", getState());
 
     // Allocate buffers
     m_pHead = SampleUtil::alloc(MAX_BUFFER_LEN);
@@ -107,7 +107,7 @@ EngineMaster::EngineMaster(ConfigObject<ConfigValue> * _config,
     memset(m_pHead, 0, sizeof(CSAMPLE) * MAX_BUFFER_LEN);
     memset(m_pMaster, 0, sizeof(CSAMPLE) * MAX_BUFFER_LEN);
 
-    //Starts a thread for recording and shoutcast
+    // Starts a thread for recording and shoutcast
     sidechain = NULL;
     if (bEnableSidechain) {
         sidechain = new EngineSideChain(_config);

@@ -36,11 +36,12 @@ EngineDeck::EngineDeck(const char* group,
     m_pPregain = new EnginePregain(group);
     m_pFilter = new EngineFilterBlock(group);
     m_pFlanger = new EngineFlanger(group);
-    m_pClipping = new EngineClipping(group);
-    m_pBuffer = new EngineBuffer(group, pConfig,
-                                 pMixingEngine->getState());
-    m_pVinylSoundEmu = new EngineVinylSoundEmu(pConfig, group);
-    m_pVUMeter = new EngineVuMeter(group);
+    m_pClipping = new EngineClipping(group, pMixingEngine->getState());
+    m_pBuffer = new EngineBuffer(
+        group, pConfig, pMixingEngine->getState());
+    m_pVinylSoundEmu = new EngineVinylSoundEmu(
+        group, pMixingEngine->getState());
+    m_pVUMeter = new EngineVuMeter(group, pMixingEngine->getState());
 }
 
 EngineDeck::~EngineDeck() {
