@@ -18,32 +18,28 @@
 #define ENGINEPREGAIN_H
 
 #include "engine/engineobject.h"
-#include "controlobject.h"
 
+class CallbackControl;
+class EngineState;
 
-class ControlLogpotmeter;
-class ControlPotmeter;
-class ControlObject;
-class EnginePregain : public EngineObject
-{
-public:
-    EnginePregain( const char *group);
-    ~EnginePregain();
-    void process(const CSAMPLE *pIn, const CSAMPLE *pOut, const int iBufferSize);
+class EnginePregain : public EngineObject {
+  public:
+    EnginePregain(const char *group, EngineState* pEngineState);
+    virtual ~EnginePregain();
 
+    void process(const CSAMPLE *pIn, const CSAMPLE *pOut,
+                 const int iBufferSize);
 
-
-private:
-    ControlLogpotmeter *potmeterPregain;
-    ControlObject *m_pTotalGain;
-    ControlObject* m_pControlReplayGain;
-    static ControlPotmeter *s_pReplayGainBoost;
-    static ControlObject *s_pEnableReplayGain;
+  private:
+    CallbackControl* potmeterPregain;
+    CallbackControl* m_pTotalGain;
+    CallbackControl* m_pControlReplayGain;
+    CallbackControl* m_pReplayGainBoost;
+    CallbackControl* m_pEnableReplayGain;
     float m_fReplayGainCorrection;
     bool m_bSmoothFade;
     float m_fClock;
     float m_fSumClock;
-
 };
 
 #endif
