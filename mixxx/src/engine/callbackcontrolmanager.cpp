@@ -28,7 +28,8 @@ CallbackControl::CallbackControl(CallbackControlManager* pControlManager,
             pControlManager, SLOT(slotControlUpdated(ControlObject*, double)),
             Qt::DirectConnection);
     connect(this, SIGNAL(controlUpdatedFromCallback(CallbackControl*, double)),
-            pControlManager, SLOT(slotControlUpdatedFromCallback(CallbackControl*, double)));
+            pControlManager, SLOT(slotControlUpdatedFromCallback(CallbackControl*, double)),
+            Qt::DirectConnection);
 }
 
 CallbackControl::~CallbackControl() {
