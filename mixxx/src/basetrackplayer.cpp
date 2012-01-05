@@ -43,10 +43,6 @@ BaseTrackPlayer::BaseTrackPlayer(QObject* pParent,
 
     CueControl* pCueControl = new CueControl(pSafeGroupName,
                                              pMixingEngine->getState());
-    connect(this, SIGNAL(newTrackLoaded(TrackPointer)),
-            pCueControl, SLOT(loadTrack(TrackPointer)));
-    connect(this, SIGNAL(unloadingTrack(TrackPointer)),
-            pCueControl, SLOT(unloadTrack(TrackPointer)));
     pEngineBuffer->addControl(pCueControl);
 
     // Connect our signals and slots with the EngineBuffer's signals and

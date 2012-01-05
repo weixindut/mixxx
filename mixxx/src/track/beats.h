@@ -11,7 +11,7 @@ typedef QSharedPointer<Beats> BeatsPointer;
 
 // QList's are attractive because they pre-allocate an internal buffer that is
 // not free'd after a clear(). The downside is that they do not necessarily
-// store adjecent items in adjacent memory locations.
+// store adjacent items in adjacent memory locations.
 typedef QList<double> BeatList;
 
 // Beats is a pure abstract base class for BPM and beat management classes. It

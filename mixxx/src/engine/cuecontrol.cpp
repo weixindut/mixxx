@@ -147,10 +147,6 @@ void CueControl::attachCue(Cue* pCue, int hotCue) {
         detachCue(pControl->getHotcueNumber());
     }
     pControl->setCue(pCue);
-    connect(pCue, SIGNAL(updated()),
-            this, SLOT(cueUpdated()),
-            Qt::DirectConnection);
-
     pControl->getPosition()->set(pCue->getPosition());
     pControl->getEnabled()->set(pCue->getPosition() == -1 ? 0.0 : 1.0);
 }
@@ -167,12 +163,12 @@ void CueControl::detachCue(int hotCue) {
     pControl->getEnabled()->set(0);
 }
 
-void CueControl::loadTrack(TrackPointer pTrack) {
+void CueControl::trackLoaded(TrackPointer pTrack) {
     Q_ASSERT(pTrack);
 
     QMutexLocker lock(&m_mutex);
     if (m_pLoadedTrack)
-        unloadTrack(m_pLoadedTrack);
+        trackUnloaded(m_pLoadedTrack);
 
     m_pLoadedTrack = pTrack;
     connect(pTrack.data(), SIGNAL(cuesUpdated()),
@@ -214,7 +210,7 @@ void CueControl::loadTrack(TrackPointer pTrack) {
     }
 }
 
-void CueControl::unloadTrack(TrackPointer pTrack) {
+void CueControl::trackUnloaded(TrackPointer pTrack) {
     QMutexLocker lock(&m_mutex);
     disconnect(pTrack.data(), 0, this, 0);
     for (int i = 0; i < m_iNumHotCues; ++i) {
@@ -244,11 +240,6 @@ void CueControl::unloadTrack(TrackPointer pTrack) {
     }
 
     m_pLoadedTrack.clear();
-}
-
-void CueControl::cueUpdated() {
-    //QMutexLocker lock(&m_mutex);
-    // We should get a trackCuesUpdated call anyway, so do nothing.
 }
 
 void CueControl::trackCuesUpdated() {
