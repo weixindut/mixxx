@@ -18,9 +18,6 @@
 #ifndef ENGINEMASTER_H
 #define ENGINEMASTER_H
 
-#include <QMap>
-
-#include "controlobject.h"
 #include "engine/enginestate.h"
 #include "engine/callbackcontrolmanager.h"
 #include "engine/engineobject.h"
@@ -37,8 +34,6 @@ class EngineFlanger;
 class EngineLADSPA;
 #endif
 class EngineVuMeter;
-class ControlPotmeter;
-class ControlPushButton;
 class EngineVinylSoundEmu;
 class EngineSideChain;
 class SyncWorker;
