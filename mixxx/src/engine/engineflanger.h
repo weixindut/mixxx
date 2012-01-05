@@ -21,20 +21,20 @@
 
 #include "engineobject.h"
 
-class ControlPotmeter;
-class ControlPushButton;
+class CallbackControl;
+class EngineState;
 
 const int max_delay = 5000;
 
 class EngineFlanger : public EngineObject
 {
 public:
-    EngineFlanger(const char *group);
+    EngineFlanger(const char *group, EngineState* pEngineState);
     ~EngineFlanger();
     void process(const CSAMPLE *pIn, const CSAMPLE *pOut, const int iBufferSize);
 private:
-    ControlObject *potmeterDepth, *potmeterDelay, *potmeterLFOperiod;
-    ControlPushButton* flangerEnable;
+    CallbackControl *potmeterDepth, *potmeterDelay, *potmeterLFOperiod;
+    CallbackControl* flangerEnable;
     CSAMPLE *delay_buffer;
     int  LFOamplitude;
     int average_delay_length;

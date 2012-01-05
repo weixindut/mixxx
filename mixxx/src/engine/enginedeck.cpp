@@ -35,7 +35,7 @@ EngineDeck::EngineDeck(const char* group,
           m_pConfig(pConfig) {
     m_pPregain = new EnginePregain(group, pMixingEngine->getState());
     m_pFilter = new EngineFilterBlock(group, pMixingEngine->getState());
-    m_pFlanger = new EngineFlanger(group);
+    m_pFlanger = new EngineFlanger(group, pMixingEngine->getState());
     m_pClipping = new EngineClipping(group, pMixingEngine->getState());
     m_pBuffer = new EngineBuffer(
         group, pConfig, pMixingEngine->getState());
