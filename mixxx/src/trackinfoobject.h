@@ -29,7 +29,9 @@
 
 #include "defs.h"
 #include "track/beats.h"
+#include "track/cues.h"
 #include "library/dao/cue.h"
+
 
 class QString;
 class QDomElement;
@@ -244,7 +246,13 @@ public:
     /** Set the track's full file path */
     void setLocation(QString location);
 
-    // Get the track's Beats list
+    // Get a copy of the track's Cues list
+    CuesPointer getCues() const;
+
+    // Set the track's Cues
+    void setCues(CuesPointer cues);
+
+    // Get a copy of the track's Beats list
     BeatsPointer getBeats() const;
 
     // Set the track's Beats

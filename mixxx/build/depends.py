@@ -503,6 +503,7 @@ class MixxxCore(Feature):
 
                    "sampleutil.cpp",
                    "trackinfoobject.cpp",
+                   "track/cues.cpp",
                    "track/beatgrid.cpp",
                    "track/beatmatrix.cpp",
                    "track/beatfactory.cpp",
