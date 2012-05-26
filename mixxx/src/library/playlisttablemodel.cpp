@@ -55,6 +55,7 @@ void PlaylistTableModel::setPlaylist(int playlistId) {
             .arg(escaper.escapeString(playlistTableName),
                  columns.join(","),
                  QString::number(playlistId));
+    qDebug() << "kain88 playlistquery :" << queryString;
     query.prepare(queryString);
     if (!query.exec()) {
         LOG_FAILED_QUERY(query);

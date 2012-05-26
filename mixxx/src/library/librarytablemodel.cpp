@@ -10,7 +10,7 @@
 #include "mixxxutils.cpp"
 
 const QString LibraryTableModel::DEFAULT_LIBRARYFILTER =
-        "mixxx_deleted=0 AND fs_deleted=0";
+        "mixxx_deleted=0";
 
 LibraryTableModel::LibraryTableModel(QObject* parent,
                                      TrackCollection* pTrackCollection,
@@ -20,11 +20,11 @@ LibraryTableModel::LibraryTableModel(QObject* parent,
                             settingsNamespace),
           m_trackDao(pTrackCollection->getTrackDAO()) {
     QStringList columns;
-    columns << "library." + LIBRARYTABLE_ID;
+    columns <<  "library."+LIBRARYTABLE_ID << "track_locations.fs_deleted";
 
     QSqlQuery query(pTrackCollection->getDatabase());
     QString queryString = "CREATE TEMPORARY VIEW IF NOT EXISTS library_view AS "
-            "SELECT " + columns.join(",") +
+            "SELECT " + columns.join(", ") +
             " FROM library INNER JOIN track_locations "
             "ON library.location = track_locations.id "
             "WHERE (" + LibraryTableModel::DEFAULT_LIBRARYFILTER + ")";
@@ -34,7 +34,7 @@ LibraryTableModel::LibraryTableModel(QObject* parent,
     }
 
     QStringList tableColumns;
-    tableColumns << LIBRARYTABLE_ID;
+    tableColumns << LIBRARYTABLE_ID << "fs_deleted";
     setTable("library_view", LIBRARYTABLE_ID, tableColumns,
              pTrackCollection->getTrackSource("default"));
 

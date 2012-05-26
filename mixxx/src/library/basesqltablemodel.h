@@ -87,6 +87,7 @@ class BaseSqlTableModel : public QAbstractTableModel, public TrackModel {
     struct RowInfo {
         int trackId;
         int order;
+        bool notFound;
         QHash<int, QVariant> metadata;
 
         bool operator<(const RowInfo& other) const {
@@ -125,6 +126,8 @@ class BaseSqlTableModel : public QAbstractTableModel, public TrackModel {
     TrackCollection* m_pTrackCollection;
     TrackDAO& m_trackDAO;
     QSqlDatabase m_database;
+    
+    bool m_isLibrary;
 
     DISALLOW_COPY_AND_ASSIGN(BaseSqlTableModel);
 };

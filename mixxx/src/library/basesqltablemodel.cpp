@@ -195,6 +195,12 @@ void BaseSqlTableModel::select() {
 
     QSqlRecord record = query.record();
     int idColumn = record.indexOf(m_idColumn);
+    int notFoundColumn =-1;
+    notFoundColumn=record.indexOf("fs_deleted");
+    qDebug() << "kain88 list field names";
+    for(int i=0;i<100;i++){
+        qDebug() << record.field(i);
+    }
 
     QLinkedList<int> tableColumnIndices;
     foreach (QString column, m_tableColumns) {
@@ -210,10 +216,17 @@ void BaseSqlTableModel::select() {
     QSet<int> trackIds;
     while (query.next()) {
         int id = query.value(idColumn).toInt();
+        
+        int notFound=0;
+        if(notFoundColumn != -1){
+            notFound = query.value(notFoundColumn).toInt();
+        }
+        
         trackIds.insert(id);
 
         RowInfo thisRowInfo;
         thisRowInfo.trackId = id;
+        thisRowInfo.notFound=bool(notFound);
         thisRowInfo.order = rowInfo.size();
         // Get all the table columns and store them in the hash for this
         // row-info section.
@@ -300,6 +313,16 @@ void BaseSqlTableModel::setTable(const QString& tableName,
     m_idColumn = idColumn;
     m_tableColumns = tableColumns;
     m_tableColumnsJoined = tableColumns.join(",");
+    qDebug() << "kain88 NANANANANANANANANANANANANANA Batman";
+    qDebug() << tableName;
+    qDebug() << idColumn;
+    qDebug() << tableColumns;
+    if(tableName=="library_view"){
+        qDebug() << "kain88 is libraryview";
+        m_isLibrary=true;
+    } else {
+        m_isLibrary=false;
+    }
 
     if (m_trackSource) {
         disconnect(m_trackSource.data(), SIGNAL(tracksChanged(QSet<int>)),
@@ -311,7 +334,7 @@ void BaseSqlTableModel::setTable(const QString& tableName,
 
     // Build a map from the column names to their indices, used by fieldIndex()
     m_tableColumnIndex.clear();
-    for (int i = 0; i < tableColumns.size(); ++i) {
+    for (int i = 0; i < m_tableColumns.size(); ++i) {
         m_tableColumnIndex[m_tableColumns[i]] = i;
     }
 
@@ -411,7 +434,8 @@ QVariant BaseSqlTableModel::data(const QModelIndex& index, int role) const {
     if (!index.isValid() || (role != Qt::DisplayRole &&
                              role != Qt::EditRole &&
                              role != Qt::CheckStateRole &&
-                             role != Qt::ToolTipRole)) {
+                             role != Qt::ToolTipRole &&
+                             role != Qt::BackgroundColorRole)) {
         return QVariant();
     }
 
@@ -668,7 +692,8 @@ QVariant BaseSqlTableModel::getBaseValue(
     const QModelIndex& index, int role) const {
     if (role != Qt::DisplayRole &&
         role != Qt::ToolTipRole &&
-        role != Qt::EditRole) {
+        role != Qt::EditRole &&
+        role != Qt::BackgroundColorRole) {
         return QVariant();
     }
 
@@ -692,6 +717,12 @@ QVariant BaseSqlTableModel::getBaseValue(
                      << "for column" << column << "role" << role;
         }
         return columns[column];
+    }
+    
+    if (role == Qt::BackgroundColorRole){
+        if(rowInfo.notFound){
+            return QVariant(QColor(Qt::red));
+        }
     }
 
     // Otherwise, return the information from the track record cache for the
