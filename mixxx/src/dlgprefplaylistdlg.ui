@@ -211,6 +211,16 @@ playback and outbound link statistics</string>
         </property>
        </widget>
       </item>
+      <item row="9" column="0">
+       <widget class="QCheckBox" name="checkBox_show_missing">
+        <property name="text">
+         <string>Show Missing Songs</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>

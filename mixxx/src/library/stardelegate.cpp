@@ -18,11 +18,19 @@
 
 #include <QtDebug>
 #include <QtGui>
+#include <QTableView>
 
 #include "stardelegate.h"
 #include "stareditor.h"
 #include "starrating.h"
+#include "library/trackmodel.h"
+#include "library/basesqltablemodel.h"
 
+StarDelegate::StarDelegate(QObject *pParent) : QStyledItemDelegate(pParent) {
+    QTableView* pTableView =qobject_cast<QTableView *> (pParent);
+    // m_pTrackModel = dynamic_cast<TrackModel*>(pTableView->model());
+    m_pBaseSqlTableModel = dynamic_cast<BaseSqlTableModel*>(pTableView->model());
+}
 /*
  * The function is invoked once for each item, represented by a QModelIndex object from the model.
  * If the data stored in the item is a StarRating, we paint it use a star editor for displaying;
@@ -39,7 +47,8 @@ void StarDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, 
     // Populate the correct colors based on the styling
     QStyleOptionViewItem newOption = option;
     initStyleOption(&newOption, index);
-
+    int row=index.row();
+    bool found=m_pBaseSqlTableModel->m_rowInfo[row].notFound;
     // Set the palette appropriately based on whether the row is selected or
     // not. We also have to check if it is inactive or not and use the
     // appropriate ColorGroup.
@@ -52,7 +61,11 @@ void StarDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, 
         painter->setBrush(newOption.palette.color(
             colorGroup, QPalette::HighlightedText));
     } else {
-        painter->fillRect(newOption.rect, newOption.palette.base());
+        if(!found){
+            painter->fillRect(newOption.rect, newOption.palette.base());
+        } else {
+            painter->fillRect(newOption.rect, QColor(Qt::red));
+        }
         painter->setBrush(newOption.palette.text());
     }
 

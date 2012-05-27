@@ -14,6 +14,7 @@ class LibraryTableModel : public BaseSqlTableModel {
     Q_OBJECT
   public:
     LibraryTableModel(QObject* parent, TrackCollection* pTrackCollection,
+                        bool showMissing=false,
                       QString settingsNamespace="mixxx.db.model.library");
     virtual ~LibraryTableModel();
 

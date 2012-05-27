@@ -13,7 +13,8 @@
 #include "treeitem.h"
 
 MixxxLibraryFeature::MixxxLibraryFeature(QObject* parent,
-                                         TrackCollection* pTrackCollection)
+                                         TrackCollection* pTrackCollection,
+                                         bool showMissing)
         : LibraryFeature(parent),
           kMissingTitle(tr("Missing Tracks")) {
     QStringList columns;
@@ -78,7 +79,7 @@ MixxxLibraryFeature::MixxxLibraryFeature(QObject* parent,
     pTrackCollection->addTrackSource(QString("default"), m_pBaseTrackCache);
 
     // These rely on the 'default' track source being present.
-    m_pLibraryTableModel = new LibraryTableModel(this, pTrackCollection);
+    m_pLibraryTableModel = new LibraryTableModel(this, pTrackCollection, showMissing);
     m_pMissingTableModel = new MissingTableModel(this, pTrackCollection);
 
     TreeItem *rootItem = new TreeItem();

@@ -7,6 +7,7 @@
 #include "library/queryutil.h"
 #include "library/stardelegate.h"
 
+
 #include "mixxxutils.cpp"
 
 const QString LibraryTableModel::DEFAULT_LIBRARYFILTER =
@@ -14,13 +15,19 @@ const QString LibraryTableModel::DEFAULT_LIBRARYFILTER =
 
 LibraryTableModel::LibraryTableModel(QObject* parent,
                                      TrackCollection* pTrackCollection,
+                                     bool showMissing,
                                      QString settingsNamespace)
         : BaseSqlTableModel(parent, pTrackCollection,
                             pTrackCollection->getDatabase(),
                             settingsNamespace),
           m_trackDao(pTrackCollection->getTrackDAO()) {
     QStringList columns;
-    columns <<  "library."+LIBRARYTABLE_ID << "track_locations.fs_deleted";
+    
+    if (showMissing){
+        columns <<  "library."+LIBRARYTABLE_ID << "track_locations.fs_deleted";
+    } else {
+        columns << "library."+LIBRARYTABLE_ID;
+    }
 
     QSqlQuery query(pTrackCollection->getDatabase());
     QString queryString = "CREATE TEMPORARY VIEW IF NOT EXISTS library_view AS "
@@ -34,7 +41,11 @@ LibraryTableModel::LibraryTableModel(QObject* parent,
     }
 
     QStringList tableColumns;
-    tableColumns << LIBRARYTABLE_ID << "fs_deleted";
+    if(showMissing){
+        tableColumns << LIBRARYTABLE_ID << "fs_deleted";
+    } else {
+        tableColumns << LIBRARYTABLE_ID;
+    }
     setTable("library_view", LIBRARYTABLE_ID, tableColumns,
              pTrackCollection->getTrackSource("default"));
 

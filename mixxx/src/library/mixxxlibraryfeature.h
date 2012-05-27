@@ -18,7 +18,8 @@ class MixxxLibraryFeature : public LibraryFeature {
     Q_OBJECT
     public:
     MixxxLibraryFeature(QObject* parent,
-                        TrackCollection* pTrackCollection);
+                        TrackCollection* pTrackCollection,
+                        bool showMissing);
     virtual ~MixxxLibraryFeature();
 
     QVariant title();

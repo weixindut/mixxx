@@ -197,13 +197,17 @@ void BaseSqlTableModel::select() {
     int idColumn = record.indexOf(m_idColumn);
     int notFoundColumn =-1;
     notFoundColumn=record.indexOf("fs_deleted");
+    /*
     qDebug() << "kain88 list field names";
     for(int i=0;i<100;i++){
         qDebug() << record.field(i);
     }
+    */
 
     QLinkedList<int> tableColumnIndices;
+    qDebug() <<"kain88 m_tableName"<< m_tableName;
     foreach (QString column, m_tableColumns) {
+        qDebug() << "kain88 foreach "<< column;
         Q_ASSERT(record.indexOf(column) == m_tableColumnIndex[column]);
         tableColumnIndices.push_back(record.indexOf(column));
     }
@@ -450,6 +454,10 @@ QVariant BaseSqlTableModel::data(const QModelIndex& index, int role) const {
     // role
     switch (role) {
         case Qt::ToolTipRole:
+            if(m_rowInfo[row].notFound){
+                value = QVariant(QString("File Not Found"));
+            }
+            break;
         case Qt::DisplayRole:
             if (column == fieldIndex(LIBRARYTABLE_DURATION)) {
                 if (qVariantCanConvert<int>(value)) {
@@ -492,6 +500,11 @@ QVariant BaseSqlTableModel::data(const QModelIndex& index, int role) const {
                 bool locked = index.sibling(
                     row, fieldIndex(LIBRARYTABLE_BPM_LOCK)).data().toBool();
                 value = locked ? Qt::Checked : Qt::Unchecked;
+            }
+            break;
+        case Qt::BackgroundColorRole:
+            if(m_rowInfo[row].notFound){
+                value = QVariant(QColor(Qt::red));
             }
             break;
         default:
@@ -719,11 +732,8 @@ QVariant BaseSqlTableModel::getBaseValue(
         return columns[column];
     }
     
-    if (role == Qt::BackgroundColorRole){
-        if(rowInfo.notFound){
-            return QVariant(QColor(Qt::red));
-        }
-    }
+
+    
 
     // Otherwise, return the information from the track record cache for the
     // given track ID

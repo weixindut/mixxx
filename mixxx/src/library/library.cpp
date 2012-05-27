@@ -43,7 +43,9 @@ Library::Library(QObject* parent, ConfigObject<ConfigValue>* pConfig, bool first
 
     // TODO(rryan) -- turn this construction / adding of features into a static
     // method or something -- CreateDefaultLibrary
-    m_pMixxxLibraryFeature = new MixxxLibraryFeature(this, m_pTrackCollection);
+    bool showMissing = bool(pConfig->getValueString(ConfigKey("[Library]","ShowMissingSongs"),"1").toInt());
+    m_pMixxxLibraryFeature = new MixxxLibraryFeature(this, m_pTrackCollection,showMissing);
+    qDebug() << "kain88 check confValue" << showMissing;
     addFeature(m_pMixxxLibraryFeature);
     if (PromoTracksFeature::isSupported(m_pConfig)) {
         m_pPromoTracksFeature = new PromoTracksFeature(this, pConfig,

@@ -80,10 +80,7 @@ class BaseSqlTableModel : public QAbstractTableModel, public TrackModel {
   private slots:
     void tracksChanged(QSet<int> trackIds);
 
-  private:
-    inline void setTrackValueForColumn(TrackPointer pTrack, int column, QVariant value);
-    QVariant getBaseValue(const QModelIndex& index, int role = Qt::DisplayRole) const;
-
+  public:
     struct RowInfo {
         int trackId;
         int order;
@@ -100,6 +97,13 @@ class BaseSqlTableModel : public QAbstractTableModel, public TrackModel {
             return order < other.order;
         }
     };
+    QVector<RowInfo> m_rowInfo;
+
+  private:
+    inline void setTrackValueForColumn(TrackPointer pTrack, int column, QVariant value);
+    QVariant getBaseValue(const QModelIndex& index, int role = Qt::DisplayRole) const;
+
+
 
     QString m_tableName;
     QString m_idColumn;
@@ -114,7 +118,6 @@ class BaseSqlTableModel : public QAbstractTableModel, public TrackModel {
     bool m_bInitialized;
     bool m_bDirty;
     QSqlRecord m_queryRecord;
-    QVector<RowInfo> m_rowInfo;
     QHash<int, int> m_trackSortOrder;
     QHash<int, QLinkedList<int> > m_trackIdToRows;
 

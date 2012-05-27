@@ -20,6 +20,9 @@
 #define STARDELEGATE_H
 
 #include <QStyledItemDelegate>
+#include <QTableView>
+#include "library/trackmodel.h"
+#include "library/basesqltablemodel.h"
 
 /*
  * When displaying data in a QListView, QTableView, or QTreeView,
@@ -35,7 +38,8 @@
 class StarDelegate : public QStyledItemDelegate {
     Q_OBJECT
   public:
-    StarDelegate(QObject *parent = 0) : QStyledItemDelegate(parent) {}
+    StarDelegate(QObject *parent = 0) ;
+    
     /** reimplemented from QItemDelegate and is called whenever the view needs to repaint an item **/
     void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
     /** eturns an item's preferred size **/
@@ -49,6 +53,10 @@ class StarDelegate : public QStyledItemDelegate {
 
   private slots:
     void commitAndCloseEditor();
+    
+  private:
+    TrackModel* m_pTrackModel;
+    BaseSqlTableModel* m_pBaseSqlTableModel;
 };
 
 #endif
