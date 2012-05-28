@@ -11,7 +11,7 @@
 #include "mixxxutils.cpp"
 
 const QString LibraryTableModel::DEFAULT_LIBRARYFILTER =
-        "mixxx_deleted=0";
+        "mixxx_deleted=0 AND fs_deleted=0";
 
 LibraryTableModel::LibraryTableModel(QObject* parent,
                                      TrackCollection* pTrackCollection,
@@ -22,11 +22,13 @@ LibraryTableModel::LibraryTableModel(QObject* parent,
                             settingsNamespace),
           m_trackDao(pTrackCollection->getTrackDAO()) {
     QStringList columns;
-    
+    QString libraryFilter;
     if (showMissing){
         columns <<  "library."+LIBRARYTABLE_ID << "track_locations.fs_deleted";
+        libraryFilter = "mixxx_deleted=0";
     } else {
         columns << "library."+LIBRARYTABLE_ID;
+        libraryFilter = "mixxx_deleted=0 AND fs_deleted=0";
     }
 
     QSqlQuery query(pTrackCollection->getDatabase());
@@ -34,7 +36,7 @@ LibraryTableModel::LibraryTableModel(QObject* parent,
             "SELECT " + columns.join(", ") +
             " FROM library INNER JOIN track_locations "
             "ON library.location = track_locations.id "
-            "WHERE (" + LibraryTableModel::DEFAULT_LIBRARYFILTER + ")";
+            "WHERE (" + libraryFilter + ")";
     query.prepare(queryString);
     if (!query.exec()) {
         LOG_FAILED_QUERY(query);

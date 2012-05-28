@@ -48,7 +48,7 @@ void StarDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, 
     QStyleOptionViewItem newOption = option;
     initStyleOption(&newOption, index);
     int row=index.row();
-    bool found=m_pBaseSqlTableModel->m_rowInfo[row].notFound;
+    bool found=m_pBaseSqlTableModel->isFs_deleted(row);
     // Set the palette appropriately based on whether the row is selected or
     // not. We also have to check if it is inactive or not and use the
     // appropriate ColorGroup.

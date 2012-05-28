@@ -52,6 +52,7 @@ class BaseSqlTableModel : public QAbstractTableModel, public TrackModel {
     virtual void select();
     virtual int getTrackId(const QModelIndex& index) const;
     virtual QString getTrackLocation(const QModelIndex& index) const;
+    bool isFs_deleted(int row);
 
   protected:
     // Returns the row of trackId in this result set. If trackId is not present,
@@ -80,7 +81,10 @@ class BaseSqlTableModel : public QAbstractTableModel, public TrackModel {
   private slots:
     void tracksChanged(QSet<int> trackIds);
 
-  public:
+  private:
+    inline void setTrackValueForColumn(TrackPointer pTrack, int column, QVariant value);
+    QVariant getBaseValue(const QModelIndex& index, int role = Qt::DisplayRole) const;
+
     struct RowInfo {
         int trackId;
         int order;
@@ -98,12 +102,6 @@ class BaseSqlTableModel : public QAbstractTableModel, public TrackModel {
         }
     };
     QVector<RowInfo> m_rowInfo;
-
-  private:
-    inline void setTrackValueForColumn(TrackPointer pTrack, int column, QVariant value);
-    QVariant getBaseValue(const QModelIndex& index, int role = Qt::DisplayRole) const;
-
-
 
     QString m_tableName;
     QString m_idColumn;

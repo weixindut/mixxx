@@ -780,3 +780,7 @@ QMimeData* BaseSqlTableModel::mimeData(const QModelIndexList &indexes) const {
     mimeData->setUrls(urls);
     return mimeData;
 }
+
+bool BaseSqlTableModel::isFs_deleted(int row){
+    return m_rowInfo[row].notFound;
+}
