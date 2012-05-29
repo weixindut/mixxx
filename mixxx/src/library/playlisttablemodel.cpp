@@ -10,16 +10,18 @@
 
 PlaylistTableModel::PlaylistTableModel(QObject* parent,
                                        TrackCollection* pTrackCollection,
-                                       QString settingsNamespace)
+                                       QString settingsNamespace,
+                                       bool showMissing)
         : BaseSqlTableModel(parent, pTrackCollection,
                             pTrackCollection->getDatabase(),
                             settingsNamespace),
-          m_pTrackCollection(pTrackCollection),
-          m_playlistDao(m_pTrackCollection->getPlaylistDAO()),
-          m_trackDao(m_pTrackCollection->getTrackDAO()),
-          m_iPlaylistId(-1) {
+                            m_pTrackCollection(pTrackCollection),
+                            m_playlistDao(m_pTrackCollection->getPlaylistDAO()),
+                            m_trackDao(m_pTrackCollection->getTrackDAO()),
+                            m_iPlaylistId(-1) {
     connect(this, SIGNAL(doSearch(const QString&)),
             this, SLOT(slotSearch(const QString&)));
+    m_showMissing = showMissing;
 }
 
 PlaylistTableModel::~PlaylistTableModel() {
@@ -39,9 +41,22 @@ void PlaylistTableModel::setPlaylist(int playlistId) {
     FieldEscaper escaper(m_pTrackCollection->getDatabase());
 
     QStringList columns;
-    columns << PLAYLISTTRACKSTABLE_TRACKID
-            << PLAYLISTTRACKSTABLE_POSITION
-            << PLAYLISTTRACKSTABLE_DATETIMEADDED;
+    if(m_showMissing){
+        columns << PLAYLISTTRACKSTABLE_TRACKID
+                << PLAYLISTTRACKSTABLE_POSITION
+                << PLAYLISTTRACKSTABLE_DATETIMEADDED
+                << "track_locations.fs_deleted";
+    } else {
+        columns << PLAYLISTTRACKSTABLE_TRACKID
+                << PLAYLISTTRACKSTABLE_POSITION
+                << PLAYLISTTRACKSTABLE_DATETIMEADDED;
+    }
+    QString filter;
+    if(m_showMissing){
+        filter = "library.mixxx_deleted=0";
+    } else {
+        filter = LibraryTableModel::DEFAULT_LIBRARYFILTER;
+    }
 
     // We drop files that have been explicitly deleted from mixxx
     // (mixxx_deleted=0) from the view. There was a bug in <= 1.9.0 where
@@ -51,11 +66,11 @@ void PlaylistTableModel::setPlaylist(int playlistId) {
         "CREATE TEMPORARY VIEW IF NOT EXISTS %1 AS "
         "SELECT %2 FROM PlaylistTracks "
         "INNER JOIN library ON library.id = PlaylistTracks.track_id "
-        "WHERE PlaylistTracks.playlist_id = %3 AND library.mixxx_deleted = 0")
+        "WHERE PlaylistTracks.playlist_id = %3 AND %4")
             .arg(escaper.escapeString(playlistTableName),
                  columns.join(","),
-                 QString::number(playlistId));
-    qDebug() << "kain88 playlistquery :" << queryString;
+                 QString::number(playlistId), filter);
+    
     query.prepare(queryString);
     if (!query.exec()) {
         LOG_FAILED_QUERY(query);

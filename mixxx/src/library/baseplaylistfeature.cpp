@@ -295,9 +295,10 @@ void BasePlaylistFeature::slotExportPlaylist() {
     }
 
     // Create a new table model since the main one might have an active search.
+    //TODO(kain88) showMissing==false here a good default choice?
     QScopedPointer<PlaylistTableModel> pPlaylistTableModel(
         new PlaylistTableModel(this, m_pTrackCollection,
-                               "mixxx.db.model.playlist_export"));
+                               "mixxx.db.model.playlist_export",false));
 
     pPlaylistTableModel->setPlaylist(m_pPlaylistTableModel->getPlaylist());
     pPlaylistTableModel->setSort(pPlaylistTableModel->fieldIndex(PLAYLISTTRACKSTABLE_POSITION), Qt::AscendingOrder);

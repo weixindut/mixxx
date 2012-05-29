@@ -16,7 +16,7 @@ class PlaylistTableModel : public BaseSqlTableModel {
     Q_OBJECT
   public:
     PlaylistTableModel(QObject* parent, TrackCollection* pTrackCollection,
-                       QString settingsNamespace);
+                       QString settingsNamespace, bool showMissing);
     virtual ~PlaylistTableModel();
     void setPlaylist(int playlistId);
     int getPlaylist() const {
@@ -51,6 +51,7 @@ class PlaylistTableModel : public BaseSqlTableModel {
     PlaylistDAO& m_playlistDao;
     TrackDAO& m_trackDao;
     int m_iPlaylistId;
+    bool m_showMissing;
 };
 
 #endif

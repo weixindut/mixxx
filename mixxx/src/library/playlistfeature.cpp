@@ -21,11 +21,13 @@
 
 PlaylistFeature::PlaylistFeature(QObject* parent,
                                  TrackCollection* pTrackCollection,
-                                 ConfigObject<ConfigValue>* pConfig)
+                                 ConfigObject<ConfigValue>* pConfig,
+                                 bool showMissing)
         : BasePlaylistFeature(parent, pConfig, pTrackCollection,
                               "PLAYLISTHOME") {
     m_pPlaylistTableModel = new PlaylistTableModel(this, pTrackCollection,
-                                                   "mixxx.db.model.playlist");
+                                                   "mixxx.db.model.playlist",
+                                                   showMissing);
     // Setup the sidebar playlist model
     m_playlistTableModel.setTable("Playlists");
     m_playlistTableModel.setFilter("hidden=0");

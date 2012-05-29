@@ -14,8 +14,10 @@ class TrackCollection;
 class PlaylistFeature : public BasePlaylistFeature {
     Q_OBJECT
   public:
-    PlaylistFeature(QObject* parent, TrackCollection* pTrackCollection,
-                    ConfigObject<ConfigValue>* pConfig);
+    PlaylistFeature(QObject* parent, 
+                    TrackCollection* pTrackCollection,
+                    ConfigObject<ConfigValue>* pConfig,
+                    bool showMissing);
     virtual ~PlaylistFeature();
 
     QVariant title();

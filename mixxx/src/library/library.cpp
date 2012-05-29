@@ -57,7 +57,7 @@ Library::Library(QObject* parent, ConfigObject<ConfigValue>* pConfig, bool first
     }
 
     addFeature(new AutoDJFeature(this, pConfig, m_pTrackCollection));
-    m_pPlaylistFeature = new PlaylistFeature(this, m_pTrackCollection, pConfig);
+    m_pPlaylistFeature = new PlaylistFeature(this, m_pTrackCollection, pConfig,showMissing);
     addFeature(m_pPlaylistFeature);
     m_pCrateFeature = new CrateFeature(this, m_pTrackCollection, pConfig);
     addFeature(m_pCrateFeature);
