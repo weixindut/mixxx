@@ -205,10 +205,7 @@ void BaseSqlTableModel::select() {
     */
 
     QLinkedList<int> tableColumnIndices;
-    qDebug() <<"kain88 m_tableName"<< m_tableName;
     foreach (QString column, m_tableColumns) {
-        qDebug() << "kain88 foreach "<< column;
-        Q_ASSERT(record.indexOf(column) == m_tableColumnIndex[column]);
         tableColumnIndices.push_back(record.indexOf(column));
     }
     int rows = query.size();
@@ -323,6 +320,9 @@ void BaseSqlTableModel::setTable(const QString& tableName,
     qDebug() << tableColumns;
     if(tableName=="library_view"){
         qDebug() << "kain88 is libraryview";
+        m_isLibrary=true;
+    } else if (tableName.contains("playlist")) {
+        qDebug() << "kain88 is playlist";
         m_isLibrary=true;
     } else {
         m_isLibrary=false;

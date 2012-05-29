@@ -42,20 +42,20 @@ void PlaylistTableModel::setPlaylist(int playlistId) {
 
     QStringList columns;
     if(m_showMissing){
-        columns << PLAYLISTTRACKSTABLE_TRACKID
-                << PLAYLISTTRACKSTABLE_POSITION
-                << PLAYLISTTRACKSTABLE_DATETIMEADDED
+        columns << "PlaylistTracks."+PLAYLISTTRACKSTABLE_TRACKID
+                << "PlaylistTracks."+PLAYLISTTRACKSTABLE_POSITION
+                << "PlaylistTracks."+PLAYLISTTRACKSTABLE_DATETIMEADDED
                 << "track_locations.fs_deleted";
     } else {
-        columns << PLAYLISTTRACKSTABLE_TRACKID
-                << PLAYLISTTRACKSTABLE_POSITION
-                << PLAYLISTTRACKSTABLE_DATETIMEADDED;
+        columns << "PlaylistTracks."+PLAYLISTTRACKSTABLE_TRACKID
+                << "PlaylistTracks."+PLAYLISTTRACKSTABLE_POSITION
+                << "PlaylistTracks."+PLAYLISTTRACKSTABLE_DATETIMEADDED;
     }
     QString filter;
     if(m_showMissing){
         filter = "library.mixxx_deleted=0";
     } else {
-        filter = LibraryTableModel::DEFAULT_LIBRARYFILTER;
+        filter = "library.mixxx_deleted=0 AND track_locations.fs_deleted=0";
     }
 
     // We drop files that have been explicitly deleted from mixxx
@@ -66,17 +66,33 @@ void PlaylistTableModel::setPlaylist(int playlistId) {
         "CREATE TEMPORARY VIEW IF NOT EXISTS %1 AS "
         "SELECT %2 FROM PlaylistTracks "
         "INNER JOIN library ON library.id = PlaylistTracks.track_id "
+        "INNER JOIN track_locations ON track_locations.id=PlaylistTracks.track_id "
         "WHERE PlaylistTracks.playlist_id = %3 AND %4")
             .arg(escaper.escapeString(playlistTableName),
                  columns.join(","),
                  QString::number(playlistId), filter);
+    
+    qDebug() << "kain88 query for playlist_id "<<playlistTableName;
+    qDebug() << queryString;
     
     query.prepare(queryString);
     if (!query.exec()) {
         LOG_FAILED_QUERY(query);
     }
 
-    setTable(playlistTableName, columns[0], columns,
+    QStringList tableColumns;
+    if(m_showMissing){
+        tableColumns << PLAYLISTTRACKSTABLE_TRACKID
+                     << PLAYLISTTRACKSTABLE_POSITION
+                     << PLAYLISTTRACKSTABLE_DATETIMEADDED
+                     << "fs_deleted";
+    } else {
+        tableColumns << PLAYLISTTRACKSTABLE_TRACKID
+                     << PLAYLISTTRACKSTABLE_POSITION
+                     << PLAYLISTTRACKSTABLE_DATETIMEADDED;
+    }
+
+    setTable(playlistTableName, tableColumns[0], tableColumns,
              m_pTrackCollection->getTrackSource("default"));
     initHeaderData();
     setSearch("");
