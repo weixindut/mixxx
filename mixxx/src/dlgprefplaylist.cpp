@@ -189,6 +189,9 @@ void DlgPrefPlaylist::slotApply()
                 ConfigValue((int)checkBox_show_missing->isChecked()));
 
     config->Save();
+    
+    QString applyMessage(tr("Mixxx needs to be restarted for changes to take effect"));
+    QMessageBox::warning(NULL,"",applyMessage);
 
     // Update playlist if path has changed
     if (LineEditSongfiles->text() != config->getValueString(ConfigKey("[Playlist]","Directory")))

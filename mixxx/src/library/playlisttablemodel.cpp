@@ -40,21 +40,26 @@ void PlaylistTableModel::setPlaylist(int playlistId) {
     FieldEscaper escaper(m_pTrackCollection->getDatabase());
 
     QStringList columns;
+    QStringList tableColumns;
+    QString filter;
     if(m_showMissing){
         columns << "PlaylistTracks."+PLAYLISTTRACKSTABLE_TRACKID
                 << "PlaylistTracks."+PLAYLISTTRACKSTABLE_POSITION
                 << "PlaylistTracks."+PLAYLISTTRACKSTABLE_DATETIMEADDED
                 << "track_locations.fs_deleted";
+        filter = "library.mixxx_deleted=0";
+        tableColumns << PLAYLISTTRACKSTABLE_TRACKID
+                     << PLAYLISTTRACKSTABLE_POSITION
+                     << PLAYLISTTRACKSTABLE_DATETIMEADDED
+                     << TRACKLOCATIONSTABLE_FSDELETED;
     } else {
         columns << "PlaylistTracks."+PLAYLISTTRACKSTABLE_TRACKID
                 << "PlaylistTracks."+PLAYLISTTRACKSTABLE_POSITION
                 << "PlaylistTracks."+PLAYLISTTRACKSTABLE_DATETIMEADDED;
-    }
-    QString filter;
-    if(m_showMissing){
-        filter = "library.mixxx_deleted=0";
-    } else {
         filter = "library.mixxx_deleted=0 AND track_locations.fs_deleted=0";
+        tableColumns << PLAYLISTTRACKSTABLE_TRACKID
+                     << PLAYLISTTRACKSTABLE_POSITION
+                     << PLAYLISTTRACKSTABLE_DATETIMEADDED;
     }
 
     // We drop files that have been explicitly deleted from mixxx
@@ -77,18 +82,6 @@ void PlaylistTableModel::setPlaylist(int playlistId) {
     query.prepare(queryString);
     if (!query.exec()) {
         LOG_FAILED_QUERY(query);
-    }
-
-    QStringList tableColumns;
-    if(m_showMissing){
-        tableColumns << PLAYLISTTRACKSTABLE_TRACKID
-                     << PLAYLISTTRACKSTABLE_POSITION
-                     << PLAYLISTTRACKSTABLE_DATETIMEADDED
-                     << "fs_deleted";
-    } else {
-        tableColumns << PLAYLISTTRACKSTABLE_TRACKID
-                     << PLAYLISTTRACKSTABLE_POSITION
-                     << PLAYLISTTRACKSTABLE_DATETIMEADDED;
     }
 
     setTable(playlistTableName, tableColumns[0], tableColumns,

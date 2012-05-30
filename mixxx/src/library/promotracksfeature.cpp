@@ -47,7 +47,8 @@ PromoTracksFeature::PromoTracksFeature(QObject* parent,
           m_pTrackCollection(pTrackCollection),
           m_pFeaturedArtistsView(NULL),
           m_pBundledSongsView(NULL),
-          m_downloadsTableModel(this, pTrackCollection),
+          //TODO (kain88) not showing missing good default here
+          m_downloadsTableModel(this, pTrackCollection,false),
           m_bFirstRun(firstRun) {
 
     m_sPromoRemoteHTMLLocation = QString("http://promo.mixxx.org/%1/index.html").arg(MIXXX_PROMO_VERSION); //m_pConfig->getConfigPath() + "/promo/promotracks.html";

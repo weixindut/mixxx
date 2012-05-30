@@ -196,8 +196,8 @@ void BaseSqlTableModel::select() {
 
     QSqlRecord record = query.record();
     int idColumn = record.indexOf(m_idColumn);
-    int notFoundColumn =-1;
-    notFoundColumn=record.indexOf("fs_deleted");
+    int fs_deletedColumn =-1;
+    fs_deletedColumn=record.indexOf(TRACKLOCATIONSTABLE_FSDELETED);
     /*
     qDebug() << "kain88 list field names";
     for(int i=0;i<100;i++){
@@ -219,16 +219,16 @@ void BaseSqlTableModel::select() {
     while (query.next()) {
         int id = query.value(idColumn).toInt();
         
-        int notFound=0;
-        if(notFoundColumn != -1){
-            notFound = query.value(notFoundColumn).toInt();
+        int fs_deleted=0;
+        if(fs_deletedColumn != -1){
+            fs_deleted = query.value(fs_deletedColumn).toInt();
         }
         
         trackIds.insert(id);
 
         RowInfo thisRowInfo;
         thisRowInfo.trackId = id;
-        thisRowInfo.notFound=bool(notFound);
+        thisRowInfo.fs_deleted=bool(fs_deleted);
         thisRowInfo.order = rowInfo.size();
         // Get all the table columns and store them in the hash for this
         // row-info section.
@@ -455,7 +455,8 @@ QVariant BaseSqlTableModel::data(const QModelIndex& index, int role) const {
     // role
     switch (role) {
         case Qt::ToolTipRole:
-            if(m_rowInfo[row].notFound){
+            if(m_rowInfo[row].fs_deleted){
+                //TODO(kain88 also include the location here)
                 value = QVariant(QString("File Not Found"));
             }
             break;
@@ -504,7 +505,7 @@ QVariant BaseSqlTableModel::data(const QModelIndex& index, int role) const {
             }
             break;
         case Qt::BackgroundColorRole:
-            if(m_rowInfo[row].notFound){
+            if(m_rowInfo[row].fs_deleted){
                 value = QVariant(QColor(Qt::red));
             }
             break;
@@ -786,7 +787,7 @@ QMimeData* BaseSqlTableModel::mimeData(const QModelIndexList &indexes) const {
 }
 
 bool BaseSqlTableModel::isFs_deleted(int row){
-    return m_rowInfo[row].notFound;
+    return m_rowInfo[row].fs_deleted;
 }
 QAbstractItemDelegate* BaseSqlTableModel::delegateForColumn(const int i, QObject* pParent) {
     if (i == fieldIndex(LIBRARYTABLE_RATING)) {

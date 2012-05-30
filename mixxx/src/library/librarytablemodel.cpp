@@ -5,12 +5,14 @@
 #include "library/trackcollection.h"
 #include "library/librarytablemodel.h"
 #include "library/queryutil.h"
+#include "controlobjectthread.h"
+#include "controlobject.h"
 
 
 #include "mixxxutils.cpp"
 
 const QString LibraryTableModel::DEFAULT_LIBRARYFILTER =
-        "mixxx_deleted=0 AND fs_deleted=0";
+        "mixxx_deleted=0 AND fs_deleted=0"; 
 
 LibraryTableModel::LibraryTableModel(QObject* parent,
                                      TrackCollection* pTrackCollection,
@@ -30,6 +32,9 @@ LibraryTableModel::LibraryTableModel(QObject* parent,
         libraryFilter = "mixxx_deleted=0 AND fs_deleted=0";
     }
 
+     ControlObjectThread* missing = new ControlObjectThread(ControlObject::getControl(ConfigKey("[Library]", "ShowMissingSongs")));
+    qDebug() <<"kain88 try to get Controlobject"<< missing->get() ;
+
     QSqlQuery query(pTrackCollection->getDatabase());
     QString queryString = "CREATE TEMPORARY VIEW IF NOT EXISTS library_view AS "
             "SELECT " + columns.join(", ") +
@@ -43,7 +48,7 @@ LibraryTableModel::LibraryTableModel(QObject* parent,
 
     QStringList tableColumns;
     if(showMissing){
-        tableColumns << LIBRARYTABLE_ID << "fs_deleted";
+        tableColumns << LIBRARYTABLE_ID << TRACKLOCATIONSTABLE_FSDELETED;
     } else {
         tableColumns << LIBRARYTABLE_ID;
     }

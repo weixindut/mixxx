@@ -59,7 +59,7 @@ Library::Library(QObject* parent, ConfigObject<ConfigValue>* pConfig, bool first
     addFeature(new AutoDJFeature(this, pConfig, m_pTrackCollection));
     m_pPlaylistFeature = new PlaylistFeature(this, m_pTrackCollection, pConfig,showMissing);
     addFeature(m_pPlaylistFeature);
-    m_pCrateFeature = new CrateFeature(this, m_pTrackCollection, pConfig);
+    m_pCrateFeature = new CrateFeature(this, m_pTrackCollection, pConfig,showMissing);
     addFeature(m_pCrateFeature);
     addFeature(new BrowseFeature(this, pConfig, m_pTrackCollection, m_pRecordingManager));
     addFeature(new RecordingFeature(this, pConfig, m_pTrackCollection, m_pRecordingManager));

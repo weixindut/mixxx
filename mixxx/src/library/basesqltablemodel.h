@@ -89,7 +89,7 @@ class BaseSqlTableModel : public QAbstractTableModel, public TrackModel {
     struct RowInfo {
         int trackId;
         int order;
-        bool notFound;
+        bool fs_deleted;
         QHash<int, QVariant> metadata;
 
         bool operator<(const RowInfo& other) const {

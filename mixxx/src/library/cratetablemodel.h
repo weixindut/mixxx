@@ -14,7 +14,8 @@ class TrackCollection;
 class CrateTableModel : public BaseSqlTableModel {
     Q_OBJECT
   public:
-    CrateTableModel(QObject* parent, TrackCollection* pTrackCollection);
+    CrateTableModel(QObject* parent, TrackCollection* pTrackCollection,
+                    bool showMissing);
     virtual ~CrateTableModel();
 
     void setCrate(int crateId);
@@ -45,6 +46,7 @@ class CrateTableModel : public BaseSqlTableModel {
   private:
     TrackCollection* m_pTrackCollection;
     int m_iCrateId;
+    bool m_showMissing;
 };
 
 #endif /* CRATETABLEMODEL_H */
