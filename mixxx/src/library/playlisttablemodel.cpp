@@ -10,7 +10,8 @@
 PlaylistTableModel::PlaylistTableModel(QObject* parent,
                                        TrackCollection* pTrackCollection,
                                        QString settingsNamespace,
-                                       bool showMissing)
+                                       bool showMissing,
+									   bool showAll)
         : BaseSqlTableModel(parent, pTrackCollection,
                             pTrackCollection->getDatabase(),
                             settingsNamespace),
@@ -21,6 +22,7 @@ PlaylistTableModel::PlaylistTableModel(QObject* parent,
     connect(this, SIGNAL(doSearch(const QString&)),
             this, SLOT(slotSearch(const QString&)));
     m_showMissing = showMissing;
+	m_showAll = showAll;
 }
 
 PlaylistTableModel::~PlaylistTableModel() {
@@ -61,6 +63,9 @@ void PlaylistTableModel::setPlaylist(int playlistId) {
                      << PLAYLISTTRACKSTABLE_POSITION
                      << PLAYLISTTRACKSTABLE_DATETIMEADDED;
     }
+	if(m_showAll){
+		filter = "library.id=library.id";
+	}
 
     // We drop files that have been explicitly deleted from mixxx
     // (mixxx_deleted=0) from the view. There was a bug in <= 1.9.0 where

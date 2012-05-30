@@ -190,8 +190,10 @@ void DlgPrefPlaylist::slotApply()
 
     config->Save();
     
-    QString applyMessage(tr("Mixxx needs to be restarted for changes to take effect"));
-    QMessageBox::warning(NULL,"",applyMessage);
+	qDebug() << "kain88 slotApply called";
+
+    QString warningMessage(tr("Mixxx needs to be restarted for changes to take effect"));
+    QMessageBox::warning(NULL,"",warningMessage);
 
     // Update playlist if path has changed
     if (LineEditSongfiles->text() != config->getValueString(ConfigKey("[Playlist]","Directory")))
