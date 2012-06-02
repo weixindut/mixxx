@@ -196,14 +196,6 @@ void BaseSqlTableModel::select() {
 
     QSqlRecord record = query.record();
     int idColumn = record.indexOf(m_idColumn);
-    int fs_deletedColumn =-1;
-    fs_deletedColumn=record.indexOf(TRACKLOCATIONSTABLE_FSDELETED);
-    /*
-    qDebug() << "kain88 list field names";
-    for(int i=0;i<100;i++){
-        qDebug() << record.field(i);
-    }
-    */
 
     QLinkedList<int> tableColumnIndices;
     foreach (QString column, m_tableColumns) {
@@ -219,16 +211,11 @@ void BaseSqlTableModel::select() {
     while (query.next()) {
         int id = query.value(idColumn).toInt();
         
-        int fs_deleted=0;
-        if(fs_deletedColumn != -1){
-            fs_deleted = query.value(fs_deletedColumn).toInt();
-        }
         
         trackIds.insert(id);
 
         RowInfo thisRowInfo;
         thisRowInfo.trackId = id;
-        thisRowInfo.fs_deleted=bool(fs_deleted);
         thisRowInfo.order = rowInfo.size();
         // Get all the table columns and store them in the hash for this
         // row-info section.
@@ -315,19 +302,6 @@ void BaseSqlTableModel::setTable(const QString& tableName,
     m_idColumn = idColumn;
     m_tableColumns = tableColumns;
     m_tableColumnsJoined = tableColumns.join(",");
-    qDebug() << "kain88 NANANANANANANANANANANANANANA Batman";
-    qDebug() << tableName;
-    qDebug() << idColumn;
-    qDebug() << tableColumns;
-    if(tableName=="library_view"){
-        qDebug() << "kain88 is libraryview";
-        m_isLibrary=true;
-    } else if (tableName.contains("playlist")) {
-        qDebug() << "kain88 is playlist";
-        m_isLibrary=true;
-    } else {
-        m_isLibrary=false;
-    }
 
     if (m_trackSource) {
         disconnect(m_trackSource.data(), SIGNAL(tracksChanged(QSet<int>)),
@@ -455,7 +429,8 @@ QVariant BaseSqlTableModel::data(const QModelIndex& index, int role) const {
     // role
     switch (role) {
         case Qt::ToolTipRole:
-            if(m_rowInfo[row].fs_deleted){
+            if(index.sibling(index.row(),
+               fieldIndex(TRACKLOCATIONSTABLE_FSDELETED)).data().toInt()==1){
                 //TODO(kain88 also include the location here)
                 value = QVariant(QString("File Not Found"));
             }
@@ -505,7 +480,9 @@ QVariant BaseSqlTableModel::data(const QModelIndex& index, int role) const {
             }
             break;
         case Qt::BackgroundColorRole:
-            if(m_rowInfo[row].fs_deleted){
+            if(index.sibling(index.row(),
+               fieldIndex(TRACKLOCATIONSTABLE_FSDELETED)).data().toInt()==1){
+                //TODO kain88 choose a better looking color
                 value = QVariant(QColor(Qt::red));
             }
             break;
@@ -738,8 +715,6 @@ QVariant BaseSqlTableModel::getBaseValue(
     }
     
 
-    
-
     // Otherwise, return the information from the track record cache for the
     // given track ID
     if (m_trackSource) {
@@ -786,9 +761,6 @@ QMimeData* BaseSqlTableModel::mimeData(const QModelIndexList &indexes) const {
     return mimeData;
 }
 
-bool BaseSqlTableModel::isFs_deleted(int row){
-    return m_rowInfo[row].fs_deleted;
-}
 QAbstractItemDelegate* BaseSqlTableModel::delegateForColumn(const int i, QObject* pParent) {
     if (i == fieldIndex(LIBRARYTABLE_RATING)) {
         return new StarDelegate(pParent);

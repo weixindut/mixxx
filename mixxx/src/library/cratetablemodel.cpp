@@ -13,7 +13,7 @@
 
 CrateTableModel::CrateTableModel(QObject* pParent, 
                                  TrackCollection* pTrackCollection,
-                                 bool showMissing)
+                                 ConfigObject<ConfigValue>* pConfig)
         : BaseSqlTableModel(pParent, pTrackCollection,
                             pTrackCollection->getDatabase(),
                             "mixxx.db.model.crate"),
@@ -21,7 +21,7 @@ CrateTableModel::CrateTableModel(QObject* pParent,
           m_iCrateId(-1) {
     connect(this, SIGNAL(doSearch(const QString&)),
             this, SLOT(slotSearch(const QString&)));
-    m_showMissing = showMissing;
+        m_pConfig = pConfig;
 }
 
 CrateTableModel::~CrateTableModel() {
@@ -38,16 +38,13 @@ void CrateTableModel::setCrate(int crateId) {
     QStringList columns;
     QStringList tableColumns;
     QString filter;
-    if(m_showMissing){
+    columns << "crate_tracks."+CRATETRACKSTABLE_TRACKID;
+    tableColumns << CRATETRACKSTABLE_TRACKID;
+    bool showMissing = m_pConfig->getValueString(ConfigKey("[Library]","ShowMissingSongs")).toInt();
+    if(showMissing){
         filter = "library.mixxx_deleted=0";
-        columns << "crate_tracks."+CRATETRACKSTABLE_TRACKID
-                << "track_locations.fs_deleted";
-        tableColumns << CRATETRACKSTABLE_TRACKID
-                     << TRACKLOCATIONSTABLE_FSDELETED;
     } else {
         filter = "library.mixxx_deleted=0 AND track_locations.fs_deleted=0";
-         columns << "crate_tracks."+CRATETRACKSTABLE_TRACKID;
-         tableColumns << CRATETRACKSTABLE_TRACKID;
     }
 
     // We drop files that have been explicitly deleted from mixxx

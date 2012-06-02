@@ -16,7 +16,7 @@ const QString LibraryTableModel::DEFAULT_LIBRARYFILTER =
 
 LibraryTableModel::LibraryTableModel(QObject* parent,
                                      TrackCollection* pTrackCollection,
-                                     bool showMissing,
+                                     ConfigObject<ConfigValue>* pConfig,
                                      QString settingsNamespace)
         : BaseSqlTableModel(parent, pTrackCollection,
                             pTrackCollection->getDatabase(),
@@ -24,16 +24,20 @@ LibraryTableModel::LibraryTableModel(QObject* parent,
           m_trackDao(pTrackCollection->getTrackDAO()) {
     QStringList columns;
     QString libraryFilter;
+    columns << "library."+LIBRARYTABLE_ID;
+    bool showMissing;
+    //prepareLibrary give a NULL to the constructor so check for it
+    if(pConfig){
+        showMissing = pConfig->getValueString(ConfigKey("[Library]","ShowMissingSongs")).toInt();
+    } else {
+        showMissing = false;
+    }
     if (showMissing){
-        columns <<  "library."+LIBRARYTABLE_ID << "track_locations.fs_deleted";
         libraryFilter = "mixxx_deleted=0";
     } else {
-        columns << "library."+LIBRARYTABLE_ID;
         libraryFilter = "mixxx_deleted=0 AND fs_deleted=0";
     }
 
-     ControlObjectThread* missing = new ControlObjectThread(ControlObject::getControl(ConfigKey("[Library]", "ShowMissingSongs")));
-    qDebug() <<"kain88 try to get Controlobject"<< missing->get() ;
 
     QSqlQuery query(pTrackCollection->getDatabase());
     QString queryString = "CREATE TEMPORARY VIEW IF NOT EXISTS library_view AS "
@@ -47,11 +51,7 @@ LibraryTableModel::LibraryTableModel(QObject* parent,
     }
 
     QStringList tableColumns;
-    if(showMissing){
-        tableColumns << LIBRARYTABLE_ID << TRACKLOCATIONSTABLE_FSDELETED;
-    } else {
-        tableColumns << LIBRARYTABLE_ID;
-    }
+    tableColumns << LIBRARYTABLE_ID;
     setTable("library_view", LIBRARYTABLE_ID, tableColumns,
              pTrackCollection->getTrackSource("default"));
 
@@ -175,4 +175,9 @@ TrackModel::CapabilitiesFlags LibraryTableModel::getCapabilities() const {
             | TRACKMODELCAPS_BPMLOCK
             | TRACKMODELCAPS_CLEAR_BEATS
             | TRACKMODELCAPS_RESETPLAYED;
+}
+
+void LibraryTableModel::configChanged(QString identifier, QString key){
+    qDebug() << "kain88 signal recieved";
+    qDebug() << identifier << '\t' << key;
 }

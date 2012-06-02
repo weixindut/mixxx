@@ -14,7 +14,7 @@
 
 MixxxLibraryFeature::MixxxLibraryFeature(QObject* parent,
                                          TrackCollection* pTrackCollection,
-                                         bool showMissing)
+                                         ConfigObject<ConfigValue>* pConfig)
         : LibraryFeature(parent),
           kMissingTitle(tr("Missing Tracks")) {
     QStringList columns;
@@ -75,11 +75,14 @@ MixxxLibraryFeature::MixxxLibraryFeature(QObject* parent,
     connect(&pTrackCollection->getTrackDAO(), SIGNAL(tracksRemoved(QSet<int>)),
             pBaseTrackCache, SLOT(slotTracksRemoved(QSet<int>)));
 
+    connect(this,SIGNAL(configChanged(QString,QString)),
+            m_pLibraryTableModel, SLOT(configChanged(QString,QString)));
+
     m_pBaseTrackCache = QSharedPointer<BaseTrackCache>(pBaseTrackCache);
     pTrackCollection->addTrackSource(QString("default"), m_pBaseTrackCache);
 
     // These rely on the 'default' track source being present.
-    m_pLibraryTableModel = new LibraryTableModel(this, pTrackCollection, showMissing);
+    m_pLibraryTableModel = new LibraryTableModel(this, pTrackCollection, pConfig);
     m_pMissingTableModel = new MissingTableModel(this, pTrackCollection);
 
     TreeItem *rootItem = new TreeItem();

@@ -402,6 +402,8 @@ MixxxApp::MixxxApp(QApplication *a, struct CmdlineArgs args)
     // Initialize preference dialog
     m_pPrefDlg = new DlgPreferences(this, m_pSkinLoader, m_pSoundManager, m_pPlayerManager,
                                     m_pControllerManager, m_pVCManager, m_pConfig);
+    connect(m_pPrefDlg, SIGNAL(configChanged(QString,QString)),
+            m_pLibrary, SIGNAL(configChanged(QString,QString)));
     m_pPrefDlg->setWindowIcon(QIcon(":/images/ic_mixxx_window.png"));
     m_pPrefDlg->setHidden(true);
 

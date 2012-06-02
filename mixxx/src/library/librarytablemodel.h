@@ -14,7 +14,7 @@ class LibraryTableModel : public BaseSqlTableModel {
     Q_OBJECT
   public:
     LibraryTableModel(QObject* parent, TrackCollection* pTrackCollection,
-					  bool showMissing=false,
+					  ConfigObject<ConfigValue>* pConfig,
                       QString settingsNamespace="mixxx.db.model.library");
     virtual ~LibraryTableModel();
 
@@ -34,6 +34,9 @@ class LibraryTableModel : public BaseSqlTableModel {
 
     TrackModel::CapabilitiesFlags getCapabilities() const;
     static const QString DEFAULT_LIBRARYFILTER;
+
+  public slots:
+    void configChanged(QString, QString);
 
   private:
     TrackDAO& m_trackDao;

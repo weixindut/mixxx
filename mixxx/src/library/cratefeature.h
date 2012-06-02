@@ -18,8 +18,7 @@ class CrateFeature : public LibraryFeature {
   public:
     CrateFeature(QObject* parent, 
                  TrackCollection* pTrackCollection, 
-                 ConfigObject<ConfigValue>* pConfig,
-                 bool showMissing);
+                 ConfigObject<ConfigValue>* pConfig);
     virtual ~CrateFeature();
 
     QVariant title();

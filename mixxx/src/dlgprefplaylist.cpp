@@ -148,7 +148,6 @@ void DlgPrefPlaylist::slotUpdate()
     checkBox_show_itunes->setChecked((bool)config->getValueString(ConfigKey("[Library]","ShowITunesLibrary"),"1").toInt());
     checkBox_show_traktor->setChecked((bool)config->getValueString(ConfigKey("[Library]","ShowTraktorLibrary"),"1").toInt());
     checkBox_show_missing->setChecked((bool)config->getValueString(ConfigKey("[Library]","ShowMissingSongs"),"1").toInt());
-
 }
 
 void DlgPrefPlaylist::slotBrowseDir()
@@ -185,15 +184,11 @@ void DlgPrefPlaylist::slotApply()
     config->set(ConfigKey("[Library]","ShowTraktorLibrary"),
                 ConfigValue((int)checkBox_show_traktor->isChecked()));
 
-    config->set(ConfigKey("[Library]","ShowMissingSongs"),
-                ConfigValue((int)checkBox_show_missing->isChecked()));
+
 
     config->Save();
-    
-	qDebug() << "kain88 slotApply called";
 
-    QString warningMessage(tr("Mixxx needs to be restarted for changes to take effect"));
-    QMessageBox::warning(NULL,"",warningMessage);
+    
 
     // Update playlist if path has changed
     if (LineEditSongfiles->text() != config->getValueString(ConfigKey("[Playlist]","Directory")))
@@ -207,5 +202,14 @@ void DlgPrefPlaylist::slotApply()
 
         // Emit apply signal
         emit(apply());
+    }
+    //update TM if ShowMissingSongs has changed
+    if ((int)checkBox_show_missing->isChecked() != config->getValueString(ConfigKey(
+                                                "[Library]","ShowMissingSongs")).toInt())
+    {
+        config->set(ConfigKey("[Library]","ShowMissingSongs"),
+                ConfigValue((int)checkBox_show_missing->isChecked()));
+        emit(configChanged("[Library]","ShowMissingSongs"));
+        qDebug() << "kain88 emitted signal";
     }
 }

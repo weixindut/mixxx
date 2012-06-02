@@ -8,6 +8,7 @@
 #include <QSqlTableModel>
 
 #include "library/basesqltablemodel.h"
+#include "configobject.h"
 
 class TrackCollection;
 
@@ -15,7 +16,7 @@ class CrateTableModel : public BaseSqlTableModel {
     Q_OBJECT
   public:
     CrateTableModel(QObject* parent, TrackCollection* pTrackCollection,
-                    bool showMissing);
+                    ConfigObject<ConfigValue>* pConfig);
     virtual ~CrateTableModel();
 
     void setCrate(int crateId);
@@ -46,7 +47,7 @@ class CrateTableModel : public BaseSqlTableModel {
   private:
     TrackCollection* m_pTrackCollection;
     int m_iCrateId;
-    bool m_showMissing;
+    ConfigObject<ConfigValue>* m_pConfig;
 };
 
 #endif /* CRATETABLEMODEL_H */

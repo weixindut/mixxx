@@ -2,12 +2,13 @@
 
 #include "preparelibrarytablemodel.h"
 #include "library/trackcollection.h"
+#include "configobject.h"
 
 const QString RECENT_FILTER = "datetime_added > datetime('now', '-7 days')";
 
 PrepareLibraryTableModel::PrepareLibraryTableModel(QObject* parent,
                                                    TrackCollection* pTrackCollection)
-        : LibraryTableModel(parent, pTrackCollection,false,
+        : LibraryTableModel(parent, pTrackCollection, NULL ,
                             "mixxx.db.model.prepare") {
     m_bShowRecentSongs = true;
     setSearch("", m_bShowRecentSongs ? RECENT_FILTER : QString());

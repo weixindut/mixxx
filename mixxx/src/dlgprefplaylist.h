@@ -52,6 +52,7 @@ public slots:
 
 signals:
     void apply();
+    void configChanged(QString module, QString key);
 private:
     /** Pointer to config object */
     ConfigObject<ConfigValue> *config;

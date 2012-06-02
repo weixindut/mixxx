@@ -9,16 +9,17 @@
 #include "library/dao/playlistdao.h"
 #include "library/dao/trackdao.h"
 #include "library/librarytablemodel.h"
+#include "configobject.h"
 
 class TrackCollection;
 
 class PlaylistTableModel : public BaseSqlTableModel {
     Q_OBJECT
-  public:
+public:
     PlaylistTableModel(QObject* parent, TrackCollection* pTrackCollection,
-                       QString settingsNamespace, 
-					   bool showMissing=false,
-					   bool showAll=false);
+                    QString settingsNamespace, 
+                    ConfigObject<ConfigValue>* pConfig,
+                    bool showAll=false);
     virtual ~PlaylistTableModel();
     void setPlaylist(int playlistId);
     int getPlaylist() const {
@@ -41,19 +42,19 @@ class PlaylistTableModel : public BaseSqlTableModel {
 
     TrackModel::CapabilitiesFlags getCapabilities() const;
 
-  private slots:
+private slots:
     void slotSearch(const QString& searchText);
 
-  signals:
+signals:
     void doSearch(const QString& searchText);
 
-  private:
+private:
     TrackCollection* m_pTrackCollection;
     PlaylistDAO& m_playlistDao;
     TrackDAO& m_trackDao;
     int m_iPlaylistId;
-    bool m_showMissing;
-	bool m_showAll;
+    ConfigObject<ConfigValue>* m_pConfig;
+    bool m_showAll;
 };
 
 #endif

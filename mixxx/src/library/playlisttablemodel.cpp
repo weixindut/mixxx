@@ -8,10 +8,10 @@
 #include "mixxxutils.cpp"
 
 PlaylistTableModel::PlaylistTableModel(QObject* parent,
-                                       TrackCollection* pTrackCollection,
-                                       QString settingsNamespace,
-                                       bool showMissing,
-									   bool showAll)
+                                    TrackCollection* pTrackCollection,
+                                    QString settingsNamespace,
+                                    ConfigObject<ConfigValue>* pConfig,
+                                    bool showAll)
         : BaseSqlTableModel(parent, pTrackCollection,
                             pTrackCollection->getDatabase(),
                             settingsNamespace),
@@ -21,8 +21,8 @@ PlaylistTableModel::PlaylistTableModel(QObject* parent,
                             m_iPlaylistId(-1) {
     connect(this, SIGNAL(doSearch(const QString&)),
             this, SLOT(slotSearch(const QString&)));
-    m_showMissing = showMissing;
-	m_showAll = showAll;
+    m_showAll = showAll;
+    m_pConfig = pConfig;
 }
 
 PlaylistTableModel::~PlaylistTableModel() {
@@ -44,28 +44,22 @@ void PlaylistTableModel::setPlaylist(int playlistId) {
     QStringList columns;
     QStringList tableColumns;
     QString filter;
-    if(m_showMissing){
-        columns << "PlaylistTracks."+PLAYLISTTRACKSTABLE_TRACKID
-                << "PlaylistTracks."+PLAYLISTTRACKSTABLE_POSITION
-                << "PlaylistTracks."+PLAYLISTTRACKSTABLE_DATETIMEADDED
-                << "track_locations.fs_deleted";
-        filter = "library.mixxx_deleted=0";
-        tableColumns << PLAYLISTTRACKSTABLE_TRACKID
-                     << PLAYLISTTRACKSTABLE_POSITION
-                     << PLAYLISTTRACKSTABLE_DATETIMEADDED
-                     << TRACKLOCATIONSTABLE_FSDELETED;
-    } else {
         columns << "PlaylistTracks."+PLAYLISTTRACKSTABLE_TRACKID
                 << "PlaylistTracks."+PLAYLISTTRACKSTABLE_POSITION
                 << "PlaylistTracks."+PLAYLISTTRACKSTABLE_DATETIMEADDED;
-        filter = "library.mixxx_deleted=0 AND track_locations.fs_deleted=0";
         tableColumns << PLAYLISTTRACKSTABLE_TRACKID
-                     << PLAYLISTTRACKSTABLE_POSITION
-                     << PLAYLISTTRACKSTABLE_DATETIMEADDED;
+                    << PLAYLISTTRACKSTABLE_POSITION
+                    << PLAYLISTTRACKSTABLE_DATETIMEADDED;
+    bool showMissing = m_pConfig->getValueString(ConfigKey("[Library]","ShowMissingSongs")).toInt();
+    if(showMissing){
+        filter = "library.mixxx_deleted=0";
+    } else {
+        filter = "library.mixxx_deleted=0 AND track_locations.fs_deleted=0";
     }
-	if(m_showAll){
-		filter = "library.id=library.id";
-	}
+    //TODO(kain88) nonsense chaning querystring is better
+    if(m_showAll){
+        filter = "library.id=library.id";
+    }
 
     // We drop files that have been explicitly deleted from mixxx
     // (mixxx_deleted=0) from the view. There was a bug in <= 1.9.0 where
@@ -78,8 +72,8 @@ void PlaylistTableModel::setPlaylist(int playlistId) {
         "INNER JOIN track_locations ON track_locations.id=PlaylistTracks.track_id "
         "WHERE PlaylistTracks.playlist_id = %3 AND %4")
             .arg(escaper.escapeString(playlistTableName),
-                 columns.join(","),
-                 QString::number(playlistId), filter);
+                columns.join(","),
+                QString::number(playlistId), filter);
     
     qDebug() << "kain88 query for playlist_id "<<playlistTableName;
     qDebug() << queryString;
@@ -90,7 +84,7 @@ void PlaylistTableModel::setPlaylist(int playlistId) {
     }
 
     setTable(playlistTableName, tableColumns[0], tableColumns,
-             m_pTrackCollection->getTrackSource("default"));
+            m_pTrackCollection->getTrackSource("default"));
     initHeaderData();
     setSearch("");
     setDefaultSort(fieldIndex("position"), Qt::AscendingOrder);
@@ -158,8 +152,8 @@ int PlaylistTableModel::addTracks(const QModelIndex& index, QList<QString> locat
         select();
     } else if (locations.size() - tracksAdded > 0) {
         qDebug() << "PlaylistTableModel::addTracks could not add"
-                 << locations.size() - tracksAdded
-                 << "to playlist" << m_iPlaylistId;
+                << locations.size() - tracksAdded
+                << "to playlist" << m_iPlaylistId;
     }
     return tracksAdded;
 }
@@ -212,7 +206,7 @@ void PlaylistTableModel::removeTracks(const QModelIndexList& indices) {
 }
 
 void PlaylistTableModel::moveTrack(const QModelIndex& sourceIndex,
-                                   const QModelIndex& destIndex) {
+                                const QModelIndex& destIndex) {
     //QSqlRecord sourceRecord = this->record(sourceIndex.row());
     //sourceRecord.setValue("position", destIndex.row());
     //this->removeRows(sourceIndex.row(), 1);
@@ -253,13 +247,13 @@ void PlaylistTableModel::moveTrack(const QModelIndex& sourceIndex,
     //Insert the song into the PlaylistTracks table
 
     /** ALGORITHM for code below
-      Case 1: destination < source (newPos < oldPos)
+    Case 1: destination < source (newPos < oldPos)
         1) Set position = -1 where pos=source -- Gives that track a dummy index to keep stuff simple.
         2) Decrement position where pos > source
         3) increment position where pos > dest
         4) Set position = dest where pos=-1 -- Move track from dummy pos to final destination.
 
-      Case 2: destination > source (newPos > oldPos)
+    Case 2: destination > source (newPos > oldPos)
         1) Set position=-1 where pos=source -- Give track a dummy index again.
         2) Decrement position where pos > source AND pos <= dest
         3) Set postion=dest where pos=-1 -- Move that track from dummy pos to final destination
@@ -271,15 +265,15 @@ void PlaylistTableModel::moveTrack(const QModelIndex& sourceIndex,
             QString("UPDATE PlaylistTracks SET position=-1 "
                     "WHERE position=%1 AND "
                     "playlist_id=%2").arg(QString::number(oldPosition),
-                                          QString::number(m_iPlaylistId));
+                                        QString::number(m_iPlaylistId));
         query.exec(queryString);
         //qDebug() << queryString;
 
         queryString = QString("UPDATE PlaylistTracks SET position=position-1 "
                             "WHERE position > %1 AND "
-                              "playlist_id=%2").arg(
-                                  QString::number(oldPosition),
-                                  QString::number(m_iPlaylistId));
+                            "playlist_id=%2").arg(
+                                QString::number(oldPosition),
+                                QString::number(m_iPlaylistId));
         query.exec(queryString);
 
         queryString = QString("UPDATE PlaylistTracks SET position=position+1 "
@@ -299,26 +293,26 @@ void PlaylistTableModel::moveTrack(const QModelIndex& sourceIndex,
     else if (newPosition > oldPosition)
     {
         queryString = QString("UPDATE PlaylistTracks SET position=-1 "
-                              "WHERE position = %1 AND "
-                              "playlist_id=%2").arg(
-                                  QString::number(oldPosition),
-                                  QString::number(m_iPlaylistId));
+                            "WHERE position = %1 AND "
+                            "playlist_id=%2").arg(
+                                QString::number(oldPosition),
+                                QString::number(m_iPlaylistId));
         //qDebug() << queryString;
         query.exec(queryString);
 
         queryString = QString("UPDATE PlaylistTracks SET position=position-1 "
-                              "WHERE position > %1 AND position <= %2 AND "
-                              "playlist_id=%3").arg(
-                                  QString::number(oldPosition),
-                                  QString::number(newPosition),
-                                  QString::number(m_iPlaylistId));
+                            "WHERE position > %1 AND position <= %2 AND "
+                            "playlist_id=%3").arg(
+                                QString::number(oldPosition),
+                                QString::number(newPosition),
+                                QString::number(m_iPlaylistId));
         query.exec(queryString);
 
         queryString = QString("UPDATE PlaylistTracks SET position=%1 "
-                              "WHERE position=-1 AND "
-                              "playlist_id=%2").arg(
-                                  QString::number(newPosition),
-                                  QString::number(m_iPlaylistId));
+                            "WHERE position=-1 AND "
+                            "playlist_id=%2").arg(
+                                QString::number(newPosition),
+                                QString::number(m_iPlaylistId));
         query.exec(queryString);
     }
 
@@ -350,14 +344,14 @@ void PlaylistTableModel::shuffleTracks(const QModelIndex& currentIndex) {
         qDebug() << "Swapping tracks " << i << " and " << random;
         QString swapQuery = "UPDATE PlaylistTracks SET position=%1 WHERE position=%2 AND playlist_id=%3";
         query.exec(swapQuery.arg(QString::number(-1),
-                                 QString::number(i),
-                                 QString::number(m_iPlaylistId)));
+                                QString::number(i),
+                                QString::number(m_iPlaylistId)));
         query.exec(swapQuery.arg(QString::number(i),
-                                 QString::number(random),
-                                 QString::number(m_iPlaylistId)));
+                                QString::number(random),
+                                QString::number(m_iPlaylistId)));
         query.exec(swapQuery.arg(QString::number(random),
-                                 QString::number(-1),
-                                 QString::number(m_iPlaylistId)));
+                                QString::number(-1),
+                                QString::number(m_iPlaylistId)));
 
         if (query.lastError().isValid())
             qDebug() << query.lastError();
@@ -394,7 +388,7 @@ bool PlaylistTableModel::isColumnHiddenByDefault(int column) {
         return true;
     }
     if (column == fieldIndex(PLAYLISTTRACKSTABLE_DATETIMEADDED)) {
-       return true;
+    return true;
     }
     return false;
 }

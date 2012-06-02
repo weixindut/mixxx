@@ -56,7 +56,6 @@ class StarDelegate : public QStyledItemDelegate {
     
   private:
     TrackModel* m_pTrackModel;
-    BaseSqlTableModel* m_pBaseSqlTableModel;
 };
 
 #endif

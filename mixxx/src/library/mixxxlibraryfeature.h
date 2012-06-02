@@ -8,6 +8,7 @@
 
 #include "library/libraryfeature.h"
 #include "treeitemmodel.h"
+#include "configobject.h"
 
 class BaseTrackCache;
 class LibraryTableModel;
@@ -19,7 +20,7 @@ class MixxxLibraryFeature : public LibraryFeature {
     public:
     MixxxLibraryFeature(QObject* parent,
                         TrackCollection* pTrackCollection,
-                        bool showMissing);
+                        ConfigObject<ConfigValue>* pConfig);
     virtual ~MixxxLibraryFeature();
 
     QVariant title();
@@ -29,6 +30,9 @@ class MixxxLibraryFeature : public LibraryFeature {
     bool dragMoveAccept(QUrl url);
     bool dragMoveAcceptChild(const QModelIndex& index, QUrl url);
     TreeItemModel* getChildModel();
+
+  signals:
+    void configChanged(QString module, QString key);
 
   public slots:
     void activate();

@@ -21,7 +21,9 @@ SetlogFeature::SetlogFeature(QObject* parent,
     //TODO(kain88) setlogs should also show missing files right
     //TODO(kain88) they should also show mixxx_deleted=1 files
     m_pPlaylistTableModel = new PlaylistTableModel(this, pTrackCollection,
-                                                   "mixxx.db.model.setlog",true,true);
+                                                   "mixxx.db.model.setlog",
+                                                   pConfig,
+                                                   true);
     m_pJoinWithPreviousAction = new QAction(tr("Join with previous"), this);
     connect(m_pJoinWithPreviousAction, SIGNAL(triggered()),
             this, SLOT(slotJoinWithPrevious()));

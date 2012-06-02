@@ -52,7 +52,6 @@ class BaseSqlTableModel : public QAbstractTableModel, public TrackModel {
     virtual void select();
     virtual int getTrackId(const QModelIndex& index) const;
     virtual QString getTrackLocation(const QModelIndex& index) const;
-    bool isFs_deleted(int row);
     virtual QAbstractItemDelegate* delegateForColumn(const int i, QObject* pParent);
 
   protected:
@@ -89,7 +88,6 @@ class BaseSqlTableModel : public QAbstractTableModel, public TrackModel {
     struct RowInfo {
         int trackId;
         int order;
-        bool fs_deleted;
         QHash<int, QVariant> metadata;
 
         bool operator<(const RowInfo& other) const {
@@ -129,8 +127,6 @@ class BaseSqlTableModel : public QAbstractTableModel, public TrackModel {
     TrackDAO& m_trackDAO;
     QSqlDatabase m_database;
     
-    bool m_isLibrary;
-
     DISALLOW_COPY_AND_ASSIGN(BaseSqlTableModel);
 };
 

@@ -24,12 +24,10 @@
 #include "stareditor.h"
 #include "starrating.h"
 #include "library/trackmodel.h"
-#include "library/basesqltablemodel.h"
 
 StarDelegate::StarDelegate(QObject *pParent) : QStyledItemDelegate(pParent) {
     QTableView* pTableView =qobject_cast<QTableView *> (pParent);
-    // m_pTrackModel = dynamic_cast<TrackModel*>(pTableView->model());
-    m_pBaseSqlTableModel = dynamic_cast<BaseSqlTableModel*>(pTableView->model());
+    m_pTrackModel = dynamic_cast<TrackModel*>(pTableView->model());
 }
 /*
  * The function is invoked once for each item, represented by a QModelIndex object from the model.
@@ -47,8 +45,8 @@ void StarDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, 
     // Populate the correct colors based on the styling
     QStyleOptionViewItem newOption = option;
     initStyleOption(&newOption, index);
-    int row=index.row();
-    bool found=m_pBaseSqlTableModel->isFs_deleted(row);
+    bool found=index.sibling(index.row(),
+               m_pTrackModel->fieldIndex(TRACKLOCATIONSTABLE_FSDELETED)).data().toInt();
     // Set the palette appropriately based on whether the row is selected or
     // not. We also have to check if it is inactive or not and use the
     // appropriate ColorGroup.

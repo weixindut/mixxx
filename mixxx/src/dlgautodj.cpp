@@ -46,7 +46,7 @@ DlgAutoDJ::DlgAutoDJ(QWidget* parent, ConfigObject<ConfigValue>* pConfig,
 
     m_pAutoDJTableModel = new PlaylistTableModel(this, pTrackCollection,
                                                  "mixxx.db.model.autodj",
-                                                 false  );
+                                                 pConfig);
     int playlistId = m_playlistDao.getPlaylistIdFromName(AUTODJ_TABLE);
     if (playlistId < 0) {
         playlistId = m_playlistDao.createPlaylist(AUTODJ_TABLE,
