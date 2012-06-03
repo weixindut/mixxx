@@ -63,6 +63,8 @@ public slots:
     void slotRefreshLibraryModels();
     void slotCreatePlaylist();
     void slotCreateCrate();
+    void slotConfigChanged(QString,QString);
+    
 signals:
     void showTrackModel(QAbstractItemModel* model);
     void switchToView(const QString& view);

@@ -33,7 +33,9 @@ PlaylistFeature::PlaylistFeature(QObject* parent,
     m_playlistTableModel.setSort(m_playlistTableModel.fieldIndex("name"),
                                  Qt::AscendingOrder);
     m_playlistTableModel.select();
-
+    connect(this, SIGNAL(configChanged(QString,QString)),
+            m_pPlaylistTableModel, SLOT(slotConfigChanged(QString,QString)));
+            
     //construct child model
     TreeItem *rootItem = new TreeItem();
     m_childModel.setRootItem(rootItem);
@@ -214,4 +216,9 @@ QString PlaylistFeature::getRootViewHtml() const {
                                             playlistsSummary4));
     html.append("</td></tr></table>");
     return html;
+}
+
+void PlaylistFeature::slotConfigChanged(QString identifier, QString key){
+    qDebug() << "signal recived by playlistfeature";
+    emit(configChanged(identifier,key));
 }

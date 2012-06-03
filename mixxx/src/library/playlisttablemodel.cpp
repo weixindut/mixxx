@@ -31,10 +31,12 @@ PlaylistTableModel::~PlaylistTableModel() {
 void PlaylistTableModel::setPlaylist(int playlistId) {
     //qDebug() << "PlaylistTableModel::setPlaylist" << playlistId;
 
+    /*
     if (m_iPlaylistId == playlistId) {
         qDebug() << "Already focused on playlist " << playlistId;
         return;
     }
+    */
 
     m_iPlaylistId = playlistId;
     QString playlistTableName = "playlist_" + QString::number(m_iPlaylistId);
@@ -419,4 +421,9 @@ TrackModel::CapabilitiesFlags PlaylistTableModel::getCapabilities() const {
     }
 
     return caps;
+}
+
+void PlaylistTableModel::slotConfigChanged(QString identifier, QString key){
+    qDebug() << "signal recived by PTM";
+    setPlaylist(m_iPlaylistId);
 }

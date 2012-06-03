@@ -32,7 +32,7 @@ class MixxxLibraryFeature : public LibraryFeature {
     TreeItemModel* getChildModel();
 
   signals:
-    void configChanged(QString module, QString key);
+    void configChanged(QString, QString);
 
   public slots:
     void activate();
@@ -41,6 +41,7 @@ class MixxxLibraryFeature : public LibraryFeature {
     void onRightClickChild(const QPoint& globalPos, QModelIndex index);
     void onLazyChildExpandation(const QModelIndex& index);
     void refreshLibraryModels();
+    void slotConfigChanged(QString,QString);
 
   private:
     const QString kMissingTitle;

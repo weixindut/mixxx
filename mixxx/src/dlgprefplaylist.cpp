@@ -209,6 +209,9 @@ void DlgPrefPlaylist::slotApply()
     {
         config->set(ConfigKey("[Library]","ShowMissingSongs"),
                 ConfigValue((int)checkBox_show_missing->isChecked()));
+        // Save preferences
+        config->Save();
+        
         emit(configChanged("[Library]","ShowMissingSongs"));
         qDebug() << "kain88 emitted signal";
     }

@@ -25,9 +25,13 @@ class PlaylistFeature : public BasePlaylistFeature {
     bool dropAcceptChild(const QModelIndex& index, QUrl url);
     bool dragMoveAcceptChild(const QModelIndex& index, QUrl url);
 
+  signals:
+    void configChanged(QString,QString);
+
   public slots:
     void onRightClick(const QPoint& globalPos);
     void onRightClickChild(const QPoint& globalPos, QModelIndex index);
+    void slotConfigChanged(QString, QString);
 
   private slots:
     void slotPlaylistTableChanged(int playlistId);

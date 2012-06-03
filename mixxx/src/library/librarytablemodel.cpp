@@ -177,7 +177,7 @@ TrackModel::CapabilitiesFlags LibraryTableModel::getCapabilities() const {
             | TRACKMODELCAPS_RESETPLAYED;
 }
 
-void LibraryTableModel::configChanged(QString identifier, QString key){
-    qDebug() << "kain88 signal recieved";
+void LibraryTableModel::slotConfigChanged(QString identifier, QString key){
+    qDebug() << "kain88 signal recieved by LTM";
     qDebug() << identifier << '\t' << key;
 }

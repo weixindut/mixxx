@@ -44,6 +44,7 @@ public:
 
 private slots:
     void slotSearch(const QString& searchText);
+    void slotConfigChanged(QString,QString);
 
 signals:
     void doSearch(const QString& searchText);

@@ -61,6 +61,8 @@ Library::Library(QObject* parent, ConfigObject<ConfigValue>* pConfig, bool first
     addFeature(new AutoDJFeature(this, pConfig, m_pTrackCollection));
     m_pPlaylistFeature = new PlaylistFeature(this, m_pTrackCollection, pConfig);
     addFeature(m_pPlaylistFeature);
+    connect(this, SIGNAL(configChanged(QString,QString)),
+            m_pPlaylistFeature, SIGNAL(configChanged(QString,QString)));
     m_pCrateFeature = new CrateFeature(this, m_pTrackCollection, pConfig);
     addFeature(m_pCrateFeature);
     addFeature(new BrowseFeature(this, pConfig, m_pTrackCollection, m_pRecordingManager));
@@ -219,4 +221,9 @@ QList<TrackPointer> Library::getTracksToAutoLoad()
         return m_pPromoTracksFeature->getTracksToAutoLoad();
     else
         return QList<TrackPointer>();
+}
+
+void Library::slotConfigChanged(QString identifier, QString key){
+    qDebug() << "kain88 recived by library";
+    emit(configChanged(identifier,key));
 }

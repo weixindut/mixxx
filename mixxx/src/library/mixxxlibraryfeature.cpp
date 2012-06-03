@@ -75,8 +75,6 @@ MixxxLibraryFeature::MixxxLibraryFeature(QObject* parent,
     connect(&pTrackCollection->getTrackDAO(), SIGNAL(tracksRemoved(QSet<int>)),
             pBaseTrackCache, SLOT(slotTracksRemoved(QSet<int>)));
 
-    connect(this,SIGNAL(configChanged(QString,QString)),
-            m_pLibraryTableModel, SLOT(configChanged(QString,QString)));
 
     m_pBaseTrackCache = QSharedPointer<BaseTrackCache>(pBaseTrackCache);
     pTrackCollection->addTrackSource(QString("default"), m_pBaseTrackCache);
@@ -84,6 +82,8 @@ MixxxLibraryFeature::MixxxLibraryFeature(QObject* parent,
     // These rely on the 'default' track source being present.
     m_pLibraryTableModel = new LibraryTableModel(this, pTrackCollection, pConfig);
     m_pMissingTableModel = new MissingTableModel(this, pTrackCollection);
+    connect(this,SIGNAL(configChanged(QString,QString)),
+            m_pLibraryTableModel, SLOT(slotConfigChanged(QString, QString)));
 
     TreeItem *rootItem = new TreeItem();
     TreeItem *childItem = new TreeItem(kMissingTitle, kMissingTitle,
@@ -162,4 +162,10 @@ bool MixxxLibraryFeature::dragMoveAcceptChild(const QModelIndex& index,
     return false;
 }void MixxxLibraryFeature::onLazyChildExpandation(const QModelIndex &index){
 //Nothing to do because the childmodel is not of lazy nature.
+}
+
+void MixxxLibraryFeature::slotConfigChanged(QString identifier, QString key){
+    qDebug() << "kain88 recived by libraryfeature";
+    qDebug() << identifier << '\t' << key;
+    emit(configChanged(identifier,key));
 }

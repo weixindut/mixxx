@@ -36,7 +36,7 @@ class LibraryTableModel : public BaseSqlTableModel {
     static const QString DEFAULT_LIBRARYFILTER;
 
   public slots:
-    void configChanged(QString, QString);
+    void slotConfigChanged(QString, QString);
 
   private:
     TrackDAO& m_trackDao;
