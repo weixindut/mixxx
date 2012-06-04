@@ -431,8 +431,9 @@ QVariant BaseSqlTableModel::data(const QModelIndex& index, int role) const {
         case Qt::ToolTipRole:
             if(index.sibling(index.row(),
                fieldIndex(TRACKLOCATIONSTABLE_FSDELETED)).data().toInt()==1){
+                // QString filePath(index.sibling(index.row(),fieldIndex(LIBRARYTABLE_LOCATION)).data());
                 //TODO(kain88 also include the location here)
-                value = QVariant(QString("File Not Found"));
+                value = QVariant(QString("No such file at "));
             }
             break;
         case Qt::DisplayRole:

@@ -6,6 +6,7 @@
 
 #include "library/basesqltablemodel.h"
 #include "library/trackmodel.h"
+#include "library/trackcollection.h"
 #include "library/dao/trackdao.h"
 
 class TrackCollection;
@@ -17,6 +18,8 @@ class LibraryTableModel : public BaseSqlTableModel {
 					  ConfigObject<ConfigValue>* pConfig,
                       QString settingsNamespace="mixxx.db.model.library");
     virtual ~LibraryTableModel();
+    
+    void setLibrary();
 
     virtual TrackPointer getTrack(const QModelIndex& index) const;
     virtual void search(const QString& searchText);
@@ -38,14 +41,18 @@ class LibraryTableModel : public BaseSqlTableModel {
   public slots:
     void slotConfigChanged(QString, QString);
 
-  private:
-    TrackDAO& m_trackDao;
 
   private slots:
     void slotSearch(const QString& searchText);
 
   signals:
     void doSearch(const QString& searchText);
+    
+  private:
+    TrackDAO& m_trackDao;
+    ConfigObject<ConfigValue>* m_pConfig;
+    TrackCollection* m_pTrackCollection;
+
 };
 
 #endif

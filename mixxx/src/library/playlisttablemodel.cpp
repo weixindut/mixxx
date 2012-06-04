@@ -31,7 +31,7 @@ PlaylistTableModel::~PlaylistTableModel() {
 void PlaylistTableModel::setPlaylist(int playlistId) {
     //qDebug() << "PlaylistTableModel::setPlaylist" << playlistId;
 
-    /*
+    /*TODO(kain88) reactivate this in a way that I can call the function on a configchange|overwrite?
     if (m_iPlaylistId == playlistId) {
         qDebug() << "Already focused on playlist " << playlistId;
         return;
@@ -40,6 +40,7 @@ void PlaylistTableModel::setPlaylist(int playlistId) {
 
     m_iPlaylistId = playlistId;
     QString playlistTableName = "playlist_" + QString::number(m_iPlaylistId);
+    
     QSqlQuery query(m_pTrackCollection->getDatabase());
     FieldEscaper escaper(m_pTrackCollection->getDatabase());
 
@@ -53,13 +54,14 @@ void PlaylistTableModel::setPlaylist(int playlistId) {
                     << PLAYLISTTRACKSTABLE_POSITION
                     << PLAYLISTTRACKSTABLE_DATETIMEADDED;
     bool showMissing = m_pConfig->getValueString(ConfigKey("[Library]","ShowMissingSongs")).toInt();
-    if(showMissing){
+    if (showMissing) {
         filter = "library.mixxx_deleted=0";
+        playlistTableName.append("_missing");
     } else {
         filter = "library.mixxx_deleted=0 AND track_locations.fs_deleted=0";
     }
     //TODO(kain88) nonsense chaning querystring is better
-    if(m_showAll){
+    if (m_showAll) {
         filter = "library.id=library.id";
     }
 
@@ -424,6 +426,9 @@ TrackModel::CapabilitiesFlags PlaylistTableModel::getCapabilities() const {
 }
 
 void PlaylistTableModel::slotConfigChanged(QString identifier, QString key){
-    qDebug() << "signal recived by PTM";
-    setPlaylist(m_iPlaylistId);
+    Q_UNUSED(identifier);
+    if (key=="showMissing") {
+        setPlaylist(m_iPlaylistId);
+        select();
+    }
 }

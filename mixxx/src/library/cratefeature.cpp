@@ -64,6 +64,8 @@ CrateFeature::CrateFeature(QObject* parent,
     connect(&m_crateDao, SIGNAL(lockChanged(int)),
             this, SLOT(slotCrateTableChanged(int)));
 
+    connect(this, SIGNAL(configChanged(QString,QString)),
+            &m_crateTableModel, SLOT(slotConfigChanged(QString,QString)));
 
     m_crateListTableModel.setTable("crates");
     m_crateListTableModel.setSort(m_crateListTableModel.fieldIndex("name"),

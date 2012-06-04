@@ -41,7 +41,7 @@ public:
     void bindWidget(WLibrarySidebar* sidebarWidget,
                     WLibrary* libraryWidget,
                     MixxxKeyboard* pKeyboard);
-    void addFeature(LibraryFeature* feature);
+    void addFeature(LibraryFeature* feature, bool config=false);
     QList<TrackPointer> getTracksToAutoLoad();
 
     // TODO(rryan) Transitionary only -- the only reason this is here is so the

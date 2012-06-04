@@ -44,11 +44,8 @@ Library::Library(QObject* parent, ConfigObject<ConfigValue>* pConfig, bool first
     // TODO(rryan) -- turn this construction / adding of features into a static
     // method or something -- CreateDefaultLibrary
     m_pMixxxLibraryFeature = new MixxxLibraryFeature(this, m_pTrackCollection,pConfig);
-    addFeature(m_pMixxxLibraryFeature);
-    connect(this,SIGNAL(configChanged(QString,QString)),
-            m_pMixxxLibraryFeature,SIGNAL(configChanged(QString,QString)));
-    
-    
+    addFeature(m_pMixxxLibraryFeature,true);
+
     if (PromoTracksFeature::isSupported(m_pConfig)) {
         m_pPromoTracksFeature = new PromoTracksFeature(this, pConfig,
                                                        m_pTrackCollection,
@@ -60,11 +57,9 @@ Library::Library(QObject* parent, ConfigObject<ConfigValue>* pConfig, bool first
 
     addFeature(new AutoDJFeature(this, pConfig, m_pTrackCollection));
     m_pPlaylistFeature = new PlaylistFeature(this, m_pTrackCollection, pConfig);
-    addFeature(m_pPlaylistFeature);
-    connect(this, SIGNAL(configChanged(QString,QString)),
-            m_pPlaylistFeature, SIGNAL(configChanged(QString,QString)));
+    addFeature(m_pPlaylistFeature,true);
     m_pCrateFeature = new CrateFeature(this, m_pTrackCollection, pConfig);
-    addFeature(m_pCrateFeature);
+    addFeature(m_pCrateFeature,true);
     addFeature(new BrowseFeature(this, pConfig, m_pTrackCollection, m_pRecordingManager));
     addFeature(new RecordingFeature(this, pConfig, m_pTrackCollection, m_pRecordingManager));
     addFeature(new SetlogFeature(this, pConfig, m_pTrackCollection));
@@ -157,7 +152,7 @@ void Library::bindWidget(WLibrarySidebar* pSidebarWidget,
     m_pSidebarModel->activateDefaultSelection();
 }
 
-void Library::addFeature(LibraryFeature* feature) {
+void Library::addFeature(LibraryFeature* feature, bool config) {
     Q_ASSERT(feature);
     m_features.push_back(feature);
     m_pSidebarModel->addLibraryFeature(feature);
@@ -171,10 +166,14 @@ void Library::addFeature(LibraryFeature* feature) {
             this, SLOT(slotLoadTrackToPlayer(TrackPointer, QString)));
     connect(feature, SIGNAL(restoreSearch(const QString&)),
             this, SLOT(slotRestoreSearch(const QString&)));
+    if (config) {
+        connect(this, SIGNAL(configChanged(QString,QString)),
+                feature, SIGNAL(configChanged(QString,QString)));
+    }
 }
 
 void Library::slotShowTrackModel(QAbstractItemModel* model) {
-    //qDebug() << "Library::slotShowTrackModel" << model;
+    qDebug() << "Library::slotShowTrackModel" << model;
     TrackModel* trackModel = dynamic_cast<TrackModel*>(model);
     Q_ASSERT(trackModel);
     emit(showTrackModel(model));

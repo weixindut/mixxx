@@ -35,6 +35,9 @@ class CrateFeature : public LibraryFeature {
 
     TreeItemModel* getChildModel();
 
+  signals:
+    void configChanged(QString,QString);
+
   public slots:
     void activate();
     void activateChild(const QModelIndex& index);

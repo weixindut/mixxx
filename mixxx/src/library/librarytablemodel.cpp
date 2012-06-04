@@ -22,25 +22,40 @@ LibraryTableModel::LibraryTableModel(QObject* parent,
                             pTrackCollection->getDatabase(),
                             settingsNamespace),
           m_trackDao(pTrackCollection->getTrackDAO()) {
+    
+    m_pConfig=pConfig;
+    m_pTrackCollection = pTrackCollection;
+    connect(this, SIGNAL(doSearch(const QString&)),
+            this, SLOT(slotSearch(const QString&)));
+}
+
+LibraryTableModel::~LibraryTableModel() {
+}
+
+void LibraryTableModel::setLibrary(){
     QStringList columns;
-    QString libraryFilter;
     columns << "library."+LIBRARYTABLE_ID;
-    bool showMissing;
+
     //prepareLibrary give a NULL to the constructor so check for it
-    if(pConfig){
-        showMissing = pConfig->getValueString(ConfigKey("[Library]","ShowMissingSongs")).toInt();
+    bool showMissing;
+    if(m_pConfig){
+        showMissing = m_pConfig->getValueString(ConfigKey("[Library]","ShowMissingSongs")).toInt();
     } else {
         showMissing = false;
     }
+    qDebug()<<"kain88 showMissing="<<showMissing;
+    QString tableName = "library_view";
+    QString libraryFilter;
     if (showMissing){
         libraryFilter = "mixxx_deleted=0";
+        tableName.append("_missing");
     } else {
         libraryFilter = "mixxx_deleted=0 AND fs_deleted=0";
     }
 
 
-    QSqlQuery query(pTrackCollection->getDatabase());
-    QString queryString = "CREATE TEMPORARY VIEW IF NOT EXISTS library_view AS "
+    QSqlQuery query(m_pTrackCollection->getDatabase());
+    QString queryString = "CREATE TEMPORARY VIEW IF NOT EXISTS "+tableName+" AS "
             "SELECT " + columns.join(", ") +
             " FROM library INNER JOIN track_locations "
             "ON library.location = track_locations.id "
@@ -52,23 +67,18 @@ LibraryTableModel::LibraryTableModel(QObject* parent,
 
     QStringList tableColumns;
     tableColumns << LIBRARYTABLE_ID;
-    setTable("library_view", LIBRARYTABLE_ID, tableColumns,
-             pTrackCollection->getTrackSource("default"));
+    setTable(tableName, LIBRARYTABLE_ID, tableColumns,
+             m_pTrackCollection->getTrackSource("default"));
 
     // BaseSqlTabelModel will setup the header info
     initHeaderData();
 
     setSearch("");
     setDefaultSort(fieldIndex("artist"), Qt::AscendingOrder);
-
-    connect(this, SIGNAL(doSearch(const QString&)),
-            this, SLOT(slotSearch(const QString&)));
-}
-
-LibraryTableModel::~LibraryTableModel() {
 }
 
 bool LibraryTableModel::addTrack(const QModelIndex& index, QString location) {
+    Q_UNUSED(index);
     QFileInfo fileInfo(location);
 
     // Adds track, does not insert duplicates, handles unremoving logic.
@@ -83,6 +93,7 @@ bool LibraryTableModel::addTrack(const QModelIndex& index, QString location) {
 }
 
 int LibraryTableModel::addTracks(const QModelIndex& index, QList<QString> locations) {
+    Q_UNUSED(index);
     QList<QFileInfo> fileInfoList;
     foreach (QString fileLocation, locations) {
         fileInfoList.append(QFileInfo(fileLocation));
@@ -121,6 +132,8 @@ void LibraryTableModel::removeTrack(const QModelIndex& index) {
 
 void LibraryTableModel::moveTrack(const QModelIndex& sourceIndex,
                                   const QModelIndex& destIndex) {
+    Q_UNUSED(sourceIndex);
+    Q_UNUSED(destIndex);
     // Does nothing because we don't support reordering tracks in the library,
     // and getCapabilities() reports that.
 }
@@ -178,6 +191,11 @@ TrackModel::CapabilitiesFlags LibraryTableModel::getCapabilities() const {
 }
 
 void LibraryTableModel::slotConfigChanged(QString identifier, QString key){
-    qDebug() << "kain88 signal recieved by LTM";
-    qDebug() << identifier << '\t' << key;
+    Q_UNUSED(identifier);
+    qDebug() << "kain88 LTM received the signal";
+    if (key=="ShowMissingSongs"){
+        qDebug() << "kain88 LTM acted on that signal";
+        setLibrary();
+        select();
+    }
 }

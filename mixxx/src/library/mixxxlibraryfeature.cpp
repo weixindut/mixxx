@@ -84,6 +84,7 @@ MixxxLibraryFeature::MixxxLibraryFeature(QObject* parent,
     m_pMissingTableModel = new MissingTableModel(this, pTrackCollection);
     connect(this,SIGNAL(configChanged(QString,QString)),
             m_pLibraryTableModel, SLOT(slotConfigChanged(QString, QString)));
+    m_pLibraryTableModel->setLibrary();
 
     TreeItem *rootItem = new TreeItem();
     TreeItem *childItem = new TreeItem(kMissingTitle, kMissingTitle,
