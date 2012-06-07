@@ -188,11 +188,9 @@ void DlgPrefPlaylist::slotApply()
 
     config->Save();
 
-    
 
     // Update playlist if path has changed
-    if (LineEditSongfiles->text() != config->getValueString(ConfigKey("[Playlist]","Directory")))
-    {
+    if (LineEditSongfiles->text() != config->getValueString(ConfigKey("[Playlist]","Directory"))) {
         // Check for valid directory and put up a dialog if invalid!!!
 
         config->set(ConfigKey("[Playlist]","Directory"), LineEditSongfiles->text());
@@ -203,16 +201,16 @@ void DlgPrefPlaylist::slotApply()
         // Emit apply signal
         emit(apply());
     }
+
     //update TM if ShowMissingSongs has changed
     if ((int)checkBox_show_missing->isChecked() != config->getValueString(ConfigKey(
-                                                "[Library]","ShowMissingSongs")).toInt())
-    {
+                                                "[Library]","ShowMissingSongs")).toInt()) {
         config->set(ConfigKey("[Library]","ShowMissingSongs"),
                 ConfigValue((int)checkBox_show_missing->isChecked()));
+
         // Save preferences
         config->Save();
-        
+
         emit(configChanged("[Library]","ShowMissingSongs"));
-        qDebug() << "kain88 emitted signal";
     }
 }

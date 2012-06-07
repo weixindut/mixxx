@@ -427,7 +427,7 @@ TrackModel::CapabilitiesFlags PlaylistTableModel::getCapabilities() const {
 
 void PlaylistTableModel::slotConfigChanged(QString identifier, QString key){
     Q_UNUSED(identifier);
-    if (key=="showMissing") {
+    if (key=="ShowMissingSongs") {
         setPlaylist(m_iPlaylistId);
         select();
     }
