@@ -1,5 +1,5 @@
-#ifndef MISSINGTABLEMODEL_H
-#define MISSINGTABLEMODEL_H
+#ifndef DELETEDTABLEMODEL_H
+#define DELETEDTABLEMODEL_H
 
 #include <QtSql>
 #include <QItemDelegate>
@@ -11,11 +11,11 @@
 
 class TrackCollection;
 
-class MissingTableModel : public BaseSqlTableModel {
+class DeletedTableModel : public BaseSqlTableModel {
     Q_OBJECT
   public:
-    MissingTableModel(QObject* parent, TrackCollection* pTrackCollection);
-    virtual ~MissingTableModel();
+    DeletedTableModel(QObject* parent, TrackCollection* pTrackCollection);
+    virtual ~DeletedTableModel();
     virtual TrackPointer getTrack(const QModelIndex& index) const;
     virtual void search(const QString& searchText);
     virtual bool isColumnInternal(int column);
@@ -37,7 +37,7 @@ class MissingTableModel : public BaseSqlTableModel {
   private:
     TrackCollection* m_pTrackCollection;
     TrackDAO& m_trackDao;
-    static const QString MISSINGFILTER;
+    static const QString DELETEDFILTER;
 };
 
 #endif

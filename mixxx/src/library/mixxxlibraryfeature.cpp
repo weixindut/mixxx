@@ -7,7 +7,7 @@
 
 #include "library/basetrackcache.h"
 #include "library/librarytablemodel.h"
-#include "library/missingtablemodel.h"
+#include "library/deletedtablemodel.h"
 #include "library/queryutil.h"
 #include "library/trackcollection.h"
 #include "treeitem.h"
@@ -16,7 +16,7 @@ MixxxLibraryFeature::MixxxLibraryFeature(QObject* parent,
                                          TrackCollection* pTrackCollection,
                                          ConfigObject<ConfigValue>* pConfig)
         : LibraryFeature(parent),
-          kMissingTitle(tr("Missing Tracks")) {
+          kDeletedTitle(tr("Deleted Tracks")) {
     QStringList columns;
     columns << "library." + LIBRARYTABLE_ID
             << "library." + LIBRARYTABLE_PLAYED
@@ -81,13 +81,13 @@ MixxxLibraryFeature::MixxxLibraryFeature(QObject* parent,
 
     // These rely on the 'default' track source being present.
     m_pLibraryTableModel = new LibraryTableModel(this, pTrackCollection, pConfig);
-    m_pMissingTableModel = new MissingTableModel(this, pTrackCollection);
+    m_pDeletedTableModel = new DeletedTableModel(this, pTrackCollection);
     connect(this,SIGNAL(configChanged(QString,QString)),
             m_pLibraryTableModel, SLOT(slotConfigChanged(QString, QString)));
     m_pLibraryTableModel->setLibrary();
 
     TreeItem *rootItem = new TreeItem();
-    TreeItem *childItem = new TreeItem(kMissingTitle, kMissingTitle,
+    TreeItem *childItem = new TreeItem(kDeletedTitle, kDeletedTitle,
                                        this, rootItem);
     rootItem->appendChild(childItem);
     m_childModel.setRootItem(rootItem);
@@ -95,7 +95,7 @@ MixxxLibraryFeature::MixxxLibraryFeature(QObject* parent,
 
 MixxxLibraryFeature::~MixxxLibraryFeature() {
     delete m_pLibraryTableModel;
-    delete m_pMissingTableModel;
+    delete m_pDeletedTableModel;
 }
 
 QVariant MixxxLibraryFeature::title() {
@@ -118,8 +118,8 @@ void MixxxLibraryFeature::refreshLibraryModels()
     if (m_pLibraryTableModel) {
         m_pLibraryTableModel->select();
     }
-    if (m_pMissingTableModel) {
-        m_pMissingTableModel->select();
+    if (m_pDeletedTableModel) {
+        m_pDeletedTableModel->select();
     }
 }
 
@@ -132,10 +132,10 @@ void MixxxLibraryFeature::activateChild(const QModelIndex& index) {
     QString itemName = index.data().toString();
 
     /*if (itemName == m_childModel.stringList().at(0))
-        emit(showTrackModel(m_pMissingTableModel));
+        emit(showTrackModel(m_pDeletedTableModel));
      */
-    if (itemName == kMissingTitle) {
-        emit(showTrackModel(m_pMissingTableModel));
+    if (itemName == kDeletedTitle) {
+        emit(showTrackModel(m_pDeletedTableModel));
     }
 }
 
