@@ -28,6 +28,7 @@ RhythmboxTrackModel::~RhythmboxTrackModel() {
 }
 
 TrackPointer RhythmboxTrackModel::getTrack(const QModelIndex& index) const {
+    qDebug() << "asd";
     QString artist = index.sibling(index.row(), fieldIndex("artist")).data().toString();
     QString title = index.sibling(index.row(), fieldIndex("title")).data().toString();
     QString album = index.sibling(index.row(), fieldIndex("album")).data().toString();

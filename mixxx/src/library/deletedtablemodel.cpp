@@ -71,16 +71,6 @@ TrackPointer DeletedTableModel::getTrack(const QModelIndex& index) const {
     return m_trackDao.getTrack(trackId);
 }
 
-void DeletedTableModel::removeTrack(const QModelIndex& index) {
-    int trackId = getTrackId(index);
-
-    m_trackDao.removeTrack(trackId);
-
-    // TODO(rryan) : do not select, instead route event to BTC and notify from
-    // there.
-    select(); //Repopulate the data model.
-}
-
 void DeletedTableModel::removeTracks(const QModelIndexList& indices) {
     QList<int> trackIds;
 
@@ -89,7 +79,7 @@ void DeletedTableModel::removeTracks(const QModelIndexList& indices) {
         trackIds.append(trackId);
     }
 
-    m_trackDao.removeTracks(trackIds);
+    m_trackDao.purgeTracks(trackIds);
 
     // TODO(rryan) : do not select, instead route event to BTC and notify from
     // there.
@@ -136,5 +126,6 @@ Qt::ItemFlags DeletedTableModel::flags(const QModelIndex &index) const {
 
 TrackModel::CapabilitiesFlags DeletedTableModel::getCapabilities() const {
     return TRACKMODELCAPS_NONE
-            | TRACKMODELCAPS_REMOVE;
+            | TRACKMODELCAPS_REMOVE
+            | TRACKMODELCAPS_UNHIDE;
 }

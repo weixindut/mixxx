@@ -1,6 +1,6 @@
 /***************************************************************************
-                          libraryscanner.cpp  -  scans library in a thread
-                             -------------------
+                        libraryscanner.cpp  -  scans library in a thread
+                            -------------------
     begin                : 11/27/2007
     copyright            : (C) 2007 Albert Santoni
     email                : gamegod \a\t users.sf.net
@@ -51,11 +51,11 @@ LibraryScanner::LibraryScanner(TrackCollection* collection) :
             &(collection->getTrackDAO()), SLOT(clearCache()));
 
     /* The "Album Artwork" folder within iTunes stores Album Arts.
-     * It has numerous hundreds of sub folders but no audio files
-     * We put this folder on a "black list"
-     * On Windows, the iTunes folder is contained within the standard music folder
-     * Hence, Mixxx will scan the "Album Arts folder" for standard users which is wasting time
-     */
+    * It has numerous hundreds of sub folders but no audio files
+    * We put this folder on a "black list"
+    * On Windows, the iTunes folder is contained within the standard music folder
+    * Hence, Mixxx will scan the "Album Arts folder" for standard users which is wasting time
+    */
     QString iTunesArtFolder = "";
 #if defined(__WINDOWS__)
     iTunesArtFolder = QDesktopServices::storageLocation(QDesktopServices::MusicLocation) + "\\iTunes\\Album Artwork";
@@ -95,7 +95,7 @@ LibraryScanner::~LibraryScanner()
     QStringList deletedDirs;
     QSqlQuery query(m_pCollection->getDatabase());
     query.prepare("SELECT directory_path FROM LibraryHashes "
-                  "WHERE directory_deleted=1");
+                "WHERE directory_deleted=1");
     if (query.exec()) {
         while (query.next()) {
             QString directory = query.value(query.record().indexOf("directory_path")).toString();
@@ -108,7 +108,7 @@ LibraryScanner::~LibraryScanner()
     //Delete any directories that have been marked as deleted...
     query.finish();
     query.exec("DELETE FROM LibraryHashes "
-               "WHERE directory_deleted=1");
+            "WHERE directory_deleted=1");
 
     //Print out any SQL error, if there was one.
     if (query.lastError().isValid()) {
@@ -130,7 +130,7 @@ LibraryScanner::~LibraryScanner()
         // Rollback any uncommitted transaction
         if (m_database.rollback()) {
             qDebug() << "ERROR: There was a transaction in progress while closing the library scanner connection."
-                     << "There is a logic error somewhere.";
+                    << "There is a logic error somewhere.";
         }
         // Close our database connection
         m_database.close();
@@ -150,7 +150,7 @@ void LibraryScanner::run()
 
 
     if (!m_database.isValid()) {
-       m_database = QSqlDatabase::addDatabase("QSQLITE", "LIBRARY_SCANNER");
+    m_database = QSqlDatabase::addDatabase("QSQLITE", "LIBRARY_SCANNER");
     }
 
     if (!m_database.isOpen()) {
@@ -235,17 +235,17 @@ void LibraryScanner::run()
         qDebug() << "Recursive scan finished cleanly.";
     }
     /*
-     * We store the scanned files in the database: Note that the recursiveScan()
-     * method used TrackCollection::importDirectory() to scan the folders. The
-     * method TrackCollection::importDirectory() added all the files to the
-     * 'tracksToAdd' list.
-     *
-     * The following statement writes all the scanned tracks in the list to the
-     * database at once. We don't care if the scan has been cancelled or not.
-     *
-     * This new approach accelerates the scanning process massively by a factor
-     * of 3-4 !!!
-     */
+    * We store the scanned files in the database: Note that the recursiveScan()
+    * method used TrackCollection::importDirectory() to scan the folders. The
+    * method TrackCollection::importDirectory() added all the files to the
+    * 'tracksToAdd' list.
+    *
+    * The following statement writes all the scanned tracks in the list to the
+    * database at once. We don't care if the scan has been cancelled or not.
+    *
+    * This new approach accelerates the scanning process massively by a factor
+    * of 3-4 !!!
+    */
 
     // Runs inside a transaction. Do not unremove files.
     m_trackDao.addTracks(tracksToAdd, false);
@@ -372,9 +372,9 @@ bool LibraryScanner::recursiveScan(QString dirPath, QList<TrackInfoObject*>& tra
 
     while (fileIt.hasNext())
     {
-	    currentFile = fileIt.next();
-	    //qDebug() << currentFile;
-	    newHashStr += currentFile;
+        currentFile = fileIt.next();
+        //qDebug() << currentFile;
+        newHashStr += currentFile;
     }
 
     //Calculate a hash of the directory's file list.
@@ -433,17 +433,17 @@ bool LibraryScanner::recursiveScan(QString dirPath, QList<TrackInfoObject*>& tra
 }
 
 /**
-   Table: LibraryHashes
-   PRIMARY KEY string directory
-   string hash
+Table: LibraryHashes
+PRIMARY KEY string directory
+string hash
 
 
-   Recursive Algorithm:
-   1) QDirIterator, iterate over all _files_ in a directory to construct a giant string.
-   2) newHash = Hash that string.
-   3) prevHash = SELECT from LibraryHashes * WHERE directory == strDirectory
-   4) if (prevHash != newHash) scanDirectory(strDirectory); //Do a NON-RECURSIVE scan of the files in that dir.
-   5) For each directory in strDirectory, execute this algorithm.
+Recursive Algorithm:
+1) QDirIterator, iterate over all _files_ in a directory to construct a giant string.
+2) newHash = Hash that string.
+3) prevHash = SELECT from LibraryHashes * WHERE directory == strDirectory
+4) if (prevHash != newHash) scanDirectory(strDirectory); //Do a NON-RECURSIVE scan of the files in that dir.
+5) For each directory in strDirectory, execute this algorithm.
 
-  */
+*/
 
