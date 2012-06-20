@@ -14,14 +14,22 @@ HiddenTableModel::HiddenTableModel(QObject* parent,
                             "mixxx.db.model.missing"),
           m_pTrackCollection(pTrackCollection),
           m_trackDao(m_pTrackCollection->getTrackDAO()) {
+    connect(this, SIGNAL(doSearch(const QString&)),
+            this, SLOT(slotSearch(const QString&)));
+    setHidden();
+}
 
+HiddenTableModel::~HiddenTableModel() {
+}
+
+void HiddenTableModel::setHidden(){
     QSqlQuery query;
     QString tableName("hidden_songs");
 
     QStringList columns;
     columns << "library." + LIBRARYTABLE_ID;
 
-    QString filter("mixxx_deleted");
+    QString filter("mixxx_deleted=1");
 
     query.prepare("CREATE TEMPORARY VIEW IF NOT EXISTS " + tableName + " AS "
                   "SELECT "
@@ -48,11 +56,6 @@ HiddenTableModel::HiddenTableModel(QObject* parent,
     setDefaultSort(fieldIndex("artist"), Qt::AscendingOrder);
     setSearch("");
 
-    connect(this, SIGNAL(doSearch(const QString&)),
-            this, SLOT(slotSearch(const QString&)));
-}
-
-HiddenTableModel::~HiddenTableModel() {
 }
 
 bool HiddenTableModel::addTrack(const QModelIndex& index, QString location) {

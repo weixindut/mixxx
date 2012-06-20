@@ -81,7 +81,10 @@ MixxxLibraryFeature::MixxxLibraryFeature(QObject* parent,
 
     // These rely on the 'default' track source being present.
     m_pLibraryTableModel = new LibraryTableModel(this, pTrackCollection,pConfig);
+    connect(this,SIGNAL(configChanged(QString,QString)),
+            m_pLibraryTableModel, SLOT(slotConfigChanged(QString, QString)));
     m_pHiddenTableModel = new HiddenTableModel(this, pTrackCollection);
+
 
     TreeItem* pRootItem = new TreeItem();
     TreeItem* phiddenChildItem = new TreeItem(kHiddenTitle, kHiddenTitle,

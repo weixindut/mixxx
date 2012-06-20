@@ -17,6 +17,7 @@ class HiddenTableModel : public BaseSqlTableModel {
     HiddenTableModel(QObject* parent, TrackCollection* pTrackCollection);
     virtual ~HiddenTableModel();
     virtual TrackPointer getTrack(const QModelIndex& index) const;
+    void setHidden();
     virtual void search(const QString& searchText);
     virtual bool isColumnInternal(int column);
     virtual bool isColumnHiddenByDefault(int column);

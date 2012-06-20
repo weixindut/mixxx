@@ -22,11 +22,11 @@ LibraryTableModel::LibraryTableModel(QObject* parent,
                             pTrackCollection->getDatabase(),
                             settingsNamespace),
           m_trackDao(pTrackCollection->getTrackDAO()) {
-    
     m_pConfig=pConfig;
     m_pTrackCollection = pTrackCollection;
     connect(this, SIGNAL(doSearch(const QString&)),
             this, SLOT(slotSearch(const QString&)));
+    setLibrary();
 }
 
 LibraryTableModel::~LibraryTableModel() {
@@ -38,7 +38,7 @@ void LibraryTableModel::setLibrary(){
 
     //prepareLibrary give a NULL to the constructor so check for it
     bool showMissing;
-    if(m_pConfig){
+    if (m_pConfig) {
         showMissing = m_pConfig->getValueString(ConfigKey("[Library]","ShowMissingSongs")).toInt();
     } else {
         showMissing = false;
@@ -46,7 +46,7 @@ void LibraryTableModel::setLibrary(){
     qDebug()<<"kain88 showMissing="<<showMissing;
     QString tableName = "library_view";
     QString libraryFilter;
-    if (showMissing){
+    if (showMissing) {
         libraryFilter = "mixxx_deleted=0";
         tableName.append("_missing");
     } else {
@@ -169,9 +169,7 @@ TrackModel::CapabilitiesFlags LibraryTableModel::getCapabilities() const {
 
 void LibraryTableModel::slotConfigChanged(QString identifier, QString key){
     Q_UNUSED(identifier);
-    qDebug() << "kain88 LTM received the signal";
     if (key=="ShowMissingSongs"){
-        qDebug() << "kain88 LTM acted on that signal";
         setLibrary();
         select();
     }
