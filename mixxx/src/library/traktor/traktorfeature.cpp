@@ -11,7 +11,6 @@
 #include "library/traktor/traktorfeature.h"
 
 #include "library/librarytablemodel.h"
-#include "library/deletedtablemodel.h"
 #include "library/queryutil.h"
 #include "library/trackcollection.h"
 #include "library/treeitem.h"
