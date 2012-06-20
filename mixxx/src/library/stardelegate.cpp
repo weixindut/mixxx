@@ -47,6 +47,10 @@ void StarDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, 
         QStyledItemDelegate::paint(painter, option, index);
         return;
     }
+    
+    if(index==m_currentEditedCellIndex){
+        return;
+    }
 
     // Populate the correct colors based on the styling
     QStyleOptionViewItem newOption = option;
@@ -154,6 +158,7 @@ void StarDelegate::cellEntered(const QModelIndex &index) {
     } else if (m_isOneCellInEditMode) {
         m_isOneCellInEditMode = false;
         m_pTableView->closePersistentEditor(m_currentEditedCellIndex);
+        m_currentEditedCellIndex = QModelIndex();
     }
 }
 

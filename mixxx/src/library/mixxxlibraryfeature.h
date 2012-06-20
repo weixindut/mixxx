@@ -12,7 +12,7 @@
 
 class BaseTrackCache;
 class LibraryTableModel;
-class DeletedTableModel;
+class HiddenTableModel;
 class TrackCollection;
 
 class MixxxLibraryFeature : public LibraryFeature {
@@ -44,10 +44,10 @@ class MixxxLibraryFeature : public LibraryFeature {
     void slotConfigChanged(QString,QString);
 
   private:
-    const QString kDeletedTitle;
+    const QString kHiddenTitle;
     QSharedPointer<BaseTrackCache> m_pBaseTrackCache;
     LibraryTableModel* m_pLibraryTableModel;
-    DeletedTableModel* m_pDeletedTableModel;
+    HiddenTableModel* m_pHiddenTableModel;
     TreeItemModel m_childModel;
 };
 

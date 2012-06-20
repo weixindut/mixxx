@@ -7,7 +7,7 @@
 
 #include "library/basetrackcache.h"
 #include "library/librarytablemodel.h"
-#include "library/deletedtablemodel.h"
+#include "library/hiddentablemodel.h"
 #include "library/queryutil.h"
 #include "library/trackcollection.h"
 #include "treeitem.h"
@@ -16,7 +16,7 @@ MixxxLibraryFeature::MixxxLibraryFeature(QObject* parent,
                                          TrackCollection* pTrackCollection,
                                          ConfigObject<ConfigValue>* pConfig)
         : LibraryFeature(parent),
-          kDeletedTitle(tr("Deleted Tracks")) {
+          kHiddenTitle(tr("Hidden Tracks")){
     QStringList columns;
     columns << "library." + LIBRARYTABLE_ID
             << "library." + LIBRARYTABLE_PLAYED
@@ -80,22 +80,20 @@ MixxxLibraryFeature::MixxxLibraryFeature(QObject* parent,
     pTrackCollection->addTrackSource(QString("default"), m_pBaseTrackCache);
 
     // These rely on the 'default' track source being present.
-    m_pLibraryTableModel = new LibraryTableModel(this, pTrackCollection, pConfig);
-    m_pDeletedTableModel = new DeletedTableModel(this, pTrackCollection);
-    connect(this,SIGNAL(configChanged(QString,QString)),
-            m_pLibraryTableModel, SLOT(slotConfigChanged(QString, QString)));
-    m_pLibraryTableModel->setLibrary();
+    m_pLibraryTableModel = new LibraryTableModel(this, pTrackCollection,pConfig);
+    m_pHiddenTableModel = new HiddenTableModel(this, pTrackCollection);
 
-    TreeItem *rootItem = new TreeItem();
-    TreeItem *childItem = new TreeItem(kDeletedTitle, kDeletedTitle,
-                                       this, rootItem);
-    rootItem->appendChild(childItem);
-    m_childModel.setRootItem(rootItem);
+    TreeItem* pRootItem = new TreeItem();
+    TreeItem* phiddenChildItem = new TreeItem(kHiddenTitle, kHiddenTitle,
+                                       this, pRootItem);
+    pRootItem->appendChild(phiddenChildItem);
+
+    m_childModel.setRootItem(pRootItem);
 }
 
 MixxxLibraryFeature::~MixxxLibraryFeature() {
     delete m_pLibraryTableModel;
-    delete m_pDeletedTableModel;
+    delete m_pHiddenTableModel;
 }
 
 QVariant MixxxLibraryFeature::title() {
@@ -118,8 +116,8 @@ void MixxxLibraryFeature::refreshLibraryModels()
     if (m_pLibraryTableModel) {
         m_pLibraryTableModel->select();
     }
-    if (m_pDeletedTableModel) {
-        m_pDeletedTableModel->select();
+    if (m_pHiddenTableModel) {
+        m_pHiddenTableModel->select();
     }
 }
 
@@ -134,34 +132,46 @@ void MixxxLibraryFeature::activateChild(const QModelIndex& index) {
     /*if (itemName == m_childModel.stringList().at(0))
         emit(showTrackModel(m_pDeletedTableModel));
      */
-    if (itemName == kDeletedTitle) {
-        emit(showTrackModel(m_pDeletedTableModel));
+    if (itemName == kHiddenTitle) {
+        emit(showTrackModel(m_pHiddenTableModel));
     }
 }
 
 void MixxxLibraryFeature::onRightClick(const QPoint& globalPos) {
+    Q_UNUSED(globalPos);
 }
 
 void MixxxLibraryFeature::onRightClickChild(const QPoint& globalPos,
                                             QModelIndex index) {
+    Q_UNUSED(globalPos);
+    Q_UNUSED(index);
 }
 
 bool MixxxLibraryFeature::dropAccept(QUrl url) {
+    Q_UNUSED(url);
     return false;
 }
 
 bool MixxxLibraryFeature::dropAcceptChild(const QModelIndex& index, QUrl url) {
+    Q_UNUSED(url);
+    Q_UNUSED(index);
     return false;
 }
 
 bool MixxxLibraryFeature::dragMoveAccept(QUrl url) {
+    Q_UNUSED(url);
     return false;
 }
 
 bool MixxxLibraryFeature::dragMoveAcceptChild(const QModelIndex& index,
                                               QUrl url) {
+    Q_UNUSED(url);
+    Q_UNUSED(index);
     return false;
-}void MixxxLibraryFeature::onLazyChildExpandation(const QModelIndex &index){
+}
+
+void MixxxLibraryFeature::onLazyChildExpandation(const QModelIndex &index){
+    Q_UNUSED(index);
 //Nothing to do because the childmodel is not of lazy nature.
 }
 

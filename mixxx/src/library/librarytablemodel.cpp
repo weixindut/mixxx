@@ -107,21 +107,6 @@ TrackPointer LibraryTableModel::getTrack(const QModelIndex& index) const {
     return m_trackDao.getTrack(trackId);
 }
 
-void LibraryTableModel::hideTracks(const QModelIndexList& indices) {
-    QList<int> trackIds;
-
-    foreach (QModelIndex index, indices) {
-        int trackId = getTrackId(index);
-        trackIds.append(trackId);
-    }
-
-    m_trackDao.hideTracks(trackIds);
-
-    // TODO(rryan) : do not select, instead route event to BTC and notify from
-    // there.
-    select(); //Repopulate the data model.
-}
-
 void LibraryTableModel::moveTrack(const QModelIndex& sourceIndex,
                                   const QModelIndex& destIndex) {
     Q_UNUSED(sourceIndex);
