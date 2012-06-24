@@ -46,7 +46,7 @@
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="QLineEdit" name="LineEditSongfiles">
+       <widget class="QTableView" name="LineEditSongfiles">
         <property name="minimumSize">
          <size>
           <width>100</width>

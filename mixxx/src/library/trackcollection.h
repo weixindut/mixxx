@@ -82,7 +82,7 @@ class TrackCollection : public QObject
     AnalysisDao m_analysisDao;
     TrackDAO m_trackDao;
     const QRegExp m_supportedFileExtensionsRegex;
-    /** Flag to raise when library scan should be cancelled */
+    // Flag to raise when library scan should be cancelled
     int bCancelLibraryScan;
     QMutex m_libraryScanMutex;
 };

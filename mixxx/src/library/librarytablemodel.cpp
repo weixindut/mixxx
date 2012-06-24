@@ -164,7 +164,8 @@ TrackModel::CapabilitiesFlags LibraryTableModel::getCapabilities() const {
             | TRACKMODELCAPS_HIDE
             | TRACKMODELCAPS_BPMLOCK
             | TRACKMODELCAPS_CLEAR_BEATS
-            | TRACKMODELCAPS_RESETPLAYED;
+            | TRACKMODELCAPS_RESETPLAYED
+            | TRACKMODELCAPS_RELOCATE;
 }
 
 void LibraryTableModel::slotConfigChanged(QString identifier, QString key){
@@ -172,5 +173,28 @@ void LibraryTableModel::slotConfigChanged(QString identifier, QString key){
     if (key=="ShowMissingSongs"){
         setLibrary();
         select();
+    }
+}
+
+void LibraryTableModel::relocateTracks(const QModelIndexList& indices) {
+    foreach (QModelIndex index, indices) {
+        int trackId = getTrackId(index);
+
+        QString oldLocation = m_trackDao.getTrackLocation(trackId);
+        qDebug() << oldLocation;
+        /*
+        QString newLocation = QFileDialog::getOpenFileName(NULL,
+        QString(tr("trilolaladlHASHDAHSDHASDHASD")));
+        */
+        QFileDialog dialog(NULL);
+        dialog.setFileMode(QFileDialog::AnyFile);
+        dialog.setViewMode(QFileDialog::Detail);
+        QStringList newLocations;
+        if (dialog.exec()) {
+            newLocations = dialog.selectedFiles();
+        }
+        qDebug() << newLocations;
+
+//      m_trackDAO.relocateTrack(oldLocation, newLocation);
     }
 }

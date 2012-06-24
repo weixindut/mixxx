@@ -6,6 +6,7 @@
 
 #include <QStringListModel>
 
+#include "library/dao/directorydao.h"
 #include "library/libraryfeature.h"
 #include "treeitemmodel.h"
 #include "configobject.h"
@@ -14,6 +15,7 @@ class BaseTrackCache;
 class LibraryTableModel;
 class HiddenTableModel;
 class TrackCollection;
+// class DirectoryDAO;
 
 class MixxxLibraryFeature : public LibraryFeature {
     Q_OBJECT
@@ -41,7 +43,7 @@ class MixxxLibraryFeature : public LibraryFeature {
     void onRightClickChild(const QPoint& globalPos, QModelIndex index);
     void onLazyChildExpandation(const QModelIndex& index);
     void refreshLibraryModels();
-    void slotConfigChanged(QString,QString);
+    void slotDirsChanged(QString,QString);
 
   private:
     const QString kHiddenTitle;
@@ -49,6 +51,7 @@ class MixxxLibraryFeature : public LibraryFeature {
     LibraryTableModel* m_pLibraryTableModel;
     HiddenTableModel* m_pHiddenTableModel;
     TreeItemModel m_childModel;
+    DirectoryDAO m_directoryDAO;
 };
 
 #endif /* MIXXXLIBRARYFEATURE_H */

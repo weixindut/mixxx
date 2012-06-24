@@ -3,6 +3,7 @@
 
 #include <QtDebug>
 
+
 #include "library/mixxxlibraryfeature.h"
 
 #include "library/basetrackcache.h"
@@ -16,7 +17,8 @@ MixxxLibraryFeature::MixxxLibraryFeature(QObject* parent,
                                          TrackCollection* pTrackCollection,
                                          ConfigObject<ConfigValue>* pConfig)
         : LibraryFeature(parent),
-          kHiddenTitle(tr("Hidden Tracks")){
+          kHiddenTitle(tr("Hidden Tracks")),
+          m_directoryDAO(pTrackCollection->getDatabase()) {
     QStringList columns;
     columns << "library." + LIBRARYTABLE_ID
             << "library." + LIBRARYTABLE_PLAYED
@@ -35,6 +37,7 @@ MixxxLibraryFeature::MixxxLibraryFeature(QObject* parent,
             << "library." + LIBRARYTABLE_DATETIMEADDED
             << "library." + LIBRARYTABLE_BPM
             << "library." + LIBRARYTABLE_BPM_LOCK
+            << "library." + LIBRARYTABLE_BITRATE
             << "track_locations.location"
             << "track_locations.fs_deleted"
             << "library." + LIBRARYTABLE_COMMENT
@@ -81,8 +84,10 @@ MixxxLibraryFeature::MixxxLibraryFeature(QObject* parent,
 
     // These rely on the 'default' track source being present.
     m_pLibraryTableModel = new LibraryTableModel(this, pTrackCollection,pConfig);
-    connect(this,SIGNAL(configChanged(QString,QString)),
+    connect(parent,SIGNAL(configChanged(QString,QString)),
             m_pLibraryTableModel, SLOT(slotConfigChanged(QString, QString)));
+    connect(parent, SIGNAL(configChanged(QString,QString)),
+            this, SLOT(slotConfigChanged(QString,QString)));
     m_pHiddenTableModel = new HiddenTableModel(this, pTrackCollection);
 
 
@@ -178,8 +183,7 @@ void MixxxLibraryFeature::onLazyChildExpandation(const QModelIndex &index){
 //Nothing to do because the childmodel is not of lazy nature.
 }
 
-void MixxxLibraryFeature::slotConfigChanged(QString identifier, QString key){
+void MixxxLibraryFeature::slotDirsChanged(QString op, QString dir){
     qDebug() << "kain88 recived by libraryfeature";
-    qDebug() << identifier << '\t' << key;
-    emit(configChanged(identifier,key));
+    
 }

@@ -434,12 +434,14 @@ class MixxxCore(Feature):
                    "library/searchqueryparser.cpp",
                    "library/preparelibrarytablemodel.cpp",
                    "library/hiddentablemodel.cpp",
+                   "library/directorytablemodel.cpp",
                    "library/proxytrackmodel.cpp",
 
                    "library/playlisttablemodel.cpp",
                    "library/libraryfeature.cpp",
                    "library/preparefeature.cpp",
                    "library/autodjfeature.cpp",
+                   "library/dao/directorydao.cpp",
                    "library/mixxxlibraryfeature.cpp",
                    "library/baseplaylistfeature.cpp",
                    "library/playlistfeature.cpp",
@@ -484,6 +486,7 @@ class MixxxCore(Feature):
                    "library/dao/libraryhashdao.cpp",
                    "library/dao/settingsdao.cpp",
                    "library/dao/analysisdao.cpp",
+
 
                    "library/librarycontrol.cpp",
                    "library/schemamanager.cpp",

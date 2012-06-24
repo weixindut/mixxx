@@ -45,6 +45,8 @@ Library::Library(QObject* parent, ConfigObject<ConfigValue>* pConfig, bool first
     // method or something -- CreateDefaultLibrary
     m_pMixxxLibraryFeature = new MixxxLibraryFeature(this, m_pTrackCollection,pConfig);
     addFeature(m_pMixxxLibraryFeature,true);
+    connect(this, SIGNAL(dirsChanged(QString,QString)),
+            m_pMixxxLibraryFeature, SLOT(slotDirsChanged(QString,QString)));
 
     if (PromoTracksFeature::isSupported(m_pConfig)) {
         m_pPromoTracksFeature = new PromoTracksFeature(this, pConfig,

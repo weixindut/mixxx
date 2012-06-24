@@ -404,6 +404,8 @@ MixxxApp::MixxxApp(QApplication *a, struct CmdlineArgs args)
                                     m_pControllerManager, m_pVCManager, m_pConfig);
     connect(m_pPrefDlg, SIGNAL(configChanged(QString,QString)),
             m_pLibrary, SIGNAL(configChanged(QString,QString)));
+    connect(m_pPrefDlg, SIGNAL(dirsChanged(QString,QDir)),
+            m_pLibrary, SIGNAL(dirsChanged(QString,QDir)));
     m_pPrefDlg->setWindowIcon(QIcon(":/images/ic_mixxx_window.png"));
     m_pPrefDlg->setHidden(true);
 

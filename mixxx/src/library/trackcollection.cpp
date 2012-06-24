@@ -72,7 +72,7 @@ bool TrackCollection::checkForTables() {
         return false;
     }
 
-    int requiredSchemaVersion = 17;
+    int requiredSchemaVersion = 18;
     if (!SchemaManager::upgradeToSchemaVersion(m_pConfig, m_db,
                                                requiredSchemaVersion)) {
         QMessageBox::warning(0, tr("Cannot upgrade database schema"),
@@ -96,10 +96,14 @@ QSqlDatabase& TrackCollection::getDatabase() {
     return m_db;
 }
 
-/** Do a non-recursive import of all the songs in a directory. Does NOT decend into subdirectories.
-    @param trackDao The track data access object which provides a connection to the database. We use this parameter in order to make this function callable from separate threads. You need to use a different DB connection for each thread.
-    @return true if the scan completed without being cancelled. False if the scan was cancelled part-way through.
-*/
+// Do a non-recursive import of all the songs in a directory. Does NOT 
+// decend into subdirectories.
+// @param trackDao The track data access object which provides a 
+//   connection to the database. We use this parameter in order to make 
+//   this function callable from separate threads. You need to use a 
+//   different DB connection for each thread.
+// @return true if the scan completed without being cancelled.
+//   False if the scan was cancelled part-way through.
 bool TrackCollection::importDirectory(QString directory, TrackDAO &trackDao,
                                       QList<TrackInfoObject*>& tracksToAdd) {
     //qDebug() << "TrackCollection::importDirectory(" << directory<< ")";
@@ -119,7 +123,7 @@ bool TrackCollection::importDirectory(QString directory, TrackDAO &trackDao,
     //The directory exists, so get a list of the contents of the directory and go through it.
     QList<QFileInfo>::iterator it = files.begin();
     while (it != files.end()) {
-        QFileInfo file = *it; //TODO: THIS IS SLOW!
+        QFileInfo file = *it; //TODO: THIS IS SLOW! really?
         it++;
 
         //If a flag was raised telling us to cancel the library scan then stop.
@@ -190,12 +194,12 @@ PlaylistDAO& TrackCollection::getPlaylistDAO() {
 }
 
 QSharedPointer<BaseTrackCache> TrackCollection::getTrackSource(
-    const QString name) {
+                               const QString name) {
     return m_trackSources.value(name, QSharedPointer<BaseTrackCache>());
 }
 
-void TrackCollection::addTrackSource(
-    const QString name, QSharedPointer<BaseTrackCache> trackSource) {
+void TrackCollection::addTrackSource(const QString name,
+                                     QSharedPointer<BaseTrackCache> trackSource) {
     Q_ASSERT(!m_trackSources.contains(name));
     m_trackSources[name] = trackSource;
 }
