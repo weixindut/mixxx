@@ -228,3 +228,7 @@ void Library::slotConfigChanged(QString identifier, QString key){
     qDebug() << "kain88 recived by library";
     emit(configChanged(identifier,key));
 }
+void Library::slotDirsChanged(QString identifier, QString key){
+    qDebug() << "kain88 recived by library" << key;
+    emit(dirsChanged(identifier,key));
+}

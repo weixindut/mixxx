@@ -257,6 +257,10 @@ void WTrackTableView::createActions() {
     Q_ASSERT(m_pMenu);
     Q_ASSERT(m_pSamplerMenu);
 
+    m_pRelocateAct = new QAction(tr("Relocate"),this);
+    connect(m_pRelocateAct, SIGNAL(triggered()),
+            this, SLOT(slotRelocate()));
+
     m_pRemoveAct = new QAction(tr("Remove"), this);
     connect(m_pRemoveAct, SIGNAL(triggered()), this, SLOT(slotRemove()));
 

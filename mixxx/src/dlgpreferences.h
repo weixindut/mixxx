@@ -73,6 +73,7 @@ signals:
     void closeDlg();
     void showDlg();
     void configChanged(QString module, QString key);
+    void dirsChanged(QString module, QString key);
 protected:
     bool eventFilter(QObject*, QEvent*);
 private:

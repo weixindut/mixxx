@@ -119,7 +119,7 @@ class Waveform {
     double m_audioVisualRatio;
 
     //No need to store the following members they can be recomputed
-    //on waveform loading
+    //on waveform laoding
 
     int m_textureStride;
     QAtomicInt m_completion;

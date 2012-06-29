@@ -71,7 +71,6 @@ public slots:
     void slotSetVisualGainLow(double gain);
     void slotSetVisualGainMid(double gain);
     void slotSetVisualGainHigh(double gain);
-    void slotSetNormalizeOverview( bool normalize);
 
     virtual void onShow();
     virtual void onHide();

@@ -64,6 +64,7 @@ public slots:
     void slotCreatePlaylist();
     void slotCreateCrate();
     void slotConfigChanged(QString,QString);
+    void slotDirsChanged(QString,QString);
     
 signals:
     void showTrackModel(QAbstractItemModel* model);
@@ -72,6 +73,7 @@ signals:
     void loadTrackToPlayer(TrackPointer tio, QString group);
     void restoreSearch(const QString&);
     void configChanged(QString module, QString key);
+    void dirsChanged(QString,QString);
 
 private:
     ConfigObject<ConfigValue>* m_pConfig;

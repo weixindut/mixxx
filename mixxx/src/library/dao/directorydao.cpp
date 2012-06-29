@@ -41,7 +41,7 @@ void DirectoryDAO::initialize()
 bool DirectoryDAO::addDirectory(QString dir){
     QSqlQuery query(m_database);
     query.prepare("INSERT INTO directories (directory) "
-                  "VALUES ("+ dir +")");
+                  "VALUES (\""+ dir +"\")");
     
     if (!query.exec()) {
         qDebug() << "Adding new dir ("+ dir +") failed:"

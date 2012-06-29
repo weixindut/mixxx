@@ -1,6 +1,6 @@
 /***************************************************************************
-                          dlgprefplaylist.cpp  -  description
-                             -------------------
+                        dlgprefplaylist.cpp  -  description
+                            -------------------
     begin                : Thu Apr 17 2003
     copyright            : (C) 2003 by Tue & Ken Haste Andersen
     email                : haste@diku.dk
@@ -32,14 +32,14 @@ const QString MIXXX_DB_PATH = QDir::homePath().append("/").append(
 */
 
 DlgPrefPlaylist::DlgPrefPlaylist(QWidget * parent, ConfigObject<ConfigValue> * config)
-               : QWidget(parent), 
-                 m_model(),
-				 m_dirsModified(false) {
+            : QWidget(parent), 
+                m_model(),
+                m_dirsModified(false) {
     m_pconfig = config;
     setupUi(this);
     slotUpdate();
     checkbox_ID3_sync->setVisible(false);
-	initializeModel();
+    initializeModel();
 
     /*
     m_pPluginDownloader = new PluginDownloader(this);
@@ -81,9 +81,9 @@ DlgPrefPlaylist::~DlgPrefPlaylist()
 }
 
 bool DlgPrefPlaylist::initializeModel(){
-	m_model.setQuery("SELECT * from directories");
-	m_model.setHeaderData(0, Qt::Horizontal, QObject::tr("Directory"));
-	LineEditSongfiles->setModel(&m_model);
+    m_model.setQuery("SELECT * from directories");
+    m_model.setHeaderData(0, Qt::Horizontal, QObject::tr("Directory"));
+    LineEditSongfiles->setModel(&m_model);
 }
 
 
@@ -94,7 +94,7 @@ void DlgPrefPlaylist::slotExtraPlugins()
 
 /*
 void DlgPrefPlaylist::slotM4ADownloadProgress(qint64 bytesReceived,
-                                              qint64 bytesTotal)
+                                            qint64 bytesTotal)
 {
     pushButtonM4A->setText(QString("%1\%").arg(100*(float)bytesReceived/bytesTotal, 0, 'g', 1));
 }
@@ -157,22 +157,22 @@ void DlgPrefPlaylist::slotM4ACheck()
 void DlgPrefPlaylist::slotUpdate()
 {
     // Song path
-    // LineEditSongfiles->select();
+    initializeModel();
     //Bundled songs stat tracking
     checkBoxPromoStats->setChecked((bool)m_pconfig->getValueString(
-                          ConfigKey("[Promo]","StatTracking")).toInt());
+                        ConfigKey("[Promo]","StatTracking")).toInt());
     checkBox_library_scan->setChecked((bool)m_pconfig->getValueString(
-                     ConfigKey("[Library]","RescanOnStartup")).toInt());
+                    ConfigKey("[Library]","RescanOnStartup")).toInt());
     checkbox_ID3_sync->setChecked((bool)m_pconfig->getValueString(
-                      ConfigKey("[Library]","WriteAudioTags")).toInt());
+                    ConfigKey("[Library]","WriteAudioTags")).toInt());
     checkBox_use_relative_path->setChecked((bool)m_pconfig->getValueString(
-             ConfigKey("[Library]","UseRelativePathOnExport")).toInt());
+            ConfigKey("[Library]","UseRelativePathOnExport")).toInt());
     checkBox_show_rhythmbox->setChecked((bool)m_pconfig->getValueString(
             ConfigKey("[Library]","ShowRhythmboxLibrary"),"1").toInt());
     checkBox_show_itunes->setChecked((bool)m_pconfig->getValueString(
-               ConfigKey("[Library]","ShowITunesLibrary"),"1").toInt());
+            ConfigKey("[Library]","ShowITunesLibrary"),"1").toInt());
     checkBox_show_traktor->setChecked((bool)m_pconfig->getValueString(
-              ConfigKey("[Library]","ShowTraktorLibrary"),"1").toInt());
+            ConfigKey("[Library]","ShowTraktorLibrary"),"1").toInt());
     checkBox_show_missing->setChecked((bool)m_pconfig->getValueString(
                 ConfigKey("[Library]","ShowMissingSongs"),"1").toInt());
 }
@@ -180,14 +180,15 @@ void DlgPrefPlaylist::slotUpdate()
 void DlgPrefPlaylist::slotBrowseDir()
 {
     QString fd = QFileDialog::getExistingDirectory(this,
-							  tr("Choose music library directory"),
-							  m_pconfig->getValueString(ConfigKey(
-							  "[Playlist]","Directory")));
-    if (fd != "")
-    {
+                            tr("Choose music library directory"),
+                            m_pconfig->getValueString(ConfigKey(
+                            "[Playlist]","Directory")));
+    qDebug() << "Kain88 dir choosen" <<fd;
+    if (fd != "") {
+        qDebug()<< "kain88 emit signal";
         emit(dirsChanged("added",fd));
-		slotUpdate();
-		m_dirsModified = true;
+        slotUpdate();
+        m_dirsModified = true;
     }
 }
 
@@ -228,8 +229,8 @@ void DlgPrefPlaylist::slotApply()
 
     //update TM if ShowMissingSongs has changed
     if ((int)checkBox_show_missing->isChecked() != m_pconfig->getValueString(
-                                                  ConfigKey("[Library]",
-                                                  "ShowMissingSongs")).toInt()) {
+                                                ConfigKey("[Library]",
+                                                "ShowMissingSongs")).toInt()) {
         m_pconfig->set(ConfigKey("[Library]","ShowMissingSongs"),
                 ConfigValue((int)checkBox_show_missing->isChecked()));
 

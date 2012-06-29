@@ -57,6 +57,7 @@ class DlgPrefPlaylist : public QWidget, public Ui::DlgPrefPlaylistDlg  {
     void apply();
     void configChanged(QString, QString);
     void dirsChanged(QString, QString);
+
   private:
     bool initializeModel();
 

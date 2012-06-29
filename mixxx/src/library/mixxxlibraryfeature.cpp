@@ -185,5 +185,5 @@ void MixxxLibraryFeature::onLazyChildExpandation(const QModelIndex &index){
 
 void MixxxLibraryFeature::slotDirsChanged(QString op, QString dir){
     qDebug() << "kain88 recived by libraryfeature";
-    
+    m_directoryDAO.addDirectory(dir);
 }
