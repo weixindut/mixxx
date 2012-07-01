@@ -5,6 +5,9 @@
 #include <QSqlDatabase>
 #include "library/dao/dao.h"
 
+const QString DIRECTORYDAO_DIR = "directory";
+const QString DIRECTORYDAO_TABLE = "directories";
+
 class DirectoryDAO : public DAO {
   public:
     // normal method
@@ -19,6 +22,7 @@ class DirectoryDAO : public DAO {
     void initialize();
     bool addDirectory(QString dir);
     bool purgeDirectory(QString dir);
+    QStringList getDirs();
     
   private:
     QSqlDatabase m_database;

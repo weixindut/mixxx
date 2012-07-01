@@ -3,6 +3,7 @@
 #include <QtDebug>
 #include <QVariant>
 #include <QThread>
+#include <QStringBuilder>
 
 #include "directorydao.h"
 #include "library/queryutil.h"
@@ -60,4 +61,15 @@ bool DirectoryDAO::purgeDirectory(QString dir){
         return false;
     }
     return true;
+}
+
+QStringList DirectoryDAO::getDirs(){
+    QSqlQuery query(m_database);
+    query.prepare("SELECT " % DIRECTORYDAO_DIR % " FROM " % DIRECTORYDAO_TABLE);
+    Q_ASSERT(query.exec());
+    QStringList dirs;
+    while (query.next()) {
+        dirs << query.value(query.record().indexOf(DIRECTORYDAO_DIR)).toString();
+    }
+    return dirs;
 }

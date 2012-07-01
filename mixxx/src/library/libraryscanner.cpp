@@ -35,6 +35,7 @@ LibraryScanner::LibraryScanner(TrackCollection* collection) :
     m_crateDao(m_database),
     m_analysisDao(m_database),
     m_trackDao(m_database, m_cueDao, m_playlistDao, m_crateDao, m_analysisDao),
+    m_directoryDao(m_database),
     // Don't initialize m_database here, we need to do it in run() so the DB
     // conn is in the right thread.
     m_nameFilters(SoundSourceProxy::supportedFileExtensionsString().split(" "))
@@ -216,7 +217,7 @@ void LibraryScanner::run()
     //verification of their existance...
     //(ie. we want to check they're still on your hard drive where
     //we think they are)
-    m_trackDao.invalidateTrackLocationsInLibrary(m_qLibraryPath);
+    m_trackDao.invalidateTrackLocationsInLibrary();
 
     qDebug() << "Recursively scanning library.";
     //Start scanning the library.
@@ -226,7 +227,13 @@ void LibraryScanner::run()
     QList<TrackInfoObject*> tracksToAdd;
     QStringList verifiedDirectories;
 
-    bool bScanFinishedCleanly = recursiveScan(m_qLibraryPath, tracksToAdd, verifiedDirectories);
+    QStringList dirs = m_directoryDao.getDirs();
+
+    bool bScanFinishedCleanly=false;
+    foreach (QString dir , dirs) {
+        bScanFinishedCleanly = recursiveScan(dir, tracksToAdd,
+                                             verifiedDirectories);
+    }
 
     if (!bScanFinishedCleanly) {
         qDebug() << "Recursive scan interrupted.";

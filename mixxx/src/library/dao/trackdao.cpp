@@ -1,7 +1,6 @@
 #include <QtDebug>
 #include <QtCore>
 #include <QtSql>
-// #include <QtHash>
 
 #include "library/dao/trackdao.h"
 
@@ -596,39 +595,11 @@ void TrackDAO::purgeTracks(QList<int> ids) {
         LOG_FAILED_QUERY(query);
     }
 
-    // mark LibraryHash with needs_verification
+    // mark LibraryHash with needs_verification and invalidate the hash
+    // in case the file was not deleted to detect it on a rescan
+    // TODO(XXX) delegate to libraryHashDAO
     query.prepare(QString("UPDATE LibraryHashes SET needs_verification=1, "
                           "hash=-1 WHERE directory_path in (%1)").arg(dirList.join(",")));
-    if (!query.exec()) {
-        LOG_FAILED_QUERY(query);
-    }
-
-    //also need to clean playlists, crates, cues and track_analyses
-
-    // TODO(XXX) delegate to CueDAO
-    query.prepare(QString("DELETE FROM cues "
-                          "WHERE id in (%1)").arg(idListJoined));
-    if (!query.exec()) {
-        LOG_FAILED_QUERY(query);
-    }
-
-    // TODO(XXX) delegate to PlaylistDAO
-    query.prepare(QString("DELETE FROM PlaylistTracks "
-                          "WHERE id in (%1)").arg(idListJoined));
-    if (!query.exec()) {
-        LOG_FAILED_QUERY(query);
-    }
-
-    // TODO(XXX) delegate to CrateDAO
-    query.prepare(QString("DELETE FROM crate_tracks "
-                          "WHERE track_id in (%1)").arg(idListJoined));
-    if (!query.exec()) {
-        LOG_FAILED_QUERY(query);
-    }
-
-    // TODO(XXX) delegate to AnalysisDao
-    query.prepare(QString("DELETE FROM track_analysis "
-                          "WHERE id in (%1)").arg(idListJoined));
     if (!query.exec()) {
         LOG_FAILED_QUERY(query);
     }
@@ -639,6 +610,13 @@ void TrackDAO::purgeTracks(QList<int> ids) {
         return;
     }
     transaction.commit();
+
+    // also need to clean playlists, crates, cues and track_analyses
+
+    m_cueDao.deleteCuesForTracks(ids);
+    m_playlistDao.removeTracksFromPlaylists(ids);
+    m_crateDao.removeTracksFromCrates(ids);
+    m_analysisDao.deleteAnalysises(ids);
 
     QSet<int> tracksRemovedSet = QSet<int>::fromList(ids);
     emit(tracksRemoved(tracksRemovedSet));
@@ -933,19 +911,16 @@ void TrackDAO::updateTrack(TrackInfoObject* pTrack) {
 /** Mark all the tracks whose paths begin with libraryPath as invalid.
     That means we'll need to later check that those tracks actually
     (still) exist as part of the library scanning procedure. */
-void TrackDAO::invalidateTrackLocationsInLibrary(QString libraryPath) {
+void TrackDAO::invalidateTrackLocationsInLibrary() {
     //qDebug() << "TrackDAO::invalidateTrackLocations" << QThread::currentThread() << m_database.connectionName();
     //qDebug() << "invalidateTrackLocations(" << libraryPath << ")";
-    libraryPath += "%"; //Add wildcard to SQL query to match subdirectories!
 
     QSqlQuery query(m_database);
     query.prepare("UPDATE track_locations "
-                  "SET needs_verification=1 "
-                  "WHERE directory LIKE :directory");
-    query.bindValue(":directory", libraryPath);
+                  "SET needs_verification=1");
     if (!query.exec()) {
         LOG_FAILED_QUERY(query)
-                << "Couldn't mark tracks in directory" << libraryPath
+                << "Couldn't mark tracks in directory "
                 <<  "as needing verification.";
     }
 }

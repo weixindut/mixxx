@@ -27,6 +27,7 @@
 #include "library/dao/cratedao.h"
 #include "library/dao/cuedao.h"
 #include "library/dao/libraryhashdao.h"
+#include "library/dao/directorydao.h"
 #include "library/dao/playlistdao.h"
 #include "library/dao/trackdao.h"
 #include "library/dao/analysisdao.h"
@@ -66,6 +67,7 @@ class LibraryScanner : public QThread {
     CrateDAO m_crateDao;
     AnalysisDao m_analysisDao;
     TrackDAO m_trackDao;
+    DirectoryDAO m_directoryDao;
 
     QStringList m_nameFilters;
     bool m_bCancelLibraryScan;
