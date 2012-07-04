@@ -83,7 +83,8 @@ BpmControl::BpmControl(const char* _group,
     m_pTranslateBeats = pControlManager->addControl(
         new ControlPushButton(ConfigKey(_group, "beats_translate_curpos")), 1);
     connect(m_pTranslateBeats, SIGNAL(valueChanged(double)),
-            this, SLOT(slotBeatsTranslate(double)));
+            this, SLOT(slotBeatsTranslate(double)),
+            Qt::DirectConnection);
 
     connect(&m_tapFilter, SIGNAL(tapped(double,int)),
             this, SLOT(slotTapFilter(double,int)),
@@ -221,10 +222,11 @@ bool BpmControl::syncTempo() {
         // effective BPM equivalent to the other decks.
         double fDesiredRate = fOtherBpm / fThisFileBpm;
 
-        // Test if this buffers bpm is the double of the other one, and adjust
+        // Test if this buffer's bpm is the double of the other one, and adjust
         // the rate scale. I believe this is intended to account for our BPM
-        // algorithm sometimes finding double or half BPMs. This avoid drastic
+        // algorithm sometimes finding double or half BPMs. This avoids drastic
         // scales.
+
         float fFileBpmDelta = fabs(fThisFileBpm-fOtherFileBpm);
         if (fabs(fThisFileBpm*2.0 - fOtherFileBpm) < fFileBpmDelta) {
             fDesiredRate /= 2.0;
@@ -280,6 +282,10 @@ bool BpmControl::syncPhase() {
     double dThisPrevBeat = m_pBeats->findPrevBeat(dThisPosition);
     double dThisNextBeat = m_pBeats->findNextBeat(dThisPosition);
 
+    if (dThisPrevBeat == -1 || dThisNextBeat == -1) {
+        return false;
+    }
+
     // Protect against the case where we are sitting exactly on the beat.
     if (dThisPrevBeat == dThisNextBeat) {
         dThisNextBeat = m_pBeats->findNthBeat(dThisPosition, 2);
@@ -287,6 +293,10 @@ bool BpmControl::syncPhase() {
 
     double dOtherPrevBeat = otherBeats->findPrevBeat(dOtherPosition);
     double dOtherNextBeat = otherBeats->findNextBeat(dOtherPosition);
+
+    if (dOtherPrevBeat == -1 || dOtherNextBeat == -1) {
+        return false;
+    }
 
     // Protect against the case where we are sitting exactly on the beat.
     if (dOtherPrevBeat == dOtherNextBeat) {

@@ -26,8 +26,8 @@ class EngineState;
 #define SIZE_NOISE_BUF 40
 //#define NOISE_FACTOR 116.415321827e-12 // 1/4 bit of noise (99db SNR)
 #define NOISE_FACTOR 0.25              // this is necessary to prevent denormals
-                                       // from consuming too much CPU resources
-                                       // and is well below being audible.
+// from consuming too much CPU resources
+// and is well below being audible.
 /**
   * Parallel processing of LP, BP and HP filters, and final mixing
   *
@@ -43,6 +43,7 @@ class EngineFilterBlock : public EngineObject {
                  const int iBufferSize);
 
   private:
+
     void setFilters(bool forceSetting = false);
 
     CSAMPLE *m_pTemp1, *m_pTemp2, *m_pTemp3;

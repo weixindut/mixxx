@@ -95,6 +95,7 @@ EngineMaster::EngineMaster(ConfigObject<ConfigValue> * _config,
     // Headphone mix (left/right)
     ControlPotmeter* pHeadMix = new ControlPotmeter(
         ConfigKey(group, "headMix"), -1., 1.);
+    pHeadMix->setDefaultValue(-1.);
     pHeadMix->set(-1);
     head_mix = m_callbackControlManager.addControl(pHeadMix, 1);
 
@@ -118,6 +119,9 @@ EngineMaster::EngineMaster(ConfigObject<ConfigValue> * _config,
     }
 
     //X-Fader Setup
+    xFaderMode = m_callbackControlManager.addControl(
+        new ControlPotmeter(
+            ConfigKey("[Mixer Profile]", "xFaderMode"), 0., 1.), 1);
     xFaderCurve = m_callbackControlManager.addControl(
         new ControlPotmeter(
             ConfigKey("[Mixer Profile]", "xFaderCurve"), 0., 2.), 1);
@@ -141,6 +145,7 @@ EngineMaster::~EngineMaster() {
 
     delete xFaderCalibration;
     delete xFaderCurve;
+    delete xFaderMode;
 
     delete m_pMasterSampleRate;
     delete m_pMasterLatency;
@@ -393,7 +398,8 @@ void EngineMaster::process(const CSAMPLE *, const CSAMPLE *pOut,
     float c1_gain, c2_gain;
     EngineXfader::getXfadeGains(c1_gain, c2_gain,
                                 crossfader->get(), xFaderCurve->get(),
-                                xFaderCalibration->get());
+                                xFaderCalibration->get(),
+                                xFaderMode->get()==MIXXX_XFADER_CONSTPWR);
 
     // Now set the gains for overall volume and the left, center, right gains.
     m_masterGain.setGains(m_pMasterVolume->get(), c1_gain, 1.0, c2_gain);
@@ -456,10 +462,12 @@ void EngineMaster::process(const CSAMPLE *, const CSAMPLE *pOut,
 void EngineMaster::addChannel(EngineChannel* pChannel) {
     ChannelInfo* pChannelInfo = new ChannelInfo();
     pChannelInfo->m_pChannel = pChannel;
+    ControlLogpotmeter* pChannelVolume = new ControlLogpotmeter(
+        ConfigKey(pChannel->getGroup(), "volume"), 1.0);
+    pChannelVolume->setDefaultValue(1.0);
+    pChannelVolume->set(1.0);
     pChannelInfo->m_pVolumeControl = m_callbackControlManager.addControl(
-        new ControlLogpotmeter(
-            ConfigKey(pChannel->getGroup(), "volume"), 1.0), 1);
-
+        pChannelVolume, 1);
     pChannelInfo->m_pBuffer = SampleUtil::alloc(MAX_BUFFER_LEN);
     SampleUtil::applyGain(pChannelInfo->m_pBuffer, 0, MAX_BUFFER_LEN);
     m_channels.push_back(pChannelInfo);

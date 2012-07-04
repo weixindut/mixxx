@@ -29,21 +29,23 @@ VinylControlControl::VinylControlControl(
     pCallbackControlManager->addControl(pControlVinylSpeedType, 1)
             ->setParent(this);
 
-    CallbackControl* pControlVinylSeek = pCallbackControlManager->addControl(
-        new ControlObject(ConfigKey(pGroup, "vinylcontrol_seek")), 1);
+    ControlObject* pControlVinylSeek =
+            new ControlObject(ConfigKey(pGroup, "vinylcontrol_seek"));
     connect(pControlVinylSeek, SIGNAL(valueChanged(double)),
             this, SLOT(slotControlVinylSeek(double)),
             Qt::DirectConnection);
+    pCallbackControlManager->addControl(pControlVinylSeek, 1)
+            ->setParent(this);
 
     ControlPushButton* pControlVinylEnabled =
             new ControlPushButton(ConfigKey(pGroup, "vinylcontrol_enabled"));
-    pControlVinylEnabled->setToggleButton(true);
+    pControlVinylEnabled->setButtonMode(ControlPushButton::TOGGLE);
     m_pControlVinylEnabled = pCallbackControlManager->addControl(
         pControlVinylEnabled, 1);
 
     ControlPushButton* pControlVinylWantEnabled = new ControlPushButton(
         ConfigKey(pGroup, "vinylcontrol_wantenabled"));
-    pControlVinylWantEnabled->setToggleButton(true);
+    pControlVinylWantEnabled->setButtonMode(ControlPushButton::TOGGLE);
     CallbackControl* pCallbackControlVinylWantEnabled =
             pCallbackControlManager->addControl(pControlVinylWantEnabled, 1);
     pCallbackControlVinylWantEnabled->setParent(this);
@@ -51,24 +53,31 @@ VinylControlControl::VinylControlControl(
     ControlPushButton* pControlVinylMode = new ControlPushButton(
         ConfigKey(pGroup, "vinylcontrol_mode"));
     pControlVinylMode->setStates(3);
-    pControlVinylMode->setToggleButton(true);
+    pControlVinylMode->setButtonMode(ControlPushButton::TOGGLE);
     m_pControlVinylMode = pCallbackControlManager->addControl(
         pControlVinylMode, 1);
 
     ControlPushButton* pControlVinylCueing = new ControlPushButton(
         ConfigKey(pGroup, "vinylcontrol_cueing"));
     pControlVinylCueing->setStates(3);
-    pControlVinylCueing->setToggleButton(true);
+    pControlVinylCueing->setButtonMode(ControlPushButton::TOGGLE);
     m_pControlVinylCueing = pCallbackControlManager->addControl(
         pControlVinylCueing, 1);
 
     ControlPushButton* pControlVinylSignalEnabled = new ControlPushButton(
         ConfigKey(pGroup, "vinylcontrol_signal_enabled"));
     pControlVinylSignalEnabled->set(1);
-    pControlVinylSignalEnabled->setToggleButton(true);
+    pControlVinylSignalEnabled->setButtonMode(ControlPushButton::TOGGLE);
     CallbackControl* pCallbackControlVinylSignalEnabled =
             pCallbackControlManager->addControl(pControlVinylSignalEnabled, 1);
     pCallbackControlVinylSignalEnabled->setParent(this);
+
+    ControlPushButton* pControlVinylScratching = new ControlPushButton(
+        ConfigKey(pGroup, "vinylcontrol_scratching"));
+    pControlVinylScratching->set(0);
+    pControlVinylScratching->setButtonMode(ControlPushButton::TOGGLE);
+    m_pControlVinylScratching = pCallbackControlManager->addControl(
+        pControlVinylScratching, 1);
 }
 
 VinylControlControl::~VinylControlControl() {
@@ -148,4 +157,14 @@ void VinylControlControl::slotControlVinylSeek(double change) {
 
     // just seek where it wanted to originally
     emit(seek(change));
+}
+
+bool VinylControlControl::isEnabled()
+{
+    return m_pControlVinylEnabled->get();
+}
+
+bool VinylControlControl::isScratching()
+{
+    return m_pControlVinylScratching->get();
 }

@@ -108,7 +108,7 @@ EngineBuffer::EngineBuffer(const char * _group, ConfigObject<ConfigValue> * _con
     // Play button
     ControlPushButton* pPlayButton = new ControlPushButton(
         ConfigKey(group, "play"));
-    pPlayButton->setToggleButton(true);
+    pPlayButton->setButtonMode(ControlPushButton::TOGGLE);
 
     playButton = pCallbackControlManager->addControl(pPlayButton, 1);
     connect(playButton, SIGNAL(valueChanged(double, double)),
@@ -193,14 +193,14 @@ EngineBuffer::EngineBuffer(const char * _group, ConfigObject<ConfigValue> * _con
     // playback. TODO(XXX) This should not even be a control object because it
     // is an internal flag used only by the EngineBuffer.
     ControlObject* pTrackEndControl =
-            new ControlObject(ConfigKey(group, "TrackEnd"));
+                new ControlObject(ConfigKey(group, "TrackEnd"));
 
     m_pTrackEnd = pCallbackControlManager->addControl(pTrackEndControl, 1);
     // A COTM for use in slots that are called by the GUI thread.
     m_pTrackEndCOT = new ControlObjectThreadMain(pTrackEndControl);
 
     ControlPushButton* pRepeatButton = new ControlPushButton(ConfigKey(group, "repeat"));
-    pRepeatButton->setToggleButton(true);
+    pRepeatButton->setButtonMode(ControlPushButton::TOGGLE);
     m_pRepeat = pCallbackControlManager->addControl(pRepeatButton, 1);
 
     // Sample rate
@@ -253,22 +253,24 @@ EngineBuffer::EngineBuffer(const char * _group, ConfigObject<ConfigValue> * _con
 
     ControlPushButton* pKeylockButton =
             new ControlPushButton(ConfigKey(group, "keylock"));
-    pKeylockButton->setToggleButton(true);
+    pKeylockButton->setButtonMode(ControlPushButton::TOGGLE);
     pKeylockButton->set(false);
-
     m_pKeylock = pCallbackControlManager->addControl(pKeylockButton, 1);
 
-
-
-    /*df.setFileName("mixxx-debug.csv");
+    //m_iRampIter = 0;
+#ifdef __SCALER_DEBUG__
+    df.setFileName("mixxx-debug.csv");
     df.open(QIODevice::WriteOnly | QIODevice::Text);
-    writer.setDevice(&df);*/
+    writer.setDevice(&df);
+#endif
 }
 
 EngineBuffer::~EngineBuffer()
 {
+#ifdef __SCALER_DEBUG__
     //close the writer
-    /*df.close();*/
+    df.close();
+#endif
     delete m_pReadAheadManager;
     delete m_pReader;
 
@@ -414,6 +416,7 @@ void EngineBuffer::ejectTrack() {
     file_srate_old = 0;
     file_length_old = 0;
     playButton->set(0.0);
+    visualBpm->set(0.0);
     slotControlSeek(0.);
     m_pTrackSamples->set(0);
     m_pTrackSampleRate->set(0);
@@ -531,6 +534,7 @@ void EngineBuffer::process(const CSAMPLE *, const CSAMPLE * pOut, const int iBuf
         bool is_scratching = false;
         rate = m_pRateControl->calculateRate(baserate, paused, iBufferSize,
                                              &is_scratching);
+
         //qDebug() << "rate" << rate << " paused" << paused;
 
         // Scratching always disables keylock because keylock sounds terrible
@@ -762,9 +766,11 @@ void EngineBuffer::process(const CSAMPLE *, const CSAMPLE * pOut, const int iBuf
         m_fLastSampleValue[1] = pOutput[iBufferSize-1];
     }
 
-    /*for (int i=0; i<iBufferSize; i+=2) {
+#ifdef __SCALER_DEBUG__
+    for (int i=0; i<iBufferSize; i+=2) {
         writer << pOutput[i] <<  "\n";
-    }*/
+    }
+#endif
 
     m_bLastBufferPaused = bCurBufferPaused;
 }

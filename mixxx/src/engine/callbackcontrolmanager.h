@@ -1,11 +1,13 @@
 #ifndef CALLBACKCONTROLMANAGER_H
 #define CALLBACKCONTROLMANAGER_H
 
+#include <QSet>
 #include <QObject>
 #include <QScopedPointer>
 #include <QTime>
 
 #include "util/fifo.h"
+#include "configobject.h"
 #include "controlobject.h"
 
 class CallbackControlManager;

@@ -28,7 +28,7 @@ EngineChannel::EngineChannel(const char* pGroup,
     CallbackControlManager* pCallbackControlManager =
             pEngineState->getControlManager();
     ControlPushButton* pPFL = new ControlPushButton(ConfigKey(m_group, "pfl"));
-    pPFL->setToggleButton(true);
+    pPFL->setButtonMode(ControlPushButton::TOGGLE);
     m_pPFL = pCallbackControlManager->addControl(pPFL, 1);
     m_pOrientation = pCallbackControlManager->addControl(
         new ControlObject(ConfigKey(m_group, "orientation")), 1);

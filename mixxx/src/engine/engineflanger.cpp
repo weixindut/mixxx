@@ -74,7 +74,7 @@ EngineFlanger::EngineFlanger(const char * group, EngineState* pEngineState)
     // Create an enable key on a per-deck basis.
     ControlPushButton* pFlangerEnable = new ControlPushButton(
         ConfigKey(group, "flanger"));
-    pFlangerEnable->setToggleButton(true);
+    pFlangerEnable->setButtonMode(ControlPushButton::TOGGLE);
     flangerEnable = pCallbackControlManager->addControl(pFlangerEnable, 1);
 
     // Fixed values of controls:

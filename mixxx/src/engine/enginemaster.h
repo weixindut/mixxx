@@ -152,12 +152,15 @@ class EngineMaster : public EngineObject, public AudioSource {
     EngineVuMeter *vumeter;
     EngineSideChain *sidechain;
 
-    CallbackControl *crossfader, *head_mix,
-        *m_pBalance, *xFaderCurve, *xFaderCalibration;
+    CallbackControl* crossfader;
+    CallbackControl* head_mix;
+    CallbackControl* m_pBalance;
+    CallbackControl* xFaderMode;
+    CallbackControl* xFaderCurve;
+    CallbackControl* xFaderCalibration;
 
     ConstantGainCalculator m_headphoneGain;
     OrientationVolumeGainCalculator m_masterGain;
-
 };
 
 #endif

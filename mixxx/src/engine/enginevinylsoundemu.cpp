@@ -41,7 +41,7 @@ EngineVinylSoundEmu::EngineVinylSoundEmu(const char* group,
     m_iNoisePos = 0;
 
     for (int i = 0; i < NOISE_BUFFER_SIZE; ++i) {
-        m_fNoise[i] = static_cast<float>(rand() % 32768) / 32768.0 - 0.5;
+        m_fNoise[i] = static_cast<float>(rand() % RAND_MAX) / RAND_MAX - 0.5;
     }
 }
 

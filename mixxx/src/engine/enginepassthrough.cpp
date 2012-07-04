@@ -25,7 +25,7 @@ EnginePassthrough::EnginePassthrough(const char* pGroup,
         new ControlObject(ConfigKey(pGroup, "passthrough_enabled")), 1);
     ControlPushButton* pPassing = new ControlPushButton(
         ConfigKey(pGroup, "passthrough_passing"));
-    pPassing->setToggleButton(true);
+    pPassing->setButtonMode(ControlPushButton::TOGGLE);
     m_pPassing = pCallbackControlManager->addControl(pPassing, 1);
 }
 

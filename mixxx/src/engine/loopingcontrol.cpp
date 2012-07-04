@@ -660,7 +660,7 @@ BeatLoopingControl::BeatLoopingControl(const char* pGroup, double size,
     ControlPushButton* pLegacy = new ControlPushButton(
         keyForControl(pGroup, "beatloop_%1", size));
     pLegacy->setStates(2);
-    pLegacy->setToggleButton(true);
+    pLegacy->setButtonMode(ControlPushButton::TOGGLE);
     m_pLegacy = pCallbackControlManager->addControl(pLegacy, 1);
     connect(m_pLegacy, SIGNAL(valueChanged(double)),
             this, SLOT(slotLegacy(double)),

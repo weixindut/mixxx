@@ -23,7 +23,7 @@ QuantizeControl::QuantizeControl(const char* pGroup,
     // Turn quantize OFF by default. See Bug #898213
     ControlPushButton* pCOQuantizeEnabled = new ControlPushButton(
         ConfigKey(pGroup, "quantize"));
-    pCOQuantizeEnabled->setToggleButton(true);
+    pCOQuantizeEnabled->setButtonMode(ControlPushButton::TOGGLE);
     m_pCOQuantizeEnabled = pCallbackControlManager->addControl(
         pCOQuantizeEnabled, 1);
     m_pCONextBeat = pCallbackControlManager->addControl(

@@ -94,21 +94,21 @@ EngineFilterBlock::EngineFilterBlock(const char * group,
         new ControlLogpotmeter(ConfigKey(group, "filterLow"), 4.), 1);
     ControlPushButton* pFilterKillLow = new ControlPushButton(
         ConfigKey(group, "filterLowKill"));
-    pFilterKillLow->setToggleButton(true);
+    pFilterKillLow->setButtonMode(ControlPushButton::POWERWINDOW);
     filterKillLow = pCallbackControlManager->addControl(pFilterKillLow, 1);
 
     filterpotMid = pCallbackControlManager->addControl(
         new ControlLogpotmeter(ConfigKey(group, "filterMid"), 4.), 1);
     ControlPushButton* pFilterKillMid = new ControlPushButton(
         ConfigKey(group, "filterMidKill"));
-    pFilterKillMid->setToggleButton(true);
+    pFilterKillMid->setButtonMode(ControlPushButton::POWERWINDOW);
     filterKillMid = pCallbackControlManager->addControl(pFilterKillMid, 1);
 
     filterpotHigh = pCallbackControlManager->addControl(
         new ControlLogpotmeter(ConfigKey(group, "filterHigh"), 4.), 1);
     ControlPushButton* pFilterKillHigh = new ControlPushButton(
         ConfigKey(group, "filterHighKill"));
-    pFilterKillHigh->setToggleButton(true);
+    pFilterKillHigh->setButtonMode(ControlPushButton::POWERWINDOW);
     filterKillHigh = pCallbackControlManager->addControl(pFilterKillHigh, 1);
 
     m_pTemp1 = new CSAMPLE[MAX_BUFFER_LEN];

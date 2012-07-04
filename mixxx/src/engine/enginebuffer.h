@@ -25,8 +25,11 @@
 #include "trackinfoobject.h"
 #include "configobject.h"
 #include "rotary.h"
+
 //for the writer
-//#include <QtCore>
+#ifdef __SCALER_DEBUG__
+#include <QtCore>
+#endif
 
 class EngineControl;
 class BpmControl;
@@ -239,6 +242,12 @@ public:
     //int m_iRampIter;
 
     TrackPointer m_pCurrentTrack;
+
+#ifdef __SCALER_DEBUG__
+    QFile df;
+    QTextStream writer;
+#endif
+
     CSAMPLE* m_pDitherBuffer;
     unsigned int m_iDitherBufferReadIndex;
 };
