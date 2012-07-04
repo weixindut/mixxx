@@ -36,7 +36,8 @@ const QString Library::m_sTrackViewName = QString("WTrackTableView");
 Library::Library(QObject* parent, ConfigObject<ConfigValue>* pConfig, bool firstRun,
                  RecordingManager* pRecordingManager)
     : m_pConfig(pConfig),
-      m_pRecordingManager(pRecordingManager) {
+      m_pRecordingManager(pRecordingManager),
+      m_ptrackModel(NULL) {
     m_pTrackCollection = new TrackCollection(pConfig);
     m_pSidebarModel = new SidebarModel(parent);
     m_pLibraryControl = new LibraryControl(this);
@@ -47,6 +48,8 @@ Library::Library(QObject* parent, ConfigObject<ConfigValue>* pConfig, bool first
     addFeature(m_pMixxxLibraryFeature,true);
     connect(this, SIGNAL(dirsChanged(QString,QString)),
             m_pMixxxLibraryFeature, SLOT(slotDirsChanged(QString,QString)));
+    connect(m_pMixxxLibraryFeature, SIGNAL(dirsChanged(QString,QString)),
+            this, SLOT(slotDirsChanged(QString,QString)));
 
     if (PromoTracksFeature::isSupported(m_pConfig)) {
         m_pPromoTracksFeature = new PromoTracksFeature(this, pConfig,
@@ -107,6 +110,8 @@ Library::~Library() {
     //Update:  - OR NOT! As of Dec 8, 2009, this pointer must be destroyed manually otherwise
     // we never see the TrackCollection's destructor being called... - Albert
     delete m_pTrackCollection;
+    //TODO (kain88) check if the TM is not deleted somewhere else
+    // delete m_ptrackModel;
 }
 
 void Library::bindWidget(WLibrarySidebar* pSidebarWidget,
@@ -176,11 +181,11 @@ void Library::addFeature(LibraryFeature* feature, bool config) {
 
 void Library::slotShowTrackModel(QAbstractItemModel* model) {
     qDebug() << "Library::slotShowTrackModel" << model;
-    TrackModel* trackModel = dynamic_cast<TrackModel*>(model);
-    Q_ASSERT(trackModel);
+    m_ptrackModel = dynamic_cast<TrackModel*>(model);
+    Q_ASSERT(m_ptrackModel);
     emit(showTrackModel(model));
     emit(switchToView(m_sTrackViewName));
-    emit(restoreSearch(trackModel->currentSearch()));
+    emit(restoreSearch(m_ptrackModel->currentSearch()));
 }
 
 void Library::slotSwitchToView(const QString& view) {
@@ -228,9 +233,13 @@ void Library::slotConfigChanged(QString identifier, QString key){
     qDebug() << "kain88 recived by library";
     emit(configChanged(identifier,key));
 }
-void Library::slotDirsChanged(QString identifier, QString key){
-    qDebug() << "kain88 recived by library" << key;
-    emit(dirsChanged(identifier,key));
+void Library::slotDirsChanged(QString op, QString dir){
+    Q_UNUSED(dir);
+    qDebug() << "received that something has changed";
+    if (op=="removed") {
+        qDebug() << "yeah Im gonna do something";
+        m_ptrackModel->select();
+    }
 }
 
 MixxxLibraryFeature* Library::getpMixxxLibraryFeature(){

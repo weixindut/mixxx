@@ -188,7 +188,9 @@ void MixxxLibraryFeature::slotDirsChanged(QString op, QString dir){
     if (op=="added") {
         m_directoryDAO.addDirectory(dir);
     } else if (op=="removed") {
+        m_pHiddenTableModel->purgeTracks(m_directoryDAO.getDirId(dir));
         m_directoryDAO.purgeDirectory(dir);
+        emit(dirsChanged(op,dir));
     } else if (op=="update"){
         m_directoryDAO.addDirectory(dir);
         m_directoryDAO.updateTrackLocations(dir);

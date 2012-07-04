@@ -62,7 +62,7 @@ DlgPrefPlaylist::DlgPrefPlaylist(QWidget * parent, ConfigObject<ConfigValue> * c
             this, SLOT(slotBrowseDir()));
     connect(PushButtonRemovePlaylist, SIGNAL(clicked()),
             this, SLOT(slotRemoveDir()));
-    // connect(LineEditSongfiles,        SIGNAL(returnPressed()), this,      SLOT(slotApply()));
+    // connect(list,        SIGNAL(returnPressed()), this,      SLOT(slotApply()));
     //connect(pushButtonM4A, SIGNAL(clicked()), this, SLOT(slotM4ACheck()));
     connect(pushButtonExtraPlugins, SIGNAL(clicked()),
             this, SLOT(slotExtraPlugins()));
@@ -85,24 +85,27 @@ DlgPrefPlaylist::~DlgPrefPlaylist()
 }
 
 bool DlgPrefPlaylist::initializeModel(){
-    qDebug() << "initializeModel";
-    qDebug() << m_model.rowCount();
-    // this will attach itself to the currently open db connection in
-    // read only mode
-    // TODO(kain88) find another way to hook into the default connection
-    QSqlQueryModel prepareModel;
-    prepareModel.setQuery("SELECT * from directories");
-    QSqlQuery query = prepareModel.query();
-    query.exec();
+    // this will hook into the default connection, so we don't need to
+    // provide anymore information. This works because the Library is
+    // created before the Preferences and a connection already exists.
+    // --kain88 July 2012
+    QSqlDatabase database = QSqlDatabase::database();
+    QSqlQuery query;
+    query.prepare("SELECT * from directories");
+    if (!query.exec()) {
+        qDebug() << "damn there are no directories to display";
+        return false;
+    }
+    // clear out anything that has been in the model bevore
     m_model.clear();
     while(query.next()){
-        qDebug() << "get next result of query";
-        QStandardItem* pitem = new QStandardItem(query.value(1).toString());
+        QStandardItem* pitem = new QStandardItem(query.value(
+                                    query.record().indexOf("directory")
+                                    ).toString());
         m_model.appendRow(pitem);
-        qDebug() <<"in loop "<< m_model.rowCount();
     }
-    qDebug() << m_model.rowCount();
-    LineEditSongfiles->setModel(&m_model);
+    list->setModel(&m_model);
+    return true;
 }
 
 
@@ -200,11 +203,8 @@ void DlgPrefPlaylist::slotBrowseDir()
 {
     QString fd = QFileDialog::getExistingDirectory(this,
                             tr("Choose music library directory"),
-                            m_pconfig->getValueString(ConfigKey(
-                            "[Playlist]","Directory")));
-    qDebug() << "Kain88 dir choosen" <<fd;
+                            QDesktopServices::storageLocation(QDesktopServices::MusicLocation));
     if (fd != "") {
-        qDebug()<< "kain88 emit signal";
         emit(dirsChanged("added",fd));
         slotUpdate();
         m_dirsModified = true;
@@ -213,10 +213,8 @@ void DlgPrefPlaylist::slotBrowseDir()
 
 void DlgPrefPlaylist::slotRemoveDir()
 {
-    QModelIndex index = LineEditSongfiles->currentIndex();
+    QModelIndex index = list->currentIndex();
     QString fd = index.data().toString();
-    qDebug() << "Kain88 dir choosen" <<fd;
-    qDebug()<< "kain88 emit signal";
     emit(dirsChanged("removed",fd));
     slotUpdate();
     m_dirsModified = true;
@@ -246,10 +244,7 @@ void DlgPrefPlaylist::slotApply()
     m_pconfig->set(ConfigKey("[Library]","ShowTraktorLibrary"),
                 ConfigValue((int)checkBox_show_traktor->isChecked()));
 
-
-
     m_pconfig->Save();
-
 
     // Update playlist if path has changed
     if (m_dirsModified) {

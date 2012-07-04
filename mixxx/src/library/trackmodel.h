@@ -137,7 +137,10 @@ class TrackModel {
     virtual int fieldIndex(const QString& fieldName) const {
         Q_UNUSED(fieldName);
         return -1;
-    };
+    }
+
+    virtual void select() {
+    }
 
   private:
     QSqlDatabase m_db;

@@ -89,6 +89,7 @@ private:
     PromoTracksFeature* m_pPromoTracksFeature;
     LibraryControl* m_pLibraryControl;
     RecordingManager* m_pRecordingManager;
+    TrackModel* m_ptrackModel;
 };
 
 #endif /* LIBRARY_H */

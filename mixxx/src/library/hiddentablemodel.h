@@ -22,6 +22,7 @@ class HiddenTableModel : public BaseSqlTableModel {
     virtual bool isColumnInternal(int column);
     virtual bool isColumnHiddenByDefault(int column);
     virtual void purgeTracks(const QModelIndexList& indices);
+    virtual void purgeTracks(const int dirId);
     virtual void unhideTracks(const QModelIndexList& indices);
     virtual bool addTrack(const QModelIndex& index, QString location);
 

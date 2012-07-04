@@ -1,8 +1,5 @@
 #include <QtSql>
-#include <QString>
 #include <QtDebug>
-#include <QVariant>
-#include <QThread>
 #include <QStringBuilder>
 
 #include "directorydao.h"
@@ -43,7 +40,7 @@ bool DirectoryDAO::addDirectory(QString dir){
     ScopedTransaction transaction(m_database);
     QSqlQuery query(m_database);
     query.prepare("INSERT INTO directories (directory) "
-                  "VALUES (\""+ dir +"\")");
+                  "VALUES (\""% dir %"\")");
     
     if (!query.exec()) {
         qDebug() << "Adding new dir ("+ dir +") failed:"
@@ -68,7 +65,9 @@ bool DirectoryDAO::purgeDirectory(QString dir){
 QStringList DirectoryDAO::getDirs(){
     QSqlQuery query(m_database);
     query.prepare("SELECT " % DIRECTORYDAO_DIR % " FROM " % DIRECTORYDAO_TABLE);
-    Q_ASSERT(query.exec());
+    if (!query.exec()) {
+        LOG_FAILED_QUERY(query) << "There are no directories saved in the db";
+    }
     QStringList dirs;
     while (query.next()) {
         dirs << query.value(query.record().indexOf(DIRECTORYDAO_DIR)).toString();
@@ -79,25 +78,24 @@ QStringList DirectoryDAO::getDirs(){
 int DirectoryDAO::getDirId(QString dir){
     QSqlQuery query(m_database);
     query.prepare("SELECT " % DIRECTORYDAO_ID % " FROM " % DIRECTORYDAO_TABLE %
-                  " WHERE " % DIRECTORYDAO_ID %"=\"" % dir % "\"");
+                  " WHERE " % DIRECTORYDAO_DIR %"=\"" % dir % "\"");
     if (!query.exec()) {
-        qDebug() << "kain88 get query:"<<query.lastQuery();
+        LOG_FAILED_QUERY(query) << "couldn't find directory:"<<dir;
     }
     int id =0;
     while (query.next()) {
-        qDebug() << "kain88 got a result";
         id = query.value(query.record().indexOf(DIRECTORYDAO_ID)).toInt();
     }
     return id;
 }
 
 bool DirectoryDAO::updateTrackLocations(QString dir){
-    QString dirId = QString(getDirId(dir));
+    QString dirId = QString::number(getDirId(dir));
     ScopedTransaction transaction(m_database);
     QSqlQuery query(m_database);
     query.prepare("UPDATE track_locations SET "%DIRECTORYDAO_ID%" = "%dirId);
     if (!query.exec()) {
-        qDebug() << "could not update TrackLocations";
+        LOG_FAILED_QUERY(query) << " could not update TrackLocations";
         return false;
     }
     transaction.commit();

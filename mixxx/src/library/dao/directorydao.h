@@ -1,7 +1,6 @@
 #ifndef DIRECTORYDAO_H
 #define DIRECTORYDAO_H
 
-#include <QObject>
 #include <QSqlDatabase>
 #include "library/dao/dao.h"
 

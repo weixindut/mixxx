@@ -36,6 +36,7 @@ class MixxxLibraryFeature : public LibraryFeature {
 
   signals:
     void configChanged(QString, QString);
+    void dirsChanged(QString,QString);
 
   public slots:
     void activate();

@@ -282,9 +282,11 @@ MixxxApp::MixxxApp(QApplication *a, struct CmdlineArgs args)
         QString dir = m_pConfig->getValueString(ConfigKey("[Playlist]","Directory"));
         // adds the current library path to the directories table and updates
         // track_locations for all tracks
-        emit(dirsChanged("update",dir));
-        m_pConfig->set(ConfigKey("[Library]","newVersion"),ConfigValue((int)true));
-        m_pConfig->Save();
+        if (dir!="") {
+            emit(dirsChanged("update",dir));
+            m_pConfig->set(ConfigKey("[Library]","newVersion"),ConfigValue((int)true));
+            m_pConfig->Save();
+        }
     }
 
     // Get Music dir
