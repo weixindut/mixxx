@@ -109,6 +109,9 @@ class MixxxApp : public QMainWindow {
 
     void slotToCenterOfPrimaryScreen();
 
+  signals:
+    void dirsChanged(QString,QString);
+
   protected:
     /** Event filter to block certain events (eg. tooltips if tooltips are disabled) */
     bool eventFilter(QObject *obj, QEvent *event);

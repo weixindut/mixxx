@@ -58,10 +58,14 @@ DlgPrefPlaylist::DlgPrefPlaylist(QWidget * parent, ConfigObject<ConfigValue> * c
 
 
     // Connection
-    connect(PushButtonBrowsePlaylist, SIGNAL(clicked()),       this,      SLOT(slotBrowseDir()));
+    connect(PushButtonBrowsePlaylist, SIGNAL(clicked()),
+            this, SLOT(slotBrowseDir()));
+    connect(PushButtonRemovePlaylist, SIGNAL(clicked()),
+            this, SLOT(slotRemoveDir()));
     // connect(LineEditSongfiles,        SIGNAL(returnPressed()), this,      SLOT(slotApply()));
     //connect(pushButtonM4A, SIGNAL(clicked()), this, SLOT(slotM4ACheck()));
-    connect(pushButtonExtraPlugins, SIGNAL(clicked()), this, SLOT(slotExtraPlugins()));
+    connect(pushButtonExtraPlugins, SIGNAL(clicked()),
+            this, SLOT(slotExtraPlugins()));
 
     if (!PromoTracksFeature::isSupported(m_pconfig))
     {
@@ -81,8 +85,23 @@ DlgPrefPlaylist::~DlgPrefPlaylist()
 }
 
 bool DlgPrefPlaylist::initializeModel(){
-    m_model.setQuery("SELECT * from directories");
-    m_model.setHeaderData(0, Qt::Horizontal, QObject::tr("Directory"));
+    qDebug() << "initializeModel";
+    qDebug() << m_model.rowCount();
+    // this will attach itself to the currently open db connection in
+    // read only mode
+    // TODO(kain88) find another way to hook into the default connection
+    QSqlQueryModel prepareModel;
+    prepareModel.setQuery("SELECT * from directories");
+    QSqlQuery query = prepareModel.query();
+    query.exec();
+    m_model.clear();
+    while(query.next()){
+        qDebug() << "get next result of query";
+        QStandardItem* pitem = new QStandardItem(query.value(1).toString());
+        m_model.appendRow(pitem);
+        qDebug() <<"in loop "<< m_model.rowCount();
+    }
+    qDebug() << m_model.rowCount();
     LineEditSongfiles->setModel(&m_model);
 }
 
@@ -190,6 +209,17 @@ void DlgPrefPlaylist::slotBrowseDir()
         slotUpdate();
         m_dirsModified = true;
     }
+}
+
+void DlgPrefPlaylist::slotRemoveDir()
+{
+    QModelIndex index = LineEditSongfiles->currentIndex();
+    QString fd = index.data().toString();
+    qDebug() << "Kain88 dir choosen" <<fd;
+    qDebug()<< "kain88 emit signal";
+    emit(dirsChanged("removed",fd));
+    slotUpdate();
+    m_dirsModified = true;
 }
 
 void DlgPrefPlaylist::slotApply()

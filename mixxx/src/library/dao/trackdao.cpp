@@ -29,6 +29,9 @@ TrackDAO::TrackDAO(QSqlDatabase& database,
           m_playlistDao(playlistDao),
           m_crateDao(crateDao),
           m_analysisDao(analysisDao),
+          //TODO(kain88) look where TrackDAO is created an try to add
+          //this DAO as a variable of the constructor
+          m_directoryDAO(database),
           m_pConfig(pConfig),
           m_trackCache(TRACK_CACHE_SIZE) {
 }
@@ -229,11 +232,11 @@ void TrackDAO::saveDirtyTracks() {
 }
 
 void TrackDAO::prepareTrackLocationsInsert(QSqlQuery& query) {
-    query.prepare("INSERT INTO track_locations (location, directory, filename, filesize, fs_deleted, needs_verification) "
-                  "VALUES (:location, :directory, :filename, :filesize, :fs_deleted, :needs_verification)");
+    query.prepare("INSERT INTO track_locations (location, directory, filename, filesize, fs_deleted, needs_verification, dir_id) "
+                  "VALUES (:location, :directory, :filename, :filesize, :fs_deleted, :needs_verification, :dir_id)");
 }
 
-void TrackDAO::bindTrackToTrackLocationsInsert(QSqlQuery& query, TrackInfoObject* pTrack) {
+void TrackDAO::bindTrackToTrackLocationsInsert(QSqlQuery& query, TrackInfoObject* pTrack, int dirId) {
     query.bindValue(":location", pTrack->getLocation());
     query.bindValue(":directory", pTrack->getDirectory());
     query.bindValue(":filename", pTrack->getFilename());
@@ -241,6 +244,7 @@ void TrackDAO::bindTrackToTrackLocationsInsert(QSqlQuery& query, TrackInfoObject
     // Should this check pTrack->exists()?
     query.bindValue(":fs_deleted", 0);
     query.bindValue(":needs_verification", 0);
+    query.bindValue(":dir_id",dirId);
 }
 
 void TrackDAO::prepareLibraryInsert(QSqlQuery& query) {
@@ -307,11 +311,13 @@ void TrackDAO::bindTrackToLibraryInsert(
     delete pBeatsBlob;
 }
 
-void TrackDAO::addTracks(QList<TrackInfoObject*> tracksToAdd, bool unremove) {
+void TrackDAO::addTracks(QList<TrackInfoObject*> tracksToAdd, bool unremove,QString dir) {
     QSet<int> tracksAddedSet;
     QTime time;
     time.start();
 
+    int dirId = m_directoryDAO.getDirId(dir);
+    qDebug() << "kain88 dirID="<<dirId<<" of Dir="<<dir;
     // Start the transaction
     ScopedTransaction transaction(m_database);
 
@@ -328,7 +334,7 @@ void TrackDAO::addTracks(QList<TrackInfoObject*> tracksToAdd, bool unremove) {
             // TODO(XXX) provide some kind of error code on a per-track basis.
             continue;
         }
-        bindTrackToTrackLocationsInsert(query, pTrack);
+        bindTrackToTrackLocationsInsert(query, pTrack,dirId);
 
         int trackLocationId = -1;
         if (!query.exec()) {
@@ -474,7 +480,10 @@ QList<int> TrackDAO::addTracks(QList<QFileInfo> fileInfoList, bool unremove) {
         pTrackList.append(new TrackInfoObject(info));
     }
 
-    addTracks(pTrackList, unremove);
+    //insert 0 as default dir id, meaning that this belongs to no
+    //particular library directory
+    //TODO(kain88) find out who calls this function here
+    addTracks(pTrackList, unremove, 0);
 
     foreach (TrackInfoObject* pTrack, pTrackList) {
         int trackID = pTrack->getId();
@@ -495,7 +504,10 @@ int TrackDAO::addTrack(QString absoluteFilePath, bool unremove)
 void TrackDAO::addTrack(TrackInfoObject* pTrack, bool unremove) {
     QList<TrackInfoObject*> tracksToAdd;
     tracksToAdd.push_back(pTrack);
-    addTracks(tracksToAdd, unremove);
+    //insert 0 as default dir id, meaning that this belongs to no
+    //particular library directory
+    //TODO(kain88) find out who calls this function here
+    addTracks(tracksToAdd, unremove,0);
 }
 
 void TrackDAO::hideTracks(QList<int> ids) {

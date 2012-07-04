@@ -17,6 +17,7 @@
 #include "library/dao/dao.h"
 #include "library/dao/playlistdao.h"
 #include "library/dao/analysisdao.h"
+#include "library/dao/directorydao.h"
 #include "trackinfoobject.h"
 #include "util.h"
 
@@ -77,7 +78,7 @@ class TrackDAO : public QObject, public virtual DAO {
     QString getTrackLocation(int id);
     int addTrack(QString absoluteFilePath, bool unremove);
     int addTrack(QFileInfo& fileInfo, bool unremove);
-    void addTracks(QList<TrackInfoObject*> tracksToAdd, bool unremove);
+    void addTracks(QList<TrackInfoObject*> tracksToAdd, bool unremove,QString dir);
     QList<int> addTracks(QList<QFileInfo> fileInfoList, bool unremove);
     void hideTracks(QList<int> ids);
     void purgeTracks(QList<int> ids);
@@ -134,7 +135,7 @@ class TrackDAO : public QObject, public virtual DAO {
     QString absoluteFilePath(QString location);
 
     void prepareTrackLocationsInsert(QSqlQuery& query);
-    void bindTrackToTrackLocationsInsert(QSqlQuery& query, TrackInfoObject* pTrack);
+    void bindTrackToTrackLocationsInsert(QSqlQuery& query, TrackInfoObject* pTrack, int dirId);
     void prepareLibraryInsert(QSqlQuery& query);
     void bindTrackToLibraryInsert(QSqlQuery& query,
                                   TrackInfoObject* pTrack, int trackLocationId);
@@ -148,6 +149,7 @@ class TrackDAO : public QObject, public virtual DAO {
     PlaylistDAO &m_playlistDao;
     CrateDAO &m_crateDao;
     AnalysisDao& m_analysisDao;
+    DirectoryDAO m_directoryDAO;
     ConfigObject<ConfigValue> * m_pConfig;
     mutable QHash<int, TrackWeakPointer> m_tracks;
     mutable QSet<int> m_dirtyTracks;

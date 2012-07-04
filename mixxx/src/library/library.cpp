@@ -232,3 +232,7 @@ void Library::slotDirsChanged(QString identifier, QString key){
     qDebug() << "kain88 recived by library" << key;
     emit(dirsChanged(identifier,key));
 }
+
+MixxxLibraryFeature* Library::getpMixxxLibraryFeature(){
+    return m_pMixxxLibraryFeature;
+}

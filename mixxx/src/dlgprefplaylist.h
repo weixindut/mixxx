@@ -18,12 +18,14 @@
 #ifndef DLGPREFPLAYLIST_H
 #define DLGPREFPLAYLIST_H
 
-#include <QtSql>
+// #include <QtSql>
+#include <QtGui>
 
 #include "ui_dlgprefplaylistdlg.h"
 #include "configobject.h"
 
 class QWidget;
+
 // class QSqlQueryModel;
 /**
 *@author Tue & Ken Haste Andersen
@@ -39,6 +41,7 @@ class DlgPrefPlaylist : public QWidget, public Ui::DlgPrefPlaylistDlg  {
     void slotUpdate();
     // Dialog to browse for music file directory 
     void slotBrowseDir();
+    void slotRemoveDir();
     // Apply changes to widget 
     void slotApply();
     // Starts up the PluginDownloader if the plugin isn't present
@@ -62,7 +65,8 @@ class DlgPrefPlaylist : public QWidget, public Ui::DlgPrefPlaylistDlg  {
     bool initializeModel();
 
     ConfigObject<ConfigValue> *m_pconfig;
-    QSqlQueryModel m_model;
+    // QSqlQueryModel m_model;
+    QStandardItemModel m_model;
     bool m_dirsModified;
     // SoundSource Plugin Downloader
     //PluginDownloader* m_pPluginDownloader;

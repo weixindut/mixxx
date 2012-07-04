@@ -185,5 +185,19 @@ void MixxxLibraryFeature::onLazyChildExpandation(const QModelIndex &index){
 
 void MixxxLibraryFeature::slotDirsChanged(QString op, QString dir){
     qDebug() << "kain88 recived by libraryfeature";
-    m_directoryDAO.addDirectory(dir);
+    if (op=="added") {
+        m_directoryDAO.addDirectory(dir);
+    } else if (op=="removed") {
+        m_directoryDAO.purgeDirectory(dir);
+    } else if (op=="update"){
+        m_directoryDAO.addDirectory(dir);
+        m_directoryDAO.updateTrackLocations(dir);
+    } else {
+        qDebug() << "MixxxLibraryFeature::slotDirsChanged "
+                    "op not recognised";
+    }
+}
+
+QStringList MixxxLibraryFeature::getDirs(){
+    return m_directoryDAO.getDirs();
 }

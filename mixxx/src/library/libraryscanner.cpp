@@ -233,34 +233,33 @@ void LibraryScanner::run()
     foreach (QString dir , dirs) {
         bScanFinishedCleanly = recursiveScan(dir, tracksToAdd,
                                              verifiedDirectories);
+
+        if (!bScanFinishedCleanly) {
+            qDebug() << "Recursive scan interrupted.";
+        } else {
+            qDebug() << "Recursive scan finished cleanly.";
+        }
+        // We store the scanned files in the database: Note that the recursiveScan()
+        // method used TrackCollection::importDirectory() to scan the folders. The
+        // method TrackCollection::importDirectory() added all the files to the
+        // 'tracksToAdd' list.
+        //
+        // The following statement writes all the scanned tracks in the list to the
+        // database at once. We don't care if the scan has been cancelled or not.
+        //
+        // This new approach accelerates the scanning process massively by a factor
+        // of 3-4 !!!
+    
+        // Runs inside a transaction. Do not unremove files.
+        m_trackDao.addTracks(tracksToAdd, false, dir);
+    
+        QMutableListIterator<TrackInfoObject*> it(tracksToAdd);
+        while (it.hasNext()) {
+            TrackInfoObject* pTrack = it.next();
+            it.remove();
+            delete pTrack;
+        }
     }
-
-    if (!bScanFinishedCleanly) {
-        qDebug() << "Recursive scan interrupted.";
-    } else {
-        qDebug() << "Recursive scan finished cleanly.";
-    }
-    // We store the scanned files in the database: Note that the recursiveScan()
-    // method used TrackCollection::importDirectory() to scan the folders. The
-    // method TrackCollection::importDirectory() added all the files to the
-    // 'tracksToAdd' list.
-    //
-    // The following statement writes all the scanned tracks in the list to the
-    // database at once. We don't care if the scan has been cancelled or not.
-    //
-    // This new approach accelerates the scanning process massively by a factor
-    // of 3-4 !!!
-
-    // Runs inside a transaction. Do not unremove files.
-    m_trackDao.addTracks(tracksToAdd, false);
-
-    QMutableListIterator<TrackInfoObject*> it(tracksToAdd);
-    while (it.hasNext()) {
-        TrackInfoObject* pTrack = it.next();
-        it.remove();
-        delete pTrack;
-    }
-
     // Start a transaction for all the library hashing (moved file detection)
     // stuff.
     ScopedTransaction transaction(m_database);

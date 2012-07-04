@@ -260,40 +260,6 @@ MixxxApp::MixxxApp(QApplication *a, struct CmdlineArgs args)
     m_pEngine->addChannel(pMicrophone);
     m_pSoundManager->registerInput(micInput, pMicrophone);
 
-    // Get Music dir
-    bool hasChanged_MusicDir = false;
-    QDir dir(m_pConfig->getValueString(ConfigKey("[Playlist]","Directory")));
-    if (m_pConfig->getValueString(
-        ConfigKey("[Playlist]","Directory")).length() < 1 || !dir.exists())
-    {
-        // TODO this needs to be smarter, we can't distinguish between an empty
-        // path return value (not sure if this is normally possible, but it is
-        // possible with the Windows 7 "Music" library, which is what
-        // QDesktopServices::storageLocation(QDesktopServices::MusicLocation)
-        // resolves to) and a user hitting 'cancel'. If we get a blank return
-        // but the user didn't hit cancel, we need to know this and let the
-        // user take some course of action -- bkgood
-        QString fd = QFileDialog::getExistingDirectory(
-            this, tr("Choose music library directory"),
-            QDesktopServices::storageLocation(QDesktopServices::MusicLocation));
-
-        if (fd != "")
-        {
-            m_pConfig->set(ConfigKey("[Playlist]","Directory"), fd);
-            m_pConfig->Save();
-            hasChanged_MusicDir = true;
-        }
-    }
-    /*
-     * Do not write meta data back to ID3 when meta data has changed
-     * Because multiple TrackDao objects can exists for a particular track
-     * writing meta data may ruine your MP3 file if done simultaneously.
-     * see Bug #728197
-     * For safety reasons, we deactivate this feature.
-     */
-    m_pConfig->set(ConfigKey("[Library]","WriteAudioTags"), ConfigValue(0));
-
-
     // library dies in seemingly unrelated qtsql error about not having a
     // sqlite driver if this path doesn't exist. Normally config->Save()
     // above would make it but if it doesn't get run for whatever reason
@@ -305,6 +271,51 @@ MixxxApp::MixxxApp(QApplication *a, struct CmdlineArgs args)
     m_pLibrary = new Library(this, m_pConfig,
                              bFirstRun || bUpgraded,
                              m_pRecordingManager);
+    connect(this, SIGNAL(dirsChanged(QString,QString)),
+            m_pLibrary, SIGNAL(dirsChanged(QString,QString)));
+
+    // Check if we update from an old db without relative library paths
+    // getValueString will return "" if no value was set
+    bool oldLibrary = m_pConfig->getValueString(ConfigKey("[Library]","newVersion"))=="";
+    qDebug() << "kain88 status of library version" << oldLibrary;
+    if (oldLibrary) {
+        QString dir = m_pConfig->getValueString(ConfigKey("[Playlist]","Directory"));
+        // adds the current library path to the directories table and updates
+        // track_locations for all tracks
+        emit(dirsChanged("update",dir));
+        m_pConfig->set(ConfigKey("[Library]","newVersion"),ConfigValue((int)true));
+        m_pConfig->Save();
+    }
+
+    // Get Music dir
+    bool hasChanged_MusicDir = false;
+
+    QStringList dirs = m_pLibrary->getpMixxxLibraryFeature()->getDirs();
+    if (dirs.size() < 1) {
+        // TODO(XXX) this needs to be smarter, we can't distinguish between an empty
+        // path return value (not sure if this is normally possible, but it is
+        // possible with the Windows 7 "Music" library, which is what
+        // QDesktopServices::storageLocation(QDesktopServices::MusicLocation)
+        // resolves to) and a user hitting 'cancel'. If we get a blank return
+        // but the user didn't hit cancel, we need to know this and let the
+        // user take some course of action -- bkgood
+        QString fd = QFileDialog::getExistingDirectory(
+            this, tr("Choose music library directory"),
+            QDesktopServices::storageLocation(QDesktopServices::MusicLocation));
+        if (fd != "") {
+            //adds Folder to database
+            emit(dirsChanged("added",fd));
+            hasChanged_MusicDir = true;
+        }
+    }
+    // Do not write meta data back to ID3 when meta data has changed
+    // Because multiple TrackDao objects can exists for a particular track
+    // writing meta data may ruine your MP3 file if done simultaneously.
+    // see Bug #728197
+    // For safety reasons, we deactivate this feature.
+    m_pConfig->set(ConfigKey("[Library]","WriteAudioTags"), ConfigValue(0));
+
+
     qRegisterMetaType<TrackPointer>("TrackPointer");
 
     // Create the player manager.
@@ -406,6 +417,7 @@ MixxxApp::MixxxApp(QApplication *a, struct CmdlineArgs args)
             m_pLibrary, SIGNAL(configChanged(QString,QString)));
     connect(m_pPrefDlg, SIGNAL(dirsChanged(QString,QString)),
             m_pLibrary, SIGNAL(dirsChanged(QString,QString)));
+
     m_pPrefDlg->setWindowIcon(QIcon(":/images/ic_mixxx_window.png"));
     m_pPrefDlg->setHidden(true);
 

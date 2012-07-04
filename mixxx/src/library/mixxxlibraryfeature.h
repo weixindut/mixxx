@@ -32,6 +32,7 @@ class MixxxLibraryFeature : public LibraryFeature {
     bool dragMoveAccept(QUrl url);
     bool dragMoveAcceptChild(const QModelIndex& index, QUrl url);
     TreeItemModel* getChildModel();
+    QStringList getDirs();
 
   signals:
     void configChanged(QString, QString);

@@ -6,6 +6,7 @@
 #include "library/dao/dao.h"
 
 const QString DIRECTORYDAO_DIR = "directory";
+const QString DIRECTORYDAO_ID  = "dir_id";
 const QString DIRECTORYDAO_TABLE = "directories";
 
 class DirectoryDAO : public DAO {
@@ -22,6 +23,8 @@ class DirectoryDAO : public DAO {
     void initialize();
     bool addDirectory(QString dir);
     bool purgeDirectory(QString dir);
+    bool updateTrackLocations(QString dir);
+    int getDirId(QString dir);
     QStringList getDirs();
     
   private:

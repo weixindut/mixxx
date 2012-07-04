@@ -45,26 +45,36 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="1">
-       <widget class="QTableView" name="LineEditSongfiles">
-        <property name="minimumSize">
+      <item row="1" column="0">
+       <widget class="QListView" name="LineEditSongfiles">
+        <property name="iconSize">
          <size>
-          <width>100</width>
-          <height>10</height>
+          <width>16</width>
+          <height>16</height>
          </size>
         </property>
-        <property name="font">
-         <font/>
+        <property name="uniformItemSizes">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
-      <item row="0" column="2">
+      <item row="1" column="1">
        <widget class="QPushButton" name="PushButtonBrowsePlaylist">
         <property name="font">
          <font/>
         </property>
         <property name="text">
          <string>Browse...</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QPushButton" name="PushButtonRemovePlaylist">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="text">
+         <string>Remove</string>
         </property>
        </widget>
       </item>

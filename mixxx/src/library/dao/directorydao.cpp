@@ -40,6 +40,7 @@ void DirectoryDAO::initialize()
 }
 
 bool DirectoryDAO::addDirectory(QString dir){
+    ScopedTransaction transaction(m_database);
     QSqlQuery query(m_database);
     query.prepare("INSERT INTO directories (directory) "
                   "VALUES (\""+ dir +"\")");
@@ -49,15 +50,16 @@ bool DirectoryDAO::addDirectory(QString dir){
                  <<query.lastError();
         return false;
     }
+    transaction.commit();
     return true;
 }
 
 bool DirectoryDAO::purgeDirectory(QString dir){
     QSqlQuery query(m_database);
-    query.prepare("DELETE FROM directories WHERE directory="+dir);
+    query.prepare("DELETE FROM directories WHERE directory=\"" % dir % "\"");
 
     if (!query.exec()) {
-        qDebug() << "purging dir ("+dir+") failed:"<<query.lastError();
+        qDebug() << "purging dir ("%dir%") failed:"<<query.lastError();
         return false;
     }
     return true;
@@ -72,4 +74,32 @@ QStringList DirectoryDAO::getDirs(){
         dirs << query.value(query.record().indexOf(DIRECTORYDAO_DIR)).toString();
     }
     return dirs;
+}
+
+int DirectoryDAO::getDirId(QString dir){
+    QSqlQuery query(m_database);
+    query.prepare("SELECT " % DIRECTORYDAO_ID % " FROM " % DIRECTORYDAO_TABLE %
+                  " WHERE " % DIRECTORYDAO_ID %"=\"" % dir % "\"");
+    if (!query.exec()) {
+        qDebug() << "kain88 get query:"<<query.lastQuery();
+    }
+    int id =0;
+    while (query.next()) {
+        qDebug() << "kain88 got a result";
+        id = query.value(query.record().indexOf(DIRECTORYDAO_ID)).toInt();
+    }
+    return id;
+}
+
+bool DirectoryDAO::updateTrackLocations(QString dir){
+    QString dirId = QString(getDirId(dir));
+    ScopedTransaction transaction(m_database);
+    QSqlQuery query(m_database);
+    query.prepare("UPDATE track_locations SET "%DIRECTORYDAO_ID%" = "%dirId);
+    if (!query.exec()) {
+        qDebug() << "could not update TrackLocations";
+        return false;
+    }
+    transaction.commit();
+    return true;
 }

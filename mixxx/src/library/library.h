@@ -14,6 +14,7 @@
 #include "configobject.h"
 #include "trackinfoobject.h"
 #include "recording/recordingmanager.h"
+#include "mixxxlibraryfeature.h"
 
 class TrackModel;
 class TrackCollection;
@@ -23,7 +24,6 @@ class LibraryTableModel;
 class WLibrarySidebar;
 class WLibrary;
 class WSearchLineEdit;
-class MixxxLibraryFeature;
 class PromoTracksFeature;
 class PlaylistFeature;
 class CrateFeature;
@@ -43,6 +43,7 @@ public:
                     MixxxKeyboard* pKeyboard);
     void addFeature(LibraryFeature* feature, bool config=false);
     QList<TrackPointer> getTracksToAutoLoad();
+    MixxxLibraryFeature* getpMixxxLibraryFeature();
 
     // TODO(rryan) Transitionary only -- the only reason this is here is so the
     // waveform widgets can signal to a player to load a track. This can be
