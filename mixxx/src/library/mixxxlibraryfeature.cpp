@@ -77,6 +77,8 @@ MixxxLibraryFeature::MixxxLibraryFeature(QObject* parent,
             pBaseTrackCache, SLOT(slotTracksAdded(QSet<int>)));
     connect(&pTrackCollection->getTrackDAO(), SIGNAL(tracksRemoved(QSet<int>)),
             pBaseTrackCache, SLOT(slotTracksRemoved(QSet<int>)));
+    connect(&pTrackCollection->getTrackDAO(), SIGNAL(dbTrackAdded(TrackPointer)),
+            pBaseTrackCache, SLOT(slotDbTrackAdded(TrackPointer)));
 
 
     m_pBaseTrackCache = QSharedPointer<BaseTrackCache>(pBaseTrackCache);
@@ -118,9 +120,6 @@ TreeItemModel* MixxxLibraryFeature::getChildModel() {
 
 void MixxxLibraryFeature::refreshLibraryModels()
 {
-    if (m_pBaseTrackCache) {
-        m_pBaseTrackCache->buildIndex();
-    }
     if (m_pLibraryTableModel) {
         m_pLibraryTableModel->select();
     }
@@ -180,7 +179,7 @@ bool MixxxLibraryFeature::dragMoveAcceptChild(const QModelIndex& index,
 
 void MixxxLibraryFeature::onLazyChildExpandation(const QModelIndex &index){
     Q_UNUSED(index);
-//Nothing to do because the childmodel is not of lazy nature.
+    // Nothing to do because the childmodel is not of lazy nature.
 }
 
 void MixxxLibraryFeature::slotDirsChanged(QString op, QString dir){
