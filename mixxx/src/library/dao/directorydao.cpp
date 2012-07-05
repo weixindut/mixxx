@@ -62,6 +62,36 @@ bool DirectoryDAO::purgeDirectory(QString dir){
     return true;
 }
 
+bool DirectoryDAO::relocateDirectory(QString oldFolder, QString newFolder){
+    ScopedTransaction transaction(m_database);
+    QSqlQuery query(m_database);
+    query.prepare("UPDATE "%DIRECTORYDAO_TABLE%" SET "%DIRECTORYDAO_DIR%"="
+                  "REPLACE("%DIRECTORYDAO_DIR%",\""%oldFolder%"\",\""%newFolder%"\")");
+    if (!query.exec()) {
+        LOG_FAILED_QUERY(query) << "coud not relocate directory";
+        return false;
+    }
+    query.prepare("UPDATE track_locations SET location="
+                  "REPLACE(location,\""%oldFolder%"\",\""%newFolder%"\")");
+    if (!query.exec()) {
+        LOG_FAILED_QUERY(query) << "coud not relocate path of tracks";
+        return false;
+    }
+    query.prepare("UPDATE track_locations SET directory="
+                  "REPLACE(directory,\""%oldFolder%"\",\""%newFolder%"\")");
+    if (!query.exec()) {
+        LOG_FAILED_QUERY(query) << "coud not relocate path of tracks";
+        return false;
+    }
+    query.prepare("UPDATE track_locations SET needs_verification=1");
+    if (!query.exec()) {
+        LOG_FAILED_QUERY(query) << "coud not relocate path of tracks";
+        return false;
+    }
+    transaction.commit();
+    return true;
+}
+
 QStringList DirectoryDAO::getDirs(){
     QSqlQuery query(m_database);
     query.prepare("SELECT " % DIRECTORYDAO_DIR % " FROM " % DIRECTORYDAO_TABLE);

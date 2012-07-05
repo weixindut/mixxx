@@ -42,6 +42,7 @@ class DlgPrefPlaylist : public QWidget, public Ui::DlgPrefPlaylistDlg  {
     // Dialog to browse for music file directory 
     void slotBrowseDir();
     void slotRemoveDir();
+    void slotRelocateDir();
     // Apply changes to widget 
     void slotApply();
     // Starts up the PluginDownloader if the plugin isn't present

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>512</width>
-    <height>469</height>
+    <height>766</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -45,7 +45,17 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="0">
+      <item row="3" column="1">
+       <widget class="QPushButton" name="PushButtonRemovePlaylist">
+        <property name="font">
+         <font/>
+        </property>
+        <property name="text">
+         <string>Remove</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0" rowspan="3">
        <widget class="QListView" name="list">
         <property name="iconSize">
          <size>
@@ -64,17 +74,14 @@
          <font/>
         </property>
         <property name="text">
-         <string>Browse...</string>
+         <string>Add</string>
         </property>
        </widget>
       </item>
       <item row="2" column="1">
-       <widget class="QPushButton" name="PushButtonRemovePlaylist">
-        <property name="font">
-         <font/>
-        </property>
+       <widget class="QPushButton" name="pushButton_2">
         <property name="text">
-         <string>Remove</string>
+         <string>Relocate</string>
         </property>
        </widget>
       </item>
@@ -249,19 +256,6 @@ playback and outbound link statistics</string>
       </item>
      </layout>
     </widget>
-   </item>
-   <item>
-    <spacer name="verticalSpacer">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>40</height>
-      </size>
-     </property>
-    </spacer>
    </item>
   </layout>
  </widget>

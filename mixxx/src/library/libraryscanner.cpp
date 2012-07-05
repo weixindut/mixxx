@@ -50,6 +50,9 @@ LibraryScanner::LibraryScanner(TrackCollection* collection) :
     // files would then have the wrong track location.
     connect(this, SIGNAL(scanFinished()),
             &(collection->getTrackDAO()), SLOT(clearCache()));
+    connect(&(collection->getTrackDAO()),  SIGNAL(tracksRemoved(QSet<int>)),
+            &*(collection->getTrackSource(QString("default"))),
+            SLOT(slotTracksRemoved(QSet<int>)));
 
     // The "Album Artwork" folder within iTunes stores Album Arts.
     // It has numerous hundreds of sub folders but no audio files

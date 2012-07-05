@@ -1004,9 +1004,19 @@ void TrackDAO::markTracksInDirectoriesAsVerified(QStringList directories) {
 
 void TrackDAO::markUnverifiedTracksAsDeleted() {
     //qDebug() << "TrackDAO::markUnverifiedTracksAsDeleted" << QThread::currentThread() << m_database.connectionName();
-    //qDebug() << "markUnverifiedTracksAsDeleted()";
-
+    qDebug() << "markUnverifiedTracksAsDeleted()";
+    
     QSqlQuery query(m_database);
+    query.prepare("SELECT id FROM track_locations WHERE needs_verification=1");
+    QSet<int> trackIds;
+    if (!query.exec()) {
+        LOG_FAILED_QUERY(query)
+                << "Couldn't find unverified tracks";
+    }
+    while (query.next()){
+        trackIds.insert(query.value(query.record().indexOf("id")).toInt());
+    }
+    emit(tracksRemoved(trackIds));
     query.prepare("UPDATE track_locations "
                   "SET fs_deleted=1, needs_verification=0 "
                   "WHERE needs_verification=1");

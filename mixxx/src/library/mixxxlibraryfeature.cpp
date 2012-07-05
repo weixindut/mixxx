@@ -193,6 +193,11 @@ void MixxxLibraryFeature::slotDirsChanged(QString op, QString dir){
     } else if (op=="update"){
         m_directoryDAO.addDirectory(dir);
         m_directoryDAO.updateTrackLocations(dir);
+    } else if (op=="relocate") {
+        QStringList dirs = dir.split("!(~)!");
+        QString newFolder = dirs[0];
+        QString oldFolder = dirs[1];
+        m_directoryDAO.relocateDirectory(oldFolder,newFolder);
     } else {
         qDebug() << "MixxxLibraryFeature::slotDirsChanged "
                     "op not recognised";

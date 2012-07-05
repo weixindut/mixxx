@@ -87,6 +87,9 @@ void BaseTrackCache::slotTracksRemoved(QSet<int> trackIds) {
     if (sDebug) {
         qDebug() << this << "slotTracksRemoved" << trackIds.size();
     }
+    qDebug() << "slotTracksRemoved" << trackIds.size();
+    updateTracksInIndex(trackIds);
+    buildIndex();
     foreach (int trackId, trackIds) {
         m_trackInfo.remove(trackId);
     }

@@ -22,6 +22,7 @@ class DirectoryDAO : public DAO {
     void initialize();
     bool addDirectory(QString dir);
     bool purgeDirectory(QString dir);
+    bool relocateDirectory(QString oldFolder,QString newFolder);
     bool updateTrackLocations(QString dir);
     int getDirId(QString dir);
     QStringList getDirs();

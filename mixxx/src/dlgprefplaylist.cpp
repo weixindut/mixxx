@@ -62,10 +62,13 @@ DlgPrefPlaylist::DlgPrefPlaylist(QWidget * parent, ConfigObject<ConfigValue> * c
             this, SLOT(slotBrowseDir()));
     connect(PushButtonRemovePlaylist, SIGNAL(clicked()),
             this, SLOT(slotRemoveDir()));
+    connect(pushButton_2, SIGNAL(clicked()),
+            this, SLOT(slotRelocateDir()));
     // connect(list,        SIGNAL(returnPressed()), this,      SLOT(slotApply()));
     //connect(pushButtonM4A, SIGNAL(clicked()), this, SLOT(slotM4ACheck()));
     connect(pushButtonExtraPlugins, SIGNAL(clicked()),
             this, SLOT(slotExtraPlugins()));
+
 
     if (!PromoTracksFeature::isSupported(m_pconfig))
     {
@@ -216,6 +219,20 @@ void DlgPrefPlaylist::slotRemoveDir()
     QModelIndex index = list->currentIndex();
     QString fd = index.data().toString();
     emit(dirsChanged("removed",fd));
+    slotUpdate();
+    m_dirsModified = true;
+}
+
+void DlgPrefPlaylist::slotRelocateDir()
+{
+    QModelIndex index = list->currentIndex();
+    QString currentFd = index.data().toString();
+    QString fd = QFileDialog::getExistingDirectory(this,
+                            tr("Choose music library directory"),
+                            QDesktopServices::storageLocation(QDesktopServices::MusicLocation));
+
+    //use !(~)! as a sign where the string has to be seperated later
+    emit(dirsChanged("relocate",fd+"!(~)!"+currentFd));
     slotUpdate();
     m_dirsModified = true;
 }
