@@ -14,6 +14,7 @@
 #include "library/treeitem.h"
 #include "library/browse/browsefeature.h"
 #include "library/trackcollection.h"
+#include "library/libraryscanner.h"
 #include "library/dao/trackdao.h"
 #include "widget/wlibrarytextbrowser.h"
 #include "widget/wlibrary.h"
@@ -27,9 +28,15 @@ BrowseFeature::BrowseFeature(QObject* parent,
                              TrackCollection* pTrackCollection,
                              RecordingManager* pRecordingManager)
         : LibraryFeature(parent),
+          m_pParent(parent),
           m_pConfig(pConfig),
           m_browseModel(this, pTrackCollection, pRecordingManager),
           m_proxyModel(&m_browseModel),
+          m_pAddtoLibraryAction(NULL),
+          m_pAddtoAutoDjAction(NULL),
+          m_pAddtoPlaylistAction(NULL),
+          m_pAddtoCrateAction(NULL),
+          m_directoryDao(pTrackCollection->getDatabase()),
           m_pTrackCollection(pTrackCollection) {
 
     m_pAddQuickLinkAction = new QAction(tr("Add to Quick Links"),this);
@@ -37,6 +44,22 @@ BrowseFeature::BrowseFeature(QObject* parent,
 
     m_pRemoveQuickLinkAction = new QAction(tr("Remove from Quick Links"),this);
     connect(m_pRemoveQuickLinkAction, SIGNAL(triggered()), this, SLOT(slotRemoveQuickLink()));
+
+    m_pAddtoLibraryAction = new QAction(tr("Add to Library"),this);
+    connect(m_pAddtoLibraryAction, SIGNAL(triggered()),
+            this, SLOT(slotAddToLibrary()));
+
+    m_pAddtoAutoDjAction = new QAction(tr("Add to AutoDj"),this);
+    connect(m_pAddtoAutoDjAction, SIGNAL(triggered()),
+            this, SLOT(slotAddToAutoDj()));
+
+    m_pAddtoPlaylistAction = new QAction(tr("Add to Playlist"),this);
+    connect(m_pAddtoPlaylistAction, SIGNAL(triggered()),
+            this, SLOT(slotAddToPlaylist()));
+
+    m_pAddtoCrateAction = new QAction(tr("Add to Crate"),this);
+    connect(m_pAddtoCrateAction, SIGNAL(triggered()),
+            this, SLOT(slotAddToCrate()));
 
     m_proxyModel.setFilterCaseSensitivity(Qt::CaseInsensitive);
     m_proxyModel.setSortCaseSensitivity(Qt::CaseInsensitive);
@@ -126,6 +149,37 @@ void BrowseFeature::slotAddQuickLink() {
     m_quickLinkList.append(spath);
     saveQuickLinks();
 }
+
+void BrowseFeature::slotAddToLibrary() {
+    if (!m_pLastRightClickedItem) {
+        return;
+    }
+
+    QString spath = m_pLastRightClickedItem->dataPath().toString();
+    m_directoryDao.addDirectory(spath);
+    LibraryScanner scanner(m_pTrackCollection);
+    connect(&scanner, SIGNAL(scanFinished()),
+            m_pParent,SLOT(slotRefreshLibraryModels()));
+    scanner.scan();
+}
+
+void BrowseFeature::slotAddToAutoDj() {
+    if (!m_pLastRightClickedItem) {
+        return;
+    }
+
+    QString spath = m_pLastRightClickedItem->dataPath().toString();
+    m_currentPath = spath;
+    m_directoryDao.addDirectory(spath);
+    LibraryScanner scanner(m_pTrackCollection);
+    connect(&scanner, SIGNAL(scanFinished()),
+            m_pParent,SLOT(slotRefreshLibraryModels()));
+    connect(&scanner, SIGNAL(scanFinished()),
+            m_pParent,SLOT(slotAddTracksToAutoDj()));
+    scanner.scan();
+}
+
+
 
 void BrowseFeature::slotRemoveQuickLink() {
     if (!m_pLastRightClickedItem) {
@@ -233,6 +287,7 @@ void BrowseFeature::onRightClickChild(const QPoint& globalPos, QModelIndex index
      }
 
      menu.addAction(m_pAddQuickLinkAction);
+     menu.addAction(m_pAddtoLibraryAction);
      menu.exec(globalPos);
      onLazyChildExpandation(index);
 }

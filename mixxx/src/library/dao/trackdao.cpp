@@ -1000,6 +1000,7 @@ void TrackDAO::markTracksInDirectoriesAsVerified(QStringList directories) {
         LOG_FAILED_QUERY(query)
                 << "Couldn't mark tracks in" << directories.size() << "directories as verified.";
     }
+    // qDebug() << directories;
 }
 
 void TrackDAO::markUnverifiedTracksAsDeleted() {
@@ -1044,7 +1045,7 @@ void TrackDAO::markTrackLocationsAsDeleted(QString directory) {
 // and see if another "file" with the same name and filesize exists in the track_locations
 // table. That means the file has moved instead of being deleted outright, and so
 // we can salvage your existing metadata that you have in your DB (like cue points, etc.).
-void TrackDAO::detectMovedFiles(QSet<int>* pTracksMovedSetOld, QSet<int>* pTracksMovedSetNew) {
+void TrackDAO::detectMovedFiles(QSet<int>& tracksMovedSetOld, QSet<int>& tracksMovedSetNew) {
     //This function should not start a transaction on it's own!
     //When it's called from libraryscanner.cpp, there already is a transaction
     //started!
@@ -1116,7 +1117,7 @@ void TrackDAO::detectMovedFiles(QSet<int>* pTracksMovedSetOld, QSet<int>* pTrack
                 Q_ASSERT(query3.exec());
 
                 // We collect all the new tracks the where added to BaseTrackCache as well
-                pTracksMovedSetNew->insert(newTrackId);
+                tracksMovedSetNew.insert(newTrackId);
             }
 
             //Update the location foreign key for the existing row in the library table
@@ -1138,10 +1139,11 @@ void TrackDAO::detectMovedFiles(QSet<int>* pTracksMovedSetOld, QSet<int>* pTrack
                 Q_ASSERT(query3.exec());
 
                 // We collect all the old tracks that has to be updated in BaseTrackCache as well
-                pTracksMovedSetOld->insert(oldTrackId);
+                tracksMovedSetOld.insert(oldTrackId);
             }
         }
     }
+    databaseTracksMoved(tracksMovedSetOld, tracksMovedSetNew);
 }
 
 void TrackDAO::clearCache() {
@@ -1231,7 +1233,7 @@ bool TrackDAO::relocateTrack(QString oldLocation, QString newLocation) {
             Q_ASSERT(query.exec());
 
             // We collect all the new tracks the where added to BaseTrackCache as well
-            //pTracksMovedSetNew->insert(newTrackId);
+            //tracksMovedSetNew->insert(newTrackId);
         }
 
         // Update the location foreign key for the existing row in the library table
@@ -1252,7 +1254,7 @@ bool TrackDAO::relocateTrack(QString oldLocation, QString newLocation) {
             Q_ASSERT(query.exec());
             // oldFileSize
             // We collect all the old tracks that has to be updated in BaseTrackCache as well
-            pTracksMovedSetOld->insert(oldTrackId);
+            tracksMovedSetOld->insert(oldTrackId);
         }
         return true;
     } else {
@@ -1333,7 +1335,7 @@ bool TrackDAO::relocateTrack(QString oldLocation, QString newLocation) {
             Q_ASSERT(query.exec());
 
             // We collect all the new tracks the where added to BaseTrackCache as well
-//            pTracksMovedSetNew->insert(newTrackId);
+//            tracksMovedSetNew->insert(newTrackId);
         }
 
         //Update the location foreign key for the existing row in the library table
@@ -1355,7 +1357,7 @@ bool TrackDAO::relocateTrack(QString oldLocation, QString newLocation) {
             Q_ASSERT(query.exec());
             oldFileSize
             // We collect all the old tracks that has to be updated in BaseTrackCache as well
-            pTracksMovedSetOld->insert(oldTrackId);
+            tracksMovedSetOld->insert(oldTrackId);
         }
     } else {
         // New locazion was unknown,

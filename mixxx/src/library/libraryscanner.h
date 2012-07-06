@@ -44,20 +44,20 @@ class LibraryScanner : public QThread {
     virtual ~LibraryScanner();
 
     void run();
-    void scan(QString libraryPath);
     void scan();
-    bool recursiveScan(QString dirPath, QStringList& verifiedDirectories);
+    bool recursiveScan(QString dirPath, QStringList& verifiedDirectories,
+                       QSet<int>& restoredTracks);
   public slots:
     void cancel();
     void resetCancel();
   signals:
     void scanFinished();
     void progressHashing(QString);
+    void tracksRestored(QSet<int>);
   private:
     TrackCollection* m_pCollection; // The library trackcollection
     QSqlDatabase m_database; // Hang on to a different DB connection
                              // since we run in a different thread */
-    QString m_qLibraryPath; // The path to the library on disk
     LibraryScannerDlg* m_pProgress; // The library scanning window
 
     LibraryHashDAO m_libraryHashDao;

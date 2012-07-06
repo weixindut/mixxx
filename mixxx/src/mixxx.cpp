@@ -371,8 +371,7 @@ MixxxApp::MixxxApp(QApplication *a, struct CmdlineArgs args)
     rescan = rescan || (prev_plugins != curr_plugins);
 
     if(rescan || hasChanged_MusicDir){
-        m_pLibraryScanner->scan(
-            m_pConfig->getValueString(ConfigKey("[Playlist]", "Directory")));
+        m_pLibraryScanner->scan();
         qDebug() << "Rescan finished";
     }
     m_pConfig->set(ConfigKey("[Library]", "SupportedFileExtensions"),
@@ -1536,8 +1535,7 @@ void MixxxApp::closeEvent(QCloseEvent *event) {
 void MixxxApp::slotScanLibrary()
 {
     m_pLibraryRescan->setEnabled(false);
-    m_pLibraryScanner->scan(
-        m_pConfig->getValueString(ConfigKey("[Playlist]", "Directory")));
+    m_pLibraryScanner->scan();
 }
 
 void MixxxApp::slotEnableRescanLibraryAction()

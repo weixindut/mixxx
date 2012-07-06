@@ -11,7 +11,9 @@
 #include "library/browse/browsetablemodel.h"
 #include "library/browse/foldertreemodel.h"
 #include "library/libraryfeature.h"
+
 #include "library/proxytrackmodel.h"
+#include "library/dao/directorydao.h"
 
 #define QUICK_LINK_NODE "::mixxx_quick_lnk_node::"
 #define DEVICE_NODE "::mixxx_device_node::"
@@ -44,6 +46,10 @@ class BrowseFeature : public LibraryFeature {
   public slots:
     void slotAddQuickLink();
     void slotRemoveQuickLink();
+    void slotAddToLibrary();
+    void slotAddToAutoDj();
+    // void slotAddToPlaylist();
+    // void slotAddToCrate();
     void activate();
     void activateChild(const QModelIndex& index);
     void onRightClick(const QPoint& globalPos);
@@ -68,9 +74,17 @@ class BrowseFeature : public LibraryFeature {
     FolderTreeModel m_childModel;
     QAction* m_pAddQuickLinkAction;
     QAction* m_pRemoveQuickLinkAction;
+    QAction* m_pAddtoLibraryAction;
+    QAction* m_pAddtoAutoDjAction;
+    QAction* m_pAddtoPlaylistAction;
+    QAction* m_pAddtoCrateAction;
     TreeItem* m_pLastRightClickedItem;
     TreeItem* m_pQuickLinkItem;
     QStringList m_quickLinkList;
+
+    DirectoryDAO m_directoryDao;
+    QObject* m_pParent;
+    QString  m_currentPath;
 };
 
 #endif /* BROWSEFEATURE_H */
