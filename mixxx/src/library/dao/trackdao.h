@@ -13,7 +13,6 @@
 
 #include "configobject.h"
 #include "library/dao/dao.h"
-#include "library/dao/directorydao.h"
 #include "trackinfoobject.h"
 #include "util.h"
 
@@ -59,6 +58,7 @@ class PlaylistDAO;
 class AnalysisDao;
 class CueDAO;
 class CrateDAO;
+class DirectoryDAO;
 
 class TrackDAO : public QObject, public virtual DAO {
     Q_OBJECT
@@ -149,7 +149,7 @@ class TrackDAO : public QObject, public virtual DAO {
     PlaylistDAO &m_playlistDao;
     CrateDAO &m_crateDao;
     AnalysisDao& m_analysisDao;
-    DirectoryDAO m_directoryDAO;
+    DirectoryDAO& m_directoryDAO;
     ConfigObject<ConfigValue> * m_pConfig;
     static QHash<int, TrackWeakPointer> m_sTracks;
     static QMutex m_sTracksMutex;

@@ -22,10 +22,6 @@
 
 #define MIXXX_ADDONS_URL "http://www.mixxx.org/wiki/doku.php/add-ons"
 
-/*
-const QString MIXXX_DB_PATH = QDir::homePath().append("/").append(
-                                SETTINGS_PATH).append("mixxxdb.sqlite");
-*/
 
 DlgPrefPlaylist::DlgPrefPlaylist(QWidget * parent, ConfigObject<ConfigValue> * config)
             : QWidget(parent), 
@@ -60,7 +56,6 @@ DlgPrefPlaylist::DlgPrefPlaylist(QWidget * parent, ConfigObject<ConfigValue> * c
             this, SLOT(slotRemoveDir()));
     connect(pushButton_2, SIGNAL(clicked()),
             this, SLOT(slotRelocateDir()));
-    // connect(list,        SIGNAL(returnPressed()), this,      SLOT(slotApply()));
     //connect(pushButtonM4A, SIGNAL(clicked()), this, SLOT(slotM4ACheck()));
     connect(pushButtonExtraPlugins, SIGNAL(clicked()),
             this, SLOT(slotExtraPlugins()));

@@ -32,7 +32,7 @@ BrowseFeature::BrowseFeature(QObject* parent,
           m_proxyModel(&m_browseModel),
           m_pAddtoLibraryAction(NULL),
           m_pLastRightClickedItem(NULL),
-          m_directoryDao(pTrackCollection->getDatabase()),
+          m_directoryDao(pTrackCollection->getDirectoryDAO()),
           m_pTrackCollection(pTrackCollection){
 
     m_pAddQuickLinkAction = new QAction(tr("Add to Quick Links"),this);

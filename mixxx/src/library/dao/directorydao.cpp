@@ -7,7 +7,6 @@
 
 DirectoryDAO::DirectoryDAO(QSqlDatabase& database)
         : m_database(database) {
-
 }
 
 DirectoryDAO::~DirectoryDAO(){
