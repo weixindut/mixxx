@@ -98,7 +98,7 @@ Sampler* PlayerManager::addSampler() {
     // analysed.
     connect(pSampler, SIGNAL(newTrackLoaded(TrackPointer)),
             m_pAnalyserQueue, SLOT(queueAnalyseTrack(TrackPointer)));
-    connect(pDeck, SIGNAL(loadTrackFailed(TrackPointer)),
+    connect(pSampler, SIGNAL(loadTrackFailed(TrackPointer)),
             m_pLibrary, SIGNAL(loadTrackFailed(TrackPointer)));
 
     Q_ASSERT(!m_players.contains(group));

@@ -126,7 +126,8 @@ QSqlDatabase& TrackCollection::getDatabase() {
 //   False if the scan was cancelled part-way through.
 bool TrackCollection::importDirectory(QString directory, TrackDAO &trackDao,
                                       const QStringList & nameFilters,
-                                      QSet<int>& restoredTracks) {
+                                      QSet<int>& restoredTracks,
+                                      int dirId) {
     //qDebug() << "TrackCollection::importDirectory(" << directory<< ")";
 
     emit(startedLoading());
@@ -168,7 +169,7 @@ bool TrackCollection::importDirectory(QString directory, TrackDAO &trackDao,
             TrackPointer pTrack =TrackPointer(new TrackInfoObject(
                               absoluteFilePath), &QObject::deleteLater);
 
-            if (trackDao.addTracksAdd(pTrack.data(), false,directory)) {
+            if (trackDao.addTracksAdd(pTrack.data(), false,dirId)) {
                 // Successful added
                 // signal the main instance of TrackDao, that there is a
                 // new Track in the database

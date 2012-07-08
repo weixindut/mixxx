@@ -242,7 +242,8 @@ void LibraryScanner::run()
     bool bScanFinishedCleanly=false;
     //recursivly scan each dir that is saved in the directories table
     foreach (QString dir , dirs) {
-        bScanFinishedCleanly = recursiveScan(dir,verifiedDirectories,restoredTracks);
+        int dirId = m_directoryDao.getDirId(dir);
+        bScanFinishedCleanly = recursiveScan(dir,verifiedDirectories,restoredTracks,dirId);
 
         if (!bScanFinishedCleanly) {
             qDebug() << "Recursive scan interrupted.";
@@ -354,7 +355,7 @@ void LibraryScanner::scan()
 // have already been scanned and have not changed. Changes are tracked by performing
 // a hash of the directory's file list, and those hashes are stored in the database.
 bool LibraryScanner::recursiveScan(QString dirPath, QStringList& verifiedDirectories,
-                                   QSet<int>& restoredTracks) {
+                                   QSet<int>& restoredTracks, int dirId) {
     QDirIterator fileIt(dirPath, m_nameFilters, QDir::Files | QDir::NoDotAndDotDot);
     QString currentFile;
     bool bScanFinishedCleanly = true;
@@ -396,7 +397,7 @@ bool LibraryScanner::recursiveScan(QString dirPath, QStringList& verifiedDirecto
 
         // Rescan that mofo!
         bScanFinishedCleanly = m_pCollection->importDirectory(dirPath, m_trackDao, m_nameFilters,
-                                                              restoredTracks);
+                                                              restoredTracks,dirId);
     } else { //prevHash == newHash
         // Add the directory to the verifiedDirectories list, so that later they
         // (and the tracks inside them) will be marked as verified
@@ -424,7 +425,7 @@ bool LibraryScanner::recursiveScan(QString dirPath, QStringList& verifiedDirecto
         if (m_directoriesBlacklist.contains(nextPath))
             continue;
 
-        if (!recursiveScan(nextPath, verifiedDirectories,restoredTracks)) {
+        if (!recursiveScan(nextPath, verifiedDirectories,restoredTracks,dirId)) {
             bScanFinishedCleanly = false;
         }
     }

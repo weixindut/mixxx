@@ -102,7 +102,7 @@ void HiddenTableModel::purgeTracks(const int dirId){
     while (query.next()) {
         trackIds.append(query.value(query.record().indexOf("id")).toInt());
     }
-
+    qDebug() << "starting to purge Tracks " << trackIds;
     m_trackDao.purgeTracks(trackIds);
 
     // TODO(rryan) : do not select, instead route event to BTC and notify from

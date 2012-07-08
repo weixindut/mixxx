@@ -378,7 +378,7 @@ void TrackDAO::addTracksFinish() {
     m_tracksAddedSet.clear();
 }
 
-bool TrackDAO::addTracksAdd(TrackInfoObject* pTrack, bool unremove,QString dir) {
+bool TrackDAO::addTracksAdd(TrackInfoObject* pTrack, bool unremove,int dirId) {
 
     if (!m_pQueryLibraryInsert || !m_pQueryTrackLocationInsert ||
         !m_pQueryLibrarySelect || !m_pQueryTrackLocationSelect) {
@@ -386,9 +386,6 @@ bool TrackDAO::addTracksAdd(TrackInfoObject* pTrack, bool unremove,QString dir) 
                     "been prepared. Adding no tracks";
         return false;
     }
-
-    int dirId = m_directoryDAO.getDirId(dir);
-    qDebug() << "kain88 dirID="<<dirId<<" of Dir="<<dir;
 
     int trackLocationId = -1;
     int trackId = -1;
@@ -505,7 +502,7 @@ void TrackDAO::addTrack(TrackInfoObject* pTrack, bool unremove) {
     }
 
     addTracksPrepare();
-    addTracksAdd(pTrack, unremove, "");
+    addTracksAdd(pTrack, unremove, 0);
     addTracksFinish();
 }
 
@@ -520,7 +517,7 @@ QList<int> TrackDAO::addTracks(QList<QFileInfo> fileInfoList, bool unremove) {
     while (it.hasNext()) {
         QFileInfo& info = it.next();
         pTrack = new TrackInfoObject(info);
-        addTracksAdd(pTrack, unremove, "");
+        addTracksAdd(pTrack, unremove, 0);
         int trackID = pTrack->getId();
         if (trackID >= 0) {
             trackIDs.append(trackID);
@@ -1392,10 +1389,15 @@ bool TrackDAO::relocateTrack(QString oldLocation, QString newLocation) {
 
 void TrackDAO::markTrackAsDeleted(TrackPointer pTrack){
     int id = pTrack->getId();
+    ScopedTransaction transaction(m_database);
     QSqlQuery query;
     query.prepare("UPDATE track_locations SET fs_deleted=1 WHERE id="+QString::number(id));
     if (!query.exec()) {
         LOG_FAILED_QUERY(query) << "Could not mark Track as deleted";
+        return
     }
-    emit(tracksRemoved(id));
+    transaction.commit();
+    QSet<int> ids;
+    ids.insert(id);
+    emit(tracksRemoved(ids));
 }

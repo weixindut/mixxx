@@ -229,9 +229,7 @@ QList<TrackPointer> Library::getTracksToAutoLoad() {
 
 void Library::slotDirsChanged(QString op, QString dir){
     Q_UNUSED(dir);
-    qDebug() << "kain88 received that something has changed";
     if (op=="removed") {
-        qDebug() << "kain88 yeah Im gonna do something";
         m_ptrackModel->select();
     }
 }

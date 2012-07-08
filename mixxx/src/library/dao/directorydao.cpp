@@ -100,6 +100,7 @@ int DirectoryDAO::getDirId(QString dir){
     if (!query.exec()) {
         LOG_FAILED_QUERY(query) << "couldn't find directory:"<<dir;
     }
+    qDebug() << query.size() << "number of dirs with that name";
     int id =0;
     while (query.next()) {
         id = query.value(query.record().indexOf(DIRECTORYDAO_ID)).toInt();

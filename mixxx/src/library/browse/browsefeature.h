@@ -11,6 +11,7 @@
 #include "library/browse/browsetablemodel.h"
 #include "library/browse/foldertreemodel.h"
 #include "library/libraryfeature.h"
+#include "library/libraryscanner.h"
 
 #include "library/proxytrackmodel.h"
 #include "library/dao/directorydao.h"

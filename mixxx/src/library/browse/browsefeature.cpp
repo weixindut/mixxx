@@ -27,13 +27,13 @@ BrowseFeature::BrowseFeature(QObject* parent,
                              TrackCollection* pTrackCollection,
                              RecordingManager* pRecordingManager)
         : LibraryFeature(parent),
-          m_pParent(parent),
           m_pConfig(pConfig),
           m_browseModel(this, pTrackCollection, pRecordingManager),
           m_proxyModel(&m_browseModel),
           m_pAddtoLibraryAction(NULL),
+          m_pLastRightClickedItem(NULL),
           m_directoryDao(pTrackCollection->getDatabase()),
-          m_pTrackCollection(pTrackCollection) {
+          m_pTrackCollection(pTrackCollection){
 
     m_pAddQuickLinkAction = new QAction(tr("Add to Quick Links"),this);
     connect(m_pAddQuickLinkAction, SIGNAL(triggered()), this, SLOT(slotAddQuickLink()));
@@ -108,16 +108,19 @@ BrowseFeature::BrowseFeature(QObject* parent,
         m_pQuickLinkItem->appendChild(item);
     }
 
+
     // initialize the model
     m_childModel.setRootItem(rootItem);
 }
 
 BrowseFeature::~BrowseFeature() {
+    /*
     delete m_pAddQuickLinkAction;
     delete m_pRemoveQuickLinkAction;
     delete m_pAddtoLibraryAction;
     delete m_pLastRightClickedItem;
     delete m_pQuickLinkItem;
+    */
 }
 
 QVariant BrowseFeature::title() {

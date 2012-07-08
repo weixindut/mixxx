@@ -200,5 +200,6 @@ void LibraryTableModel::relocateTracks(const QModelIndexList& indices) {
 }
 
 void LibraryTableModel::slotLoadTrackFailed(TrackPointer pTrack){
-    
+    qDebug() << "kain88 called loadTrackFailed";
+    m_trackDao.markTrackAsDeleted(pTrack);
 }
