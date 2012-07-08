@@ -18,7 +18,6 @@
 #ifndef DLGPREFPLAYLIST_H
 #define DLGPREFPLAYLIST_H
 
-// #include <QtSql>
 #include <QtGui>
 
 #include "ui_dlgprefplaylistdlg.h"
@@ -26,7 +25,6 @@
 
 class QWidget;
 
-// class QSqlQueryModel;
 /**
 *@author Tue & Ken Haste Andersen
 */

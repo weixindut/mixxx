@@ -43,7 +43,6 @@ void LibraryTableModel::setLibrary(){
     } else {
         showMissing = false;
     }
-    qDebug()<<"kain88 showMissing="<<showMissing;
     QString tableName = "library_view";
     QString libraryFilter;
     if (showMissing) {
@@ -200,6 +199,5 @@ void LibraryTableModel::relocateTracks(const QModelIndexList& indices) {
 }
 
 void LibraryTableModel::slotLoadTrackFailed(TrackPointer pTrack){
-    qDebug() << "kain88 called loadTrackFailed";
     m_trackDao.markTrackAsDeleted(pTrack);
 }

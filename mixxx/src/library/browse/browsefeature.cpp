@@ -83,7 +83,7 @@ BrowseFeature::BrowseFeature(QObject* parent,
 
     // show root directory on UNIX-based operating systems
     TreeItem* root_folder_item = new TreeItem(
-        QDir::rootPath(), QDir::rootPath(), this, rootItem);
+        QDir::homePath(), QDir::homePath(), this, rootItem);
     rootItem->appendChild(root_folder_item);
 #endif
 

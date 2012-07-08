@@ -19,7 +19,9 @@ TrackCollection::TrackCollection(ConfigObject<ConfigValue>* pConfig)
         m_crateDao(m_db),
         m_cueDao(m_db),
         m_analysisDao(m_db),
-        m_trackDao(m_db, m_cueDao, m_playlistDao, m_crateDao, m_analysisDao, pConfig),
+        m_directoryDao(m_db),
+        m_trackDao(m_db, m_cueDao, m_playlistDao, m_crateDao, 
+                   m_analysisDao, m_directoryDao, pConfig),
         m_supportedFileExtensionsRegex(
             SoundSourceProxy::supportedFileExtensionsRegex(),
             Qt::CaseInsensitive) {
@@ -205,6 +207,10 @@ TrackDAO& TrackCollection::getTrackDAO() {
 
 PlaylistDAO& TrackCollection::getPlaylistDAO() {
     return m_playlistDao;
+}
+
+DirectoryDAO& TrackCollection::getDirectoryDAO() {
+    return m_directoryDao;
 }
 
 QSharedPointer<BaseTrackCache> TrackCollection::getTrackSource(

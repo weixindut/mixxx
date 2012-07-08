@@ -18,8 +18,6 @@ SetlogFeature::SetlogFeature(QObject* parent,
                              TrackCollection* pTrackCollection)
         : BasePlaylistFeature(parent, pConfig, pTrackCollection,
                               "SETLOGHOME") {
-    //TODO(kain88) setlogs should also show missing files right
-    //TODO(kain88) they should also show mixxx_deleted=1 files
     m_pPlaylistTableModel = new PlaylistTableModel(this, pTrackCollection,
                                                    "mixxx.db.model.setlog",
                                                    pConfig,

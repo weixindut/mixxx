@@ -34,8 +34,8 @@ LibraryScanner::LibraryScanner(TrackCollection* collection) :
     m_playlistDao(m_database),
     m_crateDao(m_database),
     m_analysisDao(m_database),
-    m_trackDao(m_database, m_cueDao, m_playlistDao, m_crateDao, m_analysisDao),
     m_directoryDao(m_database),
+    m_trackDao(m_database, m_cueDao, m_playlistDao, m_crateDao, m_analysisDao, m_directoryDao),
     // Don't initialize m_database here, we need to do it in run() so the DB
     // conn is in the right thread.
     m_nameFilters(SoundSourceProxy::supportedFileExtensionsString().split(" "))
@@ -63,7 +63,7 @@ LibraryScanner::LibraryScanner(TrackCollection* collection) :
             SLOT(slotTracksAdded(QSet<int>)));
 
     // The "Album Artwork" folder within iTunes stores Album Arts.
-    // It has numerous hundreds of sub folders but no audio filesR
+    // It has numerous hundreds of sub folders but no audio files
     // We put this folder on a "black list"
     // On Windows, the iTunes folder is contained within the standard music folder
     // Hence, Mixxx will scan the "Album Arts folder" for standard users which is wasting time
@@ -106,7 +106,7 @@ LibraryScanner::~LibraryScanner()
     QStringList deletedDirs;
     QSqlQuery query(m_pCollection->getDatabase());
     query.prepare("SELECT directory_path FROM LibraryHashes "
-                "WHERE directory_deleted=1");
+                  "WHERE directory_deleted=1");
     if (query.exec()) {
         while (query.next()) {
             QString directory = query.value(query.record().indexOf("directory_path")).toString();
@@ -119,7 +119,7 @@ LibraryScanner::~LibraryScanner()
     // Delete any directories that have been marked as deleted...
     query.finish();
     query.exec("DELETE FROM LibraryHashes "
-            "WHERE directory_deleted=1");
+               "WHERE directory_deleted=1");
 
     // Print out any SQL error, if there was one.
     if (query.lastError().isValid()) {
@@ -384,7 +384,6 @@ bool LibraryScanner::recursiveScan(QString dirPath, QStringList& verifiedDirecto
 
     // Compare the hashes, and if they don't match, rescan the files in that directory!
     if (prevHash != newHash) {
-        qDebug() << "kain88 encountered new dir rescan that mofo" << dirPath;
         //If we didn't know about this directory before...
         if (!prevHashExists) {
             m_libraryHashDao.saveDirectoryHash(dirPath, newHash);

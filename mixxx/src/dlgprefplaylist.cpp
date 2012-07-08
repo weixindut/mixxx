@@ -15,10 +15,6 @@
 *                                                                         *
 ***************************************************************************/
 
-#include <QtCore>
-#include <QtGui>
-#include <QtSql>
-
 #include "dlgprefplaylist.h"
 #include "library/promotracksfeature.h"
 #include "soundsourceproxy.h"

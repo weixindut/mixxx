@@ -72,8 +72,8 @@ public slots:
 signals:
     void closeDlg();
     void showDlg();
-    void configChanged(QString module, QString key);
-    void dirsChanged(QString module, QString key);
+    void configChanged(QString, QString);
+    void dirsChanged(QString, QString);
 protected:
     bool eventFilter(QObject*, QEvent*);
 private:

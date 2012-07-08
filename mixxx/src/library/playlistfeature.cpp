@@ -218,6 +218,5 @@ QString PlaylistFeature::getRootViewHtml() const {
 }
 
 void PlaylistFeature::slotConfigChanged(QString identifier, QString key){
-    qDebug() << "signal recived by playlistfeature";
     emit(configChanged(identifier,key));
 }

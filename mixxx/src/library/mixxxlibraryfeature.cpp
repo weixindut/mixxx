@@ -18,7 +18,7 @@ MixxxLibraryFeature::MixxxLibraryFeature(QObject* parent,
                                          ConfigObject<ConfigValue>* pConfig)
         : LibraryFeature(parent),
           kHiddenTitle(tr("Hidden Tracks")),
-          m_directoryDAO(pTrackCollection->getDatabase()) {
+          m_directoryDAO(pTrackCollection->getDirectoryDAO()) {
     QStringList columns;
     columns << "library." + LIBRARYTABLE_ID
             << "library." + LIBRARYTABLE_PLAYED

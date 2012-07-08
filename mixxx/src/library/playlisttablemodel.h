@@ -15,7 +15,7 @@ class TrackCollection;
 
 class PlaylistTableModel : public BaseSqlTableModel {
     Q_OBJECT
-public:
+  public:
     PlaylistTableModel(QObject* parent, TrackCollection* pTrackCollection,
                     QString settingsNamespace, 
                     ConfigObject<ConfigValue>* pConfig,
@@ -42,14 +42,14 @@ public:
 
     TrackModel::CapabilitiesFlags getCapabilities() const;
 
-private slots:
+  private slots:
     void slotSearch(const QString& searchText);
     void slotConfigChanged(QString,QString);
 
-signals:
+  signals:
     void doSearch(const QString& searchText);
 
-private:
+  private:
     TrackCollection* m_pTrackCollection;
     PlaylistDAO& m_playlistDao;
     TrackDAO& m_trackDao;

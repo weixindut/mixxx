@@ -30,16 +30,14 @@ TrackDAO::TrackDAO(QSqlDatabase& database,
                    PlaylistDAO& playlistDao,
                    CrateDAO& crateDao,
                    AnalysisDao& analysisDao,
+                   DirectoryDAO& directoryDao,
                    ConfigObject<ConfigValue> * pConfig)
         : m_database(database),
           m_cueDao(cueDao),
           m_playlistDao(playlistDao),
           m_crateDao(crateDao),
           m_analysisDao(analysisDao),
-          //TODO(kain88) look where TrackDAO is created an try to add
-          //this DAO as a variable of the constructor
-          //this is created in TrackCollection
-          m_directoryDAO(database),
+          m_directoryDAO(directoryDao),
           m_pConfig(pConfig),
           m_trackCache(TRACK_CACHE_SIZE),
           m_pQueryTrackLocationInsert(NULL),
@@ -1394,7 +1392,7 @@ void TrackDAO::markTrackAsDeleted(TrackPointer pTrack){
     query.prepare("UPDATE track_locations SET fs_deleted=1 WHERE id="+QString::number(id));
     if (!query.exec()) {
         LOG_FAILED_QUERY(query) << "Could not mark Track as deleted";
-        return
+        return;
     }
     transaction.commit();
     QSet<int> ids;

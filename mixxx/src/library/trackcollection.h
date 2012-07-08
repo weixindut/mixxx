@@ -31,6 +31,7 @@
 #include "library/dao/cuedao.h"
 #include "library/dao/playlistdao.h"
 #include "library/dao/analysisdao.h"
+#include "library/dao/directorydao.h"
 
 class TrackInfoObject;
 
@@ -63,6 +64,7 @@ class TrackCollection : public QObject
     CrateDAO& getCrateDAO();
     TrackDAO& getTrackDAO();
     PlaylistDAO& getPlaylistDAO();
+    DirectoryDAO& getDirectoryDAO();
     QSharedPointer<BaseTrackCache> getTrackSource(const QString name);
     void addTrackSource(const QString name, QSharedPointer<BaseTrackCache> trackSource);
 
@@ -83,6 +85,7 @@ class TrackCollection : public QObject
     CueDAO m_cueDao;
     AnalysisDao m_analysisDao;
     TrackDAO m_trackDao;
+    DirectoryDAO m_directoryDao;
     const QRegExp m_supportedFileExtensionsRegex;
     // Flag to raise when library scan should be cancelled
     int bCancelLibraryScan;

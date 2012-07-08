@@ -83,7 +83,7 @@ void PlaylistTableModel::setPlaylist(int playlistId) {
     }
 
     setTable(playlistTableName, tableColumns[0], tableColumns,
-            m_pTrackCollection->getTrackSource("default"));
+             m_pTrackCollection->getTrackSource("default"));
     initHeaderData();
     setSearch("");
     setDefaultSort(fieldIndex("position"), Qt::AscendingOrder);
@@ -152,8 +152,8 @@ int PlaylistTableModel::addTracks(const QModelIndex& index, QList<QString> locat
         select();
     } else if (locations.size() - tracksAdded > 0) {
         qDebug() << "PlaylistTableModel::addTracks could not add"
-                << locations.size() - tracksAdded
-                << "to playlist" << m_iPlaylistId;
+                 << locations.size() - tracksAdded
+                 << "to playlist" << m_iPlaylistId;
     }
     return tracksAdded;
 }
@@ -206,7 +206,7 @@ void PlaylistTableModel::removeTracks(const QModelIndexList& indices) {
 }
 
 void PlaylistTableModel::moveTrack(const QModelIndex& sourceIndex,
-                                const QModelIndex& destIndex) {
+                                   const QModelIndex& destIndex) {
     //QSqlRecord sourceRecord = this->record(sourceIndex.row());
     //sourceRecord.setValue("position", destIndex.row());
     //this->removeRows(sourceIndex.row(), 1);
@@ -246,18 +246,17 @@ void PlaylistTableModel::moveTrack(const QModelIndex& sourceIndex,
 
     //Insert the song into the PlaylistTracks table
 
-    /** ALGORITHM for code below
-    Case 1: destination < source (newPos < oldPos)
-        1) Set position = -1 where pos=source -- Gives that track a dummy index to keep stuff simple.
-        2) Decrement position where pos > source
-        3) increment position where pos > dest
-        4) Set position = dest where pos=-1 -- Move track from dummy pos to final destination.
+    // ALGORITHM for code below
+    // Case 1: destination < source (newPos < oldPos)
+    //    1) Set position = -1 where pos=source -- Gives that track a dummy index to keep stuff simple.
+    //    2) Decrement position where pos > source
+    //    3) increment position where pos > dest
+    //    4) Set position = dest where pos=-1 -- Move track from dummy pos to final destination.
 
-    Case 2: destination > source (newPos > oldPos)
-        1) Set position=-1 where pos=source -- Give track a dummy index again.
-        2) Decrement position where pos > source AND pos <= dest
-        3) Set postion=dest where pos=-1 -- Move that track from dummy pos to final destination
-    */
+     // Case 2: destination > source (newPos > oldPos)
+     //   1) Set position=-1 where pos=source -- Give track a dummy index again.
+     //   2) Decrement position where pos > source AND pos <= dest
+     //   3) Set postion=dest where pos=-1 -- Move that track from dummy pos to final destination
 
     QString queryString;
     if (newPosition < oldPosition) {
@@ -265,7 +264,7 @@ void PlaylistTableModel::moveTrack(const QModelIndex& sourceIndex,
             QString("UPDATE PlaylistTracks SET position=-1 "
                     "WHERE position=%1 AND "
                     "playlist_id=%2").arg(QString::number(oldPosition),
-                                        QString::number(m_iPlaylistId));
+                                          QString::number(m_iPlaylistId));
         query.exec(queryString);
         //qDebug() << queryString;
 
@@ -344,8 +343,8 @@ void PlaylistTableModel::shuffleTracks(const QModelIndex& shuffleStartIndex) {
                                  QString::number(random),
                                  QString::number(m_iPlaylistId)));
         query.exec(swapQuery.arg(QString::number(random),
-                                QString::number(-1),
-                                QString::number(m_iPlaylistId)));
+                                 QString::number(-1),
+                                 QString::number(m_iPlaylistId)));
 
         if (query.lastError().isValid())
             qDebug() << query.lastError();
