@@ -75,6 +75,7 @@ signals:
     void restoreSearch(const QString&);
     void configChanged(QString module, QString key);
     void dirsChanged(QString,QString);
+    void loadTrackFailed(TrackPointer);
 
 private:
     ConfigObject<ConfigValue>* m_pConfig;

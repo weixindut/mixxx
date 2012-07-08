@@ -90,6 +90,7 @@ class TrackDAO : public QObject, public virtual DAO {
     TrackPointer getTrack(int id, bool cacheOnly=false) const;
     bool isDirty(int trackId);
     bool relocateTrack(QString oldLocation, QString newLocation);
+    void markTrackAsDeleted(TrackPointer pTrack);
 
     // Scanning related calls. Should be elsewhere or private somehow.
     void markTrackLocationAsVerified(QString location);

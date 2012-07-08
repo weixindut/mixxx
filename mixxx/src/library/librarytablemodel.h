@@ -15,7 +15,7 @@ class LibraryTableModel : public BaseSqlTableModel {
     Q_OBJECT
   public:
     LibraryTableModel(QObject* parent, TrackCollection* pTrackCollection,
-					  ConfigObject<ConfigValue>* pConfig,
+                      ConfigObject<ConfigValue>* pConfig,
                       QString settingsNamespace="mixxx.db.model.library");
     virtual ~LibraryTableModel();
     
@@ -37,6 +37,7 @@ class LibraryTableModel : public BaseSqlTableModel {
 
   public slots:
     void slotConfigChanged(QString, QString);
+    void slotLoadTrackFailed(TrackPointer);
 
 
   private slots:

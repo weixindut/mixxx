@@ -50,6 +50,8 @@ Library::Library(QObject* parent, ConfigObject<ConfigValue>* pConfig, bool first
             m_pMixxxLibraryFeature, SLOT(slotDirsChanged(QString,QString)));
     connect(m_pMixxxLibraryFeature, SIGNAL(dirsChanged(QString,QString)),
             this, SLOT(slotDirsChanged(QString,QString)));
+    connect(this, SIGNAL(loadTrackFailed(TrackPointer)),
+            m_pMixxxLibraryFeature, SIGNAL(loadTrackFailed(TrackPointer)));
 
     if (PromoTracksFeature::isSupported(m_pConfig)) {
         m_pPromoTracksFeature = new PromoTracksFeature(this, pConfig,
@@ -205,39 +207,31 @@ void Library::slotRestoreSearch(const QString& text) {
     emit(restoreSearch(text));
 }
 
-void Library::slotRefreshLibraryModels()
-{
+void Library::slotRefreshLibraryModels() {
    m_pMixxxLibraryFeature->refreshLibraryModels();
 }
 
-void Library::slotCreatePlaylist()
-{
+void Library::slotCreatePlaylist() {
     m_pPlaylistFeature->slotCreatePlaylist();
 }
 
-void Library::slotCreateCrate()
-{
+void Library::slotCreateCrate() {
     m_pCrateFeature->slotCreateCrate();
 }
 
 
-QList<TrackPointer> Library::getTracksToAutoLoad()
-{
+QList<TrackPointer> Library::getTracksToAutoLoad() {
     if (m_pPromoTracksFeature)
         return m_pPromoTracksFeature->getTracksToAutoLoad();
     else
         return QList<TrackPointer>();
 }
 
-void Library::slotConfigChanged(QString identifier, QString key){
-    qDebug() << "kain88 recived by library";
-    emit(configChanged(identifier,key));
-}
 void Library::slotDirsChanged(QString op, QString dir){
     Q_UNUSED(dir);
-    qDebug() << "received that something has changed";
+    qDebug() << "kain88 received that something has changed";
     if (op=="removed") {
-        qDebug() << "yeah Im gonna do something";
+        qDebug() << "kain88 yeah Im gonna do something";
         m_ptrackModel->select();
     }
 }

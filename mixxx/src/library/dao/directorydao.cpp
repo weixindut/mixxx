@@ -10,24 +10,7 @@ DirectoryDAO::DirectoryDAO(QSqlDatabase& database)
 
 }
 
-DirectoryDAO::DirectoryDAO()
-            : m_database(QSqlDatabase::addDatabase("QSQLITE")) {
-
-    const QString MIXXX_DB_PATH = QDir::homePath().append("/").append(
-                                SETTINGS_PATH).append("mixxxdb.sqlite");
-    m_database.setHostName("localhost");
-    m_database.setDatabaseName(MIXXX_DB_PATH);
-    m_database.setUserName("mixxx");
-    m_database.setPassword("mixxx");
-    bool ok = m_database.open();
-    qDebug() << __FILE__ << "DB status:" << ok;
-    if (m_database.lastError().isValid()) {
-        qDebug() << "Error loading database:" << m_database.lastError();
-    }
-}
-
 DirectoryDAO::~DirectoryDAO(){
-
 }
 
 void DirectoryDAO::initialize()
@@ -41,9 +24,9 @@ bool DirectoryDAO::addDirectory(QString dir){
     QSqlQuery query(m_database);
     query.prepare("INSERT INTO directories (directory) "
                   "VALUES (\""% dir %"\")");
-    
+
     if (!query.exec()) {
-        qDebug() << "Adding new dir ("+ dir +") failed:"
+        qDebug() << "Adding new dir ("% dir %") failed:"
                  <<query.lastError();
         return false;
     }
@@ -65,12 +48,14 @@ bool DirectoryDAO::purgeDirectory(QString dir){
 bool DirectoryDAO::relocateDirectory(QString oldFolder, QString newFolder){
     ScopedTransaction transaction(m_database);
     QSqlQuery query(m_database);
+    // update directory in directories table
     query.prepare("UPDATE "%DIRECTORYDAO_TABLE%" SET "%DIRECTORYDAO_DIR%"="
                   "REPLACE("%DIRECTORYDAO_DIR%",\""%oldFolder%"\",\""%newFolder%"\")");
     if (!query.exec()) {
         LOG_FAILED_QUERY(query) << "coud not relocate directory";
         return false;
     }
+    // update location and directory in track_locations table
     query.prepare("UPDATE track_locations SET location="
                   "REPLACE(location,\""%oldFolder%"\",\""%newFolder%"\")");
     if (!query.exec()) {
@@ -83,6 +68,9 @@ bool DirectoryDAO::relocateDirectory(QString oldFolder, QString newFolder){
         LOG_FAILED_QUERY(query) << "coud not relocate path of tracks";
         return false;
     }
+    // updating the dir_id column is not necessary because it does not change
+
+    // set all tracks to need verification
     query.prepare("UPDATE track_locations SET needs_verification=1");
     if (!query.exec()) {
         LOG_FAILED_QUERY(query) << "coud not relocate path of tracks";

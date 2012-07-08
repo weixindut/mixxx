@@ -240,6 +240,7 @@ void LibraryScanner::run()
     QStringList dirs = m_directoryDao.getDirs();
     QSet<int> restoredTracks;
     bool bScanFinishedCleanly=false;
+    //recursivly scan each dir that is saved in the directories table
     foreach (QString dir , dirs) {
         bScanFinishedCleanly = recursiveScan(dir,verifiedDirectories,restoredTracks);
 
@@ -253,8 +254,7 @@ void LibraryScanner::run()
 
     // Runs inside a transaction
     m_trackDao.addTracksFinish();
-    // this will cause BaseTrackCache to update the index of all restored
-    // tracks
+    // this will cause BaseTrackCache to update the index of all restored tracks
     emit(tracksRestored(restoredTracks));
     // Start a transaction for all the library hashing (moved file detection)
     // stuff.

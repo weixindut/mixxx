@@ -198,3 +198,7 @@ void LibraryTableModel::relocateTracks(const QModelIndexList& indices) {
 //      m_trackDAO.relocateTrack(oldLocation, newLocation);
     }
 }
+
+void LibraryTableModel::slotLoadTrackFailed(TrackPointer pTrack){
+    
+}

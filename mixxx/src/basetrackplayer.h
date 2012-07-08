@@ -34,6 +34,7 @@ class BaseTrackPlayer : public BasePlayer {
 
   signals:
     void loadTrack(TrackPointer pTrack);
+    void loadTrackFailed(TrackPointer);
     void newTrackLoaded(TrackPointer pLoadedTrack);
     void unloadingTrack(TrackPointer pAboutToBeUnloaded);
 

@@ -38,6 +38,7 @@ TrackDAO::TrackDAO(QSqlDatabase& database,
           m_analysisDao(analysisDao),
           //TODO(kain88) look where TrackDAO is created an try to add
           //this DAO as a variable of the constructor
+          //this is created in TrackCollection
           m_directoryDAO(database),
           m_pConfig(pConfig),
           m_trackCache(TRACK_CACHE_SIZE),
@@ -1387,4 +1388,14 @@ bool TrackDAO::relocateTrack(QString oldLocation, QString newLocation) {
 
 */
     return false;
+}
+
+void TrackDAO::markTrackAsDeleted(TrackPointer pTrack){
+    int id = pTrack->getId();
+    QSqlQuery query;
+    query.prepare("UPDATE track_locations SET fs_deleted=1 WHERE id="+QString::number(id));
+    if (!query.exec()) {
+        LOG_FAILED_QUERY(query) << "Could not mark Track as deleted";
+    }
+    emit(tracksRemoved(id));
 }

@@ -88,8 +88,8 @@ MixxxLibraryFeature::MixxxLibraryFeature(QObject* parent,
     m_pLibraryTableModel = new LibraryTableModel(this, pTrackCollection,pConfig);
     connect(parent,SIGNAL(configChanged(QString,QString)),
             m_pLibraryTableModel, SLOT(slotConfigChanged(QString, QString)));
-    connect(parent, SIGNAL(configChanged(QString,QString)),
-            this, SLOT(slotConfigChanged(QString,QString)));
+    connect(this, SIGNAL(loadTrackFailed(TrackPointer)),
+            m_pLibraryTableModel, SLOT(slotLoadTrackFailed(TrackPointer)));
     m_pHiddenTableModel = new HiddenTableModel(this, pTrackCollection);
 
 
@@ -183,14 +183,17 @@ void MixxxLibraryFeature::onLazyChildExpandation(const QModelIndex &index){
 }
 
 void MixxxLibraryFeature::slotDirsChanged(QString op, QString dir){
-    qDebug() << "kain88 recived by libraryfeature";
     if (op=="added") {
         m_directoryDAO.addDirectory(dir);
     } else if (op=="removed") {
         m_pHiddenTableModel->purgeTracks(m_directoryDAO.getDirId(dir));
         m_directoryDAO.purgeDirectory(dir);
+        // this should signal to library to do a select on the currenty active
+        // trackmodel
         emit(dirsChanged(op,dir));
     } else if (op=="update"){
+        // this will be signaled from the library scanner if the db needs to be 
+        // updated
         m_directoryDAO.addDirectory(dir);
         m_directoryDAO.updateTrackLocations(dir);
     } else if (op=="relocate") {

@@ -73,7 +73,6 @@ void BaseTrackCache::slotTracksAdded(QSet<int> trackIds) {
     if (sDebug) {
         qDebug() << this << "slotTracksAdded" << trackIds.size();
     }
-    qDebug() << this << "slotTracksAdded" << trackIds.size();
     updateTracksInIndex(trackIds);
 }
 

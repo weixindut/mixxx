@@ -15,7 +15,6 @@ class BaseTrackCache;
 class LibraryTableModel;
 class HiddenTableModel;
 class TrackCollection;
-// class DirectoryDAO;
 
 class MixxxLibraryFeature : public LibraryFeature {
     Q_OBJECT
@@ -37,6 +36,7 @@ class MixxxLibraryFeature : public LibraryFeature {
   signals:
     void configChanged(QString, QString);
     void dirsChanged(QString,QString);
+    void loadTrackFailed(TrackPointer);
 
   public slots:
     void activate();

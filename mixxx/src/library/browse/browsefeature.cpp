@@ -14,7 +14,6 @@
 #include "library/treeitem.h"
 #include "library/browse/browsefeature.h"
 #include "library/trackcollection.h"
-#include "library/libraryscanner.h"
 #include "library/dao/trackdao.h"
 #include "widget/wlibrarytextbrowser.h"
 #include "widget/wlibrary.h"
@@ -33,9 +32,6 @@ BrowseFeature::BrowseFeature(QObject* parent,
           m_browseModel(this, pTrackCollection, pRecordingManager),
           m_proxyModel(&m_browseModel),
           m_pAddtoLibraryAction(NULL),
-          m_pAddtoAutoDjAction(NULL),
-          m_pAddtoPlaylistAction(NULL),
-          m_pAddtoCrateAction(NULL),
           m_directoryDao(pTrackCollection->getDatabase()),
           m_pTrackCollection(pTrackCollection) {
 
@@ -48,18 +44,6 @@ BrowseFeature::BrowseFeature(QObject* parent,
     m_pAddtoLibraryAction = new QAction(tr("Add to Library"),this);
     connect(m_pAddtoLibraryAction, SIGNAL(triggered()),
             this, SLOT(slotAddToLibrary()));
-
-    m_pAddtoAutoDjAction = new QAction(tr("Add to AutoDj"),this);
-    connect(m_pAddtoAutoDjAction, SIGNAL(triggered()),
-            this, SLOT(slotAddToAutoDj()));
-
-    m_pAddtoPlaylistAction = new QAction(tr("Add to Playlist"),this);
-    connect(m_pAddtoPlaylistAction, SIGNAL(triggered()),
-            this, SLOT(slotAddToPlaylist()));
-
-    m_pAddtoCrateAction = new QAction(tr("Add to Crate"),this);
-    connect(m_pAddtoCrateAction, SIGNAL(triggered()),
-            this, SLOT(slotAddToCrate()));
 
     m_proxyModel.setFilterCaseSensitivity(Qt::CaseInsensitive);
     m_proxyModel.setSortCaseSensitivity(Qt::CaseInsensitive);
@@ -103,19 +87,17 @@ BrowseFeature::BrowseFeature(QObject* parent,
     rootItem->appendChild(root_folder_item);
 #endif
 
-    /*
-     * Just a word about how the TreeItem objects are used for the BrowseFeature:
-     * The constructor has 4 arguments:
-     * 1. argument represents the folder name shown in the sidebar later on
-     * 2. argument represents the folder path which MUST end with '/'
-     * 3. argument is the library feature itself
-     * 4. the parent TreeItem object
-     *
-     * Except the invisible root item, you must always state all 4 arguments.
-     *
-     * Once the TreeItem objects are inserted to models, the models take care of their
-     * deletion.
-     */
+    // Just a word about how the TreeItem objects are used for the BrowseFeature:
+    // The constructor has 4 arguments:
+    // 1. argument represents the folder name shown in the sidebar later on
+    // 2. argument represents the folder path which MUST end with '/'
+    // 3. argument is the library feature itself
+    // 4. the parent TreeItem object
+    //
+    // Except the invisible root item, you must always state all 4 arguments.
+    //
+    // Once the TreeItem objects are inserted to models, the models take care of their
+    // deletion.
 
     loadQuickLinks();
 
@@ -131,6 +113,11 @@ BrowseFeature::BrowseFeature(QObject* parent,
 }
 
 BrowseFeature::~BrowseFeature() {
+    delete m_pAddQuickLinkAction;
+    delete m_pRemoveQuickLinkAction;
+    delete m_pAddtoLibraryAction;
+    delete m_pLastRightClickedItem;
+    delete m_pQuickLinkItem;
 }
 
 QVariant BrowseFeature::title() {
@@ -157,29 +144,7 @@ void BrowseFeature::slotAddToLibrary() {
 
     QString spath = m_pLastRightClickedItem->dataPath().toString();
     m_directoryDao.addDirectory(spath);
-    LibraryScanner scanner(m_pTrackCollection);
-    connect(&scanner, SIGNAL(scanFinished()),
-            m_pParent,SLOT(slotRefreshLibraryModels()));
-    scanner.scan();
 }
-
-void BrowseFeature::slotAddToAutoDj() {
-    if (!m_pLastRightClickedItem) {
-        return;
-    }
-
-    QString spath = m_pLastRightClickedItem->dataPath().toString();
-    m_currentPath = spath;
-    m_directoryDao.addDirectory(spath);
-    LibraryScanner scanner(m_pTrackCollection);
-    connect(&scanner, SIGNAL(scanFinished()),
-            m_pParent,SLOT(slotRefreshLibraryModels()));
-    connect(&scanner, SIGNAL(scanFinished()),
-            m_pParent,SLOT(slotAddTracksToAutoDj()));
-    scanner.scan();
-}
-
-
 
 void BrowseFeature::slotRemoveQuickLink() {
     if (!m_pLastRightClickedItem) {
@@ -242,10 +207,8 @@ void BrowseFeature::activate() {
     emit(restoreSearch(QString()));
 }
 
-/*
- * Note: This is executed whenever you single click on an child item
- * Single clicks will not populate sub folders
- */
+// Note: This is executed whenever you single click on an child item
+// Single clicks will not populate sub folders
 void BrowseFeature::activateChild(const QModelIndex& index) {
     TreeItem *item = static_cast<TreeItem*>(index.internalPointer());
     qDebug() << "BrowseFeature::activateChild " << item->data() << " "
