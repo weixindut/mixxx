@@ -337,7 +337,8 @@ METADATA
       dir_id INTEGER primary key AUTOINCREMENT,
       directory varchar(1024)
     );
-    ALTER TABLE track_locations ADD COLUMN dir_id INTEGER DEFAULT 0
+    ALTER TABLE track_locations ADD COLUMN dir_id INTEGER DEFAULT 0;
+    ALTER TABLE library ADD COLUMN acoustID varchar(1024);
     </sql>
   </revision>
 </schema>

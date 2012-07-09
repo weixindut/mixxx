@@ -681,7 +681,8 @@ TrackPointer TrackDAO::getTrackFromDB(int id) const {
         "filetype, rating, key, track_locations.location as location, "
         "track_locations.filesize as filesize, comment, url, duration, bitrate, "
         "samplerate, cuepoint, bpm, replaygain, channels, "
-        "header_parsed, timesplayed, played, beats_version, beats_sub_version, beats, datetime_added, bpm_lock "
+        "header_parsed, timesplayed, played, beats_version, beats_sub_version, beats, "
+        "datetime_added, bpm_lock , acoustID "
         "FROM Library "
         "INNER JOIN track_locations "
             "ON library.location = track_locations.id "
@@ -717,6 +718,7 @@ TrackPointer TrackDAO::getTrackFromDB(int id) const {
             QString location = query.value(query.record().indexOf("location")).toString();
             bool header_parsed = query.value(query.record().indexOf("header_parsed")).toBool();
             bool has_bpm_lock = query.value(query.record().indexOf("bpm_lock")).toBool();
+            QString acoustID = query.value(query.record().indexOf("acoustID")).toString();
 
             TrackPointer pTrack = TrackPointer(new TrackInfoObject(location, false), &TrackDAO::deleteTrack);
 
@@ -761,6 +763,7 @@ TrackPointer TrackDAO::getTrackFromDB(int id) const {
             pTrack->setLocation(location);
             pTrack->setHeaderParsed(header_parsed);
             pTrack->setCuePoints(m_cueDao.getCuesForTrack(id));
+            pTrack->setAccoustID(acoustID);
 
             pTrack->setDirty(false);
 
@@ -875,7 +878,7 @@ void TrackDAO::updateTrack(TrackInfoObject* pTrack) {
                   "timesplayed=:timesplayed, played=:played, "
                   "channels=:channels, header_parsed=:header_parsed, "
                   "beats_version=:beats_version, beats_sub_version=:beats_sub_version, beats=:beats, "
-                  "bpm_lock=:bpm_lock "
+                  "bpm_lock=:bpm_lock, acoustID=:acoustID "
                   "WHERE id=:track_id");
     query.bindValue(":artist", pTrack->getArtist());
     query.bindValue(":title", pTrack->getTitle());
@@ -903,6 +906,7 @@ void TrackDAO::updateTrack(TrackInfoObject* pTrack) {
     query.bindValue(":track_id", trackId);
 
     query.bindValue(":bpm_lock", pTrack->hasBpmLock() ? 1 : 0);
+    query.bindValue(":acoustID", pTrack->getAccoustID());
 
     BeatsPointer pBeats = pTrack->getBeats();
     QByteArray* pBeatsBlob = NULL;

@@ -44,6 +44,7 @@ const QString LIBRARYTABLE_PLAYED = "played";
 const QString LIBRARYTABLE_RATING = "rating";
 const QString LIBRARYTABLE_KEY = "key";
 const QString LIBRARYTABLE_BPM_LOCK = "bpm_lock";
+const QString LIBRARYTABLE_ACOUSTID = "acoustID";
 
 const QString TRACKLOCATIONSTABLE_ID = "id";
 const QString TRACKLOCATIONSTABLE_LOCATION = "location";

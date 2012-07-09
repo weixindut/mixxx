@@ -277,6 +277,13 @@ class TagLib(Dependence):
         # deprecate Karmic support. rryan 2/2011
         build.env.Append(CPPPATH='/usr/include/taglib/')
 
+class Chromaprint(Dependence):
+    def configure(self, build, conf):
+        if not conf.CheckLib('libchromaprint'):
+            raise Exception("Could not find libchromaprint or its development headers.")
+
+        build.env.Append(CPPPATH='/usr/include/')
+
 class ProtoBuf(Dependence):
     def configure(self, build, conf):
         if not conf.CheckLib(['libprotobuf-lite', 'protobuf-lite', 'libprotobuf', 'protobuf']):
@@ -367,6 +374,7 @@ class MixxxCore(Feature):
                    "analyserqueue.cpp",
                    "analyserbpm.cpp",
                    "analyserwaveform.cpp",
+                   "analyseraccoustid.cpp",
 
                    "controllers/controller.cpp",
                    "controllers/controllerengine.cpp",
@@ -777,7 +785,8 @@ class MixxxCore(Feature):
 
     def depends(self, build):
         return [SoundTouch, ReplayGain, PortAudio, PortMIDI, Qt,
-                FidLib, SndFile, FLAC, OggVorbis, OpenGL, TagLib, ProtoBuf]
+                FidLib, SndFile, FLAC, OggVorbis, OpenGL, TagLib, ProtoBuf,
+                Chromaprint]
 
     def post_dependency_check_configure(self, build, conf):
         """Sets up additional things in the Environment that must happen

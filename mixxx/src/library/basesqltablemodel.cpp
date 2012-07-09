@@ -75,6 +75,8 @@ void BaseSqlTableModel::initHeaderData() {
                   Qt::Horizontal, tr("Key"));
     setHeaderData(fieldIndex(LIBRARYTABLE_BPM_LOCK),
                   Qt::Horizontal, tr("BPM Lock"));
+    setHeaderData(fieldIndex(LIBRARYTABLE_ACOUSTID),
+                  Qt::Horizontal, tr("AcoustID"));
 }
 
 QSqlDatabase BaseSqlTableModel::database() const {

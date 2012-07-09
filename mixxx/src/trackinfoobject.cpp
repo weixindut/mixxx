@@ -134,6 +134,7 @@ void TrackInfoObject::initialize(bool parseHeader) {
     m_Rating = 0;
     m_key = "";
     m_bBpmLock = false;
+    m_accoustID = "";
 
     // parse() parses the metadata from file. This is not a quick operation!
     if (parseHeader) {
@@ -923,4 +924,13 @@ void TrackInfoObject::setBpmLock(bool bpmLock) {
 bool TrackInfoObject::hasBpmLock() const {
     QMutexLocker lock(&m_qMutex);
     return m_bBpmLock;
+}
+
+void TrackInfoObject::setAccoustID(QString accoustID){
+    QMutexLocker lock(&m_qMutex);
+    m_accoustID = accoustID;
+}
+
+QString TrackInfoObject::getAccoustID(){
+    return m_accoustID;
 }
