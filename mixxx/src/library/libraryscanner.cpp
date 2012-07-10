@@ -244,6 +244,8 @@ void LibraryScanner::run()
     foreach (QString dir , dirs) {
         int dirId = m_directoryDao.getDirId(dir);
         bScanFinishedCleanly = recursiveScan(dir,verifiedDirectories,restoredTracks,dirId);
+        //Verify all Tracks inside Library but outside the library path
+        m_trackDao.verifyTracksOutside(dir);
 
         if (!bScanFinishedCleanly) {
             qDebug() << "Recursive scan interrupted.";
@@ -257,6 +259,8 @@ void LibraryScanner::run()
     m_trackDao.addTracksFinish();
     // this will cause BaseTrackCache to update the index of all restored tracks
     emit(tracksRestored(restoredTracks));
+
+
     // Start a transaction for all the library hashing (moved file detection)
     // stuff.
     ScopedTransaction transaction(m_database);

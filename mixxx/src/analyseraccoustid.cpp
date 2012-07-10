@@ -37,7 +37,8 @@ void AnalyserAccoustID::finalise(TrackPointer tio){
         qDebug() << "apprently I have read less samples then I ought to have"
                  << "strange" ;
     }
-    chromaprint_feed(m_pChromaprint,m_pIn,m_totalSamples);
+    int success = chromaprint_feed(m_pChromaprint,m_pIn,m_totalSamples);
+    qDebug() << success;
     chromaprint_finish(m_pChromaprint);
     void* fprint = NULL;
     int size = 0;
@@ -58,6 +59,7 @@ void AnalyserAccoustID::finalise(TrackPointer tio){
     }
     tio->setAccoustID(fingerprint);
     qDebug() << tio->getAccoustID();
+    qDebug() << tio->getDuration();
     cleanup(tio);
 }
 
