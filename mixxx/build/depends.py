@@ -467,6 +467,7 @@ class MixxxCore(Feature):
                    "widget/wpreparelibrarytableview.cpp",
                    "widget/wpreparecratestableview.cpp",
                    "widget/wlibrarytextbrowser.cpp",
+                   "library/chromaprinter.cpp",
                    "library/preparecratedelegate.cpp",
                    "library/trackcollection.cpp",
                    "library/basesqltablemodel.cpp",

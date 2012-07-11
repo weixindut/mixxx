@@ -24,7 +24,8 @@ TrackCollection::TrackCollection(ConfigObject<ConfigValue>* pConfig)
                    m_analysisDao, m_directoryDao, pConfig),
         m_supportedFileExtensionsRegex(
             SoundSourceProxy::supportedFileExtensionsRegex(),
-            Qt::CaseInsensitive) {
+            Qt::CaseInsensitive),
+        m_chromaprinter() {
     bCancelLibraryScan = false;
     qDebug() << "Available QtSQL drivers:" << QSqlDatabase::drivers();
 
@@ -170,6 +171,8 @@ bool TrackCollection::importDirectory(QString directory, TrackDAO &trackDao,
 
             TrackPointer pTrack = TrackPointer(new TrackInfoObject(
                               absoluteFilePath), &QObject::deleteLater);
+
+            QString fingerprint = m_chromaprinter.getFingerPrint(pTrack);
 
             if (trackDao.addTracksAdd(pTrack.data(), false,dirId)) {
                 // Successful added

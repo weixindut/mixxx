@@ -32,6 +32,7 @@
 #include "library/dao/playlistdao.h"
 #include "library/dao/analysisdao.h"
 #include "library/dao/directorydao.h"
+#include "library/chromaprinter.h"
 
 class TrackInfoObject;
 
@@ -88,6 +89,8 @@ class TrackCollection : public QObject
     // Flag to raise when library scan should be cancelled
     int bCancelLibraryScan;
     QMutex m_libraryScanMutex;
+
+    chromaprinter m_chromaprinter;
 };
 
 #endif
