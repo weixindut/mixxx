@@ -208,17 +208,16 @@ public:
     CallbackControl* fwdButton;
     CallbackControl* backButton;
 
-    ControlObjectThreadMain *playButtonCOT, *m_pTrackEndCOT;
+    ControlObjectThreadMain *playButtonCOT;
 
     CallbackControl* rateEngine;
     CallbackControl* playposSlider;
     CallbackControl* visualPlaypos;
     CallbackControl* visualBpm;
-    ControlObject* m_pSampleRate;
+    CallbackControl* m_pSampleRate;
     CallbackControl* m_pKeylock;
 
-    /** Control used to signal when at end of file */
-    CallbackControl* m_pTrackEnd;
+    QAtomicInt m_iTrackEnd;
 
     // Whether or not to repeat the track when at the end
     CallbackControl* m_pRepeat;
