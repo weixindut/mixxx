@@ -31,12 +31,15 @@ EngineVuMeter::EngineVuMeter(const char* group, EngineState* pEngineState) {
     // that it should react on the setValue(int) signal.
     m_ctrlVuMeter = pCallbackControlManager->addControl(
         new ControlPotmeter(ConfigKey(group, "VuMeter"), 0., 1.), 1);
+    m_ctrlVuMeter->set(0);
     // left channel VU meter
     m_ctrlVuMeterL = pCallbackControlManager->addControl(
         new ControlPotmeter(ConfigKey(group, "VuMeterL"), 0., 1.), 1);
+    m_ctrlVuMeterL->set(0);
     // right channel VU meter
     m_ctrlVuMeterR = pCallbackControlManager->addControl(
         new ControlPotmeter(ConfigKey(group, "VuMeterR"), 0., 1.), 1);
+    m_ctrlVuMeterR->set(0);
 
     // Initialize the calculation:
     m_iSamplesCalculated = 0;

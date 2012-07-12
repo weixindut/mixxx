@@ -26,7 +26,7 @@ EngineClipping::EngineClipping(const char* group, EngineState* pEngineState) {
     // Used controlpotmeter as the example used it :/ perhaps someone with more
     // knowledge could use something more suitable...
     m_ctrlClipping = pCallbackControlManager->addControl(
-        new ControlPotmeter(ConfigKey(group, "PeakIndicator"), 0., 1.), 1);
+        new ControlObject(ConfigKey(group, "PeakIndicator")), 1);
 }
 
 EngineClipping::~EngineClipping() {
