@@ -109,6 +109,12 @@ class TwoWayMessagePipe {
     FIFO<SenderMessageType> m_target_messages;
     // Messages waiting to be delivered to the sender.
     FIFO<TargetMessageType> m_sender_messages;
+
+    // This #define is because the macro gets confused by the template
+    // parameters.
+#define COMMA ,
+    DISALLOW_COPY_AND_ASSIGN(TwoWayMessagePipe<SenderMessageType COMMA TargetMessageType>);
+#undef COMMA
 };
 
 #endif /* FIFO_H */
