@@ -51,7 +51,8 @@ BaseTrackPlayer::BaseTrackPlayer(QObject* pParent,
     // slots. This will let us know when the reader is done loading a track, and
     // let us request that the reader load a track.
     connect(this, SIGNAL(loadTrack(TrackPointer)),
-            pEngineBuffer, SLOT(slotLoadTrack(TrackPointer)));
+            pEngineBuffer, SLOT(slotLoadTrackFromGuiThread(TrackPointer)),
+            Qt::DirectConnection);
     connect(pEngineBuffer, SIGNAL(trackLoaded(TrackPointer)),
             this, SLOT(slotFinishLoading(TrackPointer)));
     connect(pEngineBuffer, SIGNAL(trackLoadFailed(TrackPointer, QString)),
@@ -59,7 +60,8 @@ BaseTrackPlayer::BaseTrackPlayer(QObject* pParent,
     connect(pEngineBuffer, SIGNAL(trackUnloaded(TrackPointer)),
             this, SLOT(slotUnloadTrack(TrackPointer)));
 
-    //Get cue point control object
+    m_pPlayButton = new ControlObjectThreadMain(
+        ControlObject::getControl(ConfigKey(getGroup(), "play")));
     m_pCuePoint = new ControlObjectThreadMain(
         ControlObject::getControl(ConfigKey(getGroup(),"cue_point")));
     // Get loop point control objects
@@ -102,6 +104,7 @@ BaseTrackPlayer::~BaseTrackPlayer()
 
     delete m_pWaveformZoom;
     delete m_pEndOfTrack;
+    delete m_pPlayButton;
     delete m_pCuePoint;
     delete m_pLoopInPoint;
     delete m_pLoopOutPoint;
@@ -159,7 +162,10 @@ void BaseTrackPlayer::slotLoadTrack(TrackPointer track, bool bStartFromEndPos)
     connect(m_pLoadedTrack.data(), SIGNAL(ReplayGainUpdated(double)),
             m_pReplayGain, SLOT(slotSet(double)));
 
-    //Request a new track from the reader
+    // Stop playback
+    m_pPlayButton->slotSet(0.0);
+
+    // Request a new track from the reader
     emit(loadTrack(track));
 }
 

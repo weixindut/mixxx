@@ -46,6 +46,7 @@ class BaseTrackPlayer : public BasePlayer {
     ControlPotmeter* m_pWaveformZoom;
     ControlObject* m_pEndOfTrack;
 
+    ControlObjectThreadMain* m_pPlayButton;
     ControlObjectThreadMain* m_pCuePoint;
     ControlObjectThreadMain* m_pLoopInPoint;
     ControlObjectThreadMain* m_pLoopOutPoint;

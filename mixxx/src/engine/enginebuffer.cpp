@@ -17,6 +17,7 @@
 
 #include <QEvent>
 #include <QtDebug>
+#include <QThread>
 
 #include "engine/enginebuffer.h"
 #include "cachingreader.h"
@@ -24,7 +25,6 @@
 
 
 #include "controlpushbutton.h"
-#include "controlobjectthreadmain.h"
 #include "configobject.h"
 #include "controlpotmeter.h"
 #include "engine/callbackcontrolmanager.h"
@@ -57,8 +57,26 @@
 const double kMaxPlayposRange = 1.14;
 const double kMinPlayposRange = -0.14;
 
+namespace {
+const bool sDebug = true;
+
+// This is a cheap hack to allow us to assert that we are running all of our
+// code in the callback thread after startup. During startup (and up until the
+// first callback) g_engineThread will be NULL since we have not received a
+// callback yet. EngineBuffer::process() sets g_engineThread on the first
+// callback. It's fine this is global since every EngineBuffer runs in the same
+// callback thread.
+QThread* g_engineThread = NULL;
+#define ASSERT_ENGINE_THREAD                                \
+    if (sDebug && g_engineThread != NULL) {                   \
+        Q_ASSERT(QThread::currentThread() == g_engineThread); \
+    }
+
+}  // namespace
+
 EngineBuffer::EngineBuffer(const char * _group, ConfigObject<ConfigValue> * _config,
                            EngineState* pEngineState) :
+    m_messagePipe(4096, 4096),
     m_engineLock(QMutex::Recursive),
     group(_group),
     m_pConfig(_config),
@@ -113,7 +131,6 @@ EngineBuffer::EngineBuffer(const char * _group, ConfigObject<ConfigValue> * _con
     connect(playButton, SIGNAL(valueChanged(double, double)),
             this, SLOT(slotControlPlay(double)),
             Qt::DirectConnection);
-    playButtonCOT = new ControlObjectThreadMain(pPlayButton);
 
     // Play from Start Button
     CallbackControl *pStartPlayButton =
@@ -188,7 +205,7 @@ EngineBuffer::EngineBuffer(const char * _group, ConfigObject<ConfigValue> * _con
                             kMinPlayposRange, kMaxPlayposRange), 1);
 
     // Signals when we are at the end of file during playback.
-    m_iTrackEnd = 0;
+    m_iTrackLoading = 0;
 
     ControlPushButton* pRepeatButton = new ControlPushButton(ConfigKey(group, "repeat"));
     pRepeatButton->setButtonMode(ControlPushButton::TOGGLE);
@@ -292,6 +309,7 @@ EngineBuffer::~EngineBuffer()
 
 void EngineBuffer::setPitchIndpTimeStretch(bool b)
 {
+    ASSERT_ENGINE_THREAD;
     // MUST ACQUIRE THE PAUSE MUTEX BEFORE CALLING THIS METHOD
 
     // Change sound scale mode
@@ -362,10 +380,13 @@ double EngineBuffer::getRate()
     return m_pRateControl->getRawRate();
 }
 
-// WARNING: Always called from the EngineWorker thread pool
+// This used to run in the EngineWorker thread pool, but now runs in the
+// callback thread.
 void EngineBuffer::slotTrackLoaded(TrackPointer pTrack,
                                    int iTrackSampleRate,
                                    int iTrackNumSamples) {
+    ASSERT_ENGINE_THREAD;
+    //qDebug() << "slotTrackLoaded" << iTrackSampleRate << iTrackNumSamples;
     pause.lock();
     m_pCurrentTrack = pTrack;
     file_srate_old = iTrackSampleRate;
@@ -375,17 +396,25 @@ void EngineBuffer::slotTrackLoaded(TrackPointer pTrack,
     slotControlSeek(0.);
 
     // Let the engine know that a track is loaded now.
-    m_iTrackEnd = 0;
+    m_iTrackLoading = 0;
 
     pause.unlock();
 
+    // TODO(XXX) replace this with a pipe write to prevent the lock incurred by
+    // Qt's event queue.
     emit(trackLoaded(pTrack));
 }
 
-// WARNING: Always called from the EngineWorker thread pool
+// This used to run in the EngineWorker thread pool, but now runs in the
+// callback thread.
 void EngineBuffer::slotTrackLoadFailed(TrackPointer pTrack,
                                        QString reason) {
+    ASSERT_ENGINE_THREAD;
+    qDebug() << "slotTrackLoadFailed" << reason;
     ejectTrack();
+
+    // TODO(XXX) replace this with a pipe write to prevent the lock incurred by
+    // Qt's event queue.
     emit(trackLoadFailed(pTrack, reason));
 }
 
@@ -394,6 +423,8 @@ TrackPointer EngineBuffer::getLoadedTrack() const {
 }
 
 void EngineBuffer::ejectTrack() {
+    ASSERT_ENGINE_THREAD;
+
     // Don't allow ejections while playing a track. We don't need to lock to
     // call ControlObject::get() so this is fine.
     if (playButton->get() > 0)
@@ -414,9 +445,8 @@ void EngineBuffer::ejectTrack() {
     emit(trackUnloaded(pTrack));
 }
 
-// WARNING: This method runs in both the GUI thread and the Engine Thread
-void EngineBuffer::slotControlSeek(double change)
-{
+void EngineBuffer::slotControlSeek(double change) {
+    ASSERT_ENGINE_THREAD;
     qDebug() << this << "slotControlSeek()" << change;
     if (isnan(change)) {
         // This seek is ridiculous.
@@ -442,14 +472,14 @@ void EngineBuffer::slotControlSeek(double change)
     setNewPlaypos(new_playpos);
 }
 
-// WARNING: This method runs in both the GUI thread and the Engine Thread
-void EngineBuffer::slotControlSeekAbs(double abs)
-{
+void EngineBuffer::slotControlSeekAbs(double abs) {
+    ASSERT_ENGINE_THREAD;
     slotControlSeek(abs/file_length_old);
 }
 
 void EngineBuffer::slotControlPlay(double v)
 {
+    ASSERT_ENGINE_THREAD;
     // If no track is currently loaded, turn play off.
     if (v > 0.0 && !m_pCurrentTrack) {
         playButton->set(0.0f);
@@ -458,6 +488,7 @@ void EngineBuffer::slotControlPlay(double v)
 
 void EngineBuffer::slotControlStart(double v)
 {
+    ASSERT_ENGINE_THREAD;
     if (v > 0.0) {
         slotControlSeek(0.);
     }
@@ -465,6 +496,7 @@ void EngineBuffer::slotControlStart(double v)
 
 void EngineBuffer::slotControlEnd(double v)
 {
+    ASSERT_ENGINE_THREAD;
     if (v > 0.0) {
         slotControlSeek(1.);
     }
@@ -472,6 +504,7 @@ void EngineBuffer::slotControlEnd(double v)
 
 void EngineBuffer::slotControlPlayFromStart(double v)
 {
+    ASSERT_ENGINE_THREAD;
     if (v > 0.0) {
         slotControlSeek(0.);
         playButton->set(1);
@@ -480,6 +513,7 @@ void EngineBuffer::slotControlPlayFromStart(double v)
 
 void EngineBuffer::slotControlJumpToStartAndStop(double v)
 {
+    ASSERT_ENGINE_THREAD;
     if (v > 0.0) {
         slotControlSeek(0.);
         playButton->set(0);
@@ -488,13 +522,14 @@ void EngineBuffer::slotControlJumpToStartAndStop(double v)
 
 void EngineBuffer::slotControlStop(double v)
 {
+    ASSERT_ENGINE_THREAD;
     if (v > 0.0) {
         playButton->set(0);
     }
 }
 
-void EngineBuffer::process(const CSAMPLE *, const CSAMPLE * pOut, const int iBufferSize)
-{
+void EngineBuffer::process(const CSAMPLE *, const CSAMPLE * pOut, const int iBufferSize) {
+    g_engineThread = QThread::currentThread();
     Q_ASSERT(even(iBufferSize));
     m_pReader->process();
     // Steps:
@@ -511,7 +546,7 @@ void EngineBuffer::process(const CSAMPLE *, const CSAMPLE * pOut, const int iBuf
     bool bCurBufferPaused = false;
     double rate = 0;
 
-    if (m_iTrackEnd == 0 && pause.tryLock()) {
+    if (m_iTrackLoading == 0 && pause.tryLock()) {
         float sr = m_pSampleRate->get();
 
         double baserate = 0.0f;
@@ -696,7 +731,7 @@ void EngineBuffer::process(const CSAMPLE *, const CSAMPLE * pOut, const int iBuf
 
         // release the pauselock
         pause.unlock();
-    } else { // if (m_iTrackEnd == 0 && pause.tryLock()) {
+    } else { // if (m_iTrackLoading == 0 && pause.tryLock()) {
         // If we can't get the pause lock then this buffer will be silence.
         bCurBufferPaused = true;
     }
@@ -765,7 +800,7 @@ void EngineBuffer::process(const CSAMPLE *, const CSAMPLE * pOut, const int iBuf
 }
 
 void EngineBuffer::updateIndicators(double rate, int iBufferSize) {
-
+    ASSERT_ENGINE_THREAD;
     // Increase samplesCalculated by the buffer size
     m_iSamplesCalculated += iBufferSize;
 
@@ -803,6 +838,7 @@ void EngineBuffer::updateIndicators(double rate, int iBufferSize) {
 
 void EngineBuffer::hintReader(const double dRate,
                               const int iSourceSamples) {
+    ASSERT_ENGINE_THREAD;
     m_engineLock.lock();
 
     m_hintList.clear();
@@ -818,13 +854,23 @@ void EngineBuffer::hintReader(const double dRate,
     m_engineLock.unlock();
 }
 
-// WARNING: This method runs in the GUI thread
-void EngineBuffer::slotLoadTrack(TrackPointer pTrack) {
-    // Raise the track end flag so the EngineBuffer stops processing frames
-    m_iTrackEnd = 1;
+// WARNING: This method runs in the GUI thread.
+// DO NOT TOUCH ANYTHING OTHER THAN m_iTrackLoading and m_pReader.
+// Ask rryan before changing this method.
+void EngineBuffer::slotLoadTrackFromGuiThread(TrackPointer pTrack) {
+    // Raise the track end flag so the EngineBuffer stops processing
+    // frames. m_iTrackLoading is a QAtomicInt so this is thread-safe.
+    m_iTrackLoading = 1;
 
-    //Stop playback
-    playButtonCOT->slotSet(0.0);
+    // Even though the track is not yet loaded completely, we load this
+    // track. It is safe to do from the GUI thread since assignment of
+    // QSharedPointer is thread-safe. If we do not do this here then deadlock
+    // will occur since we only process CachingReader messages when
+    // EngineBuffer::process is called but EngineBuffer::process is only called
+    // if EngineChannel::isActive() is true, which for an EngineDeck is only
+    // true if EngineBuffer::isTrackLoaded is true which is only true if
+    // m_pCurrentTrack is non-NULL.
+    m_pCurrentTrack = pTrack;
 
     // Signal to the reader to load the track. The reader will respond with
     // either trackLoaded or trackLoadFailed signals.
@@ -852,10 +898,12 @@ void EngineBuffer::addControl(EngineControl* pControl) {
 }
 
 void EngineBuffer::bindWorkers(EngineWorkerScheduler* pWorkerScheduler) {
+    ASSERT_ENGINE_THREAD;
     pWorkerScheduler->bindWorker(m_pReader);
 }
 
 bool EngineBuffer::isTrackLoaded() {
+    ASSERT_ENGINE_THREAD;
     if (m_pCurrentTrack) {
         return true;
     }
@@ -863,6 +911,7 @@ bool EngineBuffer::isTrackLoaded() {
 }
 
 void EngineBuffer::slotEjectTrack(double v) {
+    ASSERT_ENGINE_THREAD;
     if (v > 0) {
         ejectTrack();
     }

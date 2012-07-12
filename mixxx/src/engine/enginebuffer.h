@@ -20,11 +20,13 @@
 
 #include <qapplication.h>
 #include <QMutex>
+
 #include "defs.h"
 #include "engine/engineobject.h"
 #include "trackinfoobject.h"
 #include "configobject.h"
 #include "rotary.h"
+#include "util/fifo.h"
 
 //for the writer
 #ifdef __SCALER_DEBUG__
@@ -38,8 +40,6 @@ class LoopingControl;
 class ReadAheadManager;
 class CallbackControl;
 class EngineState;
-class ControlObject;
-class ControlObjectThreadMain;
 class CachingReader;
 class EngineBufferScale;
 class EngineBufferScaleLinear;
@@ -82,8 +82,25 @@ const int ENGINE_RAMP_UP = 1;
 
 //const int kiRampLength = 3;
 
-class EngineBuffer : public EngineObject
-{
+struct EnginePlayerMessage {
+    enum Type {
+        TRACK_LOADED,
+        TRACK_LOAD_FAILED_NOT_FOUND,
+        TRACK_LOAD_FAILED_COULDNT_OPEN,
+        TRACK_UNLOADED
+    };
+    Type m_type;
+};
+
+struct PlayerMessage {
+    enum Type {
+        LOAD_TRACK
+    };
+    Type m_type;
+    TrackPointer* m_track;
+};
+
+class EngineBuffer : public EngineObject {
      Q_OBJECT
 public:
     EngineBuffer(const char *_group, ConfigObject<ConfigValue> *_config,
@@ -93,7 +110,11 @@ public:
 
     void bindWorkers(EngineWorkerScheduler* pWorkerScheduler);
 
-    // Add an engine control to the EngineBuffer
+    TwoWayMessagePipe<PlayerMessage, EnginePlayerMessage>& getMessagePipe() {
+        return m_messagePipe;
+    }
+
+    // Add an engine control to the EngineBuffer. Only call this during startup.
     void addControl(EngineControl* pControl);
 
     /** Return the current rate (not thread-safe) */
@@ -128,8 +149,10 @@ public:
 
     // Request that the EngineBuffer load a track. Since the process is
     // asynchronous, EngineBuffer will emit a trackLoaded signal when the load
-    // has completed.
-    void slotLoadTrack(TrackPointer pTrack);
+    // has completed. This method is called from the GUI thread and should not
+    // touch any EngineBuffer state other than thread-safe calls to m_pReader
+    // and QAtomicInts.
+    void slotLoadTrackFromGuiThread(TrackPointer pTrack);
 
     void slotEjectTrack(double);
 
@@ -153,6 +176,8 @@ public:
                     const int iSourceSamples);
 
     void ejectTrack();
+
+    TwoWayMessagePipe<PlayerMessage, EnginePlayerMessage> m_messagePipe;
 
     // Lock for modifying local engine variables that are not thread safe, such
     // as m_engineControls and m_hintList
@@ -208,8 +233,6 @@ public:
     CallbackControl* fwdButton;
     CallbackControl* backButton;
 
-    ControlObjectThreadMain *playButtonCOT;
-
     CallbackControl* rateEngine;
     CallbackControl* playposSlider;
     CallbackControl* visualPlaypos;
@@ -217,7 +240,7 @@ public:
     CallbackControl* m_pSampleRate;
     CallbackControl* m_pKeylock;
 
-    QAtomicInt m_iTrackEnd;
+    QAtomicInt m_iTrackLoading;
 
     // Whether or not to repeat the track when at the end
     CallbackControl* m_pRepeat;
