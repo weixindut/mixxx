@@ -21,6 +21,7 @@
 #include "engineflanger.h"
 #include "mathstuff.h"
 #include "sampleutil.h"
+#include "engine/enginestate.h"
 
 
 /*----------------------------------------------------------------
@@ -31,13 +32,15 @@
     LFOamplitude - the amplitude of the modulation of the delay length.
     depth - the depth of the flanger, controlled by a ControlPotmeter.
    ----------------------------------------------------------------*/
-EngineFlanger::EngineFlanger(const char * group)
+EngineFlanger::EngineFlanger(const char * group, EngineState* pEngineState)
 {
     // Init. buffers:
     delay_buffer = SampleUtil::alloc(max_delay + 1);
     SampleUtil::applyGain(delay_buffer, 0.0f, max_delay+1);
 
     // Init. potmeters
+    CallbackControlManager* pCallbackControlManager =
+            pEngineState->getControlManager();
 
     // rryan 6/2010 This is gross. The flanger was originally written as this
     // hack that hard-coded the two channels, and while pulling it apart, I have
@@ -45,20 +48,34 @@ EngineFlanger::EngineFlanger(const char * group)
     // EngineFlanger per deck, so create these controls if they don't exist,
     // otherwise look them up.
 
-    potmeterDepth = ControlObject::getControl(ConfigKey("[Flanger]", "lfoDepth"));
-    potmeterDelay = ControlObject::getControl(ConfigKey("[Flanger]", "lfoDelay"));
-    potmeterLFOperiod = ControlObject::getControl(ConfigKey("[Flanger]", "lfoPeriod"));
+    potmeterDepth = pCallbackControlManager->getControl(
+        ConfigKey("[Flanger]", "lfoDepth"));
+    if (potmeterDepth == NULL) {
+        potmeterDepth = pCallbackControlManager->addControl(
+            new ControlPotmeter(ConfigKey("[Flanger]", "lfoDepth"), 0., 1.), 1);
+    }
 
-    if (potmeterDepth == NULL)
-        potmeterDepth = new ControlPotmeter(ConfigKey("[Flanger]", "lfoDepth"), 0., 1.);
-    if (potmeterDelay == NULL)
-        potmeterDelay = new ControlPotmeter(ConfigKey("[Flanger]", "lfoDelay"), 50., 10000.);
-    if (potmeterLFOperiod == NULL)
-        potmeterLFOperiod = new ControlPotmeter(ConfigKey("[Flanger]", "lfoPeriod"), 50000., 2000000.);
+    potmeterDelay = pCallbackControlManager->getControl(
+        ConfigKey("[Flanger]", "lfoDelay"));
+    if (potmeterDelay == NULL) {
+        potmeterDelay = pCallbackControlManager->addControl(
+            new ControlPotmeter(
+                ConfigKey("[Flanger]", "lfoDelay"), 50., 10000.), 1);
+    }
+
+    potmeterLFOperiod = pCallbackControlManager->getControl(
+        ConfigKey("[Flanger]", "lfoPeriod"));
+    if (potmeterLFOperiod == NULL) {
+        potmeterLFOperiod = pCallbackControlManager->addControl(
+            new ControlPotmeter(ConfigKey("[Flanger]", "lfoPeriod"),
+                                50000., 2000000.), 1);
+    }
 
     // Create an enable key on a per-deck basis.
-    flangerEnable = new ControlPushButton(ConfigKey(group, "flanger"));
-    flangerEnable->setToggleButton(true);
+    ControlPushButton* pFlangerEnable = new ControlPushButton(
+        ConfigKey(group, "flanger"));
+    pFlangerEnable->setButtonMode(ControlPushButton::TOGGLE);
+    flangerEnable = pCallbackControlManager->addControl(pFlangerEnable, 1);
 
     // Fixed values of controls:
     LFOamplitude = 240;

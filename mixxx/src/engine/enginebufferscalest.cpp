@@ -34,7 +34,6 @@ EngineBufferScaleST::EngineBufferScaleST(ReadAheadManager *pReadAheadManager) :
     m_bClear(true),
     m_pReadAheadManager(pReadAheadManager)
 {
-    m_qMutex.lock();
     m_pSoundTouch = new soundtouch::SoundTouch();
     m_dBaseRate = 1.;
     m_dTempo = 1.;
@@ -43,7 +42,6 @@ EngineBufferScaleST::EngineBufferScaleST(ReadAheadManager *pReadAheadManager) :
     m_pSoundTouch->setRate(m_dBaseRate);
     m_pSoundTouch->setTempo(m_dTempo);
     m_pSoundTouch->setSetting(SETTING_USE_QUICKSEEK, 1);
-    m_qMutex.unlock();
 
     slotSetSamplerate(44100.);
     ControlObject * p = ControlObject::getControl(ConfigKey("[Master]","samplerate"));
@@ -61,12 +59,10 @@ EngineBufferScaleST::~EngineBufferScaleST()
 void EngineBufferScaleST::setPitchIndpTimeStretch(bool b)
 {
     m_bPitchIndpTimeStretch = b;
-    m_qMutex.lock();
     if (m_bPitchIndpTimeStretch)
         m_pSoundTouch->setRate(1.);
     else
         m_pSoundTouch->setTempo(1.);
-    m_qMutex.unlock();
 }
 
 bool EngineBufferScaleST::getPitchIndpTimeStretch(void)
@@ -79,7 +75,6 @@ void EngineBufferScaleST::setBaseRate(double dBaseRate)
 {
     m_dBaseRate = dBaseRate;
 
-    m_qMutex.lock();
     if (m_bPitchIndpTimeStretch) {
         m_pSoundTouch->setRate(m_dBaseRate);
     }
@@ -92,28 +87,23 @@ void EngineBufferScaleST::setBaseRate(double dBaseRate)
     //    m_pSoundTouch->setRate(0.010f);
     //else if(m_dBaseRate >= MIN_SEEK_SPEED)
     //    m_pSoundTouch->setRate(m_dBaseRate*m_dTempo);
-    m_qMutex.unlock();
 }
 
 
 void EngineBufferScaleST::clear()
 {
-    m_qMutex.lock();
     m_pSoundTouch->clear();
     m_bClear = true;
-    m_qMutex.unlock();
 }
 
 void EngineBufferScaleST::slotSetSamplerate(double dSampleRate)
 {
     int iSrate = (int)dSampleRate;
 
-    m_qMutex.lock();
     if (iSrate>0)
         m_pSoundTouch->setSampleRate(iSrate);
     else
         m_pSoundTouch->setSampleRate(44100);
-    m_qMutex.unlock();
 }
 
 double EngineBufferScaleST::setTempo(double dTempo)
@@ -126,7 +116,6 @@ double EngineBufferScaleST::setTempo(double dTempo)
     else if (m_dTempo<MIN_SEEK_SPEED)
         m_dTempo = 0.0;
 
-    m_qMutex.lock();
     //It's an error to pass a rate or tempo smaller than MIN_SEEK_SPEED to SoundTouch.
     if (dTempoOld != m_dTempo && m_dTempo != 0.0)
     {
@@ -135,7 +124,6 @@ double EngineBufferScaleST::setTempo(double dTempo)
         else
             m_pSoundTouch->setRate(m_dBaseRate*m_dTempo);
     }
-    m_qMutex.unlock();
 
     if (dTempo<0.)
     {
@@ -166,8 +154,6 @@ CSAMPLE* EngineBufferScaleST::scale(double playpos, unsigned long buf_size,
     Q_UNUSED (pBase);
     Q_UNUSED (iBaseLength);
     new_playpos = 0.0;
-
-    m_qMutex.lock();
 
     int iCurPos = playpos;
     if (!even(iCurPos)) {
@@ -248,8 +234,6 @@ CSAMPLE* EngineBufferScaleST::scale(double playpos, unsigned long buf_size,
     // consumed to produce the scaled buffer. Due to this, we do not take into
     // account directionality or starting point.
     new_playpos = m_dTempo*m_dBaseRate*total_received_frames*2;
-
-    m_qMutex.unlock();
 
     return buffer;
 }

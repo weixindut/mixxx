@@ -33,6 +33,8 @@
 #endif
 #include "soundsourceflac.h"
 
+#include "mixxx.h"
+
 #include <QLibrary>
 #include <QMutexLocker>
 #include <QMutex>
@@ -67,6 +69,7 @@ SoundSourceProxy::SoundSourceProxy(TrackPointer pTrack)
     m_pTrack = pTrack;
 }
 
+// static
 void SoundSourceProxy::loadPlugins()
 {
     /** Scan for and initialize all plugins */
@@ -74,15 +77,17 @@ void SoundSourceProxy::loadPlugins()
     QList<QDir> pluginDirs;
     QStringList nameFilters;
 
-    QStringList clArgs = QApplication::arguments();
-    int pluginPath = clArgs.indexOf("--pluginPath");
-    if (pluginPath != -1 && pluginPath + 1 < clArgs.size()) {
-        qDebug() << "Adding plugin path from commandline arg:" << clArgs.at(pluginPath + 1);
-        pluginDirs.append(QDir(clArgs.at(pluginPath + 1)));
+    const QString& pluginPath = CmdlineArgs::Instance().getPluginPath();
+
+    if (!pluginPath.isEmpty()) {
+        qDebug() << "Adding plugin path from commandline arg:" << pluginPath;
+        pluginDirs.append(QDir(pluginPath));
     }
 #ifdef __LINUX__
-    pluginDirs.append(QDir("/usr/local/lib/mixxx/plugins/soundsource/"));
-    pluginDirs.append(QDir("/usr/lib/mixxx/plugins/soundsource/"));
+    QDir libPath(UNIX_LIB_PATH);
+    if (libPath.cd("plugins") && libPath.cd("soundsource")) {
+	pluginDirs.append(libPath.absolutePath());
+    }
     pluginDirs.append(QDir(QDesktopServices::storageLocation(QDesktopServices::HomeLocation) + "/.mixxx/plugins/soundsource/"));
 #elif __WINDOWS__
     pluginDirs.append(QDir(QCoreApplication::applicationDirPath() + "/plugins/soundsource/"));
@@ -93,7 +98,11 @@ void SoundSourceProxy::loadPlugins()
     //bundlePluginDir.append("PlugIns/soundsource");  //Our SCons bundle target doesn't handle plugin subdirectories :(
     bundlePluginDir.append("PlugIns/");
     pluginDirs.append(QDir(bundlePluginDir));
+    // Do we ever put stuff here? I think this was meant to be
+    // ~/Library/Application Support/Mixxx/Plugins rryan 04/2012
     pluginDirs.append(QDir("/Library/Application Support/Mixxx/Plugins/soundsource/"));
+    pluginDirs.append(QDir(QDesktopServices::storageLocation(QDesktopServices::HomeLocation) +
+			   "/Library/Application Support/Mixxx/Plugins/soundsource/"));
     nameFilters << "libsoundsource*";
 #endif
 
@@ -109,6 +118,7 @@ void SoundSourceProxy::loadPlugins()
     }
 }
 
+// static
 Mixxx::SoundSource* SoundSourceProxy::initialize(QString qFilename) {
 
     Mixxx::SoundSource* sndsrc = NULL;
@@ -157,6 +167,7 @@ SoundSourceProxy::~SoundSourceProxy()
     delete m_pSoundSource;
 }
 
+// static
 QLibrary* SoundSourceProxy::getPlugin(QString lib_filename)
 {
     static QMutex mutex;
@@ -277,9 +288,9 @@ int SoundSourceProxy::parseHeader()
     return 0;
 }
 
+// static
 int SoundSourceProxy::ParseHeader(TrackInfoObject* p)
 {
-
     QString qFilename = p->getLocation();
     SoundSource* sndsrc = initialize(qFilename);
     if (sndsrc == NULL)
@@ -302,7 +313,8 @@ int SoundSourceProxy::ParseHeader(TrackInfoObject* p)
         p->setType(sndsrc->getType());
         p->setYear(sndsrc->getYear());
         p->setGenre(sndsrc->getGenre());
-	p->setComment(sndsrc->getComment());
+        p->setComposer(sndsrc->getComposer());
+        p->setComment(sndsrc->getComment());
         p->setTrackNumber(sndsrc->getTrackNumber());
         p->setReplayGain(sndsrc->getReplayGain());
         p->setBpm(sndsrc->getBPM());
@@ -310,7 +322,7 @@ int SoundSourceProxy::ParseHeader(TrackInfoObject* p)
         p->setBitrate(sndsrc->getBitrate());
         p->setSampleRate(sndsrc->getSampleRate());
         p->setChannels(sndsrc->getChannels());
-	p->setKey(sndsrc->getKey());
+        p->setKey(sndsrc->getKey());
         p->setHeaderParsed(true);
     }
     else
@@ -322,6 +334,7 @@ int SoundSourceProxy::ParseHeader(TrackInfoObject* p)
     return 0;
 }
 
+// static
 QStringList SoundSourceProxy::supportedFileExtensions()
 {
     QMutexLocker locker(&m_extensionsMutex);
@@ -341,6 +354,7 @@ QStringList SoundSourceProxy::supportedFileExtensions()
     return supportedFileExtensions;
 }
 
+// static
 QStringList SoundSourceProxy::supportedFileExtensionsByPlugins() {
     QMutexLocker locker(&m_extensionsMutex);
     QList<QString> supportedFileExtensions;
@@ -348,6 +362,7 @@ QStringList SoundSourceProxy::supportedFileExtensionsByPlugins() {
     return supportedFileExtensions;
 }
 
+// static
 QString SoundSourceProxy::supportedFileExtensionsString() {
     QStringList supportedFileExtList = SoundSourceProxy::supportedFileExtensions();
     // Turn the list into a "*.mp3 *.wav *.etc" style string
@@ -357,6 +372,7 @@ QString SoundSourceProxy::supportedFileExtensionsString() {
     return supportedFileExtList.join(" ");
 }
 
+// static
 QString SoundSourceProxy::supportedFileExtensionsRegex() {
     QStringList supportedFileExtList = SoundSourceProxy::supportedFileExtensions();
 
@@ -365,14 +381,15 @@ QString SoundSourceProxy::supportedFileExtensionsRegex() {
 	supportedFileExtList[i] = QRegExp::escape(supportedFileExtList[i]);
     }
 
-    //Turn the list into a "\\.(mp3|wav|etc)$" style regex string
+    // Turn the list into a "\\.(mp3|wav|etc)$" style regex string
     return QString("\\.(%1)$").arg(supportedFileExtList.join("|"));
 }
 
+// static
 bool SoundSourceProxy::isFilenameSupported(QString fileName) {
     if (m_supportedFileRegex.isValid()) {
         QString regex = SoundSourceProxy::supportedFileExtensionsRegex();
-        m_supportedFileRegex = QRegExp(regex);
+        m_supportedFileRegex = QRegExp(regex, Qt::CaseInsensitive);
     }
     return fileName.contains(m_supportedFileRegex);
 }

@@ -1,4 +1,5 @@
 #include <QMutexLocker>
+#include <QtDebug>
 
 #include "effects/effectchain.h"
 #include "sampleutil.h"

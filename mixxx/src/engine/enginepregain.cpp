@@ -14,60 +14,74 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <time.h>   // for clock() and CLOCKS_PER_SEC
+#include <QtDebug>
+
 #include "engine/enginepregain.h"
+
 #include "controllogpotmeter.h"
 #include "controlpotmeter.h"
 #include "controlpushbutton.h"
 #include "configobject.h"
 #include "controlobject.h"
-
+#include "engine/enginestate.h"
 #include "sampleutil.h"
-#include <time.h>   // for clock() and CLOCKS_PER_SEC
 
-ControlPotmeter* EnginePregain::s_pReplayGainBoost = NULL;
-ControlObject* EnginePregain::s_pEnableReplayGain = NULL;
+EnginePregain::EnginePregain(const char * group, EngineState* pEngineState) {
+    CallbackControlManager* pCallbackControlManager =
+            pEngineState->getControlManager();
+    potmeterPregain = pCallbackControlManager->addControl(
+        new ControlLogpotmeter(ConfigKey(group, "pregain"), 4.), 1);
+    m_pControlReplayGain = pCallbackControlManager->addControl(
+        new ControlObject(ConfigKey(group, "replaygain")), 1);
+    m_pTotalGain = pCallbackControlManager->addControl(
+        new ControlObject(ConfigKey(group, "total_gain")), 1);
 
-/*----------------------------------------------------------------
-   A pregaincontrol is ... a pregain.
-   ----------------------------------------------------------------*/
-EnginePregain::EnginePregain(const char * group)
-{
-    potmeterPregain = new ControlLogpotmeter(ConfigKey(group, "pregain"), 4.);
-    //Replay Gain things
-    m_pControlReplayGain = new ControlObject(ConfigKey(group, "replaygain"));
-    m_pTotalGain = new ControlObject(ConfigKey(group, "total_gain"));
+    m_pReplayGainBoost = pCallbackControlManager->getControl(
+        ConfigKey("[ReplayGain]", "InitialReplayGainBoost"));
+    if (m_pReplayGainBoost == NULL) {
+        m_pReplayGainBoost = pCallbackControlManager->addControl(
+            new ControlPotmeter(
+                ConfigKey("[ReplayGain]", "InitialReplayGainBoost"), 0., 15.),
+            1);
+        // Set the parent as the creator so that it is destroyed when this
+        // EnginePregain is destroyed.
+        m_pReplayGainBoost->setParent(this);
+    }
 
-    if (s_pReplayGainBoost == NULL) {
-        s_pReplayGainBoost = new ControlPotmeter(ConfigKey("[ReplayGain]", "InitialReplayGainBoost"),0., 15.);
-        s_pEnableReplayGain = new ControlObject(ConfigKey("[ReplayGain]", "ReplayGainEnabled"));
+    m_pEnableReplayGain = pCallbackControlManager->getControl(
+        ConfigKey("[ReplayGain]", "ReplayGainEnabled"));
+    if (m_pEnableReplayGain == NULL) {
+        m_pEnableReplayGain = pCallbackControlManager->addControl(
+            new ControlObject(
+                ConfigKey("[ReplayGain]", "ReplayGainEnabled")), 1);
+        // Set the parent as the creator so that it is destroyed when this
+        // EnginePregain is destroyed.
+        m_pEnableReplayGain->setParent(this);
     }
 
     m_bSmoothFade = false;
-    m_fClock=0;
-    m_fSumClock=0;
+    m_fClock = 0;
+    m_fSumClock = 0;
 }
 
-EnginePregain::~EnginePregain()
-{
+EnginePregain::~EnginePregain() {
     delete potmeterPregain;
     delete m_pControlReplayGain;
     delete m_pTotalGain;
-
-    delete s_pEnableReplayGain;
-    s_pEnableReplayGain = NULL;
-    delete s_pReplayGainBoost;
-    s_pReplayGainBoost = NULL;
 }
 
-void EnginePregain::process(const CSAMPLE * pIn, const CSAMPLE * pOut, const int iBufferSize)
-{
-
-    float fEnableReplayGain = s_pEnableReplayGain->get();
-    float fReplayGainBoost = s_pReplayGainBoost->get();
+void EnginePregain::process(const CSAMPLE * pIn, const CSAMPLE * pOut,
+                            const int iBufferSize) {
+    float fEnableReplayGain = m_pEnableReplayGain->get();
+    float fReplayGainBoost = m_pReplayGainBoost->get();
     CSAMPLE * pOutput = (CSAMPLE *)pOut;
     float fGain = potmeterPregain->get();
     float fReplayGain = m_pControlReplayGain->get();
     m_fReplayGainCorrection=1;
+    // TODO(XXX) Why do we do this? Removing it results in clipping at unity
+    // gain so I think it was trying to compensate for some issue when we added
+    // replaygain but even at unity gain (no RG) we are clipping. rryan 5/2012
     fGain = fGain/2;
     if(fReplayGain*fEnableReplayGain != 0)
     {

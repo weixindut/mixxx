@@ -27,18 +27,21 @@
 #define ATTACK_SMOOTHING 1. // .85
 #define DECAY_SMOOTHING .1  //.16//.4
 
-class ControlPotmeter;
+class CallbackControl;
+class EngineState;
 
 class EngineVuMeter : public EngineObject {
-public:
-    EngineVuMeter(const char *);
-    ~EngineVuMeter();
-    void process(const CSAMPLE *pIn, const CSAMPLE *pOut, const int iBufferSize);
+  public:
+    EngineVuMeter(const char* pGroup, EngineState* pEngineState);
+    virtual ~EngineVuMeter();
 
-private:
-    ControlPotmeter *m_ctrlVuMeter;
-    ControlPotmeter *m_ctrlVuMeterL;
-    ControlPotmeter *m_ctrlVuMeterR;
+    void process(const CSAMPLE *pIn, const CSAMPLE *pOut,
+                 const int iBufferSize);
+
+  private:
+    CallbackControl* m_ctrlVuMeter;
+    CallbackControl* m_ctrlVuMeterL;
+    CallbackControl* m_ctrlVuMeterR;
     FLOAT_TYPE m_fRMSvolumeL;
     FLOAT_TYPE m_fRMSvolumeSumL;
     FLOAT_TYPE m_fRMSvolumeR;

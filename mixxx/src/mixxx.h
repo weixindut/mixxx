@@ -18,43 +18,32 @@
 #ifndef MIXXX_H
 #define MIXXX_H
 
-// include files for QT
-#include <qaction.h>
-#include <qdom.h>
-#include <qmenubar.h>
-#include <qtoolbutton.h>
-#include <qstring.h>
-#include <qstringlist.h>
-#include <qpixmap.h>
-#include <qprinter.h>
-#include <qpainter.h>
-#include <qpoint.h>
-#include <qapplication.h>
+#include <QAction>
 #include <QList>
-//Added by qt3to4:
-#include <QFrame>
-#include <qstringlist.h>
+#include <QMainWindow>
+#include <QString>
+#include <QDir>
 
-// application specific includes
-#include "defs.h"
-#include "trackinfoobject.h"
-#include "engine/enginemaster.h"
-#include "controlobject.h"
-#include "dlgpreferences.h"
-//#include "trackplaylist.h"
-#include "recording/recordingmanager.h"
+// REMOVE ME
+#include <QtDebug>
+#include <QResizeEvent>
 
 class EngineMaster;
-class PlayerManager;
-class LibraryScanner;
-class AnalyserQueue;
 class Library;
-class MidiDeviceManager;
+class LibraryScanner;
+class ControllerManager;
 class MixxxKeyboard;
+class PlayerManager;
+class RecordingManager;
 class SkinLoader;
 class EffectsManager;
-
 class VinylControlManager;
+class CmdlineArgs;
+
+class DlgPreferences;
+class SoundManager;
+
+#include "configobject.h"
 
 /**
   * This Class is the base class for Mixxx. It sets up the main
@@ -62,27 +51,26 @@ class VinylControlManager;
   * For the main view, an instance of class MixxxView is
   * created which creates your view.
   */
-class MixxxApp : public QMainWindow
-{
+class MixxxApp : public QMainWindow {
     Q_OBJECT
 
   public:
     /** Construtor. files is a list of command line arguments */
-    MixxxApp(QApplication *app, struct CmdlineArgs args);
-    /** destructor */
+    MixxxApp(QApplication *app, const CmdlineArgs& args);
     virtual ~MixxxApp();
     /** initializes all QActions of the application */
     void initActions();
     /** initMenuBar creates the menu_bar and inserts the menuitems */
     void initMenuBar();
-    /** overloaded for Message box on last window exit */
-    bool queryExit();
+
+    void resizeEvent(QResizeEvent *e) { qDebug() << "resize" << e->size();}
 
     void rebootMixxxView();
 
   public slots:
 
     //void slotQuitFullScreen();
+    void slotFileLoadSongPlayer(int deck);
     /** Opens a file in player 1 */
     void slotFileLoadSongPlayer1();
     /** Opens a file in player 2 */
@@ -90,8 +78,6 @@ class MixxxApp : public QMainWindow
     /** exits the application */
     void slotFileQuit();
 
-    /** toggle audio beat marks */
-    void slotOptionsBeatMark(bool toggle);
     /** toggle vinyl control - Don't #ifdef this because MOC is dumb**/
     void slotControlVinylControl(double toggle);
     void slotCheckboxVinylControl(bool toggle);
@@ -99,6 +85,8 @@ class MixxxApp : public QMainWindow
     void slotCheckboxVinylControl2(bool toggle);
     /** toggle recording - Don't #ifdef this because MOC is dumb**/
     void slotOptionsRecord(bool toggle);
+    /** toogle keyboard on-off */
+    void slotOptionsKeyboard(bool toggle);
     /** toogle full screen mode */
     void slotOptionsFullScreen(bool toggle);
     /** Preference dialog */
@@ -109,12 +97,10 @@ class MixxxApp : public QMainWindow
     void slotHelpSupport();
     // Visits a feedback form
     void slotHelpFeedback();
+    // Open the manual.
+    void slotHelpManual();
     // Visits translation interface on launchpad.net
     void slotHelpTranslation();
-    /** Change of file to play */
-    //void slotChangePlay(int,int,int, const QPoint &);
-
-    void slotlibraryMenuAboutToShow();
     /** Scan or rescan the music library directory */
     void slotScanLibrary();
     /** Enables the "Rescan Library" menu item. This gets disabled when a scan is running.*/
@@ -123,6 +109,8 @@ class MixxxApp : public QMainWindow
     void slotOptionsMenuShow();
     /** toggles Livebroadcasting **/
     void slotOptionsShoutcast(bool value);
+
+    void slotToCenterOfPrimaryScreen();
 
   protected:
     /** Event filter to block certain events (eg. tooltips if tooltips are disabled) */
@@ -136,8 +124,6 @@ class MixxxApp : public QMainWindow
     // Pointer to the root GUI widget
     QWidget* m_pView;
     QWidget* m_pWidgetParent;
-
-    QApplication *m_pApp;
 
     // The effects processing system
     EffectsManager* m_pEffectsManager;
@@ -155,8 +141,7 @@ class MixxxApp : public QMainWindow
     PlayerManager* m_pPlayerManager;
     // RecordingManager
     RecordingManager* m_pRecordingManager;
-
-    MidiDeviceManager* m_pMidiDeviceManager;
+    ControllerManager *m_pControllerManager;
 
     ConfigObject<ConfigValue>* m_pConfig;
 
@@ -184,34 +169,27 @@ class MixxxApp : public QMainWindow
     QAction *m_pFileLoadSongPlayer1;
     QAction *m_pFileLoadSongPlayer2;
     QAction *m_pFileQuit;
-
     QAction *m_pPlaylistsNew;
     QAction *m_pCratesNew;
-    QAction *m_pPlaylistsImport;
-    QAction **m_pPlaylistsList;
-
-    QAction *m_pBatchBpmDetect;
-
     QAction *m_pLibraryRescan;
-
-    QAction *m_pOptionsBeatMark;
-
 #ifdef __VINYLCONTROL__
     QMenu *m_pVinylControlMenu;
     QAction *m_pOptionsVinylControl;
     QAction *m_pOptionsVinylControl2;
 #endif
     QAction *m_pOptionsRecord;
+    QAction *m_pOptionsKeyboard;
     QAction *m_pOptionsFullScreen;
     QAction *m_pOptionsPreferences;
 #ifdef __SHOUTCAST__
     QAction *m_pOptionsShoutcast;
 #endif
-
     QAction *m_pHelpAboutApp;
     QAction *m_pHelpSupport;
     QAction *m_pHelpFeedback;
     QAction *m_pHelpTranslation;
+    QAction *m_pHelpManual;
+
     int m_iNoPlaylists;
 
     /** Pointer to preference dialog */
@@ -221,14 +199,72 @@ class MixxxApp : public QMainWindow
     int noOutputDlg(bool *continueClicked);
     // Fullscreen patch
     QPoint m_winpos;
+    bool m_NativeMenuBarSupport;
+
+    ConfigObject<ConfigValueKbd>* m_pKbdConfig;
+    ConfigObject<ConfigValueKbd>* m_pKbdConfigEmpty;
 };
 
 //A structure to store the parsed command-line arguments
-struct CmdlineArgs
+class CmdlineArgs
 {
-    QList<QString> qlMusicFiles;    /* List of files to load into players at startup */
-    bool bStartInFullscreen;        /* Start in fullscreen mode */
-    QString locale;
+public:
+    static CmdlineArgs& Instance() {
+        static CmdlineArgs cla;
+        return cla;
+    }
+    bool Parse(int &argc, char **argv) {
+        for (int i = 0; i < argc; ++i) {
+            if (   argv[i] == QString("-h")
+                || argv[i] == QString("--h")
+                || argv[i] == QString("--help")) {
+                return false; // Display Help Message
+            }
+
+            if (argv[i]==QString("-f").toLower() || argv[i]==QString("--f") || argv[i]==QString("--fullScreen"))
+            {
+                m_startInFullscreen = true;
+            } else if (argv[i] == QString("--locale") && i+1 < argc) {
+                m_locale = argv[i+1];
+            } else if (argv[i] == QString("--settingsPath") && i+1 < argc) {
+                m_settingsPath = QString::fromLocal8Bit(argv[i+1]);
+                if (!m_settingsPath.endsWith("/")) {
+                    m_settingsPath.append("/");
+                }
+            } else if (argv[i] == QString("--resourcePath") && i+1 < argc) {
+                m_resourcePath = QString::fromLocal8Bit(argv[i+1]);
+            } else if (argv[i] == QString("--pluginPath") && i+1 < argc) {
+                m_pluginPath = QString::fromLocal8Bit(argv[i+1]);
+            } else if (QString::fromLocal8Bit(argv[i]).contains("--midiDebug", Qt::CaseInsensitive)) {
+                m_midiDebug = true;
+            } else {
+                m_musicFiles += QString::fromLocal8Bit(argv[i]);
+            }
+        }
+        return true;
+    }
+    const QList<QString>& getMusicFiles() const { return m_musicFiles; };
+    bool getStartInFullscreen() const { return m_startInFullscreen; };
+    bool getMidiDebug() const { return m_midiDebug; };
+    const QString& getLocale() const { return m_locale; };
+    const QString& getSettingsPath() const { return m_settingsPath; };
+    const QString& getResourcePath() const { return m_resourcePath; };
+    const QString& getPluginPath() const { return m_pluginPath; };
+
+private:
+    CmdlineArgs() :
+        m_startInFullscreen(false), //Initialize vars
+        m_midiDebug(false),
+        m_settingsPath(QDir::homePath().append("/").append(SETTINGS_PATH)) {
+    }
+    ~CmdlineArgs() { };
+    QList<QString> m_musicFiles;    /* List of files to load into players at startup */
+    bool m_startInFullscreen;       /* Start in fullscreen mode */
+    bool m_midiDebug;
+    QString m_locale;
+    QString m_settingsPath;
+    QString m_resourcePath;
+    QString m_pluginPath;
 };
 
 

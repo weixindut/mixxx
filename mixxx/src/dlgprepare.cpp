@@ -12,7 +12,7 @@
 DlgPrepare::DlgPrepare(QWidget* parent,
                        ConfigObject<ConfigValue>* pConfig,
                        TrackCollection* pTrackCollection)
-        : QWidget(parent), Ui::DlgPrepare(),
+        : QWidget(parent),
           m_pConfig(pConfig),
           m_pTrackCollection(pTrackCollection),
           m_bAnalysisActive(false) {
@@ -88,8 +88,9 @@ DlgPrepare::~DlgPrepare() {
 
 void DlgPrepare::onShow()
 {
-    //Refresh crates
-    //m_pCratesTableModel->select();
+    // Refresh table
+    // There might be new tracks dropped to other views
+    m_pPrepareLibraryTableModel->select();
 }
 
 void DlgPrepare::setup(QDomNode node)

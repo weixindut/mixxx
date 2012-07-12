@@ -7,19 +7,26 @@
 #include "engine/enginepassthrough.h"
 
 #include "configobject.h"
+#include "engine/enginestate.h"
 #include "sampleutil.h"
 
-EnginePassthrough::EnginePassthrough(const char* pGroup)
-        : EngineChannel(pGroup, EngineChannel::CENTER),
-          m_clipping(pGroup),
-          m_vuMeter(pGroup),
-          m_pEnabled(new ControlObject(ConfigKey(pGroup, "passthrough_enabled"))),
-          m_pPassing(new ControlPushButton(ConfigKey(pGroup, "passthrough_passing"))),
+EnginePassthrough::EnginePassthrough(const char* pGroup,
+                                     EngineState* pEngineState)
+        : EngineChannel(pGroup, EngineChannel::CENTER, pEngineState),
+          m_clipping(pGroup, pEngineState),
+          m_vuMeter(pGroup, pEngineState),
           m_pConversionBuffer(SampleUtil::alloc(MAX_BUFFER_LEN)),
           // Need a +1 here because the CircularBuffer only allows its size-1
           // items to be held at once (it keeps a blank spot open persistently)
           m_sampleBuffer(MAX_BUFFER_LEN+1) {
-    m_pPassing->setToggleButton(true);
+    CallbackControlManager* pCallbackControlManager =
+            pEngineState->getControlManager();
+    m_pEnabled = pCallbackControlManager->addControl(
+        new ControlObject(ConfigKey(pGroup, "passthrough_enabled")), 1);
+    ControlPushButton* pPassing = new ControlPushButton(
+        ConfigKey(pGroup, "passthrough_passing"));
+    pPassing->setButtonMode(ControlPushButton::TOGGLE);
+    m_pPassing = pCallbackControlManager->addControl(pPassing, 1);
 }
 
 EnginePassthrough::~EnginePassthrough() {
@@ -62,8 +69,8 @@ void EnginePassthrough::onInputDisconnected(AudioInput input) {
     m_pEnabled->set(0.0f);
 }
 
-void EnginePassthrough::receiveBuffer(AudioInput input, const short* pBuffer, unsigned int nFrames) {
-
+void EnginePassthrough::receiveBuffer(AudioInput input, const short* pBuffer,
+                                      unsigned int nFrames) {
     if (input.getType() != AudioPath::EXTPASSTHROUGH) {
         // This is an error!
         qDebug() << "WARNING: EnginePassthrough receieved an AudioInput for a non-passthrough type!";
@@ -85,17 +92,21 @@ void EnginePassthrough::receiveBuffer(AudioInput input, const short* pBuffer, un
     // SampleUtil::convert(m_pConversionBuffer, pBuffer, iNumSamples);
     SampleUtil::convert(m_pConversionBuffer, pBuffer, nFrames*2);
 
-    // TODO(rryan) (or bkgood?) do we need to verify the input is the one we asked for? Oh well.
-    unsigned int samplesWritten = m_sampleBuffer.write(m_pConversionBuffer, nFrames*2);
+    // TODO(rryan) (or bkgood?) do we need to verify the input is the one we
+    // asked for? Oh well.
+    unsigned int samplesWritten = m_sampleBuffer.write(m_pConversionBuffer,
+                                                       nFrames*2);
+
     if (samplesWritten < nFrames*2) {
         // Buffer overflow. We aren't processing samples fast enough. This
-        // shouldn't happen since the deck spits out samples just as fast as they
-        // come in, right?
-        Q_ASSERT(false);
+        // shouldn't happen since the deck spits out samples just as fast as
+        // they come in, right?
+        qWarning() << "Passthrough buffer overflow";
     }
 }
 
-void EnginePassthrough::process(const CSAMPLE* pInput, const CSAMPLE* pOutput, const int iBufferSize) {
+void EnginePassthrough::process(const CSAMPLE* pInput, const CSAMPLE* pOutput,
+                                const int iBufferSize) {
     CSAMPLE* pOut = const_cast<CSAMPLE*>(pOutput);
     Q_UNUSED(pInput);
 
@@ -105,9 +116,9 @@ void EnginePassthrough::process(const CSAMPLE* pInput, const CSAMPLE* pOutput, c
         int samplesRead = m_sampleBuffer.read(pOut, iBufferSize);
         if (samplesRead < iBufferSize) {
             // Buffer underflow. There aren't getting samples fast enough. This
-            // shouldn't happen since PortAudio should feed us samples just as fast
-            // as we consume them, right?
-            Q_ASSERT(false);
+            // shouldn't happen since PortAudio should feed us samples just as
+            // fast as we consume them, right?
+            qWarning() << "Passthrough buffer underflow";
         }
     } else {
         SampleUtil::applyGain(pOut, 0.0, iBufferSize);

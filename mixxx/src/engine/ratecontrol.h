@@ -6,7 +6,6 @@
 
 #include <QObject>
 
-#include "configobject.h"
 #include "engine/enginecontrol.h"
 
 const int RATE_TEMP_STEP = 500;
@@ -15,10 +14,8 @@ const int RATE_SENSITIVITY_MIN = 100;
 const int RATE_SENSITIVITY_MAX = 2500;
 
 class Rotary;
-class ControlTTRotary;
-class ControlObject;
-class ControlPotmeter;
-class ControlPushButton;
+class EngineState;
+class CallbackControl;
 class PositionScratchController;
 
 // RateControl is an EngineControl that is in charge of managing the rate of
@@ -26,8 +23,8 @@ class PositionScratchController;
 // various controls, RateControl will calculate the current rate.
 class RateControl : public EngineControl {
     Q_OBJECT
-public:
-    RateControl(const char* _group, ConfigObject<ConfigValue>* _config);
+  public:
+    RateControl(const char* _group, EngineState* pEngineState);
     virtual ~RateControl();
 
     // Must be called during each callback of the audio thread so that
@@ -37,7 +34,8 @@ public:
                    const double totalSamples,
                    const int bufferSamples);
     // Returns the current engine rate.
-    double calculateRate(double baserate, bool paused, int iSamplesPerBuffer, bool* isScratching);
+    double calculateRate(double baserate, bool paused, int iSamplesPerBuffer,
+                         bool* isScratching);
     double getRawRate();
 
     // Set rate change when temp rate button is pressed
@@ -49,9 +47,9 @@ public:
     // Set rate change when perm rate small button is pressed
     static void setPermSmall(double v);
     /** Set Rate Ramp Mode */
-    static void setRateRamp(bool);
+    static void setRateRamp(bool bRateRampEnabled);
     /** Set Rate Ramp Sensitivity */
-    static void setRateRampSensitivity(int);
+    static void setRateRampSensitivity(int iSensitivity);
     virtual void notifySeek(double dNewPlaypos);
 
   public slots:
@@ -66,6 +64,7 @@ public:
     void slotControlFastForward(double);
     void slotControlFastBack(double);
     void slotControlVinyl(double);
+    void slotControlVinylScratching(double);
 
   private:
     double getJogFactor();
@@ -83,31 +82,36 @@ public:
     double getTempRate(void);
     /** Is vinyl control enabled? **/
     bool m_bVinylControlEnabled;
+    bool m_bVinylControlScratching;
 
     /** Values used when temp and perm rate buttons are pressed */
     static double m_dTemp, m_dTempSmall, m_dPerm, m_dPermSmall;
 
-    ControlPushButton *buttonRateTempDown, *buttonRateTempDownSmall,
-        *buttonRateTempUp, *buttonRateTempUpSmall;
-    ControlPushButton *buttonRatePermDown, *buttonRatePermDownSmall,
-        *buttonRatePermUp, *buttonRatePermUpSmall;
-    ControlObject *m_pRateDir, *m_pRateRange;
-    ControlPotmeter* m_pRateSlider;
-    ControlPotmeter* m_pRateSearch;
-    ControlPushButton* m_pReverseButton;
-    ControlObject* m_pBackButton;
-    ControlObject* m_pForwardButton;
+    CallbackControl* buttonRateTempDown;
+    CallbackControl* buttonRateTempDownSmall;
+    CallbackControl* buttonRateTempUp;
+    CallbackControl* buttonRateTempUpSmall;
+    CallbackControl* buttonRatePermDown;
+    CallbackControl* buttonRatePermDownSmall;
+    CallbackControl* buttonRatePermUp;
+    CallbackControl* buttonRatePermUpSmall;
+    CallbackControl* m_pRateDir;
+    CallbackControl* m_pRateRange;
+    CallbackControl* m_pRateSlider;
+    CallbackControl* m_pRateSearch;
+    CallbackControl* m_pReverseButton;
 
-    ControlTTRotary* m_pWheel;
-    ControlTTRotary* m_pScratch;
-    ControlTTRotary* m_pOldScratch;
+    CallbackControl* m_pWheel;
+    CallbackControl* m_pScratch;
+    CallbackControl* m_pOldScratch;
     PositionScratchController* m_pScratchController;
 
-    ControlPushButton* m_pScratchToggle;
-    ControlObject* m_pJog;
+    CallbackControl* m_pScratchToggle;
+    CallbackControl* m_pJog;
     Rotary* m_pJogFilter;
 
-    ControlObject *m_pSampleRate;
+    // Not owned by RateControl
+    CallbackControl *m_pSampleRate;
 
     // Enumerations which hold the state of the pitchbend buttons.
     // These enumerations can be used like a bitmask.

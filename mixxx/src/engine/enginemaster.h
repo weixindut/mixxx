@@ -18,9 +18,8 @@
 #ifndef ENGINEMASTER_H
 #define ENGINEMASTER_H
 
-#include <QMap>
-
-#include "controlobject.h"
+#include "engine/enginestate.h"
+#include "engine/callbackcontrolmanager.h"
 #include "engine/engineobject.h"
 #include "engine/enginechannel.h"
 #include "soundmanagerutil.h"
@@ -39,8 +38,6 @@ class EngineLADSPA;
 class EngineEffectsUnits;
 #endif
 class EngineVuMeter;
-class ControlPotmeter;
-class ControlPushButton;
 class EngineVinylSoundEmu;
 class EngineSideChain;
 class EffectsManager;
@@ -51,7 +48,8 @@ class EngineMaster : public EngineObject, public AudioSource {
   public:
     EngineMaster(ConfigObject<ConfigValue>* pConfig,
                  const char* pGroup,
-                 EffectsManager* pEffectsManager);
+                 EffectsManager* pEffectsManager,
+                 bool bEnableSidechain);
     virtual ~EngineMaster();
 
     // Get access to the sample buffers. None of these are thread safe. Only to
@@ -96,6 +94,10 @@ class EngineMaster : public EngineObject, public AudioSource {
     const CSAMPLE* getDeckBuffer(unsigned int i) const;
     const CSAMPLE* getChannelBuffer(QString name) const;
 
+    inline EngineState* getState() {
+        return &m_state;
+    }
+
   signals:
     void bytesRecorded(int);
     void isRecording(bool);
@@ -104,7 +106,7 @@ class EngineMaster : public EngineObject, public AudioSource {
     struct ChannelInfo {
         EngineChannel* m_pChannel;
         CSAMPLE* m_pBuffer;
-        ControlObject* m_pVolumeControl;
+        CallbackControl* m_pVolumeControl;
     };
 
     class GainCalculator {
@@ -146,6 +148,9 @@ class EngineMaster : public EngineObject, public AudioSource {
     void mixChannels(unsigned int channelBitvector, unsigned int maxChannels,
                      CSAMPLE* pOutput, unsigned int iBufferSize, GainCalculator* pGainCalculator);
 
+    EngineState m_state;
+    CallbackControlManager& m_callbackControlManager;
+    CallbackTrackManager& m_callbackTrackManager;
     EffectsManager* m_pEffectsManager;
     QList<ChannelInfo*> m_channels;
 
@@ -154,11 +159,11 @@ class EngineMaster : public EngineObject, public AudioSource {
     EngineWorkerScheduler *m_pWorkerScheduler;
     SyncWorker* m_pSyncWorker;
 
-    ControlObject* m_pMasterVolume;
-    ControlObject* m_pHeadVolume;
-    ControlObject* m_pMasterSampleRate;
-    ControlObject* m_pMasterLatency;
-    ControlPotmeter* m_pMasterRate;
+    CallbackControl* m_pMasterVolume;
+    CallbackControl* m_pHeadVolume;
+    CallbackControl* m_pMasterSampleRate;
+    CallbackControl* m_pMasterLatency;
+    CallbackControl* m_pMasterRate;
     EngineClipping *clipping, *head_clipping;
 
 #ifdef __LADSPA__
@@ -171,8 +176,12 @@ class EngineMaster : public EngineObject, public AudioSource {
     EngineVuMeter *vumeter;
     EngineSideChain *sidechain;
 
-    ControlPotmeter *crossfader, *head_mix,
-        *m_pBalance, *xFaderCurve, *xFaderCalibration;
+    CallbackControl* crossfader;
+    CallbackControl* head_mix;
+    CallbackControl* m_pBalance;
+    CallbackControl* xFaderMode;
+    CallbackControl* xFaderCurve;
+    CallbackControl* xFaderCalibration;
 
     ConstantGainCalculator m_headphoneGain;
     OrientationVolumeGainCalculator m_masterGain;

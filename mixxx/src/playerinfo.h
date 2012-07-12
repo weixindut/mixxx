@@ -20,7 +20,7 @@
 #include <QObject>
 #include <QMutex>
 #include <QMap>
-
+#include <QTimerEvent>
 
 class ControlObjectThread;
 
@@ -35,12 +35,20 @@ class PlayerInfo : public QObject
     void setTrackInfo(QString group, TrackPointer trackInfoObj);
     int getCurrentPlayingDeck();
     TrackPointer getCurrentPlayingTrack();
+    bool isTrackLoaded(TrackPointer pTrack) const;
+
+  signals:
+    void currentPlayingDeckChanged(int deck);
+
   private:
+    void timerEvent(QTimerEvent* pTimerEvent);
+    void updateCurrentPlayingDeck();
+
     PlayerInfo();
     ~PlayerInfo();
     PlayerInfo(PlayerInfo const&);
     PlayerInfo &operator= (PlayerInfo const&);
-    QMutex m_mutex;
+    mutable QMutex m_mutex;
     int m_iNumDecks;
     ControlObjectThread* m_COxfader;
     QMap<QString, TrackPointer> m_loadedTrackMap;
@@ -48,6 +56,8 @@ class PlayerInfo : public QObject
     QMap<QString, ControlObjectThread*> m_listCOVolume;
     QMap<QString, ControlObjectThread*> m_listCOOrientation;
     QMap<QString, ControlObjectThread*> m_listCOpregain;
+
+    int m_currentlyPlayingDeck;
 };
 
 #endif

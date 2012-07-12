@@ -6,18 +6,26 @@
 #include "engine/enginemicrophone.h"
 
 #include "configobject.h"
+#include "engine/enginestate.h"
 #include "sampleutil.h"
 
-EngineMicrophone::EngineMicrophone(const char* pGroup)
-        : EngineChannel(pGroup, EngineChannel::CENTER),
-          m_clipping(pGroup),
-          m_vuMeter(pGroup),
-          m_pEnabled(new ControlObject(ConfigKey(pGroup, "enabled"))),
-          m_pControlTalkover(new ControlPushButton(ConfigKey(pGroup, "talkover"))),
+EngineMicrophone::EngineMicrophone(const char* pGroup,
+                                   EngineState* pEngineState)
+        : EngineChannel(pGroup, EngineChannel::CENTER, pEngineState),
+          m_clipping(pGroup, pEngineState),
+          m_vuMeter(pGroup, pEngineState),
           m_pConversionBuffer(SampleUtil::alloc(MAX_BUFFER_LEN)),
           // Need a +1 here because the CircularBuffer only allows its size-1
           // items to be held at once (it keeps a blank spot open persistently)
           m_sampleBuffer(MAX_BUFFER_LEN+1) {
+
+    CallbackControlManager* pCallbackControlManager =
+            pEngineState->getControlManager();
+    m_pEnabled = pCallbackControlManager->addControl(
+        new ControlObject(ConfigKey(pGroup, "enabled")), 1);
+    ControlPushButton* pControlTalkover = new ControlPushButton(ConfigKey(pGroup, "talkover"));
+    pControlTalkover->setButtonMode(ControlPushButton::POWERWINDOW);
+    m_pControlTalkover = pCallbackControlManager->addControl(pControlTalkover, 1);
 }
 
 EngineMicrophone::~EngineMicrophone() {

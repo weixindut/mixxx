@@ -6,6 +6,7 @@
 
 #include "controlobjectthreadmain.h"
 #include "controlobject.h"
+#include "controlpotmeter.h"
 #include "trackinfoobject.h"
 #include "engine/enginebuffer.h"
 #include "engine/enginedeck.h"
@@ -14,14 +15,17 @@
 #include "engine/cuecontrol.h"
 #include "engine/clockcontrol.h"
 #include "mathstuff.h"
-#include "waveform/waveformrenderer.h"
+#include "track/beatgrid.h"
+#include "waveform/renderers/waveformwidgetrenderer.h"
 
 BaseTrackPlayer::BaseTrackPlayer(QObject* pParent,
                                  ConfigObject<ConfigValue> *pConfig,
                                  EngineMaster* pMixingEngine,
                                  EngineChannel::ChannelOrientation defaultOrientation,
+                                 AnalyserQueue* pAnalyserQueue,
                                  QString group)
         : BasePlayer(pParent, group),
+          m_pAnalyserQueue(pAnalyserQueue),
           m_pConfig(pConfig),
           m_pLoadedTrack() {
     // Need to strdup the string because EngineChannel will save the pointer,
@@ -29,28 +33,26 @@ BaseTrackPlayer::BaseTrackPlayer(QObject* pParent,
     // pSafeGroupName is leaked. It's like 5 bytes so whatever.
     const char* pSafeGroupName = strdup(getGroup().toAscii().constData());
 
-    EngineDeck* pChannel = new EngineDeck(
-        pSafeGroupName, pConfig, pMixingEngine->getEffectsManager(),
-        defaultOrientation);
-
+    EngineDeck* pChannel = new EngineDeck(pSafeGroupName, pConfig,
+                                          pMixingEngine,
+                                          defaultOrientation);
     EngineBuffer* pEngineBuffer = pChannel->getEngineBuffer();
     pMixingEngine->addChannel(pChannel);
 
-    ClockControl* pClockControl = new ClockControl(pSafeGroupName, pConfig);
+    ClockControl* pClockControl = new ClockControl(pSafeGroupName,
+                                                   pMixingEngine->getState());
     pEngineBuffer->addControl(pClockControl);
 
-    CueControl* pCueControl = new CueControl(pSafeGroupName, pConfig);
-    connect(this, SIGNAL(newTrackLoaded(TrackPointer)),
-            pCueControl, SLOT(loadTrack(TrackPointer)));
-    connect(this, SIGNAL(unloadingTrack(TrackPointer)),
-            pCueControl, SLOT(unloadTrack(TrackPointer)));
+    CueControl* pCueControl = new CueControl(pSafeGroupName,
+                                             pMixingEngine->getState());
     pEngineBuffer->addControl(pCueControl);
 
     // Connect our signals and slots with the EngineBuffer's signals and
     // slots. This will let us know when the reader is done loading a track, and
     // let us request that the reader load a track.
     connect(this, SIGNAL(loadTrack(TrackPointer)),
-            pEngineBuffer, SLOT(slotLoadTrack(TrackPointer)));
+            pEngineBuffer, SLOT(slotLoadTrackFromGuiThread(TrackPointer)),
+            Qt::DirectConnection);
     connect(pEngineBuffer, SIGNAL(trackLoaded(TrackPointer)),
             this, SLOT(slotFinishLoading(TrackPointer)));
     connect(pEngineBuffer, SIGNAL(trackLoadFailed(TrackPointer, QString)),
@@ -58,7 +60,8 @@ BaseTrackPlayer::BaseTrackPlayer(QObject* pParent,
     connect(pEngineBuffer, SIGNAL(trackUnloaded(TrackPointer)),
             this, SLOT(slotUnloadTrack(TrackPointer)));
 
-    //Get cue point control object
+    m_pPlayButton = new ControlObjectThreadMain(
+        ControlObject::getControl(ConfigKey(getGroup(), "play")));
     m_pCuePoint = new ControlObjectThreadMain(
         ControlObject::getControl(ConfigKey(getGroup(),"cue_point")));
     // Get loop point control objects
@@ -73,21 +76,23 @@ BaseTrackPlayer::BaseTrackPlayer(QObject* pParent,
     // Duration of the current song, we create this one because nothing else does.
     m_pDuration = new ControlObject(ConfigKey(getGroup(), "duration"));
 
+    // Waveform controls
+    m_pWaveformZoom = new ControlPotmeter(ConfigKey(group, "waveform_zoom"),
+                                          WaveformWidgetRenderer::s_waveformMinZoom,
+                                          WaveformWidgetRenderer::s_waveformMaxZoom);
+    m_pWaveformZoom->set(1.0);
+    m_pWaveformZoom->setStep(1.0);
+    m_pWaveformZoom->setSmallStep(1.0);
+
+    m_pEndOfTrack = new ControlObject(ConfigKey(group,"end_of_track"));
+    m_pEndOfTrack->set(0.);
+
     //BPM of the current song
     m_pBPM = new ControlObjectThreadMain(
         ControlObject::getControl(ConfigKey(getGroup(), "file_bpm")));
 
     m_pReplayGain = new ControlObjectThreadMain(
         ControlObject::getControl(ConfigKey(getGroup(), "replaygain")));
-
-    // Create WaveformRenderer last, because it relies on controls created above
-    // (e.g. EngineBuffer)
-
-    m_pWaveformRenderer = new WaveformRenderer(pSafeGroupName);
-    connect(this, SIGNAL(newTrackLoaded(TrackPointer)),
-            m_pWaveformRenderer, SLOT(slotNewTrack(TrackPointer)));
-    connect(this, SIGNAL(unloadingTrack(TrackPointer)),
-            m_pWaveformRenderer, SLOT(slotUnloadTrack(TrackPointer)));
 }
 
 BaseTrackPlayer::~BaseTrackPlayer()
@@ -97,13 +102,15 @@ BaseTrackPlayer::~BaseTrackPlayer()
         m_pLoadedTrack.clear();
     }
 
+    delete m_pWaveformZoom;
+    delete m_pEndOfTrack;
+    delete m_pPlayButton;
     delete m_pCuePoint;
     delete m_pLoopInPoint;
     delete m_pLoopOutPoint;
     delete m_pPlayPosition;
     delete m_pBPM;
     delete m_pReplayGain;
-    delete m_pWaveformRenderer;
     delete m_pDuration;
 }
 
@@ -155,12 +162,19 @@ void BaseTrackPlayer::slotLoadTrack(TrackPointer track, bool bStartFromEndPos)
     connect(m_pLoadedTrack.data(), SIGNAL(ReplayGainUpdated(double)),
             m_pReplayGain, SLOT(slotSet(double)));
 
-    //Request a new track from the reader
+    // Stop playback
+    m_pPlayButton->slotSet(0.0);
+
+    // Request a new track from the reader
     emit(loadTrack(track));
 }
 
 void BaseTrackPlayer::slotLoadFailed(TrackPointer track, QString reason) {
-    qDebug() << "Failed to load track" << track->getLocation() << reason;
+    if (track != NULL) {
+        qDebug() << "Failed to load track" << track->getLocation() << reason;
+    } else {
+        qDebug() << "Failed to load track (NULL track object)" << reason;
+    }
     // Alert user.
     QMessageBox::warning(NULL, tr("Couldn't load track."), reason);
 }
@@ -196,17 +210,9 @@ void BaseTrackPlayer::slotFinishLoading(TrackPointer pTrackInfoObject)
     if(!m_pLoadedTrack->getHeaderParsed())
         SoundSourceProxy::ParseHeader(m_pLoadedTrack.data());
 
-    m_pLoadedTrack->setPlayed(true);
+    // m_pLoadedTrack->setPlayedAndUpdatePlaycount(true); // Actually the song is loaded but not played
 
-    // Generate waveform summary
-    //TODO: Consider reworking this visual resample stuff... need to ask rryan about this -- Albert.
-    // TODO(rryan) : fix this crap -- the waveform renderers should be owned by
-    // Player so they can just set this directly or something.
-    ControlObjectThreadMain* pVisualResampleCO = new ControlObjectThreadMain(ControlObject::getControl(ConfigKey(getGroup(),"VisualResample")));
-    m_pLoadedTrack->setVisualResampleRate(pVisualResampleCO->get());
-    delete pVisualResampleCO;
-
-    //Update the BPM and duration values that are stored in ControlObjects
+    // Update the BPM and duration values that are stored in ControlObjects
     m_pDuration->set(m_pLoadedTrack->getDuration());
     m_pBPM->slotSet(m_pLoadedTrack->getBpm());
     m_pReplayGain->slotSet(m_pLoadedTrack->getReplayGain());
@@ -237,8 +243,8 @@ void BaseTrackPlayer::slotFinishLoading(TrackPointer pTrackInfoObject)
     emit(newTrackLoaded(m_pLoadedTrack));
 }
 
-WaveformRenderer* BaseTrackPlayer::getWaveformRenderer() const {
-    return m_pWaveformRenderer;
+AnalyserQueue* BaseTrackPlayer::getAnalyserQueue() const {
+    return m_pAnalyserQueue;
 }
 
 TrackPointer BaseTrackPlayer::getLoadedTrack() const {

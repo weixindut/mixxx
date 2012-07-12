@@ -19,19 +19,26 @@
 #endif
 
 #include "engine/enginevumeter.h"
+
+#include "engine/enginestate.h"
 #include "controlpotmeter.h"
 #include "sampleutil.h"
 
-EngineVuMeter::EngineVuMeter(const char * group) {
+EngineVuMeter::EngineVuMeter(const char* group, EngineState* pEngineState) {
+    CallbackControlManager* pCallbackControlManager =
+            pEngineState->getControlManager();
     // The VUmeter widget is controlled via a controlpotmeter, which means
     // that it should react on the setValue(int) signal.
-    m_ctrlVuMeter = new ControlPotmeter(ConfigKey(group, "VuMeter"), 0., 1.);
+    m_ctrlVuMeter = pCallbackControlManager->addControl(
+        new ControlPotmeter(ConfigKey(group, "VuMeter"), 0., 1.), 1);
     m_ctrlVuMeter->set(0);
     // left channel VU meter
-    m_ctrlVuMeterL = new ControlPotmeter(ConfigKey(group, "VuMeterL"), 0., 1.);
+    m_ctrlVuMeterL = pCallbackControlManager->addControl(
+        new ControlPotmeter(ConfigKey(group, "VuMeterL"), 0., 1.), 1);
     m_ctrlVuMeterL->set(0);
     // right channel VU meter
-    m_ctrlVuMeterR = new ControlPotmeter(ConfigKey(group, "VuMeterR"), 0., 1.);
+    m_ctrlVuMeterR = pCallbackControlManager->addControl(
+        new ControlPotmeter(ConfigKey(group, "VuMeterR"), 0., 1.), 1);
     m_ctrlVuMeterR->set(0);
 
     // Initialize the calculation:
@@ -42,16 +49,14 @@ EngineVuMeter::EngineVuMeter(const char * group) {
     m_fRMSvolumeSumR = 0;
 }
 
-EngineVuMeter::~EngineVuMeter()
-{
+EngineVuMeter::~EngineVuMeter() {
     delete m_ctrlVuMeter;
     delete m_ctrlVuMeterL;
     delete m_ctrlVuMeterR;
 }
 
-void EngineVuMeter::process(const CSAMPLE * pIn, const CSAMPLE *, const int iBufferSize)
-{
-
+void EngineVuMeter::process(const CSAMPLE * pIn, const CSAMPLE *,
+                            const int iBufferSize) {
     CSAMPLE fVolSumL, fVolSumR;
     SampleUtil::sumAbsPerChannel(&fVolSumL, &fVolSumR, pIn, iBufferSize);
     m_fRMSvolumeSumL += fVolSumL;
@@ -60,10 +65,11 @@ void EngineVuMeter::process(const CSAMPLE * pIn, const CSAMPLE *, const int iBuf
     m_iSamplesCalculated += iBufferSize/2;
 
     // Are we ready to update the VU meter?:
-    if (m_iSamplesCalculated > (44100/2/UPDATE_RATE) )
-    {
-        doSmooth(m_fRMSvolumeL, log10(m_fRMSvolumeSumL/(m_iSamplesCalculated*1000)+1));
-        doSmooth(m_fRMSvolumeR, log10(m_fRMSvolumeSumR/(m_iSamplesCalculated*1000)+1));
+    if (m_iSamplesCalculated > (44100/2/UPDATE_RATE)) {
+        doSmooth(m_fRMSvolumeL,
+                 log10(m_fRMSvolumeSumL/(m_iSamplesCalculated*1000)+1));
+        doSmooth(m_fRMSvolumeR,
+                 log10(m_fRMSvolumeSumR/(m_iSamplesCalculated*1000)+1));
 
         const double epsilon = .0001;
 
@@ -87,15 +93,13 @@ void EngineVuMeter::process(const CSAMPLE * pIn, const CSAMPLE *, const int iBuf
     }
 }
 
-
-void EngineVuMeter::doSmooth(FLOAT_TYPE &currentVolume, FLOAT_TYPE newVolume)
-{
+void EngineVuMeter::doSmooth(FLOAT_TYPE &currentVolume, FLOAT_TYPE newVolume) {
     if (currentVolume > newVolume)
         currentVolume -= DECAY_SMOOTHING * (currentVolume - newVolume);
     else
         currentVolume += ATTACK_SMOOTHING * (newVolume - currentVolume);
     if (currentVolume < 0)
-        currentVolume=0;
+        currentVolume = 0;
     if (currentVolume > 1.0)
-        currentVolume=1.0;
+        currentVolume = 1.0;
 }

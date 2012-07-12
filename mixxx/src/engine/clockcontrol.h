@@ -1,18 +1,19 @@
 #ifndef CLOCKCONTROL_H
 #define CLOCKCONTROL_H
 
-#include "configobject.h"
 #include "engine/enginecontrol.h"
-
-#include "trackinfoobject.h"
 #include "track/beats.h"
+#include "trackinfoobject.h"
+
+class EngineState;
+class CallbackControl;
+class CallbackTrackWatcher;
 
 class ClockControl: public EngineControl {
     Q_OBJECT
   public:
     ClockControl(const char * pGroup,
-                 ConfigObject<ConfigValue>* pConfig);
-
+                 EngineState* pConfig);
     virtual ~ClockControl();
 
     double process(const double dRate, const double currentSample,
@@ -24,8 +25,9 @@ class ClockControl: public EngineControl {
     void slotBeatsUpdated();
 
   private:
-    ControlObject* m_pCOBeatActive;
-    ControlObject* m_pCOSampleRate;
+    CallbackControl* m_pCOBeatActive;
+    CallbackControl* m_pCOSampleRate;
+    CallbackTrackWatcher* m_pTrackWatcher;
     TrackPointer m_pTrack;
     BeatsPointer m_pBeats;
 };

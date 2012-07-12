@@ -5,27 +5,30 @@
 #define CUECONTROL_H
 
 #include <QList>
-#include <QMutex>
 
 #include "engine/enginecontrol.h"
 #include "configobject.h"
 #include "trackinfoobject.h"
 
-class ControlObject;
-class ControlPushButton;
+#define NUM_HOT_CUES 37
+
+class CallbackControl;
 class Cue;
+class EngineState;
+class CallbackTrackWatcher;
 
 class HotcueControl : public QObject {
     Q_OBJECT
   public:
-    HotcueControl(const char* pGroup, int hotcueNumber);
+    HotcueControl(const char* pGroup, int hotcueNumber,
+                  EngineState* pEngineState);
     virtual ~HotcueControl();
 
     inline int getHotcueNumber() { return m_iHotcueNumber; }
     inline Cue* getCue() { return m_pCue; }
     inline void setCue(Cue* pCue) { m_pCue = pCue; }
-    inline ControlObject* getPosition() { return m_hotcuePosition; }
-    inline ControlObject* getEnabled() { return m_hotcueEnabled; }
+    inline CallbackControl* getPosition() { return m_hotcuePosition; }
+    inline CallbackControl* getEnabled() { return m_hotcueEnabled; }
 
     // Used for caching the preview state of this hotcue control.
     inline bool isPreviewing() { return m_bPreviewing; }
@@ -36,6 +39,7 @@ class HotcueControl : public QObject {
   private slots:
     void slotHotcueSet(double v);
     void slotHotcueGoto(double v);
+    void slotHotcueGotoAndPlay(double v);
     void slotHotcueGotoAndStop(double v);
     void slotHotcueActivate(double v);
     void slotHotcueActivatePreview(double v);
@@ -45,6 +49,7 @@ class HotcueControl : public QObject {
   signals:
     void hotcueSet(HotcueControl* pHotcue, double v);
     void hotcueGoto(HotcueControl* pHotcue, double v);
+    void hotcueGotoAndPlay(HotcueControl* pHotcue, double v);
     void hotcueGotoAndStop(HotcueControl* pHotcue, double v);
     void hotcueActivate(HotcueControl* pHotcue, double v);
     void hotcueActivatePreview(HotcueControl* pHotcue, double v);
@@ -60,15 +65,16 @@ class HotcueControl : public QObject {
     Cue* m_pCue;
 
     // Hotcue state controls
-    ControlObject* m_hotcuePosition;
-    ControlObject* m_hotcueEnabled;
+    CallbackControl* m_hotcuePosition;
+    CallbackControl* m_hotcueEnabled;
     // Hotcue button controls
-    ControlObject* m_hotcueSet;
-    ControlObject* m_hotcueGoto;
-    ControlObject* m_hotcueGotoAndStop;
-    ControlObject* m_hotcueActivate;
-    ControlObject* m_hotcueActivatePreview;
-    ControlObject* m_hotcueClear;
+    CallbackControl* m_hotcueSet;
+    CallbackControl* m_hotcueGoto;
+    CallbackControl* m_hotcueGotoAndPlay;
+    CallbackControl* m_hotcueGotoAndStop;
+    CallbackControl* m_hotcueActivate;
+    CallbackControl* m_hotcueActivatePreview;
+    CallbackControl* m_hotcueClear;
 
     bool m_bPreviewing;
     int m_iPreviewingPosition;
@@ -77,21 +83,20 @@ class HotcueControl : public QObject {
 class CueControl : public EngineControl {
     Q_OBJECT
   public:
-    CueControl(const char * _group,
-               ConfigObject<ConfigValue> * _config);
+    CueControl(const char * _group, EngineState* pEngineState);
     virtual ~CueControl();
 
     virtual void hintReader(QList<Hint>& hintList);
 
   public slots:
-    void loadTrack(TrackPointer pTrack);
-    void unloadTrack(TrackPointer pTrack);
+    virtual void trackLoaded(TrackPointer pTrack);
+    virtual void trackUnloaded(TrackPointer pTrack);
 
   private slots:
-    void cueUpdated();
     void trackCuesUpdated();
     void hotcueSet(HotcueControl* pControl, double v);
     void hotcueGoto(HotcueControl* pControl, double v);
+    void hotcueGotoAndPlay(HotcueControl* pControl, double v);
     void hotcueGotoAndStop(HotcueControl* pControl, double v);
     void hotcueActivate(HotcueControl* pControl, double v);
     void hotcueActivatePreview(HotcueControl* pControl, double v);
@@ -100,16 +105,16 @@ class CueControl : public EngineControl {
 
     void cueSet(double v);
     void cueGoto(double v);
+    void cueGotoAndPlay(double v);
     void cueGotoAndStop(double v);
     void cueSimple(double v);
     void cuePreview(double v);
     void cueCDJ(double v);
     void cueDefault(double v);
-    void cuePlay(double v);
+    void playFromCuePreview(double v);
 
   private:
-    // These methods are not thread safe, only call them when the lock is held.
-    void createControls();
+    void createControls(EngineState* pEngineState);
     void attachCue(Cue* pCue, int hotcueNumber);
     void detachCue(int hotcueNumber);
     void saveCuePoint(double cuePoint);
@@ -117,31 +122,34 @@ class CueControl : public EngineControl {
     bool m_bHotcueCancel;
     bool m_bPreviewing;
     bool m_bPreviewingHotcue;
-    ControlObject* m_pPlayButton;
     int m_iCurrentlyPreviewingHotcues;
-    ControlObject* m_pQuantizeEnabled;
-    ControlObject* m_pNextBeat;
+
+    // Controls not owned by CueControl
+    CallbackControl* m_pPlayButton;
+    CallbackControl* m_pTrackSamples;
+    CallbackControl* m_pQuantizeEnabled;
+    CallbackControl* m_pNextBeat;
+    CallbackControl* m_pClosestBeat;
 
     const int m_iNumHotCues;
     QList<HotcueControl*> m_hotcueControl;
 
-    ControlObject* m_pTrackSamples;
-    ControlObject* m_pCuePoint;
-    ControlObject* m_pCueMode;
-    ControlPushButton* m_pCueSet;
-    ControlPushButton* m_pCueSimple;
-    ControlPushButton* m_pCueCDJ;
-    ControlPushButton* m_pCueDefault;
-    ControlPushButton* m_pCueGoto;
-    ControlPushButton* m_pCueGotoAndStop;
-    ControlPushButton* m_pCuePreview;
+    CallbackControl* m_pCuePoint;
+    CallbackControl* m_pCueMode;
+    CallbackControl* m_pCueSet;
+    CallbackControl* m_pCueSimple;
+    CallbackControl* m_pCueCDJ;
+    CallbackControl* m_pCueDefault;
+    CallbackControl* m_pCueGoto;
+    CallbackControl* m_pCueGotoAndPlay;
+    CallbackControl* m_pCueGotoAndStop;
+    CallbackControl* m_pCuePreview;
 
+    CallbackTrackWatcher* m_pTrackWatcher;
     TrackPointer m_pLoadedTrack;
 
     // Tells us which controls map to which hotcue
     QMap<QObject*, int> m_controlMap;
-
-    QMutex m_mutex;
 };
 
 

@@ -19,26 +19,26 @@
 #define ENGINEBUFFER_H
 
 #include <qapplication.h>
-#include <QMutex>
+
 #include "defs.h"
 #include "engine/engineobject.h"
 #include "trackinfoobject.h"
 #include "configobject.h"
 #include "rotary.h"
+#include "util/fifo.h"
+
 //for the writer
-//#include <QtCore>
+#ifdef __SCALER_DEBUG__
+#include <QtCore>
+#endif
 
 class EngineControl;
 class BpmControl;
 class RateControl;
 class LoopingControl;
 class ReadAheadManager;
-class ControlObject;
-class ControlPushButton;
-class ControlObjectThreadMain;
-class ControlBeat;
-class ControlTTRotary;
-class ControlPotmeter;
+class CallbackControl;
+class EngineState;
 class CachingReader;
 class EngineBufferScale;
 class EngineBufferScaleLinear;
@@ -81,17 +81,39 @@ const int ENGINE_RAMP_UP = 1;
 
 //const int kiRampLength = 3;
 
-class EngineBuffer : public EngineObject
-{
+struct EnginePlayerMessage {
+    enum Type {
+        TRACK_LOADED,
+        TRACK_LOAD_FAILED_NOT_FOUND,
+        TRACK_LOAD_FAILED_COULDNT_OPEN,
+        TRACK_UNLOADED
+    };
+    Type m_type;
+};
+
+struct PlayerMessage {
+    enum Type {
+        LOAD_TRACK
+    };
+    Type m_type;
+    TrackPointer* m_track;
+};
+
+class EngineBuffer : public EngineObject {
      Q_OBJECT
 public:
-    EngineBuffer(const char *_group, ConfigObject<ConfigValue> *_config);
-    ~EngineBuffer();
+    EngineBuffer(const char *_group, ConfigObject<ConfigValue> *_config,
+                 EngineState* pEngineState);
+    virtual ~EngineBuffer();
     bool getPitchIndpTimeStretch(void);
 
     void bindWorkers(EngineWorkerScheduler* pWorkerScheduler);
 
-    // Add an engine control to the EngineBuffer
+    TwoWayMessagePipe<PlayerMessage, EnginePlayerMessage>& getMessagePipe() {
+        return m_messagePipe;
+    }
+
+    // Add an engine control to the EngineBuffer. Only call this during startup.
     void addControl(EngineControl* pControl);
 
     /** Return the current rate (not thread-safe) */
@@ -101,8 +123,7 @@ public:
     /** Sets pointer to other engine buffer/channel */
     void setOtherEngineBuffer(EngineBuffer *);
 
-    /** Reset buffer playpos and set file playpos. This must only be called
-      * while holding the pause mutex */
+    /** Reset buffer playpos and set file playpos. */
     void setNewPlaypos(double);
 
     void process(const CSAMPLE *pIn, const CSAMPLE *pOut, const int iBufferSize);
@@ -110,6 +131,9 @@ public:
     const char* getGroup();
     bool isTrackLoaded();
     TrackPointer getLoadedTrack() const;
+
+    // For dependency injection of readers.
+    void setReader(CachingReader* pReader);
 
   public slots:
     void slotControlPlay(double);
@@ -123,8 +147,10 @@ public:
 
     // Request that the EngineBuffer load a track. Since the process is
     // asynchronous, EngineBuffer will emit a trackLoaded signal when the load
-    // has completed.
-    void slotLoadTrack(TrackPointer pTrack);
+    // has completed. This method is called from the GUI thread and should not
+    // touch any EngineBuffer state other than thread-safe calls to m_pReader
+    // and QAtomicInts.
+    void slotLoadTrackFromGuiThread(TrackPointer pTrack);
 
     void slotEjectTrack(double);
 
@@ -139,7 +165,7 @@ public:
     void slotTrackLoadFailed(TrackPointer pTrack,
                              QString reason);
 
-private:
+  private:
     void setPitchIndpTimeStretch(bool b);
 
     void updateIndicators(double rate, int iBufferSize);
@@ -149,9 +175,7 @@ private:
 
     void ejectTrack();
 
-    // Lock for modifying local engine variables that are not thread safe, such
-    // as m_engineControls and m_hintList
-    QMutex m_engineLock;
+    TwoWayMessagePipe<PlayerMessage, EnginePlayerMessage> m_messagePipe;
 
     /** Holds the name of the control group */
     const char* group;
@@ -189,41 +213,28 @@ private:
     long int file_length_old;
     /** Copy of file sample rate*/
     int file_srate_old;
-    /** Mutex controlling weather the process function is in pause mode. This happens
-      * during seek and loading of a new track */
-    QMutex pause;
     /** Used in update of playpos slider */
     int m_iSamplesCalculated;
     int m_iUiSlowTick;
 
-    ControlObject* m_pTrackSamples;
-    ControlObject* m_pTrackSampleRate;
+    CallbackControl* m_pTrackSamples;
+    CallbackControl* m_pTrackSampleRate;
 
-    ControlPushButton *playButton, *buttonBeatSync, *playStartButton, *stopStartButton, *stopButton;
-    ControlObjectThreadMain *playButtonCOT, *playStartButtonCOT, *stopStartButtonCOT, *m_pTrackEndCOT, *stopButtonCOT;
-    ControlObject *fwdButton, *backButton;
+    CallbackControl* playButton;
+    CallbackControl* fwdButton;
+    CallbackControl* backButton;
 
-    ControlObject *rateEngine;
-    ControlObject *visualBpm;
-    ControlObject *m_pMasterRate;
-    ControlPotmeter *playposSlider;
-    ControlPotmeter *visualPlaypos;
-    ControlObject *m_pSampleRate;
-    ControlPushButton *m_pKeylock;
+    CallbackControl* rateEngine;
+    CallbackControl* playposSlider;
+    CallbackControl* visualPlaypos;
+    CallbackControl* visualBpm;
+    CallbackControl* m_pSampleRate;
+    CallbackControl* m_pKeylock;
 
-    ControlPushButton *m_pEject;
-
-    /** Control used to signal when at end of file */
-    ControlObject *m_pTrackEnd;
+    QAtomicInt m_iTrackLoading;
 
     // Whether or not to repeat the track when at the end
-    ControlPushButton* m_pRepeat;
-
-    ControlObject *m_pVinylStatus;  //Status of vinyl control
-    ControlObject *m_pVinylSeek;
-
-    /** Fwd and back controls, start and end of track control */
-    ControlPushButton *startButton, *endButton;
+    CallbackControl* m_pRepeat;
 
     /** Object used to perform waveform scaling (sample rate conversion) */
     EngineBufferScale *m_pScale;
@@ -244,8 +255,12 @@ private:
     //int m_iRampIter;
 
     TrackPointer m_pCurrentTrack;
-    /*QFile df;
-    QTextStream writer;*/
+
+#ifdef __SCALER_DEBUG__
+    QFile df;
+    QTextStream writer;
+#endif
+
     CSAMPLE* m_pDitherBuffer;
     unsigned int m_iDitherBufferReadIndex;
 };

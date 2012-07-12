@@ -1,3 +1,4 @@
+#include <QtDebug>
 
 #include "effects/effectsmanager.h"
 

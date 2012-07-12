@@ -20,7 +20,7 @@ static QMutex s_Mutex;
  * that is used to read ID3 metadata
  * from a particular folder.
  *
- * The BroseTableModel uses this class.
+ * The BrowseTableModel uses this class.
  * Note: Don't call getInstance() from places
  * other than the GUI thread. BrowseThreads emit
  * signals to BrowseModel objects. It does not
@@ -29,6 +29,7 @@ static QMutex s_Mutex;
 BrowseThread::BrowseThread(QObject *parent): QThread(parent)
 {
     m_bStopThread = false;
+    m_model_observer = NULL;
     //start Thread
     start(QThread::LowestPriority);
 
@@ -67,52 +68,58 @@ void BrowseThread::destroyInstance()
 }
 
 void BrowseThread::executePopulation(QString& path, BrowseTableModel* client) {
+    m_path_mutex.lock();
     m_path = path;
     m_model_observer = client;
+    m_path_mutex.unlock();
     m_locationUpdated.wakeAll();
 }
 
 void BrowseThread::run() {
+    m_mutex.lock();
     while(!m_bStopThread) {
-        m_mutex.lock();
         //Wait until the user has selected a folder
         m_locationUpdated.wait(&m_mutex);
 
         //Terminate thread if Mixxx closes
-        if(m_bStopThread)
-            return;
+        if(m_bStopThread) {
+            break;
+        }
         // Populate the model
         populateModel();
-        m_mutex.unlock();
     }
+    m_mutex.unlock();
 }
 
 void BrowseThread::populateModel() {
-    //Refresh the name filters in case we loaded new
-    //SoundSource plugins.
-    QStringList nameFilters(SoundSourceProxy::supportedFileExtensionsString().split(" "));
-    QDirIterator fileIt(m_path, nameFilters, QDir::Files | QDir::NoDotAndDotDot);
-    QString thisPath(m_path);
+    m_path_mutex.lock();
+    QString thisPath = m_path;
+    BrowseTableModel* thisModelObserver = m_model_observer;
+    m_path_mutex.unlock();
 
-    /*
-     * remove all rows
-     * This is a blocking operation
-     * see signal/slot connection in BrowseTableModel
-     */
-    emit(clearModel(m_model_observer));
+    // Refresh the name filters in case we loaded new SoundSource plugins.
+    QStringList nameFilters(SoundSourceProxy::supportedFileExtensionsString().split(" "));
+
+    QDirIterator fileIt(thisPath, nameFilters, QDir::Files | QDir::NoDotAndDotDot);
+
+    // remove all rows
+    // This is a blocking operation
+    // see signal/slot connection in BrowseTableModel
+    emit(clearModel(thisModelObserver));
 
     QList< QList<QStandardItem*> > rows;
 
     int row = 0;
-    //Iterate over the files
-    while (fileIt.hasNext())
-    {
-        /*
-         * If a user quickly jumps through the folders
-         * the current task becomes "dirty"
-         */
-        if(thisPath != m_path){
-            qDebug() << "Exit populateModel()";
+    // Iterate over the files
+    while (fileIt.hasNext()) {
+        // If a user quickly jumps through the folders
+        // the current task becomes "dirty"
+        m_path_mutex.lock();
+        QString newPath = m_path;
+        m_path_mutex.unlock();
+
+        if(thisPath != newPath) {
+            qDebug() << "Abort populateModel()";
             return populateModel();
         }
 
@@ -141,6 +148,9 @@ void BrowseThread::populateModel() {
         item = new QStandardItem(tio.getGenre());
         row_data.insert(COLUMN_GENRE, item);
 
+        item = new QStandardItem(tio.getComposer());
+        row_data.insert(COLUMN_COMPOSER, item);
+
         item = new QStandardItem(tio.getComment());
         row_data.insert(COLUMN_COMMENT, item);
 
@@ -165,15 +175,17 @@ void BrowseThread::populateModel() {
 
         rows.append(row_data);
         ++row;
-        //If 10 tracks have been analyzed, send it to GUI
-        //Will limit GUI freezing
+        // If 10 tracks have been analyzed, send it to GUI
+        // Will limit GUI freezing
         if(row % 10 == 0){
-            //this is a blocking operation
-            emit(rowsAppended(rows, m_model_observer));
+            // this is a blocking operation
+            emit(rowsAppended(rows, thisModelObserver));
+            //qDebug() << "Append " << rows.count() << " from " << filepath;
             rows.clear();
         }
-        //Sleep additionally for 10ms which prevents us from GUI freezes
+        // Sleep additionally for 10ms which prevents us from GUI freezes
         msleep(20);
     }
-    emit(rowsAppended(rows, m_model_observer));
+    emit(rowsAppended(rows, thisModelObserver));
+    //qDebug() << "Append last " << rows.count() << " from " << thisPath;
 }

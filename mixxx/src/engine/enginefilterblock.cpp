@@ -16,20 +16,19 @@
 ***************************************************************************/
 
 #include <QtDebug>
-#include "controlpushbutton.h"
-#include "controllogpotmeter.h"
+
 #include "engine/enginefilterblock.h"
-#include "engine/enginefilteriir.h"
+
+#include "controllogpotmeter.h"
+#include "controlpushbutton.h"
 #include "engine/enginefilter.h"
 #include "engine/enginefilterbutterworth8.h"
+#include "engine/enginefilteriir.h"
+#include "engine/enginestate.h"
 #include "sampleutil.h"
 
-ControlPotmeter* EngineFilterBlock::s_loEqFreq = NULL;
-ControlPotmeter* EngineFilterBlock::s_hiEqFreq = NULL;
-ControlPushButton* EngineFilterBlock::s_lofiEq = NULL;
-
-EngineFilterBlock::EngineFilterBlock(const char * group)
-{
+EngineFilterBlock::EngineFilterBlock(const char * group,
+                                     EngineState* pEngineState) {
     ilowFreq = 0;
     ihighFreq = 0;
     blofi = false;
@@ -42,11 +41,33 @@ EngineFilterBlock::EngineFilterBlock(const char * group)
 #else
 
     //Setup Filter Controls
+    CallbackControlManager* pCallbackControlManager =
+            pEngineState->getControlManager();
 
-    if (s_loEqFreq == NULL) {
-        s_loEqFreq = new ControlPotmeter(ConfigKey("[Mixer Profile]", "LoEQFrequency"), 0., 22040);
-        s_hiEqFreq = new ControlPotmeter(ConfigKey("[Mixer Profile]", "HiEQFrequency"), 0., 22040);
-        s_lofiEq = new ControlPushButton(ConfigKey("[Mixer Profile]", "LoFiEQs"));
+    m_loEqFreq = pCallbackControlManager->getControl(
+        ConfigKey("[Mixer Profile]", "LoEQFrequency"));
+    if (m_loEqFreq == NULL) {
+        m_loEqFreq = pCallbackControlManager->addControl(
+            new ControlPotmeter(ConfigKey("[Mixer Profile]", "LoEQFrequency"),
+                                0., 22040), 1);
+        m_loEqFreq->setParent(this);
+    }
+
+    m_hiEqFreq = pCallbackControlManager->getControl(
+        ConfigKey("[Mixer Profile]", "HiEQFrequency"));
+    if (m_hiEqFreq == NULL) {
+        m_hiEqFreq = pCallbackControlManager->addControl(
+            new ControlPotmeter(ConfigKey("[Mixer Profile]", "HiEQFrequency"),
+                                0., 22040), 1);
+        m_hiEqFreq->setParent(this);
+    }
+
+    m_lofiEq = pCallbackControlManager->getControl(
+        ConfigKey("[Mixer Profile]", "LoFiEQs"));
+    if (m_lofiEq == NULL) {
+        m_lofiEq = pCallbackControlManager->addControl(
+            new ControlPushButton(ConfigKey("[Mixer Profile]", "LoFiEQs")), 1);
+        m_lofiEq->setParent(this);
     }
 
     high = band = low = NULL;
@@ -69,17 +90,26 @@ EngineFilterBlock::EngineFilterBlock(const char * group)
        highrbj->calc_filter_coeffs(1, 10000., 48000., 0.3., 0., false);
      */
 
-    filterpotLow = new ControlLogpotmeter(ConfigKey(group, "filterLow"), 4.);
-    filterKillLow = new ControlPushButton(ConfigKey(group, "filterLowKill"));
-    filterKillLow->setToggleButton(true);
+    filterpotLow = pCallbackControlManager->addControl(
+        new ControlLogpotmeter(ConfigKey(group, "filterLow"), 4.), 1);
+    ControlPushButton* pFilterKillLow = new ControlPushButton(
+        ConfigKey(group, "filterLowKill"));
+    pFilterKillLow->setButtonMode(ControlPushButton::POWERWINDOW);
+    filterKillLow = pCallbackControlManager->addControl(pFilterKillLow, 1);
 
-    filterpotMid = new ControlLogpotmeter(ConfigKey(group, "filterMid"), 4.);
-    filterKillMid = new ControlPushButton(ConfigKey(group, "filterMidKill"));
-    filterKillMid->setToggleButton(true);
+    filterpotMid = pCallbackControlManager->addControl(
+        new ControlLogpotmeter(ConfigKey(group, "filterMid"), 4.), 1);
+    ControlPushButton* pFilterKillMid = new ControlPushButton(
+        ConfigKey(group, "filterMidKill"));
+    pFilterKillMid->setButtonMode(ControlPushButton::POWERWINDOW);
+    filterKillMid = pCallbackControlManager->addControl(pFilterKillMid, 1);
 
-    filterpotHigh = new ControlLogpotmeter(ConfigKey(group, "filterHigh"), 4.);
-    filterKillHigh = new ControlPushButton(ConfigKey(group, "filterHighKill"));
-    filterKillHigh->setToggleButton(true);
+    filterpotHigh = pCallbackControlManager->addControl(
+        new ControlLogpotmeter(ConfigKey(group, "filterHigh"), 4.), 1);
+    ControlPushButton* pFilterKillHigh = new ControlPushButton(
+        ConfigKey(group, "filterHighKill"));
+    pFilterKillHigh->setButtonMode(ControlPushButton::POWERWINDOW);
+    filterKillHigh = pCallbackControlManager->addControl(pFilterKillHigh, 1);
 
     m_pTemp1 = new CSAMPLE[MAX_BUFFER_LEN];
     m_pTemp2 = new CSAMPLE[MAX_BUFFER_LEN];
@@ -104,29 +134,19 @@ EngineFilterBlock::~EngineFilterBlock()
     delete filterKillMid;
     delete filterpotHigh;
     delete filterKillHigh;
-
-    // Delete and clear these static controls. We need to clear them so that
-    // other instances of EngineFilterBlock won't delete them as well.
-    delete s_loEqFreq;
-    s_loEqFreq = NULL;
-    delete s_hiEqFreq;
-    s_hiEqFreq = NULL;
-    delete s_lofiEq;
-    s_lofiEq = NULL;
 }
 
-void EngineFilterBlock::setFilters(bool forceSetting)
-{
-    if((ilowFreq != s_loEqFreq->get()) ||
-       (ihighFreq != s_hiEqFreq->get()) ||
-       (blofi != s_lofiEq->get()) || forceSetting)
+void EngineFilterBlock::setFilters(bool forceSetting) {
+    if((ilowFreq != (int)m_loEqFreq->get()) ||
+       (ihighFreq != (int)m_hiEqFreq->get()) ||
+       (blofi != (int)m_lofiEq->get()) || forceSetting)
     {
         delete low;
         delete band;
         delete high;
-        ilowFreq = s_loEqFreq->get();
-        ihighFreq = s_hiEqFreq->get();
-        blofi = s_lofiEq->get();
+        ilowFreq = (int)m_loEqFreq->get();
+        ihighFreq = (int)m_hiEqFreq->get();
+        blofi = (int)m_lofiEq->get();
         if(blofi)
         {
             // why is this DJM800 at line ~34 (LOFI ifdef) and just
@@ -137,19 +157,18 @@ void EngineFilterBlock::setFilters(bool forceSetting)
         }
         else
         {
-            low = new EngineFilterButterworth8(FILTER_LOWPASS, 44100, s_loEqFreq->get());
-            band = new EngineFilterButterworth8(FILTER_BANDPASS, 44100, s_loEqFreq->get(), s_hiEqFreq->get());
-            high = new EngineFilterButterworth8(FILTER_HIGHPASS, 44100, s_hiEqFreq->get());
+            low = new EngineFilterButterworth8(FILTER_LOWPASS, 44100, (int)m_loEqFreq->get());
+            band = new EngineFilterButterworth8(FILTER_BANDPASS, 44100, (int)m_loEqFreq->get(), (int)m_hiEqFreq->get());
+            high = new EngineFilterButterworth8(FILTER_HIGHPASS, 44100, (int)m_hiEqFreq->get());
         }
 
     }
 }
 
-void EngineFilterBlock::process(const CSAMPLE * pIn, const CSAMPLE * pOut, const int iBufferSize)
-{
+void EngineFilterBlock::process(const CSAMPLE * pIn, const CSAMPLE * pOut,
+                                const int iBufferSize) {
     CSAMPLE * pOutput = (CSAMPLE *)pOut;
-    float fLow=0.f, fMid=0.f, fHigh=0.f;
-
+    float fLow = 0.f, fMid = 0.f, fHigh = 0.f;
 
     if (filterKillLow->get()==0.)
         fLow = filterpotLow->get(); //*0.7;

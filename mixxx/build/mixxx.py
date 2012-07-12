@@ -41,9 +41,11 @@ class MixxxBuild(object):
 
         if machine not in ['x86_64', 'x86', 'i686', 'i586',
                            'alpha', 'hppa', 'mips', 'mipsel', 's390',
-                           'sparc', 'ia64', 'armel', 'hurd-i386',
+                           'sparc', 'ia64', 'armel', 'armhf', 'hurd-i386',
+                           'sh3', 'sh4',
                            'kfreebsd-amd64', 'kfreebsd-i386',
                            'i486', 'i386', 'powerpc', 'powerpc64',
+                           'powerpcspe', 's390x',
                            'amd64', 'AMD64', 'EM64T', 'INTEL64']:
             raise Exception("invalid machine type")
 
@@ -93,12 +95,15 @@ class MixxxBuild(object):
         self.architecture_is_powerpc = self.machine.lower() in ['powerpc', 'powerpc64']
 
         self.build_dir = util.get_build_dir(self.platform, self.bitwidth)
+        
+        self.static_dependencies = int(Script.ARGUMENTS.get('staticlibs', 0))
 
         logging.info("Target Platform: %s" % self.platform)
         logging.info("Target Machine: %s" % self.machine)
         logging.info("Build: %s" % self.build)
         logging.info("Toolchain: %s" % self.toolchain)
         logging.info("Crosscompile: %s" % ("YES" if self.crosscompile else "NO"))
+        logging.info("Static dependencies: %s" % ("YES" if self.static_dependencies else "NO"))
 
         if self.crosscompile:
             logging.info("Host Platform: %s" % self.host_platform)
@@ -111,6 +116,7 @@ class MixxxBuild(object):
         toolpath = ['#build/']
         extra_arguments = {}
         tools.append('qt4')
+        tools.append('protoc')
 
         # Ugly hack to check the qtdir argument
         import depends

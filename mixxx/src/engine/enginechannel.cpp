@@ -19,13 +19,19 @@
 
 #include "controlobject.h"
 #include "controlpushbutton.h"
+#include "engine/enginestate.h"
 
 EngineChannel::EngineChannel(const char* pGroup,
-                             EngineChannel::ChannelOrientation defaultOrientation)
+                             EngineChannel::ChannelOrientation defaultOrientation,
+                             EngineState* pEngineState)
         : m_group(pGroup) {
-    m_pPFL = new ControlPushButton(ConfigKey(m_group, "pfl"));
-    m_pPFL->setToggleButton(true);
-    m_pOrientation = new ControlObject(ConfigKey(m_group, "orientation"));
+    CallbackControlManager* pCallbackControlManager =
+            pEngineState->getControlManager();
+    ControlPushButton* pPFL = new ControlPushButton(ConfigKey(m_group, "pfl"));
+    pPFL->setButtonMode(ControlPushButton::TOGGLE);
+    m_pPFL = pCallbackControlManager->addControl(pPFL, 1);
+    m_pOrientation = pCallbackControlManager->addControl(
+        new ControlObject(ConfigKey(m_group, "orientation")), 1);
     m_pOrientation->set(defaultOrientation);
 }
 

@@ -10,7 +10,7 @@
 #include "configobject.h"
 #include "controlgroupdelegate.h" //Need to get CONTROLGROUP_CHANNEL1_STRING, etc.
 #include "controlvaluedelegate.h"
-#include "midi/midiinputmappingtablemodel.h" //Need this to know MIDIINPUTTABLEINDEX_CONTROLOBJECTGROUP
+#include "controllers/midi/midiinputmappingtablemodel.h" //Need this to know MIDIINPUTTABLEINDEX_CONTROLOBJECTGROUP
 
 //Static var declarations
 QStringList ControlValueDelegate::m_channelControlValues;
@@ -236,7 +236,11 @@ QWidget *ControlValueDelegate::createEditor(QWidget *parent,
     QComboBox *editor = new QComboBox(parent);
 
     if (controlGroup == CONTROLGROUP_CHANNEL1_STRING ||
-        controlGroup == CONTROLGROUP_CHANNEL2_STRING)
+        controlGroup == CONTROLGROUP_CHANNEL2_STRING ||
+        controlGroup == CONTROLGROUP_SAMPLER1_STRING ||
+        controlGroup == CONTROLGROUP_SAMPLER2_STRING ||
+        controlGroup == CONTROLGROUP_SAMPLER3_STRING ||
+        controlGroup == CONTROLGROUP_SAMPLER4_STRING)
     {
         //Add all the channel 1/2 items)
         editor->addItems(m_channelControlValues);
@@ -309,7 +313,11 @@ bool ControlValueDelegate::verifyControlValueValidity(QString controlGroup, QAbs
     QString value = index.data().value<QString>();
 
     if (controlGroup == CONTROLGROUP_CHANNEL1_STRING ||
-        controlGroup == CONTROLGROUP_CHANNEL2_STRING)
+        controlGroup == CONTROLGROUP_CHANNEL2_STRING ||
+        controlGroup == CONTROLGROUP_SAMPLER1_STRING ||
+        controlGroup == CONTROLGROUP_SAMPLER2_STRING ||
+        controlGroup == CONTROLGROUP_SAMPLER3_STRING ||
+        controlGroup == CONTROLGROUP_SAMPLER4_STRING)
     {
         if (m_channelControlValues.contains(value))
             return true;

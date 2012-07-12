@@ -20,40 +20,47 @@
 
 #include "engine/engineobject.h"
 
-class ControlLogpotmeter;
-class ControlPotmeter;
-class ControlPushButton;
+class CallbackControl;
+class EngineState;
 
 #define SIZE_NOISE_BUF 40
 //#define NOISE_FACTOR 116.415321827e-12 // 1/4 bit of noise (99db SNR)
 #define NOISE_FACTOR 0.25              // this is necessary to prevent denormals
-                                       // from consuming too much CPU resources
-                                       // and is well below being audible.
+// from consuming too much CPU resources
+// and is well below being audible.
 /**
   * Parallel processing of LP, BP and HP filters, and final mixing
   *
   *@author Tue and Ken Haste Andersen
   */
 
-class EngineFilterBlock : public EngineObject
-{
-public:
-    EngineFilterBlock(const char *group);
-    ~EngineFilterBlock();
-    void process(const CSAMPLE *pIn, const CSAMPLE *pOut, const int iBufferSize);
-private:
-	void setFilters(bool forceSetting = false);
+class EngineFilterBlock : public EngineObject {
+  public:
+    EngineFilterBlock(const char *group, EngineState* pEngineState);
+    virtual ~EngineFilterBlock();
+
+    void process(const CSAMPLE *pIn, const CSAMPLE *pOut,
+                 const int iBufferSize);
+
+  private:
+
+    void setFilters(bool forceSetting = false);
 
     CSAMPLE *m_pTemp1, *m_pTemp2, *m_pTemp3;
     EngineObject *low, *band, *high;
-    ControlLogpotmeter *filterpotLow, *filterpotMid, *filterpotHigh;
-    ControlPushButton *filterKillLow, *filterKillMid, *filterKillHigh;
+    CallbackControl* filterpotLow;
+    CallbackControl* filterpotMid;
+    CallbackControl* filterpotHigh;
+    CallbackControl* filterKillLow;
+    CallbackControl* filterKillMid;
+    CallbackControl* filterKillHigh;
 
-	static ControlPotmeter *s_loEqFreq, *s_hiEqFreq;
-	static ControlPushButton *s_lofiEq;
+    CallbackControl* m_loEqFreq;
+    CallbackControl* m_hiEqFreq;
+    CallbackControl* m_lofiEq;
 
-	int ilowFreq, ihighFreq;
-	bool blofi;
+    int ilowFreq, ihighFreq;
+    bool blofi;
 };
 
 #endif

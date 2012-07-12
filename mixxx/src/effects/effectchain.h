@@ -53,6 +53,7 @@ class EffectChain : public QObject {
     // Signal that indicates that the EffectChain has changed (i.e. an Effect
     // has been added or removed).
     void updated();
+
   private:
     QString debugString() const {
         return QString("EffectChain(%1)").arg(m_id);

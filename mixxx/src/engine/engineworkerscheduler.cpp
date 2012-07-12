@@ -2,7 +2,6 @@
 // Created 6/2/2010 by RJ Ryan (rryan@mit.edu)
 
 #include <QtDebug>
-#include <QMutexLocker>
 
 #include "engine/engineworker.h"
 #include "engine/engineworkerscheduler.h"
@@ -44,11 +43,11 @@ void EngineWorkerScheduler::workerReady(EngineWorker* pWorker) {
 }
 
 void EngineWorkerScheduler::workerStarted(EngineWorker* pWorker) {
+    pWorker->setActive(true);
 }
 
 void EngineWorkerScheduler::workerFinished(EngineWorker* pWorker) {
-    QMutexLocker locker(&m_mutex);
-    m_activeWorkers.remove(pWorker);
+    pWorker->setActive(false);
 }
 
 void EngineWorkerScheduler::runWorkers() {
@@ -56,16 +55,16 @@ void EngineWorkerScheduler::runWorkers() {
 }
 
 void EngineWorkerScheduler::run() {
-    m_mutex.lock();
     while (!m_bQuit) {
+        m_mutex.lock();
         EngineWorker* pWorker = NULL;
         while (m_scheduleFIFO.read(&pWorker, 1) == 1) {
-            if (pWorker && !m_activeWorkers.contains(pWorker)) {
-                m_activeWorkers.insert(pWorker);
+            if (pWorker && !pWorker->isActive()) {
                 m_workerThreadPool.start(pWorker);
             }
         }
         m_waitCondition.wait(&m_mutex);
+        m_mutex.unlock();
     }
 }
 

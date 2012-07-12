@@ -22,25 +22,27 @@
 #include "engine/enginechannel.h"
 #include "configobject.h"
 
-class EngineBuffer;
-class EnginePregain;
-class EngineBuffer;
-class EngineFilterBlock;
-class EngineClipping;
 class EffectsManager;
-class EngineVuMeter;
+class EngineBuffer;
+class EngineBuffer;
+class EngineClipping;
+class EngineFilterBlock;
+class EngineFlanger;
+class EngineMaster;
+class EnginePregain;
 class EngineVinylSoundEmu;
-class ControlPushButton;
+class EngineVuMeter;
 
 class EngineDeck : public EngineChannel {
     Q_OBJECT
   public:
     EngineDeck(const char *group, ConfigObject<ConfigValue>* pConfig,
-               EffectsManager* pEffectsManager,
+               EngineMaster* pMixingEngine,
                EngineChannel::ChannelOrientation defaultOrientation = CENTER);
     virtual ~EngineDeck();
 
-    virtual void process(const CSAMPLE *pIn, const CSAMPLE *pOut, const int iBufferSize);
+    virtual void process(const CSAMPLE *pIn, const CSAMPLE *pOut,
+                         const int iBufferSize);
 
     // TODO(XXX) This hack needs to be removed.
     virtual EngineBuffer* getEngineBuffer();

@@ -47,24 +47,34 @@
 
 EngineMaster::EngineMaster(ConfigObject<ConfigValue> * _config,
                            const char * group,
-                           EffectsManager* pEffectsManager)
-        : m_pEffectsManager(pEffectsManager) {
+                           EffectsManager* pEffectsManager,
+                           bool bEnableSidechain)
+        : m_state(_config),
+          m_callbackControlManager(*m_state.getControlManager()),
+          m_callbackTrackManager(*m_state.getTrackManager()),
+          m_pEffectsManager(pEffectsManager) {
     m_pWorkerScheduler = new EngineWorkerScheduler(this);
     m_pWorkerScheduler->start();
-    m_pSyncWorker = new SyncWorker(m_pWorkerScheduler);
+    m_pSyncWorker = new SyncWorker(m_pWorkerScheduler,
+                                   &m_callbackControlManager);
 
     m_pEffectsManager->registerChannel(getMasterChannelId());
     m_pEffectsManager->registerChannel(getHeadphoneChannelId());
 
     // Master sample rate
-    m_pMasterSampleRate = new ControlObject(ConfigKey(group, "samplerate"));
-    m_pMasterSampleRate->set(44100.);
+    ControlObject* pMasterSampleRate = new ControlObject(
+        ConfigKey(group, "samplerate"));
+    pMasterSampleRate->set(44100.);
+    m_pMasterSampleRate = m_callbackControlManager.addControl(
+        pMasterSampleRate, 1);
 
     // Latency control
-    m_pMasterLatency = new ControlObject(ConfigKey(group, "latency"));
+    m_pMasterLatency = m_callbackControlManager.addControl(
+        new ControlObject(ConfigKey(group, "latency")), 1);
 
     // Master rate
-    m_pMasterRate = new ControlPotmeter(ConfigKey(group, "rate"), -1.0, 1.0);
+    m_pMasterRate = m_callbackControlManager.addControl(
+        new ControlPotmeter(ConfigKey(group, "rate"), -1.0, 1.0), 1);
 
 #ifdef __LADSPA__
     // LADSPA
@@ -76,29 +86,36 @@ EngineMaster::EngineMaster(ConfigObject<ConfigValue> * _config,
 #endif
 
     // Crossfader
-    crossfader = new ControlPotmeter(ConfigKey(group, "crossfader"),-1.,1.);
+    crossfader = m_callbackControlManager.addControl(
+        new ControlPotmeter(ConfigKey(group, "crossfader"),-1.,1.), 1);
 
     // Balance
-    m_pBalance = new ControlPotmeter(ConfigKey(group, "balance"), -1., 1.);
+    m_pBalance = m_callbackControlManager.addControl(
+        new ControlPotmeter(ConfigKey(group, "balance"), -1., 1.), 1);
 
     // Master volume
-    m_pMasterVolume = new ControlLogpotmeter(ConfigKey(group, "volume"), 5.);
+    m_pMasterVolume = m_callbackControlManager.addControl(
+        new ControlLogpotmeter(ConfigKey(group, "volume"), 5.), 1);
 
     // Clipping
-    clipping = new EngineClipping(group);
+    clipping = new EngineClipping(group, getState());
 
     // VU meter:
-    vumeter = new EngineVuMeter(group);
+    vumeter = new EngineVuMeter(group, getState());
 
     // Headphone volume
-    m_pHeadVolume = new ControlLogpotmeter(ConfigKey(group, "headVolume"), 5.);
+    m_pHeadVolume = m_callbackControlManager.addControl(
+        new ControlLogpotmeter(ConfigKey(group, "headVolume"), 5.), 1);
 
     // Headphone mix (left/right)
-    head_mix = new ControlPotmeter(ConfigKey(group, "headMix"),-1.,1.);
-    head_mix->set(-1.);
+    ControlPotmeter* pHeadMix = new ControlPotmeter(
+        ConfigKey(group, "headMix"), -1., 1.);
+    pHeadMix->setDefaultValue(-1.);
+    pHeadMix->set(-1);
+    head_mix = m_callbackControlManager.addControl(pHeadMix, 1);
 
     // Headphone Clipping
-    head_clipping = new EngineClipping("");
+    head_clipping = new EngineClipping("[Headphone]", getState());
 
     // Allocate buffers
     m_pHead = SampleUtil::alloc(MAX_BUFFER_LEN);
@@ -106,23 +123,31 @@ EngineMaster::EngineMaster(ConfigObject<ConfigValue> * _config,
     memset(m_pHead, 0, sizeof(CSAMPLE) * MAX_BUFFER_LEN);
     memset(m_pMaster, 0, sizeof(CSAMPLE) * MAX_BUFFER_LEN);
 
-    //Starts a thread for recording and shoutcast
-    sidechain = new EngineSideChain(_config);
-    connect(sidechain, SIGNAL(isRecording(bool)),
-            this, SIGNAL(isRecording(bool)));
-    connect(sidechain, SIGNAL(bytesRecorded(int)),
-            this, SIGNAL(bytesRecorded(int)));
+    // Starts a thread for recording and shoutcast
+    sidechain = NULL;
+    if (bEnableSidechain) {
+        sidechain = new EngineSideChain(_config);
+        connect(sidechain, SIGNAL(isRecording(bool)),
+                this, SIGNAL(isRecording(bool)));
+        connect(sidechain, SIGNAL(bytesRecorded(int)),
+                this, SIGNAL(bytesRecorded(int)));
+    }
 
     //X-Fader Setup
-    xFaderCurve = new ControlPotmeter(
-        ConfigKey("[Mixer Profile]", "xFaderCurve"), 0., 2.);
-    xFaderCalibration = new ControlPotmeter(
-        ConfigKey("[Mixer Profile]", "xFaderCalibration"), -2., 2.);
+    xFaderMode = m_callbackControlManager.addControl(
+        new ControlPotmeter(
+            ConfigKey("[Mixer Profile]", "xFaderMode"), 0., 1.), 1);
+    xFaderCurve = m_callbackControlManager.addControl(
+        new ControlPotmeter(
+            ConfigKey("[Mixer Profile]", "xFaderCurve"), 0., 2.), 1);
+
+    xFaderCalibration = m_callbackControlManager.addControl(
+        new ControlPotmeter(
+            ConfigKey("[Mixer Profile]", "xFaderCalibration"), -2., 2.), 1);
 }
 
-EngineMaster::~EngineMaster()
-{
-    qDebug() << "in ~EngineMaster()";
+EngineMaster::~EngineMaster() {
+    qDebug() << "~EngineMaster()";
     delete crossfader;
     delete m_pBalance;
     delete head_mix;
@@ -135,6 +160,7 @@ EngineMaster::~EngineMaster()
 
     delete xFaderCalibration;
     delete xFaderCurve;
+    delete xFaderMode;
 
     delete m_pMasterSampleRate;
     delete m_pMasterLatency;
@@ -328,8 +354,12 @@ void EngineMaster::mixChannels(unsigned int channelBitvector, unsigned int maxCh
     }
 }
 
-void EngineMaster::process(const CSAMPLE *, const CSAMPLE *pOut, const int iBufferSize)
-{
+void EngineMaster::process(const CSAMPLE *, const CSAMPLE *pOut,
+                           const int iBufferSize) {
+    // TODO(rryan) revisit the ordering here
+    m_callbackTrackManager.callbackProcessIncomingUpdates();
+    m_callbackControlManager.callbackProcessIncomingUpdates();
+
     CSAMPLE **pOutput = (CSAMPLE**)pOut;
     Q_UNUSED(pOutput);
 
@@ -396,7 +426,8 @@ void EngineMaster::process(const CSAMPLE *, const CSAMPLE *pOut, const int iBuff
     float c1_gain, c2_gain;
     EngineXfader::getXfadeGains(c1_gain, c2_gain,
                                 crossfader->get(), xFaderCurve->get(),
-                                xFaderCalibration->get());
+                                xFaderCalibration->get(),
+                                xFaderMode->get()==MIXXX_XFADER_CONSTPWR);
 
     // Now set the gains for overall volume and the left, center, right gains.
     m_masterGain.setGains(m_pMasterVolume->get(), c1_gain, 1.0, c2_gain);
@@ -434,7 +465,9 @@ void EngineMaster::process(const CSAMPLE *, const CSAMPLE *pOut, const int iBuff
 
     //Submit master samples to the side chain to do shoutcasting, recording,
     //etc.  (cpu intensive non-realtime tasks)
-    sidechain->submitSamples(m_pMaster, iBufferSize);
+    if (sidechain != NULL) {
+        sidechain->submitSamples(m_pMaster, iBufferSize);
+    }
 
     // Add master to headphone with appropriate gain
     SampleUtil::addWithGain(m_pHead, m_pMaster, cmaster_gain, iBufferSize);
@@ -449,6 +482,9 @@ void EngineMaster::process(const CSAMPLE *, const CSAMPLE *pOut, const int iBuff
     //Master/headphones interleaving is now done in
     //SoundManager::requestBuffer() - Albert Nov 18/07
 
+    // Publish all of our control changes.
+    m_callbackControlManager.callbackProcessOutgoingUpdates();
+
     // Schedule a ControlObject sync
     m_pSyncWorker->schedule();
 
@@ -460,8 +496,12 @@ void EngineMaster::process(const CSAMPLE *, const CSAMPLE *pOut, const int iBuff
 void EngineMaster::addChannel(EngineChannel* pChannel) {
     ChannelInfo* pChannelInfo = new ChannelInfo();
     pChannelInfo->m_pChannel = pChannel;
-    pChannelInfo->m_pVolumeControl = new ControlLogpotmeter(
+    ControlLogpotmeter* pChannelVolume = new ControlLogpotmeter(
         ConfigKey(pChannel->getGroup(), "volume"), 1.0);
+    pChannelVolume->setDefaultValue(1.0);
+    pChannelVolume->set(1.0);
+    pChannelInfo->m_pVolumeControl = m_callbackControlManager.addControl(
+        pChannelVolume, 1);
     pChannelInfo->m_pBuffer = SampleUtil::alloc(MAX_BUFFER_LEN);
     SampleUtil::applyGain(pChannelInfo->m_pBuffer, 0, MAX_BUFFER_LEN);
     m_channels.push_back(pChannelInfo);

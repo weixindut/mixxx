@@ -7,9 +7,11 @@
 
 class MixxxKeyboard;
 class PlayerManager;
+class ControllerManager;
 class Library;
 class MixxxView;
 class EffectsManager;
+class VinylControlManager;
 
 class SkinLoader {
   public:
@@ -18,6 +20,7 @@ class SkinLoader {
     QWidget* loadDefaultSkin(QWidget* pParent,
                              MixxxKeyboard* pKeyboard,
                              PlayerManager* pPlayerManager,
+                             ControllerManager* pControllerManager,
                              Library* pLibrary,
                              VinylControlManager* pVCMan,
                              EffectsManager* pEffectsManager);

@@ -18,6 +18,9 @@ class CrateTableModel : public BaseSqlTableModel {
     virtual ~CrateTableModel();
 
     void setCrate(int crateId);
+    int getCrate() const {
+        return m_iCrateId;
+    }
 
     // From TrackModel
     virtual TrackPointer getTrack(const QModelIndex& index) const;
@@ -27,10 +30,11 @@ class CrateTableModel : public BaseSqlTableModel {
     virtual void removeTrack(const QModelIndex& index);
     virtual void removeTracks(const QModelIndexList& indices);
     virtual bool addTrack(const QModelIndex& index, QString location);
+    // Returns the number of unsuccessful track additions
+    virtual int addTracks(const QModelIndex& index, QList <QString> locations);
     virtual void moveTrack(const QModelIndex& sourceIndex,
                            const QModelIndex& destIndex);
     TrackModel::CapabilitiesFlags getCapabilities() const;
-    virtual QItemDelegate* delegateForColumn(const int i);
 
   private slots:
     void slotSearch(const QString& searchText);

@@ -12,14 +12,14 @@
 #include "library/dao/settingsdao.h"
 #include "library/itunes/itunesplaylistmodel.h"
 #include "library/itunes/itunestrackmodel.h"
+#include "library/queryutil.h"
 
 const QString ITunesFeature::ITDB_PATH_KEY = "mixxx.itunesfeature.itdbpath";
 
 
 ITunesFeature::ITunesFeature(QObject* parent, TrackCollection* pTrackCollection)
-        : LibraryFeature(parent),
+        : BaseExternalLibraryFeature(parent, pTrackCollection),
           m_pTrackCollection(pTrackCollection),
-          m_database(pTrackCollection->getDatabase()),
           m_cancelImport(false) {
     QString tableName = "itunes_library";
     QString idColumn = "id";
@@ -46,40 +46,34 @@ ITunesFeature::ITunesFeature(QObject* parent, TrackCollection* pTrackCollection)
     m_isActivated = false;
     m_title = tr("iTunes");
 
-    if (!m_database.isOpen()) {
-        m_database = QSqlDatabase::addDatabase("QSQLITE", "ITUNES_SCANNER");
-        m_database.setHostName("localhost");
-        m_database.setDatabaseName(MIXXX_DB_PATH);
-        m_database.setUserName("mixxx");
-        m_database.setPassword("mixxx");
+    m_database = QSqlDatabase::cloneDatabase( pTrackCollection->getDatabase(), "ITUNES_SCANNER");
 
-        //Open the database connection in this thread.
-        if (!m_database.open()) {
-            qDebug() << "Failed to open database for iTunes scanner." << m_database.lastError();
-        }
+    //Open the database connection in this thread.
+    if (!m_database.open()) {
+        qDebug() << "Failed to open database for iTunes scanner." << m_database.lastError();
     }
-
     connect(&m_future_watcher, SIGNAL(finished()), this, SLOT(onTrackCollectionLoaded()));
 }
 
 ITunesFeature::~ITunesFeature() {
+    m_database.close();
     m_cancelImport = true;
     m_future.waitForFinished();
     delete m_pITunesTrackModel;
     delete m_pITunesPlaylistModel;
 }
 
+BaseSqlTableModel* ITunesFeature::getPlaylistModelForPlaylist(QString playlist) {
+    ITunesPlaylistModel* pModel = new ITunesPlaylistModel(this, m_pTrackCollection);
+    pModel->setPlaylist(playlist);
+    return pModel;
+}
+
+// static
 bool ITunesFeature::isSupported() {
     // itunes db might just be elsewhere, don't rely on it being in its
     // normal place. And since we will load an itdb on any platform...
-    // update: itunes writes absolute paths which means they generally
-    // won't translate when you open the itdb from some other os (eg. linux)
-    // so I'm disabling on non-mac/win platforms -bkgood
-#if defined(Q_OS_WIN32) || defined(Q_OS_MAC)
-    return true; //QFile::exists(getiTunesMusicPath());
-#else
-    return false;
-#endif
+    return true;
 }
 
 
@@ -100,14 +94,14 @@ void ITunesFeature::activate(bool forceReload) {
 
     if (!m_isActivated || forceReload) {
 
-        // first, assume we should use the default
-        m_dbfile = getiTunesMusicPath();
-
         SettingsDAO settings(m_pTrackCollection->getDatabase());
         QString dbSetting(settings.getValue(ITDB_PATH_KEY));
         // if a path exists in the database, use it
         if (!dbSetting.isEmpty() && QFile::exists(dbSetting)) {
             m_dbfile = dbSetting;
+        } else {
+            // No Path in settings, try the default
+            m_dbfile = getiTunesMusicPath();
         }
         // if the path we got between the default and the database doesn't
         // exist, ask for a new one and use/save it if it exists
@@ -116,6 +110,7 @@ void ITunesFeature::activate(bool forceReload) {
                 tr("Select your iTunes library"),
                 QDir::homePath(), "*.xml");
             if (m_dbfile.isEmpty() || !QFile::exists(m_dbfile)) {
+                emit(showTrackModel(m_pITunesTrackModel));
                 return;
             }
             settings.setValue(ITDB_PATH_KEY, m_dbfile);
@@ -138,10 +133,8 @@ void ITunesFeature::activate(bool forceReload) {
         //calls a slot in the sidebar model such that 'iTunes (isLoading)' is displayed.
         emit (featureIsLoading(this));
     }
-    else{
-        emit(showTrackModel(m_pITunesTrackModel));
-    }
 
+    emit(showTrackModel(m_pITunesTrackModel));
 }
 
 void ITunesFeature::activateChild(const QModelIndex& index) {
@@ -157,6 +150,7 @@ TreeItemModel* ITunesFeature::getChildModel() {
 }
 
 void ITunesFeature::onRightClick(const QPoint& globalPos) {
+    BaseExternalLibraryFeature::onRightClick(globalPos);
     QMenu menu;
     QAction useDefault(tr("Use Default Library"), &menu);
     QAction chooseNew(tr("Choose Library..."), &menu);
@@ -180,22 +174,25 @@ void ITunesFeature::onRightClick(const QPoint& globalPos) {
     }
 }
 
-void ITunesFeature::onRightClickChild(const QPoint& globalPos, QModelIndex index) {
-}
-
 bool ITunesFeature::dropAccept(QUrl url) {
+    Q_UNUSED(url);
     return false;
 }
 
 bool ITunesFeature::dropAcceptChild(const QModelIndex& index, QUrl url) {
+    Q_UNUSED(index);
+    Q_UNUSED(url);
     return false;
 }
 
 bool ITunesFeature::dragMoveAccept(QUrl url) {
+    Q_UNUSED(url);
     return false;
 }
 
 bool ITunesFeature::dragMoveAcceptChild(const QModelIndex& index, QUrl url) {
+    Q_UNUSED(index);
+    Q_UNUSED(url);
     return false;
 }
 
@@ -205,8 +202,6 @@ QString ITunesFeature::getiTunesMusicPath() {
     musicFolder = QDesktopServices::storageLocation(QDesktopServices::MusicLocation) + "/iTunes/iTunes Music Library.xml";
 #elif defined(__WINDOWS__)
     musicFolder = QDesktopServices::storageLocation(QDesktopServices::MusicLocation) + "\\iTunes\\iTunes Music Library.xml";
-#elif defined(__LINUX__)
-		musicFolder = QDir::homePath() + "/iTunes Music Library.xml";
 #else
 		musicFolder = "";
 #endif
@@ -223,16 +218,15 @@ TreeItem* ITunesFeature::importLibrary() {
     thisThread->setPriority(QThread::LowestPriority);
 
     //Delete all table entries of iTunes feature
-    m_database.transaction();
+    ScopedTransaction transaction(m_database);
     clearTable("itunes_playlist_tracks");
     clearTable("itunes_library");
     clearTable("itunes_playlists");
-    m_database.commit();
+    transaction.commit();
 
     qDebug() << "ITunesFeature::importLibrary() ";
 
-
-    m_database.transaction();
+    transaction.transaction();
 
     //Parse iTunes XML file using SAX (for performance)
     QFile itunes_file(m_dbfile);
@@ -246,8 +240,36 @@ TreeItem* ITunesFeature::importLibrary() {
         xml.readNext();
         if (xml.isStartElement()) {
             if (xml.name() == "key") {
-                if (xml.readElementText() == "Tracks") {
-                    parseTracks(xml);
+            	QString key = xml.readElementText();
+            	if (key == "Music Folder") {
+					if (readNextStartElement(xml)) {
+						// Normally the Folder Layout it some thing like that
+						// iTunes/
+						// iTunes/Album Artwork
+						// iTunes/iTunes Media <- this is the "Music Folder"
+						// iTunes/iTunes Music Library.xml <- this location we already knew
+	                    QByteArray strlocbytes = xml.readElementText().toUtf8();
+	                    QString music_folder = QUrl::fromEncoded(strlocbytes).toLocalFile();
+						qDebug() << music_folder;
+						int i = music_folder.lastIndexOf(QDir::separator(),-2); // Skip tailing separator if any
+						if (i > -1) {
+							// strip folder "iTunes Media" (at least iTunes 9 it)
+							// or "iTunes Music" (at least iTunes 7 has it)
+							m_dbItunesRoot = music_folder.left(i);
+						}
+						i = m_dbfile.lastIndexOf(QDir::separator());
+						if (i > -1) {
+							// folder "iTunes Media" in Path
+							m_mixxxItunesRoot = m_dbfile.left(i);
+			            }
+                        // Remove matching tail part
+						while (m_mixxxItunesRoot.right(1) == m_dbItunesRoot.right(1)) {
+    						m_mixxxItunesRoot.chop(1);
+    						m_dbItunesRoot.chop(1);
+    					}
+    				}
+    			} else if (key == "Tracks") {
+                	parseTracks(xml);
                     playlist_root = parsePlaylists(xml);
                 }
             }
@@ -258,7 +280,7 @@ TreeItem* ITunesFeature::importLibrary() {
 
     // Even if an error occured, commit the transaction. The file may have been
     // half-parsed.
-    m_database.commit();
+    transaction.commit();
 
     if (xml.hasError()) {
         // do error handling
@@ -395,15 +417,12 @@ void ITunesFeature::parseTrack(QXmlStreamReader &xml, QSqlQuery &query) {
                 if (key == "Location") {
                     QByteArray strlocbytes = content.toUtf8();
                     location = QUrl::fromEncoded(strlocbytes).toLocalFile();
-                    /*
-                     * Strip the crappy file://localhost/ from the URL and
-                     * format URL as in method ITunesTrackModel::parseTrackNode(QDomNode songNode)
-                     */
-#if defined(__WINDOWS__)
-                    location.remove("//localhost/");
-#else
-                    location.remove("//localhost");
-#endif
+                    // Replace first part of location with the mixxx iTunes Root
+                    // on systems where iTunes installed it only strips //localhost
+                    // on iTunes from foreign systems the mount point is replaced
+                    if (!m_dbItunesRoot.isEmpty()) {
+                    	location.replace( m_dbItunesRoot, m_mixxxItunesRoot);
+                    }
                     continue;
                 }
                 if (key == "Track Number") {
@@ -625,4 +644,6 @@ void ITunesFeature::onTrackCollectionLoaded(){
 
 void ITunesFeature::onLazyChildExpandation(const QModelIndex &index){
     //Nothing to do because the childmodel is not of lazy nature.
+    Q_UNUSED(index);
 }
+

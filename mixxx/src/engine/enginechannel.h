@@ -21,15 +21,9 @@
 #include "engineobject.h"
 #include "configobject.h"
 
-class ControlObject;
+class CallbackControl;
 class EngineBuffer;
-class EnginePregain;
-class EngineBuffer;
-class EngineFilterBlock;
-class EngineClipping;
-class EngineVuMeter;
-class EngineVinylSoundEmu;
-class ControlPushButton;
+class EngineState;
 
 class EngineChannel : public EngineObject {
     Q_OBJECT
@@ -40,7 +34,8 @@ class EngineChannel : public EngineObject {
         RIGHT,
     };
 
-    EngineChannel(const char *pGroup, ChannelOrientation defaultOrientation = CENTER);
+    EngineChannel(const char *pGroup, ChannelOrientation defaultOrientation,
+                  EngineState* pEngineState);
     virtual ~EngineChannel();
 
     virtual ChannelOrientation getOrientation();
@@ -50,7 +45,8 @@ class EngineChannel : public EngineObject {
     virtual bool isPFL();
     virtual bool isMaster();
 
-    virtual void process(const CSAMPLE *pIn, const CSAMPLE *pOut, const int iBufferSize) = 0;
+    virtual void process(const CSAMPLE *pIn, const CSAMPLE *pOut,
+                         const int iBufferSize) = 0;
 
     // TODO(XXX) This hack needs to be removed.
     virtual EngineBuffer* getEngineBuffer() {
@@ -59,8 +55,8 @@ class EngineChannel : public EngineObject {
 
   private:
     const QString m_group;
-    ControlPushButton* m_pPFL;
-    ControlObject* m_pOrientation;
+    CallbackControl* m_pPFL;
+    CallbackControl* m_pOrientation;
 };
 
 #endif

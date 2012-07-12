@@ -1,33 +1,33 @@
 #ifndef VINYLCONTROLCONTROL_H
 #define VINYLCONTROLCONTROL_H
 
-#include "engine/enginecontrol.h"
-#include "trackinfoobject.h"
-#include "configobject.h"
 #include "controlobject.h"
 #include "controlpushbutton.h"
+#include "engine/enginecontrol.h"
+#include "trackinfoobject.h"
+
+class CallbackControl;
+class EngineState;
 
 class VinylControlControl : public EngineControl {
     Q_OBJECT
   public:
-    VinylControlControl(const char* pGroup, ConfigObject<ConfigValue>* pConfig);
+    VinylControlControl(const char* pGroup, EngineState* pEngineState);
     virtual ~VinylControlControl();
 
     void trackLoaded(TrackPointer pTrack);
     void trackUnloaded(TrackPointer pTrack);
+    bool isEnabled();
+    bool isScratching();
 
   private slots:
     void slotControlVinylSeek(double value);
 
   private:
-    ControlObject* m_pControlVinylSeek;
-    ControlObject* m_pControlVinylSpeedType;
-    ControlObject* m_pControlVinylStatus;
-    ControlPushButton* m_pControlVinylMode;
-    ControlPushButton* m_pControlVinylEnabled;
-    ControlPushButton* m_pControlVinylWantEnabled;
-    ControlPushButton* m_pControlVinylCueing;
-    ControlPushButton* m_pControlVinylSignalEnabled;
+    CallbackControl* m_pControlVinylEnabled;
+    CallbackControl* m_pControlVinylMode;
+    CallbackControl* m_pControlVinylCueing;
+    CallbackControl* m_pControlVinylScratching;
     TrackPointer m_pCurrentTrack;
 };
 

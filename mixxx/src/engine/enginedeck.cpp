@@ -25,21 +25,24 @@
 #include "enginefilterblock.h"
 #include "enginevumeter.h"
 #include "enginefilteriir.h"
+#include "engine/enginemaster.h"
 
 EngineDeck::EngineDeck(const char* group,
                        ConfigObject<ConfigValue>* pConfig,
-                       EffectsManager* pEffectsManager,
+                       EngineMaster* pMixingEngine,
                        EngineChannel::ChannelOrientation defaultOrientation)
-        : EngineChannel(group, defaultOrientation),
+        : EngineChannel(group, defaultOrientation, pMixingEngine->getState()),
           m_pConfig(pConfig),
-          m_pEffectsManager(pEffectsManager) {
+          m_pEffectsManager(pMixingEngine->getEffectsManager()) {
     m_pEffectsManager->registerChannel(getGroup());
-    m_pPregain = new EnginePregain(group);
-    m_pFilter = new EngineFilterBlock(group);
-    m_pClipping = new EngineClipping(group);
-    m_pBuffer = new EngineBuffer(group, pConfig);
-    m_pVinylSoundEmu = new EngineVinylSoundEmu(pConfig, group);
-    m_pVUMeter = new EngineVuMeter(group);
+    m_pPregain = new EnginePregain(group, pMixingEngine->getState());
+    m_pFilter = new EngineFilterBlock(group, pMixingEngine->getState());
+    m_pClipping = new EngineClipping(group, pMixingEngine->getState());
+    m_pBuffer = new EngineBuffer(
+        group, pConfig, pMixingEngine->getState());
+    m_pVinylSoundEmu = new EngineVinylSoundEmu(
+        group, pMixingEngine->getState());
+    m_pVUMeter = new EngineVuMeter(group, pMixingEngine->getState());
 }
 
 EngineDeck::~EngineDeck() {

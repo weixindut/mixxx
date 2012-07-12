@@ -20,21 +20,25 @@
 #include "engineobject.h"
 
 #define NOISE_BUFFER_SIZE 1000
-class EngineVinylSoundEmu : public EngineObject
-{
-public:
-    EngineVinylSoundEmu(ConfigObject<ConfigValue> *pConfig, const char *group);
-    ~EngineVinylSoundEmu();
-    void process(const CSAMPLE *pIn, const CSAMPLE *pOut, const int iBufferSize);
-private:
-    ConfigObject<ConfigValue> *m_pConfig;
-    ControlObject *m_pRateEngine;
+
+class CallbackControl;
+class EngineState;
+
+class EngineVinylSoundEmu : public EngineObject {
+  public:
+    EngineVinylSoundEmu(const char *group, EngineState* pEngineState);
+    virtual ~EngineVinylSoundEmu();
+
+    void process(const CSAMPLE *pIn, const CSAMPLE *pOut,
+                 const int iBufferSize);
+
+  private:
+    CallbackControl* m_pRateEngine;
     float m_fSpeed, m_fOldSpeed;
     float m_fGainFactor;
-    
+
     float m_fNoise[NOISE_BUFFER_SIZE];
     int m_iNoisePos;
 };
-
 
 #endif
