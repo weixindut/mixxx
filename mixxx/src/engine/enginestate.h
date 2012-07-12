@@ -3,6 +3,7 @@
 
 #include "configobject.h"
 #include "engine/callbackcontrolmanager.h"
+#include "engine/callbacktrackmanager.h"
 
 class EngineState {
   public:

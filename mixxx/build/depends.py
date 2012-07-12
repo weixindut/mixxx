@@ -360,6 +360,7 @@ class MixxxCore(Feature):
                    "dlgautodj.cpp",
 
                    "engine/callbackcontrolmanager.cpp",
+                   "engine/callbacktrackmanager.cpp",
                    "engine/engineworker.cpp",
                    "engine/engineworkerscheduler.cpp",
                    "engine/syncworker.cpp",
