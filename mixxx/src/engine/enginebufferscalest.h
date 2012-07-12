@@ -25,7 +25,6 @@
 #ifndef ENGINEBUFFERSCALEST_H
 #define ENGINEBUFFERSCALEST_H
 
-#include <QMutex>
 #include "enginebufferscale.h"
 #include "SoundTouch.h"
 
@@ -83,9 +82,6 @@ private:
 
     /** Used when clear is called */
     bool m_bClear;
-
-    /** Used to protect SoundTouch calls */
-    QMutex m_qMutex;
 
     // The read-ahead manager that we use to fetch samples
     ReadAheadManager* m_pReadAheadManager;

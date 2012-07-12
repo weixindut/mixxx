@@ -3,7 +3,8 @@
 
 #include "engine/engineworker.h"
 
-EngineWorker::EngineWorker() {
+EngineWorker::EngineWorker()
+        : m_isActive(0) {
     setAutoDelete(false);
 }
 

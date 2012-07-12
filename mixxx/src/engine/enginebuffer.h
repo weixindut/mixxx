@@ -19,7 +19,6 @@
 #define ENGINEBUFFER_H
 
 #include <qapplication.h>
-#include <QMutex>
 
 #include "defs.h"
 #include "engine/engineobject.h"
@@ -124,8 +123,7 @@ public:
     /** Sets pointer to other engine buffer/channel */
     void setOtherEngineBuffer(EngineBuffer *);
 
-    /** Reset buffer playpos and set file playpos. This must only be called
-      * while holding the pause mutex */
+    /** Reset buffer playpos and set file playpos. */
     void setNewPlaypos(double);
 
     void process(const CSAMPLE *pIn, const CSAMPLE *pOut, const int iBufferSize);
@@ -215,9 +213,6 @@ public:
     long int file_length_old;
     /** Copy of file sample rate*/
     int file_srate_old;
-    /** Mutex controlling weather the process function is in pause mode. This happens
-      * during seek and loading of a new track */
-    QMutex pause;
     /** Used in update of playpos slider */
     int m_iSamplesCalculated;
     int m_iUiSlowTick;

@@ -40,7 +40,6 @@ class EngineWorkerScheduler : public QThread {
     QThreadPool m_workerThreadPool;
     QWaitCondition m_waitCondition;
     QMutex m_mutex;
-    QSet<EngineWorker*> m_activeWorkers;
     volatile bool m_bQuit;
 };
 

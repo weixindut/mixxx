@@ -5,7 +5,6 @@
 #define CUECONTROL_H
 
 #include <QList>
-#include <QMutex>
 
 #include "engine/enginecontrol.h"
 #include "configobject.h"

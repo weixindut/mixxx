@@ -4,6 +4,7 @@
 #ifndef ENGINEWORKER_H
 #define ENGINEWORKER_H
 
+#include <QAtomicInt>
 #include <QObject>
 #include <QRunnable>
 
@@ -20,10 +21,23 @@ class EngineWorker : public QObject, public QRunnable {
 
     virtual void run();
 
+    // Thread-safe, sets whether this EngineWorker is active.
+    inline void setActive(bool bActive) {
+        m_isActive = bActive;
+    }
+
+    // Thread-safe, returns true if this EngineWorker is active.
+    inline bool isActive() const {
+        return m_isActive > 0;
+    }
+
   signals:
     void workReady(EngineWorker* worker);
     void workStarting(EngineWorker* worker);
     void workDone(EngineWorker* worker);
+
+  private:
+    QAtomicInt m_isActive;
 };
 
 #endif /* ENGINEWORKER_H */
