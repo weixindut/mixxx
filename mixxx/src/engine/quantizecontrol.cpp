@@ -74,7 +74,7 @@ void QuantizeControl::trackUnloaded(TrackPointer pTrack) {
 }
 
 void QuantizeControl::slotBeatsUpdated() {
-    qDebug() << "QuantizeControl::slotBeatsUpdated";
+    //qDebug() << "QuantizeControl::slotBeatsUpdated";
     if (m_pTrack) {
         m_pBeats = m_pTrack->getBeats();
     }

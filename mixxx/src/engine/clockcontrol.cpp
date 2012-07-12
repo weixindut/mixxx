@@ -50,7 +50,7 @@ void ClockControl::trackUnloaded(TrackPointer pTrack) {
 }
 
 void ClockControl::slotBeatsUpdated() {
-    qDebug() << "ClockControl::slotBeatsUpdated";
+    //qDebug() << "ClockControl::slotBeatsUpdated";
     if (m_pTrack) {
         m_pBeats = m_pTrack->getBeats();
     }

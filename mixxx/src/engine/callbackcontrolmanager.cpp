@@ -90,14 +90,14 @@ TrackWatcher::~TrackWatcher() {
 }
 
 void TrackWatcher::slotCuesUpdated() {
-    qDebug() << "TrackWatcher::slotCuesUpdated()";
+    //qDebug() << "TrackWatcher::slotCuesUpdated()";
     TrackUpdate update;
     update.type = TrackUpdate::CUES_UPDATED;
     emit(trackUpdated(m_pTrack, update));
 }
 
 void TrackWatcher::slotBeatsUpdated() {
-    qDebug() << "TrackWatcher::slotBeatsUpdated()";
+    //qDebug() << "TrackWatcher::slotBeatsUpdated()";
     TrackUpdate update;
     update.type = TrackUpdate::BEATS_UPDATED;
     emit(trackUpdated(m_pTrack, update));
@@ -118,7 +118,7 @@ void CallbackTrackWatcher::receiveUpdate(TrackUpdate update) {
             emit(beatsUpdated());
             break;
         default:
-            qDebug() << "Unhandled TrackUpdate type in CallbackTrackWatcher::receiveUpdate";
+            //qDebug() << "Unhandled TrackUpdate type in CallbackTrackWatcher::receiveUpdate";
             break;
     }
 }
@@ -152,7 +152,7 @@ CallbackTrackWatcher* CallbackTrackManager::createTrackWatcher() {
 
 void CallbackTrackManager::addTrackWatcher(const TrackPointer& pTrack,
                                            CallbackTrackWatcher* pTrackWatcher) {
-    qDebug() << "addTrackWatcher()" << pTrack << pTrackWatcher;
+    //qDebug() << "addTrackWatcher()" << pTrack << pTrackWatcher;
     QHash<TrackInfoObject*, TrackWatchers>::iterator it = m_trackWatchers.find(pTrack.data());
     if (it == m_trackWatchers.end()) {
         TrackWatchers watchers(pTrack);
@@ -166,7 +166,7 @@ void CallbackTrackManager::addTrackWatcher(const TrackPointer& pTrack,
 
 void CallbackTrackManager::removeTrackWatcher(const TrackPointer& pTrack,
                                               CallbackTrackWatcher* pTrackWatcher) {
-    qDebug() << "removeTrackWatcher()" << pTrack << pTrackWatcher;
+    //qDebug() << "removeTrackWatcher()" << pTrack << pTrackWatcher;
     QHash<TrackInfoObject*, TrackWatchers>::iterator it =
             m_trackWatchers.find(pTrack.data());
     if (it != m_trackWatchers.end()) {
@@ -176,7 +176,7 @@ void CallbackTrackManager::removeTrackWatcher(const TrackPointer& pTrack,
 
 void CallbackTrackManager::slotTrackUpdated(const TrackPointer& pTrack,
                                             TrackUpdate update) {
-    qDebug() << "CallbackTrackManager::slotTrackUpdated()" << pTrack;
+    //qDebug() << "CallbackTrackManager::slotTrackUpdated()" << pTrack;
     if (!pTrack) {
         return;
     }

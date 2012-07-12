@@ -374,9 +374,8 @@ void BpmControl::trackUnloaded(TrackPointer pTrack) {
     m_pBeats.clear();
 }
 
-void BpmControl::slotUpdatedTrackBeats()
-{
-    qDebug() << "BpmControl::slotUpdatedTrackBeats()";
+void BpmControl::slotUpdatedTrackBeats() {
+    //qDebug() << "BpmControl::slotUpdatedTrackBeats()";
     if (m_pTrack) {
         m_pBeats = m_pTrack->getBeats();
     }

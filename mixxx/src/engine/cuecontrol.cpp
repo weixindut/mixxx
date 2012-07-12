@@ -254,7 +254,7 @@ void CueControl::trackUnloaded(TrackPointer pTrack) {
 }
 
 void CueControl::trackCuesUpdated() {
-    qDebug() << "CueControl::trackCuesUpdated";
+    //qDebug() << "CueControl::trackCuesUpdated";
     QSet<int> active_hotcues;
 
     if (!m_pLoadedTrack)

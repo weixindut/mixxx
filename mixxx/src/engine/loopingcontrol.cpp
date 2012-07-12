@@ -523,7 +523,7 @@ void LoopingControl::trackUnloaded(TrackPointer pTrack) {
 
 void LoopingControl::slotUpdatedTrackBeats()
 {
-    qDebug() << "LoopingControl::slotUpdatedTrackBeats()";
+    //qDebug() << "LoopingControl::slotUpdatedTrackBeats()";
     if (m_pTrack) {
         m_pBeats = m_pTrack->getBeats();
     }

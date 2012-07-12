@@ -11,7 +11,7 @@
 
 namespace {
 
-const bool sDebug = true;
+const bool sDebug = false;
 
 }  // namespace
 
@@ -236,7 +236,7 @@ Chunk* CachingReader::lookupChunk(int chunk_number) {
 void CachingReader::processChunkReadRequest(ChunkReadRequest* request,
                                             ReaderStatusUpdate* update) {
     int chunk_number = request->chunk->chunk_number;
-    qDebug() << "Processing ChunkReadRequest for" << chunk_number;
+    //qDebug() << "Processing ChunkReadRequest for" << chunk_number;
     update->status = CHUNK_READ_INVALID;
     update->chunk = request->chunk;
     update->chunk->length = 0;
@@ -290,7 +290,6 @@ void CachingReader::process() {
         //          << (status.chunk ? status.chunk->chunk_number : -1);
         if (status.status == TRACK_NOT_LOADED_CANT_LOAD ||
             status.status == TRACK_NOT_LOADED_NOT_FOUND) {
-            qDebug() << "ReaderStatusUpdate TRACK_NOT_LOADED";
             m_readerStatus = status.status;
             QString filename = m_pLoadedTrack ? m_pLoadedTrack->getLocation() : "";
             if (status.status == TRACK_NOT_LOADED_CANT_LOAD) {
@@ -309,7 +308,6 @@ void CachingReader::process() {
             m_readerStatus = status.status;
             m_iTrackNumSamplesCallbackSafe = status.trackNumSamples;
             m_iTrackSampleRateCallbackSafe = status.trackSampleRate;
-            qDebug() << "ReaderStatusUpdate TRACK_LOADED";
 
             // Emit that the track is loaded.
             emit(trackLoaded(m_pLoadedTrack, m_iTrackSampleRateCallbackSafe,
