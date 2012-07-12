@@ -309,8 +309,6 @@ EngineBuffer::~EngineBuffer()
 void EngineBuffer::setPitchIndpTimeStretch(bool b)
 {
     ASSERT_ENGINE_THREAD;
-    // MUST ACQUIRE THE PAUSE MUTEX BEFORE CALLING THIS METHOD
-
     // Change sound scale mode
 
     //SoundTouch's linear interpolation code doesn't sound very good.
@@ -376,14 +374,11 @@ double EngineBuffer::getRate()
     return m_pRateControl->getRawRate();
 }
 
-// This used to run in the EngineWorker thread pool, but now runs in the
-// callback thread.
 void EngineBuffer::slotTrackLoaded(TrackPointer pTrack,
                                    int iTrackSampleRate,
                                    int iTrackNumSamples) {
     ASSERT_ENGINE_THREAD;
     //qDebug() << "slotTrackLoaded" << iTrackSampleRate << iTrackNumSamples;
-    pause.lock();
     m_pCurrentTrack = pTrack;
     file_srate_old = iTrackSampleRate;
     file_length_old = iTrackNumSamples;
@@ -393,8 +388,6 @@ void EngineBuffer::slotTrackLoaded(TrackPointer pTrack,
 
     // Let the engine know that a track is loaded now.
     m_iTrackLoading = 0;
-
-    pause.unlock();
 
     // TODO(XXX) replace this with a pipe write to prevent the lock incurred by
     // Qt's event queue.
@@ -426,7 +419,6 @@ void EngineBuffer::ejectTrack() {
     if (playButton->get() > 0)
         return;
 
-    pause.lock();
     TrackPointer pTrack = m_pCurrentTrack;
     m_pCurrentTrack.clear();
     file_srate_old = 0;
@@ -436,7 +428,6 @@ void EngineBuffer::ejectTrack() {
     slotControlSeek(0.);
     m_pTrackSamples->set(0);
     m_pTrackSampleRate->set(0);
-    pause.unlock();
 
     emit(trackUnloaded(pTrack));
 }
@@ -541,7 +532,7 @@ void EngineBuffer::process(const CSAMPLE *, const CSAMPLE * pOut, const int iBuf
     bool bCurBufferPaused = false;
     double rate = 0;
 
-    if (m_iTrackLoading == 0 && pause.tryLock()) {
+    if (m_iTrackLoading == 0) {
         float sr = m_pSampleRate->get();
 
         double baserate = 0.0f;
@@ -721,10 +712,7 @@ void EngineBuffer::process(const CSAMPLE *, const CSAMPLE * pOut, const int iBuf
                 playButton->set(0.);
             }
         }
-
-        // release the pauselock
-        pause.unlock();
-    } else { // if (m_iTrackLoading == 0 && pause.tryLock()) {
+    } else { // if (m_iTrackLoading == 0) {
         // If we can't get the pause lock then this buffer will be silence.
         bCurBufferPaused = true;
     }
