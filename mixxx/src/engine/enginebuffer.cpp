@@ -77,7 +77,6 @@ QThread* g_engineThread = NULL;
 EngineBuffer::EngineBuffer(const char * _group, ConfigObject<ConfigValue> * _config,
                            EngineState* pEngineState) :
     m_messagePipe(4096, 4096),
-    m_engineLock(QMutex::Recursive),
     group(_group),
     m_pConfig(_config),
     m_pLoopingControl(NULL),
@@ -360,14 +359,11 @@ void EngineBuffer::setNewPlaypos(double newpos) {
         m_pScale->clear();
     m_pReadAheadManager->notifySeek(filepos_play);
 
-    // Must hold the engineLock while using m_engineControls
-    m_engineLock.lock();
     for (QList<EngineControl*>::iterator it = m_engineControls.begin();
          it != m_engineControls.end(); it++) {
         EngineControl *pControl = *it;
         pControl->notifySeek(filepos_play);
     }
-    m_engineLock.unlock();
 }
 
 const char * EngineBuffer::getGroup()
@@ -410,7 +406,7 @@ void EngineBuffer::slotTrackLoaded(TrackPointer pTrack,
 void EngineBuffer::slotTrackLoadFailed(TrackPointer pTrack,
                                        QString reason) {
     ASSERT_ENGINE_THREAD;
-    qDebug() << "slotTrackLoadFailed" << reason;
+    //qDebug() << "slotTrackLoadFailed" << reason;
     ejectTrack();
 
     // TODO(XXX) replace this with a pipe write to prevent the lock incurred by
@@ -447,7 +443,6 @@ void EngineBuffer::ejectTrack() {
 
 void EngineBuffer::slotControlSeek(double change) {
     ASSERT_ENGINE_THREAD;
-    qDebug() << this << "slotControlSeek()" << change;
     if (isnan(change)) {
         // This seek is ridiculous.
         return;
@@ -649,7 +644,6 @@ void EngineBuffer::process(const CSAMPLE *, const CSAMPLE * pOut, const int iBuf
                         static_cast<int>(filepos_play), samplesRead);
         } // else (bCurBufferPaused)
 
-        m_engineLock.lock();
         QListIterator<EngineControl*> it(m_engineControls);
         while (it.hasNext()) {
             EngineControl* pControl = it.next();
@@ -702,7 +696,6 @@ void EngineBuffer::process(const CSAMPLE *, const CSAMPLE * pOut, const int iBuf
                 m_pRateControl->notifySeek(filepos_play);
             }
         }
-        m_engineLock.unlock();
 
 
         // Update all the indicators that EngineBuffer publishes to allow
@@ -839,7 +832,6 @@ void EngineBuffer::updateIndicators(double rate, int iBufferSize) {
 void EngineBuffer::hintReader(const double dRate,
                               const int iSourceSamples) {
     ASSERT_ENGINE_THREAD;
-    m_engineLock.lock();
 
     m_hintList.clear();
     m_pReadAheadManager->hintReader(dRate, m_hintList, iSourceSamples);
@@ -850,8 +842,6 @@ void EngineBuffer::hintReader(const double dRate,
         pControl->hintReader(m_hintList);
     }
     m_pReader->hintAndMaybeWake(m_hintList);
-
-    m_engineLock.unlock();
 }
 
 // WARNING: This method runs in the GUI thread.
@@ -880,9 +870,7 @@ void EngineBuffer::slotLoadTrackFromGuiThread(TrackPointer pTrack) {
 
 void EngineBuffer::addControl(EngineControl* pControl) {
     // Connect to signals from EngineControl here...
-    m_engineLock.lock();
     m_engineControls.push_back(pControl);
-    m_engineLock.unlock();
     connect(pControl, SIGNAL(seek(double)),
             this, SLOT(slotControlSeek(double)),
             Qt::DirectConnection);

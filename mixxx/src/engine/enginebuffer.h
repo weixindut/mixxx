@@ -179,10 +179,6 @@ public:
 
     TwoWayMessagePipe<PlayerMessage, EnginePlayerMessage> m_messagePipe;
 
-    // Lock for modifying local engine variables that are not thread safe, such
-    // as m_engineControls and m_hintList
-    QMutex m_engineLock;
-
     /** Holds the name of the control group */
     const char* group;
     ConfigObject<ConfigValue>* m_pConfig;
