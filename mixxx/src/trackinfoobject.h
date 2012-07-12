@@ -28,7 +28,6 @@
 #include <QWeakPointer>
 
 #include "defs.h"
-//#include "track/cues.h"
 #include "track/beats.h"
 #include "library/dao/cue.h"
 
@@ -57,7 +56,7 @@ public:
     TrackInfoObject(const QString sLocation="", bool parseHeader=true);
     // Initialize track with a QFileInfo class
     TrackInfoObject(const QFileInfo& fileInfo, bool parseHeader=true);
-    // Creates a new track given information from the xml file. 
+    // Creates a new track given information from the xml file.
     TrackInfoObject(const QDomNode &);
     virtual ~TrackInfoObject();
 
@@ -240,12 +239,6 @@ public:
 
     /** Set the track's full file path */
     void setLocation(QString location);
-
-    // // Get a copy of the track's Cues list
-    // CuesPointer getCues() const;
-
-    // // Set the track's Cues
-    // void setCues(CuesPointer cues);
 
     // Get a copy of the track's Beats list
     BeatsPointer getBeats() const;

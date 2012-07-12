@@ -598,7 +598,7 @@ void CachingReader::wake() {
 }
 
 void CachingReader::loadTrack(TrackPointer pTrack) {
-    qDebug() << m_pGroup << "CachingReader::loadTrack().";
+    //qDebug() << m_pGroup << "CachingReader::loadTrack().";
 
     // Regardless of the success of this function, set m_pLoadedTrack to the
     // track we attempted to load. The callback thread reads this and

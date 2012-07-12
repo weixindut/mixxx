@@ -13,7 +13,7 @@ class PortAudio(Dependence):
 
         #Turn on PortAudio support in Mixxx
         build.env.Append(CPPDEFINES = '__PORTAUDIO__')
-        
+
         if build.platform_is_windows and build.static_dependencies:
             conf.CheckLib('advapi32')
 
@@ -95,10 +95,10 @@ class FLAC(Dependence):
             raise Exception('Did not find libFLAC development headers')
         elif not conf.CheckLib(['libFLAC', 'FLAC']):
             raise Exception('Did not find libFLAC development libraries')
-            
+
         if build.platform_is_windows and build.static_dependencies:
             build.env.Append(CPPDEFINES = 'FLAC__NO_DLL')
-        
+
         return
 
     def sources(self, build):
@@ -160,7 +160,7 @@ class Qt(Dependence):
             build.env.Append(LIBS = 'QtScript')
         elif build.platform_is_windows:
             build.env.Append(LIBPATH=['$QTDIR/lib'])
-            
+
             # Since we use WebKit, that's only available dynamically
             build.env.Append(LIBS = 'QtWebKit4')
             build.env.Append(LIBS = 'QtXml4')
@@ -171,7 +171,7 @@ class Qt(Dependence):
             build.env.Append(LIBS = 'QtScript4')
             build.env.Append(LIBS = 'QtNetwork4')
             build.env.Append(LIBS = 'QtOpenGL4')
-            
+
             # if build.static_dependencies:
                 # # Pulled from qt-4.8.2-source\mkspecs\win32-msvc2010\qmake.conf
                 # # QtCore
@@ -306,7 +306,7 @@ class TagLib(Dependence):
         # it, though might cause issues. This is safe to remove once we
         # deprecate Karmic support. rryan 2/2011
         build.env.Append(CPPPATH='/usr/include/taglib/')
-        
+
         if build.platform_is_windows and build.static_dependencies:
             build.env.Append(CPPDEFINES = 'TAGLIB_STATIC')
 
@@ -593,7 +593,6 @@ class MixxxCore(Feature):
 
                    "sampleutil.cpp",
                    "trackinfoobject.cpp",
-                   #"track/cues.cpp",
                    "track/beatgrid.cpp",
                    "track/beatmap.cpp",
                    "track/beatfactory.cpp",
@@ -821,7 +820,7 @@ class MixxxCore(Feature):
                 if not build.static_dependencies:
                     build.env.Append(LINKFLAGS = ['/nodefaultlib:LIBCMT.lib',
                                                   '/nodefaultlib:LIBCMTd.lib'])
-                
+
                 build.env.Append(LINKFLAGS = '/entry:mainCRTStartup')
                 # Makes the program not launch a shell first
                 build.env.Append(LINKFLAGS = '/subsystem:windows')
