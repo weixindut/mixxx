@@ -61,7 +61,8 @@ typedef struct ChunkReadRequest {
 
 enum ReaderStatus {
     INVALID,
-    TRACK_NOT_LOADED,
+    TRACK_NOT_LOADED_NOT_FOUND,
+    TRACK_NOT_LOADED_CANT_LOAD,
     TRACK_LOADED,
     CHUNK_READ_SUCCESS,
     CHUNK_READ_EOF,
@@ -72,6 +73,7 @@ typedef struct ReaderStatusUpdate {
     ReaderStatus status;
     Chunk* chunk;
     int trackNumSamples;
+    int trackSampleRate;
     ReaderStatusUpdate() {
         status = INVALID;
         chunk = NULL;
@@ -200,6 +202,11 @@ class CachingReader : public EngineWorker {
     // The raw memory buffer which is divided up into chunks.
     CSAMPLE* m_pRawMemoryBuffer;
 
+    // The most recently loaded track. Set by the reader thread and read by the
+    // callback thread. Since QSharedPointer is thread-safe in assignment this
+    // is fine.
+    TrackPointer m_pLoadedTrack;
+
     ////////////////////////////////////////////////////////////////////////////
     // The following may /only/ be called within the reader thread
     ////////////////////////////////////////////////////////////////////////////
@@ -215,6 +222,7 @@ class CachingReader : public EngineWorker {
     // The current sound source of the track loaded
     Mixxx::SoundSource* m_pCurrentSoundSource;
     int m_iTrackSampleRate;
+    int m_iTrackSampleRateCallbackSafe;
     int m_iTrackNumSamples;
     int m_iTrackNumSamplesCallbackSafe;
 

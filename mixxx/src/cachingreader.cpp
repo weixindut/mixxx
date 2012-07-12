@@ -4,9 +4,6 @@
 #include <QtDebug>
 #include <QFileInfo>
 
-#include "controlobject.h"
-#include "controlobjectthread.h"
-
 #include "cachingreader.h"
 #include "trackinfoobject.h"
 #include "soundsourceproxy.h"
@@ -44,6 +41,7 @@ CachingReader::CachingReader(const char* _group,
         m_pRawMemoryBuffer(NULL),
         m_pCurrentSoundSource(NULL),
         m_iTrackSampleRate(0),
+        m_iTrackSampleRateCallbackSafe(0),
         m_iTrackNumSamples(0),
         m_iTrackNumSamplesCallbackSafe(0),
         m_pSample(NULL) {
@@ -290,12 +288,32 @@ void CachingReader::process() {
     while (m_readerStatusFIFO.read(&status, 1) == 1) {
         // qDebug() << "Got ReaderStatusUpdate:" << status.status
         //          << (status.chunk ? status.chunk->chunk_number : -1);
-        if (status.status == TRACK_NOT_LOADED) {
+        if (status.status == TRACK_NOT_LOADED_CANT_LOAD ||
+            status.status == TRACK_NOT_LOADED_NOT_FOUND) {
+            qDebug() << "ReaderStatusUpdate TRACK_NOT_LOADED";
             m_readerStatus = status.status;
+            QString filename = m_pLoadedTrack ? m_pLoadedTrack->getLocation() : "";
+            if (status.status == TRACK_NOT_LOADED_CANT_LOAD) {
+                emit(trackLoadFailed(
+                    m_pLoadedTrack, QString("The file '%1' could not be loaded.").arg(filename)));
+            } else if (status.status == TRACK_NOT_LOADED_NOT_FOUND) {
+                emit(trackLoadFailed(
+                    m_pLoadedTrack, QString("The file '%1' could not be found.").arg(filename)));
+            }
+
+            // Since we failed to load this track, clear our pointer to it so we
+            // don't prevent it from being deleted.
+            m_pLoadedTrack.clear();
         } else if (status.status == TRACK_LOADED) {
             freeAllChunks();
             m_readerStatus = status.status;
             m_iTrackNumSamplesCallbackSafe = status.trackNumSamples;
+            m_iTrackSampleRateCallbackSafe = status.trackSampleRate;
+            qDebug() << "ReaderStatusUpdate TRACK_LOADED";
+
+            // Emit that the track is loaded.
+            emit(trackLoaded(m_pLoadedTrack, m_iTrackSampleRateCallbackSafe,
+                             m_iTrackNumSamplesCallbackSafe));
         } else if (status.status == CHUNK_READ_SUCCESS) {
             Chunk* pChunk = status.chunk;
             Q_ASSERT(pChunk != NULL);
@@ -582,12 +600,18 @@ void CachingReader::wake() {
 }
 
 void CachingReader::loadTrack(TrackPointer pTrack) {
-    //qDebug() << m_pGroup << "CachingReader::loadTrack() lock acquired for load.";
+    qDebug() << m_pGroup << "CachingReader::loadTrack().";
+
+    // Regardless of the success of this function, set m_pLoadedTrack to the
+    // track we attempted to load. The callback thread reads this and
+    // potentially clears it.
+    m_pLoadedTrack = pTrack;
 
     ReaderStatusUpdate status;
     status.status = TRACK_LOADED;
     status.chunk = NULL;
     status.trackNumSamples = 0;
+    status.trackSampleRate = 0;
 
     if (m_pCurrentSoundSource != NULL) {
         delete m_pCurrentSoundSource;
@@ -602,16 +626,15 @@ void CachingReader::loadTrack(TrackPointer pTrack) {
         // Must unlock before emitting to avoid deadlock
         qDebug() << m_pGroup << "CachingReader::loadTrack() load failed for\""
                  << filename << "\", unlocked reader lock";
-        status.status = TRACK_NOT_LOADED;
+        status.status = TRACK_NOT_LOADED_NOT_FOUND;
         m_readerStatusFIFO.writeBlocking(&status, 1);
-        emit(trackLoadFailed(
-            pTrack, QString("The file '%1' could not be found.").arg(filename)));
         return;
     }
 
     m_pCurrentSoundSource = new SoundSourceProxy(pTrack);
     bool openSucceeded = (m_pCurrentSoundSource->open() == OK); //Open the song for reading
-    m_iTrackSampleRate = m_pCurrentSoundSource->getSampleRate();
+    m_iTrackSampleRate = status.trackSampleRate =
+            m_pCurrentSoundSource->getSampleRate();
     m_iTrackNumSamples = status.trackNumSamples =
             m_pCurrentSoundSource->length();
 
@@ -619,10 +642,8 @@ void CachingReader::loadTrack(TrackPointer pTrack) {
         // Must unlock before emitting to avoid deadlock
         qDebug() << m_pGroup << "CachingReader::loadTrack() load failed for\""
                  << filename << "\", file invalid, unlocked reader lock";
-        status.status = TRACK_NOT_LOADED;
+        status.status = TRACK_NOT_LOADED_CANT_LOAD;
         m_readerStatusFIFO.writeBlocking(&status, 1);
-        emit(trackLoadFailed(
-            pTrack, QString("The file '%1' could not be loaded.").arg(filename)));
         return;
     }
 
@@ -636,7 +657,4 @@ void CachingReader::loadTrack(TrackPointer pTrack) {
         status.chunk = request.chunk;
         m_readerStatusFIFO.writeBlocking(&status, 1);
     }
-
-    // Emit that the track is loaded.
-    emit(trackLoaded(pTrack, m_iTrackSampleRate, m_iTrackNumSamples));
 }
