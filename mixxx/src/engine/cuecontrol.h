@@ -115,7 +115,6 @@ class CueControl : public EngineControl {
     void playFromCuePreview(double v);
 
   private:
-    // These methods are not thread safe, only call them when the lock is held.
     void createControls(EngineState* pEngineState);
     void attachCue(Cue* pCue, int hotcueNumber);
     void detachCue(int hotcueNumber);

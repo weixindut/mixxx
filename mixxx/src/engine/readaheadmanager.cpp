@@ -1,14 +1,11 @@
 // readaheadmanager.cpp
 // Created 8/2/2009 by RJ Ryan (rryan@mit.edu)
 
-#include <QMutexLocker>
-
 #include "engine/readaheadmanager.h"
 
 #include "mathstuff.h"
 #include "engine/enginecontrol.h"
 #include "cachingreader.h"
-
 
 ReadAheadManager::ReadAheadManager(CachingReader* pReader) :
     m_iCurrentPosition(0),
@@ -114,13 +111,11 @@ void ReadAheadManager::addEngineControl(EngineControl* pControl) {
 }
 
 void ReadAheadManager::setNewPlaypos(int iNewPlaypos) {
-    QMutexLocker locker(&m_mutex);
     m_iCurrentPosition = iNewPlaypos;
     m_readAheadLog.clear();
 }
 
 void ReadAheadManager::notifySeek(int iSeekPosition) {
-    QMutexLocker locker(&m_mutex);
     m_iCurrentPosition = iSeekPosition;
     m_readAheadLog.clear();
 
@@ -160,7 +155,6 @@ void ReadAheadManager::hintReader(double dRate, QList<Hint>& hintList,
 
 void ReadAheadManager::addReadLogEntry(double virtualPlaypositionStart,
                                        double virtualPlaypositionEndNonInclusive) {
-    QMutexLocker locker(&m_mutex);
     ReadLogEntry newEntry(virtualPlaypositionStart,
                           virtualPlaypositionEndNonInclusive);
     if (m_readAheadLog.size() > 0) {
@@ -178,7 +172,6 @@ int ReadAheadManager::getEffectiveVirtualPlaypositionFromLog(double currentVirtu
         return currentVirtualPlayposition;
     }
 
-    QMutexLocker locker(&m_mutex);
     if (m_readAheadLog.size() == 0) {
         // No log entries to read from.
         qDebug() << this << "No read ahead log entries to read from. Case not currently handled.";
