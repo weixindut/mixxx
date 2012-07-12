@@ -362,6 +362,7 @@ class MixxxCore(Feature):
                    "dlgabout.cpp",
                    "dlgprefeq.cpp",
                    "dlgprefcrossfader.cpp",
+                   "trackselectiondialog.cpp",
                    "dlgtrackinfo.cpp",
                    "dlgprepare.cpp",
                    "dlgautodj.cpp",
@@ -457,6 +458,11 @@ class MixxxCore(Feature):
                    "widget/wtime.cpp",
 
                    "mathstuff.cpp",
+
+                   "network.cpp",
+                   "musicbrainz/tagfetcher.cpp",
+                   "musicbrainz/acoustidclient.cpp",
+                   "musicbrainz/musicbrainzclient.cpp",
 
                    "rotary.cpp",
                    "widget/wtracktableview.cpp",
@@ -670,6 +676,7 @@ class MixxxCore(Feature):
         build.env.Uic4('dlgprefnovinyldlg.ui')
         build.env.Uic4('dlgprefrecorddlg.ui')
         build.env.Uic4('dlgaboutdlg.ui')
+        build.env.Uic4('trackselectiondialog.ui')
         build.env.Uic4('dlgtrackinfo.ui')
         build.env.Uic4('dlgprepare.ui')
         build.env.Uic4('dlgautodj.ui')

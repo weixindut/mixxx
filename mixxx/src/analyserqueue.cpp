@@ -14,7 +14,6 @@
 #include "analyserwaveform.h"
 #include "analyserbpm.h"
 #include "analyserrg.h"
-#include "analyseraccoustid.h"
 #ifdef __VAMP__
 #include "analyserbeats.h"
 #include "vamp/vampanalyser.h"
@@ -303,7 +302,6 @@ AnalyserQueue* AnalyserQueue::createDefaultAnalyserQueue(ConfigObject<ConfigValu
 #else
     ret->addAnalyser(new AnalyserBPM(_config));
 #endif
-    ret->addAnalyser(new AnalyserAccoustID());
 
     ret->start(QThread::IdlePriority);
     return ret;
@@ -321,7 +319,6 @@ AnalyserQueue* AnalyserQueue::createPrepareViewAnalyserQueue(ConfigObject<Config
 #else
     ret->addAnalyser(new AnalyserBPM(_config));
 #endif
-    ret->addAnalyser(new AnalyserAccoustID());
 
     ret->start(QThread::IdlePriority);
     return ret;

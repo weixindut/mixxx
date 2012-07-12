@@ -6,10 +6,13 @@
 #include "dlgtrackinfo.h"
 #include "library/dao/cue.h"
 #include "trackinfoobject.h"
+#include "trackselectiondialog.h"
 
 DlgTrackInfo::DlgTrackInfo(QWidget* parent) :
         QDialog(parent),
-        m_pLoadedTrack() {
+        m_pTrackSelectionDialog(new TrackSelectionDialog(this)),
+        m_pLoadedTrack(),
+        m_TagFetcher(this){
 
     setupUi(this);
 
@@ -23,6 +26,16 @@ DlgTrackInfo::DlgTrackInfo(QWidget* parent) :
             this, SLOT(apply()));
     connect(btnCancel, SIGNAL(clicked()),
             this, SLOT(cancel()));
+
+    connect(btnFetchTag, SIGNAL(clicked()),
+            this, SLOT(fetchTag()));
+    connect(&m_TagFetcher, SIGNAL(ResultAvailable(const TrackPointer,const QList<TrackPointer>&)),
+            m_pTrackSelectionDialog, SLOT(FetchTagFinished(const TrackPointer,const QList<TrackPointer>&)));
+            // Qt::QueuedConnection);
+    connect(&m_TagFetcher, SIGNAL(foobar()), m_pTrackSelectionDialog, SLOT(foobar()));
+    connect(&m_TagFetcher, SIGNAL(Progress(TrackPointer,QString)),
+            m_pTrackSelectionDialog, SLOT(FetchTagProgress(TrackPointer,QString)));
+    connect(m_pTrackSelectionDialog, SIGNAL(finished(int)), &m_TagFetcher, SLOT(Cancel()));
 
     connect(bpmDouble, SIGNAL(clicked()),
             this, SLOT(slotBpmDouble()));
@@ -319,4 +332,12 @@ void DlgTrackInfo::reloadTrackMetadata() {
         TrackPointer pTrack(new TrackInfoObject(m_pLoadedTrack->getLocation()));
         populateFields(pTrack);
     }
+}
+
+void DlgTrackInfo::fetchTag() {
+    QList<TrackPointer> tracks;
+    tracks.append(m_pLoadedTrack);
+    m_pTrackSelectionDialog->init(tracks);
+    m_TagFetcher.StartFetch(tracks);
+    m_pTrackSelectionDialog->show();
 }

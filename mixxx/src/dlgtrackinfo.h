@@ -8,11 +8,13 @@
 #include <QList>
 
 #include "ui_dlgtrackinfo.h"
-
+#include "musicbrainz/tagfetcher.h"
 #include "trackinfoobject.h"
 #include "controlbeat.h"
 
 class Cue;
+class TrackSelectionDialog;
+
 
 class DlgTrackInfo : public QDialog, public Ui::DlgTrackInfo {
     Q_OBJECT
@@ -35,6 +37,7 @@ class DlgTrackInfo : public QDialog, public Ui::DlgTrackInfo {
     void apply();
     void cancel();
     void trackUpdated();
+    void fetchTag();
 
     void cueActivate();
     void cueDelete();
@@ -58,6 +61,8 @@ class DlgTrackInfo : public QDialog, public Ui::DlgTrackInfo {
     QTime m_bpmTapTimer;
 
     QMutex m_mutex;
+    TrackSelectionDialog* m_pTrackSelectionDialog;
+    TagFetcher m_TagFetcher;
 
 };
 

@@ -25,9 +25,6 @@ QString chromaprinter::getFingerPrint(TrackPointer pTrack){
         m_NumSamples = soundSource.length();
     }
 
-    qDebug() << "numSamples = " <<m_NumSamples;
-    qDebug() << "numSampleRate = " <<m_SampleRate;
-
     if (m_SampleRate == 0 ){
         qDebug() << "Skipping invalid file:" << m_pTrack->getLocation();
         return QString();
@@ -70,6 +67,7 @@ QString chromaprinter::getFingerPrint(TrackPointer pTrack){
     delete pData;
 
     // qDebug() << QString(fingerprint);
+    /*
     typedef QPair<QString, QString> Param;
     QList<Param> parameters;
     parameters << Param("format", "xml")
@@ -80,6 +78,7 @@ QString chromaprinter::getFingerPrint(TrackPointer pTrack){
     QUrl url("http://api.acoustid.org/v2/lookup");
     url.setQueryItems(parameters);
     qDebug() << url.toString();
+    */
     
     return fingerprint;
 }

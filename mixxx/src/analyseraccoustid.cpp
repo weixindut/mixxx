@@ -18,20 +18,22 @@ AnalyserAccoustID::AnalyserAccoustID(QObject* parent)
 
 bool AnalyserAccoustID::initialise(TrackPointer tio, int sampleRate,
                               int totalSamples){
-    qDebug() <<"sampleRate="<< sampleRate;
     Q_UNUSED(tio);
     m_pChromaprint = chromaprint_new(CHROMAPRINT_ALGORITHM_DEFAULT);
     chromaprint_start(m_pChromaprint, sampleRate, numChannels);
     // this is worth 30sec of audio, multiply by 2 because we have 2 chanels 
     // --kain88
     m_totalSamples = 30*2*sampleRate;
+    if (m_totalSamples > totalSamples) {
+        m_totalSamples = totalSamples;
+    }
     m_pIn = new SAMPLE[m_totalSamples];
     m_SamplesSoFar=0;
     return true;
 }
 
 void AnalyserAccoustID::process(const CSAMPLE *pIn, const int iLen){
-    // make sure that I read  samplesSoFar<= totalSamples
+    // make sure that samplesSoFar<= totalSamples is true
     if(m_SamplesSoFar+iLen>m_totalSamples){
         return;
     }
@@ -43,13 +45,11 @@ void AnalyserAccoustID::process(const CSAMPLE *pIn, const int iLen){
 }
 
 void AnalyserAccoustID::finalise(TrackPointer tio){
-    qDebug() << "analyse fingerprint";
     if (m_SamplesSoFar != m_totalSamples) {
         qDebug() << "apprently I have read less samples then I ought to have"
                  << "strange" ;
     }
     int success = chromaprint_feed(m_pChromaprint,m_pIn,m_SamplesSoFar);
-    qDebug() << "num of samples="<<m_SamplesSoFar;
     chromaprint_finish(m_pChromaprint);
     void* fprint = NULL;
     int size = 0;
@@ -67,7 +67,6 @@ void AnalyserAccoustID::finalise(TrackPointer tio){
 
         chromaprint_dealloc(fprint);
         chromaprint_dealloc(encoded);
-        qDebug() <<"encoded_size=" << encoded_size;
     }
     tio->setAccoustID(fingerprint);
     // qDebug() << tio->getAccoustID();

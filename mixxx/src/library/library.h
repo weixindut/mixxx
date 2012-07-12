@@ -15,6 +15,7 @@
 #include "trackinfoobject.h"
 #include "recording/recordingmanager.h"
 #include "mixxxlibraryfeature.h"
+#include "preparefeature.h"
 
 class TrackModel;
 class TrackCollection;
@@ -87,6 +88,7 @@ private:
     PlaylistFeature* m_pPlaylistFeature;
     CrateFeature* m_pCrateFeature;
     PromoTracksFeature* m_pPromoTracksFeature;
+    PrepareFeature* m_pPrepareFeature;
     LibraryControl* m_pLibraryControl;
     RecordingManager* m_pRecordingManager;
     TrackModel* m_ptrackModel;
