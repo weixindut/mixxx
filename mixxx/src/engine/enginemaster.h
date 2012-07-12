@@ -132,6 +132,7 @@ class EngineMaster : public EngineObject, public AudioSource {
 
     EngineState m_state;
     CallbackControlManager& m_callbackControlManager;
+    CallbackTrackManager& m_callbackTrackManager;
     QList<ChannelInfo*> m_channels;
 
     CSAMPLE *m_pMaster, *m_pHead;

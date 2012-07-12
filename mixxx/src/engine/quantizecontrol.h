@@ -9,6 +9,7 @@
 
 class CallbackControl;
 class EngineState;
+class CallbackTrackWatcher;
 
 class QuantizeControl : public EngineControl {
     Q_OBJECT
@@ -34,6 +35,7 @@ class QuantizeControl : public EngineControl {
     CallbackControl* m_pCOPrevBeat;
     CallbackControl* m_pCOClosestBeat;
 
+    CallbackTrackWatcher* m_pTrackWatcher;
     TrackPointer m_pTrack;
     BeatsPointer m_pBeats;
 };

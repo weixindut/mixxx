@@ -1,6 +1,8 @@
 // bpmcontrol.cpp
 // Created 7/5/2009 by RJ Ryan (rryan@mit.edu)
 
+#include <QtDebug>
+
 #include "controlobject.h"
 #include "controlpushbutton.h"
 
@@ -17,6 +19,11 @@ BpmControl::BpmControl(const char* _group,
                        EngineState* pEngineState) :
         EngineControl(_group, _config),
         m_tapFilter(this, filterLength, maxInterval) {
+    m_pTrackWatcher = pEngineState->getTrackManager()->createTrackWatcher();
+    connect(m_pTrackWatcher, SIGNAL(beatsUpdated()),
+            this, SLOT(slotUpdatedTrackBeats()),
+            Qt::DirectConnection);
+
     CallbackControlManager* pControlManager = pEngineState->getControlManager();
     m_pPlayButton = pControlManager->getControl(ConfigKey(_group, "play"));
     m_pRateSlider = pControlManager->getControl(ConfigKey(_group, "rate"));
@@ -99,6 +106,7 @@ BpmControl::~BpmControl() {
     delete m_pButtonSyncPhase;
     delete m_pButtonTap;
     delete m_pTranslateBeats;
+    delete m_pTrackWatcher;
 }
 
 double BpmControl::getBpm() {
@@ -354,15 +362,13 @@ void BpmControl::trackLoaded(TrackPointer pTrack) {
     if (pTrack) {
         m_pTrack = pTrack;
         m_pBeats = m_pTrack->getBeats();
-        connect(m_pTrack.data(), SIGNAL(beatsUpdated()),
-                this, SLOT(slotUpdatedTrackBeats()));
+        m_pTrackWatcher->watchTrack(m_pTrack);
     }
 }
 
 void BpmControl::trackUnloaded(TrackPointer pTrack) {
     if (m_pTrack) {
-        disconnect(m_pTrack.data(), SIGNAL(beatsUpdated()),
-                   this, SLOT(slotUpdatedTrackBeats()));
+        m_pTrackWatcher->unwatchTrack(m_pTrack);
     }
     m_pTrack.clear();
     m_pBeats.clear();
@@ -370,6 +376,7 @@ void BpmControl::trackUnloaded(TrackPointer pTrack) {
 
 void BpmControl::slotUpdatedTrackBeats()
 {
+    qDebug() << "BpmControl::slotUpdatedTrackBeats()";
     if (m_pTrack) {
         m_pBeats = m_pTrack->getBeats();
     }

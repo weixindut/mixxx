@@ -7,6 +7,7 @@
 
 class EngineState;
 class CallbackControl;
+class CallbackTrackWatcher;
 
 class ClockControl: public EngineControl {
     Q_OBJECT
@@ -26,6 +27,7 @@ class ClockControl: public EngineControl {
   private:
     CallbackControl* m_pCOBeatActive;
     CallbackControl* m_pCOSampleRate;
+    CallbackTrackWatcher* m_pTrackWatcher;
     TrackPointer m_pTrack;
     BeatsPointer m_pBeats;
 };

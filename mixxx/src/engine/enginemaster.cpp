@@ -44,7 +44,8 @@ EngineMaster::EngineMaster(ConfigObject<ConfigValue> * _config,
                            const char * group,
                            bool bEnableSidechain)
         : m_state(_config),
-          m_callbackControlManager(*m_state.getControlManager()) {
+          m_callbackControlManager(*m_state.getControlManager()),
+          m_callbackTrackManager(*m_state.getTrackManager()) {
     m_pWorkerScheduler = new EngineWorkerScheduler(this);
     m_pWorkerScheduler->start();
     m_pSyncWorker = new SyncWorker(m_pWorkerScheduler,
@@ -341,6 +342,8 @@ void EngineMaster::mixChannels(unsigned int channelBitvector, unsigned int maxCh
 
 void EngineMaster::process(const CSAMPLE *, const CSAMPLE *pOut,
                            const int iBufferSize) {
+    // TODO(rryan) revisit the ordering here
+    m_callbackTrackManager.callbackProcessIncomingUpdates();
     m_callbackControlManager.callbackProcessIncomingUpdates();
 
     CSAMPLE **pOutput = (CSAMPLE**)pOut;

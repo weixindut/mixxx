@@ -29,6 +29,11 @@ LoopingControl::LoopingControl(const char * _group,
     m_iCurrentSample = 0.;
     m_pActiveBeatLoop = NULL;
 
+    m_pTrackWatcher = pEngineState->getTrackManager()->createTrackWatcher();
+    connect(m_pTrackWatcher, SIGNAL(beatsUpdated()),
+            this, SLOT(slotUpdatedTrackBeats()),
+            Qt::DirectConnection);
+
     CallbackControlManager* pCallbackControlManager =
             pEngineState->getControlManager();
 
@@ -134,6 +139,7 @@ LoopingControl::~LoopingControl() {
         BeatLoopingControl* pBeatLoop = m_beatLoops.takeLast();
         delete pBeatLoop;
     }
+    delete m_pTrackWatcher;
 }
 
 void LoopingControl::slotLoopScale(double scale) {
@@ -502,15 +508,13 @@ void LoopingControl::trackLoaded(TrackPointer pTrack) {
     if (pTrack) {
         m_pTrack = pTrack;
         m_pBeats = m_pTrack->getBeats();
-        connect(m_pTrack.data(), SIGNAL(beatsUpdated()),
-                this, SLOT(slotUpdatedTrackBeats()));
+        m_pTrackWatcher->watchTrack(m_pTrack);
     }
 }
 
 void LoopingControl::trackUnloaded(TrackPointer pTrack) {
     if (m_pTrack) {
-        disconnect(m_pTrack.data(), SIGNAL(beatsUpdated()),
-                   this, SLOT(slotUpdatedTrackBeats()));
+        m_pTrackWatcher->unwatchTrack(m_pTrack);
     }
     m_pTrack.clear();
     m_pBeats.clear();
@@ -519,6 +523,7 @@ void LoopingControl::trackUnloaded(TrackPointer pTrack) {
 
 void LoopingControl::slotUpdatedTrackBeats()
 {
+    qDebug() << "LoopingControl::slotUpdatedTrackBeats()";
     if (m_pTrack) {
         m_pBeats = m_pTrack->getBeats();
     }

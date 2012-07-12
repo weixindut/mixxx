@@ -16,6 +16,7 @@
 class CallbackControl;
 class Cue;
 class EngineState;
+class CallbackTrackWatcher;
 
 class HotcueControl : public QObject {
     Q_OBJECT
@@ -146,6 +147,7 @@ class CueControl : public EngineControl {
     CallbackControl* m_pCueGotoAndStop;
     CallbackControl* m_pCuePreview;
 
+    CallbackTrackWatcher* m_pTrackWatcher;
     TrackPointer m_pLoadedTrack;
 
     // Tells us which controls map to which hotcue

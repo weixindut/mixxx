@@ -22,9 +22,14 @@ CueControl::CueControl(const char * _group,
         m_iCurrentlyPreviewingHotcues(0),
         m_iNumHotCues(NUM_HOT_CUES),
         m_pLoadedTrack(),
-        m_mutex(QMutex::Recursive),
-        m_bHotcueCancel(false) {
+        m_bHotcueCancel(false),
+        m_mutex(QMutex::Recursive) {
     createControls(pEngineState);
+
+    m_pTrackWatcher = pEngineState->getTrackManager()->createTrackWatcher();
+    connect(m_pTrackWatcher, SIGNAL(cuesUpdated()),
+            this, SLOT(trackCuesUpdated()),
+            Qt::DirectConnection);
 
     CallbackControlManager* pCallbackControlManager =
             pEngineState->getControlManager();
@@ -115,6 +120,7 @@ CueControl::~CueControl() {
         HotcueControl* pControl = m_hotcueControl.takeLast();
         delete pControl;
     }
+    delete m_pTrackWatcher;
 }
 
 void CueControl::createControls(EngineState* pEngineState) {
@@ -174,16 +180,16 @@ void CueControl::detachCue(int hotCue) {
 }
 
 void CueControl::trackLoaded(TrackPointer pTrack) {
-    Q_ASSERT(pTrack);
-
+    if (!pTrack) {
+        return;
+    }
     QMutexLocker lock(&m_mutex);
-    if (m_pLoadedTrack)
+    if (m_pLoadedTrack) {
         trackUnloaded(m_pLoadedTrack);
+    }
 
     m_pLoadedTrack = pTrack;
-    connect(pTrack.data(), SIGNAL(cuesUpdated()),
-            this, SLOT(trackCuesUpdated()),
-            Qt::DirectConnection);
+    m_pTrackWatcher->watchTrack(m_pLoadedTrack);
 
     Cue* loadCue = NULL;
     const QList<Cue*>& cuePoints = pTrack->getCuePoints();
@@ -222,7 +228,12 @@ void CueControl::trackLoaded(TrackPointer pTrack) {
 
 void CueControl::trackUnloaded(TrackPointer pTrack) {
     QMutexLocker lock(&m_mutex);
-    disconnect(pTrack.data(), 0, this, 0);
+
+    if (!pTrack) {
+        return;
+    }
+
+    m_pTrackWatcher->unwatchTrack(pTrack);
     for (int i = 0; i < m_iNumHotCues; ++i) {
         detachCue(i);
     }
@@ -253,6 +264,7 @@ void CueControl::trackUnloaded(TrackPointer pTrack) {
 }
 
 void CueControl::trackCuesUpdated() {
+    qDebug() << "CueControl::trackCuesUpdated";
     QMutexLocker lock(&m_mutex);
     QSet<int> active_hotcues;
 
@@ -298,8 +310,9 @@ void CueControl::trackCuesUpdated() {
 
     // Detach all hotcues that are no longer present
     for (int i = 0; i < m_iNumHotCues; ++i) {
-        if (!active_hotcues.contains(i))
+        if (!active_hotcues.contains(i)) {
             detachCue(i);
+        }
     }
 }
 

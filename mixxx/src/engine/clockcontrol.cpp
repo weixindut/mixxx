@@ -10,6 +10,10 @@
 ClockControl::ClockControl(const char* pGroup,
                            EngineState* pEngineState)
         : EngineControl(pGroup, pEngineState->getConfig()) {
+    m_pTrackWatcher = pEngineState->getTrackManager()->createTrackWatcher();
+    connect(m_pTrackWatcher, SIGNAL(beatsUpdated()),
+            this, SLOT(slotBeatsUpdated()),
+            Qt::DirectConnection);
     CallbackControlManager* pCallbackControlManager =
             pEngineState->getControlManager();
     m_pCOBeatActive = pCallbackControlManager->addControl(
@@ -20,6 +24,7 @@ ClockControl::ClockControl(const char* pGroup,
 
 ClockControl::~ClockControl() {
     delete m_pCOBeatActive;
+    delete m_pTrackWatcher;
 }
 
 void ClockControl::trackLoaded(TrackPointer pTrack) {
@@ -28,8 +33,7 @@ void ClockControl::trackLoaded(TrackPointer pTrack) {
 
     // Disconnect any previously loaded track/beats
     if (m_pTrack) {
-        disconnect(m_pTrack.data(), SIGNAL(beatsUpdated()),
-                   this, SLOT(slotBeatsUpdated()));
+        m_pTrackWatcher->unwatchTrack(m_pTrack);
     }
     m_pBeats.clear();
     m_pTrack.clear();
@@ -37,8 +41,7 @@ void ClockControl::trackLoaded(TrackPointer pTrack) {
     if (pTrack) {
         m_pTrack = pTrack;
         m_pBeats = m_pTrack->getBeats();
-        connect(m_pTrack.data(), SIGNAL(beatsUpdated()),
-                this, SLOT(slotBeatsUpdated()));
+        m_pTrackWatcher->watchTrack(m_pTrack);
     }
 }
 
@@ -47,6 +50,7 @@ void ClockControl::trackUnloaded(TrackPointer pTrack) {
 }
 
 void ClockControl::slotBeatsUpdated() {
+    qDebug() << "ClockControl::slotBeatsUpdated";
     if (m_pTrack) {
         m_pBeats = m_pTrack->getBeats();
     }

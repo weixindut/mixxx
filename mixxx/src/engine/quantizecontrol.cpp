@@ -17,6 +17,11 @@
 QuantizeControl::QuantizeControl(const char* pGroup,
                                  EngineState* pEngineState)
         : EngineControl(pGroup, pEngineState->getConfig()) {
+    m_pTrackWatcher = pEngineState->getTrackManager()->createTrackWatcher();
+    connect(m_pTrackWatcher, SIGNAL(beatsUpdated()),
+            this, SLOT(slotBeatsUpdated()),
+            Qt::DirectConnection);
+
     CallbackControlManager* pCallbackControlManager =
             pEngineState->getControlManager();
 
@@ -42,6 +47,7 @@ QuantizeControl::~QuantizeControl() {
     delete m_pCONextBeat;
     delete m_pCOPrevBeat;
     delete m_pCOClosestBeat;
+    delete m_pTrackWatcher;
 }
 
 void QuantizeControl::trackLoaded(TrackPointer pTrack) {
@@ -52,15 +58,13 @@ void QuantizeControl::trackLoaded(TrackPointer pTrack) {
     if (pTrack) {
         m_pTrack = pTrack;
         m_pBeats = m_pTrack->getBeats();
-        connect(m_pTrack.data(), SIGNAL(beatsUpdated()),
-                this, SLOT(slotBeatsUpdated()));
+        m_pTrackWatcher->watchTrack(m_pTrack);
     }
 }
 
 void QuantizeControl::trackUnloaded(TrackPointer pTrack) {
     if (m_pTrack) {
-        disconnect(m_pTrack.data(), SIGNAL(beatsUpdated()),
-                   this, SLOT(slotBeatsUpdated()));
+        m_pTrackWatcher->unwatchTrack(pTrack);
     }
     m_pTrack.clear();
     m_pBeats.clear();
@@ -70,6 +74,7 @@ void QuantizeControl::trackUnloaded(TrackPointer pTrack) {
 }
 
 void QuantizeControl::slotBeatsUpdated() {
+    qDebug() << "QuantizeControl::slotBeatsUpdated";
     if (m_pTrack) {
         m_pBeats = m_pTrack->getBeats();
     }

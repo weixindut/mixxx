@@ -10,6 +10,7 @@
 
 class CallbackControl;
 class EngineState;
+class CallbackTrackWatcher;
 
 class BpmControl : public EngineControl {
     Q_OBJECT
@@ -66,6 +67,7 @@ class BpmControl : public EngineControl {
 
     TapFilter m_tapFilter;
 
+    CallbackTrackWatcher* m_pTrackWatcher;
     TrackPointer m_pTrack;
     BeatsPointer m_pBeats;
 };

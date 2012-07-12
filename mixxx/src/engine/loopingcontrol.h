@@ -16,6 +16,7 @@
 class EngineState;
 class CallbackControl;
 class BeatLoopingControl;
+class CallbackTrackWatcher;
 
 class LoopingControl : public EngineControl {
     Q_OBJECT
@@ -105,6 +106,7 @@ class LoopingControl : public EngineControl {
     // Array of BeatLoopingControls, one for each size.
     QList<BeatLoopingControl*> m_beatLoops;
 
+    CallbackTrackWatcher* m_pTrackWatcher;
     TrackPointer m_pTrack;
     BeatsPointer m_pBeats;
 };
