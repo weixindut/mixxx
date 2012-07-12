@@ -152,8 +152,6 @@ class CueControl : public EngineControl {
 
     // Tells us which controls map to which hotcue
     QMap<QObject*, int> m_controlMap;
-
-    QMutex m_mutex;
 };
 
 
