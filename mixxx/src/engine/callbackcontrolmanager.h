@@ -12,6 +12,8 @@
 
 class CallbackControlManager;
 
+// Struct to describe a pending update between the callback controls and
+// ControlObject system.
 struct ControlUpdate {
     ControlUpdate()
             : time(0),
@@ -25,11 +27,15 @@ struct ControlUpdate {
     double value;
 };
 
+// A ControlUpdate and the ControlObject that it applies to.
 struct CallbackControlMessage {
     ControlObject* control;
     ControlUpdate update;
 };
 
+// ControlWatcher is a class that listens to a ControlObject, receives its
+// valueChanged() signals in an arbitrary thread, and emits a controlUpdated()
+// signal that the CallbackControlManager receives.
 class ControlWatcher : public QObject {
     Q_OBJECT
   public:
@@ -43,6 +49,10 @@ class ControlWatcher : public QObject {
     ControlObject* m_pControl;
 };
 
+// CallbackControl is a callback-safe wrapper around a ControlObject. Its
+// valueChanged() signals are emitted from the callback thread at the start of
+// the callback. Mutations of the CallbackControl are delivered to the wrapped
+// ControlObject after the callback is complete via an EngineWorker.
 class CallbackControl : public QObject {
     Q_OBJECT
   public:
