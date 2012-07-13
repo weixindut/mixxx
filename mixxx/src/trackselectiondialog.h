@@ -15,13 +15,16 @@ class TrackSelectionDialog : public QDialog, public Ui::TrackSelectionDialog {
   public:
     TrackSelectionDialog(QWidget *parent = 0);
     ~TrackSelectionDialog();
-    
-    void init(const QList<TrackPointer>& tracks);
+
+    void init(const TrackPointer track);
+
+  signals:
+    void next();
+    void previous();
 
   public slots:
     void FetchTagProgress(TrackPointer, QString&);
     void FetchTagFinished(const TrackPointer,const QList<TrackPointer>& tracks);
-    void foobar();
 
   private slots:
     void apply();
@@ -35,26 +38,27 @@ class TrackSelectionDialog : public QDialog, public Ui::TrackSelectionDialog {
 
     void AddDivider(const QString& text, QTreeWidget* parent) const;
     void AddTrack(const TrackPointer track,
-                  int result_index,
+                  int resultIndex,
                   QTreeWidget* parent) const;
 
   private:
     struct Data {
-        Data() : pending_(true), selected_result_(0) {}
+        Data() : m_pending(true), m_selectedResult(0) {}
 
-        TrackPointer original_track_;
-        bool pending_;
-        QString progress_string_;
-        QList<TrackPointer> results_;
-        int selected_result_;
+        TrackPointer m_originalTrack;
+        bool m_pending;
+        QString m_progressString;
+        QList<TrackPointer> m_results;
+        int m_selectedResult;
     };
 
     QList<Data> m_data;
-    QList<TrackPointer> m_tracks;
-    QPushButton* m_pPrevious_button;
-    QPushButton* m_pNext_button;
+    TrackPointer m_track;
+    QPushButton* m_pPreviousButton;
+    QPushButton* m_pNextButton;
     
-    bool m_save_on_close;
+    int m_row;
+    bool m_saveOnClose;
 };
 
 #endif // TRACKSELECTIONDIALOG_H

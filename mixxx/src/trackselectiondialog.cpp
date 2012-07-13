@@ -11,7 +11,8 @@
 #include <QtDebug>
 
 TrackSelectionDialog::TrackSelectionDialog(QWidget *parent)
-                    : QDialog(parent) {
+                    : QDialog(parent) ,
+                      m_row(-1) {
     // Setup dialog window
     setupUi(this);
     
@@ -19,6 +20,10 @@ TrackSelectionDialog::TrackSelectionDialog(QWidget *parent)
             this, SLOT(apply()));
     connect(btnCancel, SIGNAL(clicked()),
             this, SLOT(cancel()));
+    connect(btnPrev, SIGNAL(clicked()),
+            this, SIGNAL(previous()));
+    connect(btnNext, SIGNAL(clicked()),
+            this, SIGNAL(next()));
             /*
     connect(results, SIGNAL(currentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)),
             SLOT(ResultSelected()));
@@ -37,16 +42,30 @@ TrackSelectionDialog::TrackSelectionDialog(QWidget *parent)
 TrackSelectionDialog::~TrackSelectionDialog() {
 }
 
-void TrackSelectionDialog::init(const QList<TrackPointer>& tracks) {
-    m_tracks=tracks;
-    foreach (TrackPointer track, tracks) {
-        Data data;
-        data.original_track_ = track;
-        m_data << data;
-    }
+void TrackSelectionDialog::init(const TrackPointer track) {
+    results->clear();
+    m_data.clear();
+    m_track=track;
+    Data data;
+    data.m_originalTrack = track;
+    m_data << data;
 }
 
 void TrackSelectionDialog::apply() {
+    Data toSaveData;
+    foreach (Data data, m_data) {
+        if (data.m_originalTrack->getLocation() == m_track->getLocation()) {
+            toSaveData = data;
+        }
+    }
+    int resultIndex = results->currentItem()->data(0, Qt::UserRole).toInt();
+    qDebug() << resultIndex;
+    m_track->setAlbum(toSaveData.m_results[resultIndex]->getAlbum());
+    m_track->setArtist(toSaveData.m_results[resultIndex]->getArtist());
+    m_track->setTitle(toSaveData.m_results[resultIndex]->getTitle());
+    m_track->setYear(toSaveData.m_results[resultIndex]->getYear());
+    m_track->setTrackNumber(toSaveData.m_results[resultIndex]->getTrackNumber());
+    m_track.clear();
     accept();
 }
 
@@ -58,7 +77,7 @@ void TrackSelectionDialog::FetchTagProgress(TrackPointer track, QString& progres
     // Find the item with this filename
     int row = -1;
     for (int i=0 ; i<m_data.count() ; ++i) {
-        if (m_data[i].original_track_->getLocation() == track->getLocation()) {
+        if (m_data[i].m_originalTrack->getLocation() == track->getLocation()) {
             row = i;
             break;
         }
@@ -67,7 +86,7 @@ void TrackSelectionDialog::FetchTagProgress(TrackPointer track, QString& progres
     if (row == -1)
         return;
 
-  m_data[row].progress_string_ = progress;
+    m_data[row].m_progressString = progress;
 
     // If it's the current item, update the display
     // if (ui_->song_list->currentIndex().row() == row) {
@@ -75,17 +94,13 @@ void TrackSelectionDialog::FetchTagProgress(TrackPointer track, QString& progres
     // }
 }
 
-void TrackSelectionDialog::foobar(){
-    qDebug() << "do I receive this signal ;)";
-}
-
 void TrackSelectionDialog::FetchTagFinished(const TrackPointer track,
                                             const QList<TrackPointer>& tracks){
-    qDebug() << "dialog got all results from the web search" << tracks.size();
+    // qDebug() << "dialog got all results from the web search" << tracks.size();
     // Find the item with this filename
     int row = -1;
     for (int i=0 ; i<m_data.count() ; ++i) {
-        if (m_data[i].original_track_->getLocation() == track->getLocation()) {
+        if (m_data[i].m_originalTrack->getLocation() == track->getLocation()) {
             row = i;
             break;
         }
@@ -94,9 +109,10 @@ void TrackSelectionDialog::FetchTagFinished(const TrackPointer track,
     if (row == -1)
         return;
 
-    m_data[row].pending_=false;
-    m_data[row].results_ = tracks;
-
+    m_data[row].m_pending=false;
+    m_data[row].m_results = tracks;
+    qDebug() << "number of results = " << tracks.size();
+    m_row = row;
     UpdateStack(row);
 }
 
@@ -104,11 +120,11 @@ void TrackSelectionDialog::UpdateStack(int row) {
 
     const Data& data = m_data[row];
     
-    if (data.pending_) {
+    if (data.m_pending) {
         // stack->setCurrentWidget(loading_page);
         // progress->set_text(data.progress_string_ + "...");
         return;
-    } else if (data.results_.isEmpty()) {
+    } else if (data.m_results.isEmpty()) {
         stack->setCurrentWidget(error_page);
         return;
     }
@@ -119,21 +135,21 @@ void TrackSelectionDialog::UpdateStack(int row) {
     
     // Put the original tags at the top
     AddDivider(tr("Original tags"), results);
-    AddTrack(data.original_track_, -1, results);
+    AddTrack(data.m_originalTrack, -1, results);
     
     // Fill tree view with songs
     AddDivider(tr("Suggested tags"), results);
 
-    int track_index = 0;
-    foreach (const TrackPointer track, data.results_) {
-        AddTrack(track, track_index++, results);
+    int trackIndex = 0;
+    foreach (const TrackPointer track, data.m_results) {
+        AddTrack(track, trackIndex++, results);
     }
 
     // Find the item that was selected last time
     for (int i=0 ; i<results->model()->rowCount() ; ++i) {
         const QModelIndex index = results->model()->index(i, 0);
         const QVariant id = index.data(Qt::UserRole);
-        if (!id.isNull() && id.toInt() == data.selected_result_) {
+        if (!id.isNull() && id.toInt() == data.m_selectedResult) {
             results->setCurrentIndex(index);
             break;
         }
@@ -141,14 +157,14 @@ void TrackSelectionDialog::UpdateStack(int row) {
 }
 
 void TrackSelectionDialog::AddTrack(const TrackPointer track,
-                                   int result_index,
+                                   int resultIndex,
                                    QTreeWidget* parent) const {
     QStringList values;
     values << track->getTrackNumber() << track->getYear() << track->getTitle()
            << track->getArtist() << track->getAlbum();
 
     QTreeWidgetItem* item = new QTreeWidgetItem(parent, values);
-    item->setData(0, Qt::UserRole, result_index);
+    item->setData(0, Qt::UserRole, resultIndex);
     item->setData(0, Qt::TextAlignmentRole, Qt::AlignRight);
 }
 

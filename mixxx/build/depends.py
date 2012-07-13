@@ -408,7 +408,6 @@ class MixxxCore(Feature):
                    "analyserqueue.cpp",
                    "analyserbpm.cpp",
                    "analyserwaveform.cpp",
-                   "analyseraccoustid.cpp",
 
                    "controllers/controller.cpp",
                    "controllers/controllerengine.cpp",

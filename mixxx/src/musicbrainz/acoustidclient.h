@@ -3,11 +3,11 @@
 
 #include <QMap>
 #include <QObject>
+#include <QtNetwork>
 
-class NetworkTimeouts;
+#include "network.h"
 
-class QNetworkAccessManager;
-class QNetworkReply;
+// class QNetworkReply;
 class QXmlStreamReader;
 
 class AcoustidClient : public QObject {
@@ -48,12 +48,12 @@ class AcoustidClient : public QObject {
     void RequestFinished();
 
   private:
-    static const char* m_pClientId;
-    static const char* m_pUrl;
+    static const QString m_ClientId;
+    static const QString m_Url;
     static const int m_DefaultTimeout;
 
-    QNetworkAccessManager* m_pnetwork;
-    NetworkTimeouts* m_ptimeouts;
+    QNetworkAccessManager m_network;
+    NetworkTimeouts m_timeouts;
     QMap<QNetworkReply*, int> m_requests;
 };
 

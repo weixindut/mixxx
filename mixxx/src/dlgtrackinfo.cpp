@@ -6,14 +6,33 @@
 #include "dlgtrackinfo.h"
 #include "library/dao/cue.h"
 #include "trackinfoobject.h"
+#include "musicbrainz/tagfetcher.h"
 #include "trackselectiondialog.h"
 
 DlgTrackInfo::DlgTrackInfo(QWidget* parent) :
         QDialog(parent),
         m_pTrackSelectionDialog(new TrackSelectionDialog(this)),
         m_pLoadedTrack(),
-        m_TagFetcher(this){
+        m_pTagFetcher(new TagFetcher(this)){
+    init();
+}
 
+DlgTrackInfo::DlgTrackInfo(QWidget* parent,
+                           TagFetcher* pTagFetcher,
+                           TrackSelectionDialog* pTrackSelectionDialog)
+            : QDialog(parent),
+              m_pTrackSelectionDialog(pTrackSelectionDialog),
+              m_pLoadedTrack(),
+              m_pTagFetcher(pTagFetcher){
+    init();
+}
+
+DlgTrackInfo::~DlgTrackInfo() {
+    unloadTrack(false);
+    qDebug() << "~DlgTrackInfo()";
+}
+
+void DlgTrackInfo::init(){
     setupUi(this);
 
     cueTable->hideColumn(0);
@@ -29,13 +48,11 @@ DlgTrackInfo::DlgTrackInfo(QWidget* parent) :
 
     connect(btnFetchTag, SIGNAL(clicked()),
             this, SLOT(fetchTag()));
-    connect(&m_TagFetcher, SIGNAL(ResultAvailable(const TrackPointer,const QList<TrackPointer>&)),
+    connect(m_pTagFetcher, SIGNAL(ResultAvailable(const TrackPointer,const QList<TrackPointer>&)),
             m_pTrackSelectionDialog, SLOT(FetchTagFinished(const TrackPointer,const QList<TrackPointer>&)));
-            // Qt::QueuedConnection);
-    connect(&m_TagFetcher, SIGNAL(foobar()), m_pTrackSelectionDialog, SLOT(foobar()));
-    connect(&m_TagFetcher, SIGNAL(Progress(TrackPointer,QString)),
+    connect(m_pTagFetcher, SIGNAL(Progress(TrackPointer,QString)),
             m_pTrackSelectionDialog, SLOT(FetchTagProgress(TrackPointer,QString)));
-    connect(m_pTrackSelectionDialog, SIGNAL(finished(int)), &m_TagFetcher, SLOT(Cancel()));
+    connect(m_pTrackSelectionDialog, SIGNAL(finished(int)), m_pTagFetcher, SLOT(Cancel()));
 
     connect(bpmDouble, SIGNAL(clicked()),
             this, SLOT(slotBpmDouble()));
@@ -54,11 +71,6 @@ DlgTrackInfo::DlgTrackInfo(QWidget* parent) :
     for (int i = 0; i < filterLength; ++i) {
         m_bpmTapFilter[i] = 0.0f;
     }
-}
-
-DlgTrackInfo::~DlgTrackInfo() {
-    unloadTrack(false);
-    qDebug() << "~DlgTrackInfo()";
 }
 
 void DlgTrackInfo::apply() {
@@ -335,9 +347,7 @@ void DlgTrackInfo::reloadTrackMetadata() {
 }
 
 void DlgTrackInfo::fetchTag() {
-    QList<TrackPointer> tracks;
-    tracks.append(m_pLoadedTrack);
-    m_pTrackSelectionDialog->init(tracks);
-    m_TagFetcher.StartFetch(tracks);
+    m_pTrackSelectionDialog->init(m_pLoadedTrack);
+    m_pTagFetcher->StartFetch(m_pLoadedTrack);
     m_pTrackSelectionDialog->show();
 }

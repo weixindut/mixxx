@@ -5,10 +5,11 @@
 #include <QMap>
 #include <QObject>
 #include <QXmlStreamReader>
+#include <QtNetwork>
 
-class QNetworkAccessManager;
-class QNetworkReply;
-class NetworkTimeouts;
+#include "network.h"
+
+// class QNetworkReply;
 
 class MusicBrainzClient : public QObject {
   Q_OBJECT
@@ -23,37 +24,37 @@ class MusicBrainzClient : public QObject {
     MusicBrainzClient(QObject* parent = 0);
 
     struct Result {
-        Result() : duration_msec_(0), track_(0), year_(-1) {}
+        Result() : m_duration(0), m_track(0), m_year(-1) {}
 
         bool operator <(const Result& other) const {
         #define cmp(field) \
             if (field < other.field) return true; \
             if (field > other.field) return false;
 
-        cmp(track_);
-        cmp(year_);
-        cmp(title_);
-        cmp(artist_);
+        cmp(m_track);
+        cmp(m_year);
+        cmp(m_title);
+        cmp(m_artist);
         return false;
 
         #undef cmp
         }
 
         bool operator ==(const Result& other) const {
-        return title_ == other.title_ &&
-                artist_ == other.artist_ &&
-                album_ == other.album_ &&
-                duration_msec_ == other.duration_msec_ &&
-                track_ == other.track_ &&
-                year_ == other.year_;
+        return m_title == other.m_title &&
+                m_artist == other.m_artist &&
+                m_album == other.m_album &&
+                m_duration == other.m_duration &&
+                m_track == other.m_track &&
+                m_year == other.m_year;
         }
 
-        QString title_;
-        QString artist_;
-        QString album_;
-        int duration_msec_;
-        int track_;
-        int year_;
+        QString m_title;
+        QString m_artist;
+        QString m_album;
+        int m_duration;
+        int m_track;
+        int m_year;
     };
     typedef QList<Result> ResultList;
 
@@ -85,44 +86,44 @@ class MusicBrainzClient : public QObject {
 
   private:
     struct Release {
-        Release() : track_(0), year_(0) {}
+        Release() : m_track(0), m_year(0) {}
 
         Result CopyAndMergeInto(const Result& orig) const {
-        Result ret(orig);
-        ret.album_ = album_;
-        ret.track_ = track_;
-        ret.year_ = year_;
-        return ret;
+            Result ret(orig);
+            ret.m_album = m_album;
+            ret.m_track = m_track;
+            ret.m_year = m_year;
+            return ret;
         }
 
-        QString album_;
-        int track_;
-        int year_;
+        QString m_album;
+        int m_track;
+        int m_year;
     };
 
     static ResultList ParseTrack(QXmlStreamReader& reader);
-    static void ParseArtist(QXmlStreamReader& reader, QString* artist);
+    static void ParseArtist(QXmlStreamReader& reader, QString& artist);
     static Release ParseRelease(QXmlStreamReader& reader);
     static ResultList UniqueResults(const ResultList& results);
 
   private:
-    static const char* m_pTrackUrl;
-    static const char* m_pDiscUrl;
-    static const char* m_pDateRegex;
+    static const QString m_TrackUrl;
+    static const QString m_DiscUrl;
+    static const QString m_DateRegex;
     static const int m_DefaultTimeout;
     
-    QNetworkAccessManager* m_network;
-    NetworkTimeouts* m_ptimeouts;
+    QNetworkAccessManager m_network;
+    NetworkTimeouts m_timeouts;
     QMap<QNetworkReply*, int> m_requests;
 };
 
 inline uint qHash(const MusicBrainzClient::Result& result) {
-  return qHash(result.album_) ^
-         qHash(result.artist_) ^
-         result.duration_msec_ ^
-         qHash(result.title_) ^
-         result.track_ ^
-         result.year_;
+  return qHash(result.m_album) ^
+         qHash(result.m_artist) ^
+         result.m_duration ^
+         qHash(result.m_title) ^
+         result.m_track ^
+         result.m_year;
 }
 
 #endif // MUSICBRAINZCLIENT_H

@@ -4,18 +4,17 @@
 #include <QtConcurrentMap>
 
 #include "musicbrainz/tagfetcher.h"
-#include "musicbrainz/acoustidclient.h"
 #include "library/chromaprinter.h"
 #include "musicbrainz/musicbrainzclient.h"
 
 TagFetcher::TagFetcher(QObject* parent)
           : QObject(parent),
-            m_pFingerprint_watcher(NULL),
-            m_pAcoustid_client(new AcoustidClient(this)),
-            m_pMusicbrainz_client(new MusicBrainzClient(this)) {
-    connect(m_pAcoustid_client, SIGNAL(Finished(int,QString)),
-            this, SLOT(PuidFound(int,QString)));
-    connect(m_pMusicbrainz_client, SIGNAL(Finished(int,MusicBrainzClient::ResultList)),
+            m_pFingerprintWatcher(NULL),
+            m_AcoustidClient(this),
+            m_MusicbrainzClient(this) {
+    connect(&m_AcoustidClient, SIGNAL(Finished(int,QString)),
+            this, SLOT(MbidFound(int,QString)));
+    connect(&m_MusicbrainzClient, SIGNAL(Finished(int,MusicBrainzClient::ResultList)),
             this, SLOT(TagsFetched(int,MusicBrainzClient::ResultList)));
 }
 
@@ -23,15 +22,18 @@ QString TagFetcher::GetFingerprint(const TrackPointer tio) {
     return chromaprinter(NULL).getFingerPrint(tio);
 }
 
-void TagFetcher::StartFetch(const QList<TrackPointer>& tracks) {
+void TagFetcher::StartFetch(const TrackPointer track) {
     Cancel();
 
+    QList<TrackPointer> tracks;
+    tracks.append(track);
     m_tracks = tracks;
 
     QFuture<QString> future = QtConcurrent::mapped(m_tracks, GetFingerprint);
-    m_pFingerprint_watcher = new QFutureWatcher<QString>(this);
-    m_pFingerprint_watcher->setFuture(future);
-    connect(m_pFingerprint_watcher, SIGNAL(resultReadyAt(int)), SLOT(FingerprintFound(int)));
+    m_pFingerprintWatcher = new QFutureWatcher<QString>(this);
+    m_pFingerprintWatcher->setFuture(future);
+    connect(m_pFingerprintWatcher, SIGNAL(resultReadyAt(int)),
+                                    SLOT(FingerprintFound(int)));
 
     foreach (const TrackPointer ptrack, m_tracks) {
         emit Progress(ptrack, tr("Fingerprinting track"));
@@ -39,15 +41,15 @@ void TagFetcher::StartFetch(const QList<TrackPointer>& tracks) {
 }
 
 void TagFetcher::Cancel() {
-    if (m_pFingerprint_watcher) {
-        m_pFingerprint_watcher->cancel();
+    if (m_pFingerprintWatcher) {
+        m_pFingerprintWatcher->cancel();
 
-        delete m_pFingerprint_watcher;
-        m_pFingerprint_watcher = NULL;
+        delete m_pFingerprintWatcher;
+        m_pFingerprintWatcher = NULL;
     }
 
-    m_pAcoustid_client->CancelAll();
-    m_pMusicbrainz_client->CancelAll();
+    m_AcoustidClient.CancelAll();
+    m_MusicbrainzClient.CancelAll();
     m_tracks.clear();
 }
 
@@ -66,46 +68,45 @@ void TagFetcher::FingerprintFound(int index) {
     }
 
     emit Progress(ptrack, tr("Identifying track"));
-    qDebug() << "start to look it up on musicbrainz";
-    m_pAcoustid_client->Start(index, fingerprint, ptrack->getDuration());
+    // qDebug() << "start to look it up on musicbrainz";
+    m_AcoustidClient.Start(index, fingerprint, ptrack->getDuration());
 }
 
-void TagFetcher::PuidFound(int index, const QString& puid) {
+void TagFetcher::MbidFound(int index, const QString& mbid) {
     if (index >= m_tracks.count()) {
         return;
     }
 
     const TrackPointer pTrack = m_tracks[index];
 
-    if (puid.isEmpty()) {
+    if (mbid.isEmpty()) {
         emit ResultAvailable(pTrack, QList<TrackPointer>());
         return;
     }
 
     emit Progress(pTrack, tr("Downloading metadata"));
-    m_pMusicbrainz_client->Start(index, puid);
+    m_MusicbrainzClient.Start(index, mbid);
 }
 
 void TagFetcher::TagsFetched(int index, const MusicBrainzClient::ResultList& results) {
     if (index >= m_tracks.count()) {
         return;
     }
-    qDebug() << "Tagfetcher got musicbrainz results and now refurbrishs them";
-    const TrackPointer original_track = m_tracks[index];
+    // qDebug() << "Tagfetcher got musicbrainz results and now refurbrishs them";
+    const TrackPointer originalTrack = m_tracks[index];
     QList<TrackPointer> tracksGuessed;
 
     foreach (const MusicBrainzClient::Result& result, results) {
-        TrackPointer track(new TrackInfoObject(original_track->getLocation(),false),
+        TrackPointer track(new TrackInfoObject(originalTrack->getLocation(),false),
                            &QObject::deleteLater);
-        track->setTitle(result.title_);
-        track->setArtist(result.artist_);
-        track->setAlbum(result.album_);
-        track->setDuration(result.duration_msec_*1000000000);
-        track->setTrackNumber(QString::number(result.track_));
-        track->setYear(QString::number(result.year_));
+        track->setTitle(result.m_title);
+        track->setArtist(result.m_artist);
+        track->setAlbum(result.m_album);
+        track->setDuration(result.m_duration);
+        track->setTrackNumber(QString::number(result.m_track));
+        track->setYear(QString::number(result.m_year));
         tracksGuessed << track;
     }
-    qDebug() << "send this to the world";
-    emit foobar();
-    emit ResultAvailable(original_track, tracksGuessed);
+    // qDebug() << "send this to the world";
+    emit ResultAvailable(originalTrack, tracksGuessed);
 }

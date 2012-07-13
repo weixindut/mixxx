@@ -14,6 +14,8 @@
 #include "controlobjectthreadmain.h"
 #include "widget/wtracktableview.h"
 #include "dlgtrackinfo.h"
+#include "trackselectiondialog.h"
+#include "musicbrainz/tagfetcher.h"
 #include "soundsourceproxy.h"
 
 WTrackTableView::WTrackTableView(QWidget * parent,
@@ -27,11 +29,18 @@ WTrackTableView::WTrackTableView(QWidget * parent,
           m_searchThread(this) {
     // Give a NULL parent because otherwise it inherits our style which can make
     // it unreadable. Bug #673411
-    m_pTrackInfo = new DlgTrackInfo(NULL);
+    m_pTagFetcher = new TagFetcher(NULL);
+    m_pTrackSelectionDialog = new TrackSelectionDialog(NULL);
+    m_pTrackInfo = new DlgTrackInfo(NULL,m_pTagFetcher,m_pTrackSelectionDialog);
     connect(m_pTrackInfo, SIGNAL(next()),
             this, SLOT(slotNextTrackInfo()));
     connect(m_pTrackInfo, SIGNAL(previous()),
             this, SLOT(slotPrevTrackInfo()));
+    connect(m_pTrackSelectionDialog, SIGNAL(next()),
+            this, SLOT(slotNextTrackSelectionDialog()));
+    connect(m_pTrackSelectionDialog, SIGNAL(previous()),
+            this, SLOT(slotPrevTrackSelectionDialog()));
+
 
     connect(&m_loadTrackMapper, SIGNAL(mapped(QString)),
             this, SLOT(loadSelectionToGroup(QString)));
@@ -81,6 +90,7 @@ WTrackTableView::~WTrackTableView()
     }
 
     delete m_pReloadMetadataAct;
+    delete m_pReloadMetadataFromMusicBrainzAct;
     delete m_pAutoDJAct;
     delete m_pAutoDJTopAct;
     delete m_pRemoveAct;
@@ -295,6 +305,10 @@ void WTrackTableView::createActions() {
     connect(m_pReloadMetadataAct, SIGNAL(triggered()),
             this, SLOT(slotReloadTrackMetadata()));
 
+    m_pReloadMetadataFromMusicBrainzAct = new QAction(tr("Reload from Musicbrainz"),this);
+    connect(m_pReloadMetadataFromMusicBrainzAct, SIGNAL(triggered()),
+            this, SLOT(slotShowTrackSelectionDialog()));
+
     m_pResetPlayedAct = new QAction(tr("Reset Play Count"), this);
     connect(m_pResetPlayedAct, SIGNAL(triggered()),
             this, SLOT(slotResetPlayed()));
@@ -470,6 +484,43 @@ void WTrackTableView::showTrackInfo(QModelIndex index) {
     m_pTrackInfo->show();
 }
 
+void WTrackTableView::slotNextTrackSelectionDialog() {
+    QModelIndex nextRow = currentTrackInfoIndex.sibling(
+        currentTrackInfoIndex.row()+1, currentTrackInfoIndex.column());
+    if (nextRow.isValid())
+        showTrackSelectionDialog(nextRow);
+}
+
+void WTrackTableView::slotPrevTrackSelectionDialog() {
+    QModelIndex prevRow = currentTrackInfoIndex.sibling(
+        currentTrackInfoIndex.row()-1, currentTrackInfoIndex.column());
+    if (prevRow.isValid())
+        showTrackSelectionDialog(prevRow);
+}
+
+void WTrackTableView::showTrackSelectionDialog(QModelIndex index) {
+    TrackModel* trackModel = getTrackModel();
+
+    if (!trackModel) {
+        return;
+    }
+
+    TrackPointer pTrack = trackModel->getTrack(index);
+    // NULL is fine
+    m_pTagFetcher->StartFetch(pTrack);
+    m_pTrackSelectionDialog->init(pTrack);
+    currentTrackInfoIndex = index;
+    m_pTrackSelectionDialog->show();
+}
+
+void WTrackTableView::slotShowTrackSelectionDialog(){
+    QModelIndexList indices = selectionModel()->selectedRows();
+
+    if (indices.size() > 0) {
+        showTrackSelectionDialog(indices[0]);
+    }
+}
+
 void WTrackTableView::contextMenuEvent(QContextMenuEvent* event) {
     QModelIndexList indices = selectionModel()->selectedRows();
 
@@ -597,6 +648,8 @@ void WTrackTableView::contextMenuEvent(QContextMenuEvent* event) {
     m_pMenu->addSeparator();
     if (modelHasCapabilities(TrackModel::TRACKMODELCAPS_RELOADMETADATA)) {
         m_pMenu->addAction(m_pReloadMetadataAct);
+        m_pReloadMetadataFromMusicBrainzAct->setEnabled(oneSongSelected);
+        m_pMenu->addAction(m_pReloadMetadataFromMusicBrainzAct);
     }
     // REMOVE and HIDE should not be at the first menu position to avoid excitedly clicks
     if (modelHasCapabilities(TrackModel::TRACKMODELCAPS_REMOVE)) {

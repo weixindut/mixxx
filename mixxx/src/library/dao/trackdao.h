@@ -44,7 +44,6 @@ const QString LIBRARYTABLE_PLAYED = "played";
 const QString LIBRARYTABLE_RATING = "rating";
 const QString LIBRARYTABLE_KEY = "key";
 const QString LIBRARYTABLE_BPM_LOCK = "bpm_lock";
-const QString LIBRARYTABLE_ACOUSTID = "acoustID";
 
 const QString TRACKLOCATIONSTABLE_ID = "id";
 const QString TRACKLOCATIONSTABLE_LOCATION = "location";
@@ -53,6 +52,7 @@ const QString TRACKLOCATIONSTABLE_DIRECTORY = "directory";
 const QString TRACKLOCATIONSTABLE_FILESIZE = "filesize";
 const QString TRACKLOCATIONSTABLE_FSDELETED = "fs_deleted";
 const QString TRACKLOCATIONSTABLE_NEEDSVERIFICATION = "needs_verification";
+const QString TRACKLOCATIONSTABLE_FINGERPRINT = "FINGERPRINT";
 
 class ScopedTransaction;
 class PlaylistDAO;

@@ -13,6 +13,8 @@
 
 class ControlObjectThreadMain;
 class DlgTrackInfo;
+class TagFetcher;
+class TrackSelectionDialog;
 class TrackCollection;
 
 const QString WTRACKTABLEVIEW_VSCROLLBARPOS_KEY = "VScrollBarPos"; /** ConfigValue key for QTable vertical scrollbar position */
@@ -47,8 +49,11 @@ class WTrackTableView : public WLibraryTableView {
     void slotPurge();
     void slotOpenInFileBrowser();
     void slotShowTrackInfo();
+    void slotShowTrackSelectionDialog();
     void slotNextTrackInfo();
+    void slotNextTrackSelectionDialog();
     void slotPrevTrackInfo();
+    void slotPrevTrackSelectionDialog();
     void slotSendToAutoDJ();
     void slotSendToAutoDJTop();
     void slotReloadTrackMetadata();
@@ -64,6 +69,7 @@ class WTrackTableView : public WLibraryTableView {
   private:
     void sendToAutoDJ(bool bTop);
     void showTrackInfo(QModelIndex index);
+    void showTrackSelectionDialog(QModelIndex index);
     void createActions();
     void dragMoveEvent(QDragMoveEvent * event);
     void dragEnterEvent(QDragEnterEvent * event);
@@ -84,6 +90,8 @@ class WTrackTableView : public WLibraryTableView {
     QSignalMapper m_loadTrackMapper;
 
     DlgTrackInfo* m_pTrackInfo;
+    TagFetcher* m_pTagFetcher;
+    TrackSelectionDialog* m_pTrackSelectionDialog;
     QModelIndex currentTrackInfoIndex;
 
     SearchThread m_searchThread;
@@ -97,6 +105,7 @@ class WTrackTableView : public WLibraryTableView {
 
     // Reload Track Metadata Action:
     QAction *m_pReloadMetadataAct;
+    QAction *m_pReloadMetadataFromMusicBrainzAct;
 
     // Send to Auto-DJ Action
     QAction *m_pAutoDJAct;

@@ -248,8 +248,8 @@ public:
     const Segmentation<QString>* getChordData();
     void setChordData(Segmentation<QString> cd);
 
-    void setAccoustID(QString accoustID);
-    QString getAccoustID();
+    void setFingerPrint(QString& fingerPrint);
+    QString getFingerPrint();
 
   public slots:
     void slotCueUpdated();
@@ -378,8 +378,8 @@ private:
     Waveform* m_waveform;
     Waveform* m_waveformSummary;
 
-    //AccoustID
-    QString m_accoustID;
+    //FingerPrint
+    QString m_FingerPrint;
 
     friend class TrackDAO;
 };

@@ -38,7 +38,6 @@ MixxxLibraryFeature::MixxxLibraryFeature(QObject* parent,
             << "library." + LIBRARYTABLE_BPM
             << "library." + LIBRARYTABLE_BPM_LOCK
             << "library." + LIBRARYTABLE_BITRATE
-            << "library." + LIBRARYTABLE_ACOUSTID
             << "track_locations.location"
             << "track_locations.fs_deleted"
             << "library." + LIBRARYTABLE_COMMENT

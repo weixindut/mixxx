@@ -3,7 +3,7 @@
 #include <chromaprint.h>
 
 #include "library/chromaprinter.h"
-#include "soundsourceproxy.h"
+// #include "soundsourceproxy.h"
 #include "defs.h"
 
 chromaprinter::chromaprinter(QObject* parent)
@@ -11,22 +11,27 @@ chromaprinter::chromaprinter(QObject* parent)
 }
 
 QString chromaprinter::getFingerPrint(TrackPointer pTrack){
-    m_pTrack = pTrack;
     SoundSourceProxy soundSource(pTrack);
+    return calcFingerPrint(soundSource);
+}
+
+QString chromaprinter::getFingerPrint(QString location){
+    SoundSourceProxy soundSource(location);
+    return calcFingerPrint(soundSource);
+}
+
+QString chromaprinter::calcFingerPrint(SoundSourceProxy& soundSource){
     soundSource.open();
-    qDebug() << "test something";
-    qDebug() << soundSource.length()/soundSource.getSampleRate() ;
-    qDebug() << pTrack->getDuration();
     m_SampleRate = soundSource.getSampleRate();
-    // this is worth 30sec of audio, multiply by 2 because we have 2 chanels 
+    // this is worth 2min of audio, multiply by 2 because we have 2 chanels 
     // --kain88
-    m_NumSamples = 30*2*m_SampleRate;
+    m_NumSamples = 120*2*m_SampleRate;
     if (m_NumSamples > soundSource.length()) {
         m_NumSamples = soundSource.length();
     }
 
     if (m_SampleRate == 0 ){
-        qDebug() << "Skipping invalid file:" << m_pTrack->getLocation();
+        qDebug() << "Skipping invalid file:" << soundSource.getFilename();
         return QString();
     }
 
@@ -42,7 +47,7 @@ QString chromaprinter::getFingerPrint(TrackPointer pTrack){
     chromaprint_start(ctx, m_SampleRate, 2);
 
     int success = chromaprint_feed(ctx, pData, m_NumSamples);
-    qDebug() << "success ? = "<<success;
+    // qDebug() << "success ? = "<<success;
     chromaprint_finish(ctx);
     
     void* fprint = NULL;
@@ -61,24 +66,9 @@ QString chromaprinter::getFingerPrint(TrackPointer pTrack){
 
         chromaprint_dealloc(fprint);
         chromaprint_dealloc(encoded);
-        qDebug() <<"encoded_size=" << encoded_size;
     }
     chromaprint_free(ctx);
     delete pData;
 
-    // qDebug() << QString(fingerprint);
-    /*
-    typedef QPair<QString, QString> Param;
-    QList<Param> parameters;
-    parameters << Param("format", "xml")
-                << Param("client", "ErlAvPUB")
-                << Param("duration", QString::number(pTrack->getDuration()))
-                << Param("meta", "recordingids")
-                << Param("fingerprint", fingerprint);
-    QUrl url("http://api.acoustid.org/v2/lookup");
-    url.setQueryItems(parameters);
-    qDebug() << url.toString();
-    */
-    
     return fingerprint;
 }

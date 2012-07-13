@@ -134,7 +134,7 @@ void TrackInfoObject::initialize(bool parseHeader) {
     m_Rating = 0;
     m_key = "";
     m_bBpmLock = false;
-    m_accoustID = "";
+    m_FingerPrint = "";
 
     // parse() parses the metadata from file. This is not a quick operation!
     if (parseHeader) {
@@ -926,11 +926,11 @@ bool TrackInfoObject::hasBpmLock() const {
     return m_bBpmLock;
 }
 
-void TrackInfoObject::setAccoustID(QString accoustID){
+void TrackInfoObject::setFingerPrint(QString& fingerPrint){
     QMutexLocker lock(&m_qMutex);
-    m_accoustID = accoustID;
+    m_FingerPrint = fingerPrint;
 }
 
-QString TrackInfoObject::getAccoustID(){
-    return m_accoustID;
+QString TrackInfoObject::getFingerPrint(){
+    return m_FingerPrint;
 }
