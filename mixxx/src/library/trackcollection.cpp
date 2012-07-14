@@ -169,7 +169,6 @@ bool TrackCollection::importDirectory(QString directory, TrackDAO &trackDao,
 
             TrackPointer pTrack = TrackPointer(new TrackInfoObject(
                               absoluteFilePath), &QObject::deleteLater);
-
             QString fingerprint = m_chromaprinter.getFingerPrint(pTrack);
             pTrack->setFingerPrint(fingerprint);
             if (trackDao.addTracksAdd(pTrack.data(), false,dirId)) {

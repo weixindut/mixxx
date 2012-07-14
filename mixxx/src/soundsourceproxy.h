@@ -45,7 +45,7 @@ public:
     ~SoundSourceProxy();
     static void loadPlugins();
     int open();
-    long seek(long);
+    long seek(long); // uses samples as units
     unsigned read(unsigned long size, const SAMPLE*);
     long unsigned length();
     int parseHeader();

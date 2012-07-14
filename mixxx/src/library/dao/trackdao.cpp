@@ -1391,7 +1391,7 @@ bool TrackDAO::relocateTrack(QString oldLocation, QString newLocation) {
     return false;
 }
 
-void TrackDAO::verifyTracksOutside(const QString& libraryPath, volatile bool* pCancel) {
+void TrackDAO::verifyTracksOutside(volatile bool* pCancel) {
     // This function is called from the LibraryScanner Thread
     ScopedTransaction transaction(m_database);
     QSqlQuery query(m_database);
@@ -1401,10 +1401,7 @@ void TrackDAO::verifyTracksOutside(const QString& libraryPath, volatile bool* pC
     query.setForwardOnly(true);
     query.prepare("SELECT location "
                   "FROM track_locations "
-                  "WHERE directory NOT LIKE '" +
-                  libraryPath +
-                  "/%'"); //Add wildcard to SQL query to match subdirectories!
-
+                  "WHERE dir_id=0");
     if (!query.exec()) {
         LOG_FAILED_QUERY(query);
         return;

@@ -243,15 +243,13 @@ void LibraryScanner::run()
         int dirId = m_directoryDao.getDirId(dir);
         bScanFinishedCleanly = recursiveScan(dir,verifiedDirectories,restoredTracks,dirId);
         //Verify all Tracks inside Library but outside the library path
-        m_trackDao.verifyTracksOutside(dir, &m_bCancelLibraryScan);
-
         if (!bScanFinishedCleanly) {
             qDebug() << "Recursive scan interrupted.";
         } else {
             qDebug() << "Recursive scan finished cleanly.";
         }
-
     }
+    m_trackDao.verifyTracksOutside(&m_bCancelLibraryScan);
 
     // Runs inside a transaction
     m_trackDao.addTracksFinish();

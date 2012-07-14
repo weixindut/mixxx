@@ -11,14 +11,14 @@ class chromaprinter: public QObject {
 
   public:
     chromaprinter(QObject* parent=NULL);
-    QString getFingerPrint(TrackPointer pTrack);
-    QString getFingerPrint(QString location);
+    QString getFingerPrint(TrackPointer pTrack, bool mixxx=true);
+    QString getFingerPrint(QString location, bool mixxx=true);
 
   private:
 
-    QString calcFingerPrint(SoundSourceProxy& soundSource);
-    int m_NumSamples;
-    int m_SampleRate;
+    QString calcFingerPrint(SoundSourceProxy& soundSource, bool mixxx);
+    unsigned int m_NumSamples;
+    unsigned int m_SampleRate;
 };
 
 #endif //CHROMAPRINTER_H
