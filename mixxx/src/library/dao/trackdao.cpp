@@ -1391,7 +1391,9 @@ bool TrackDAO::relocateTrack(QString oldLocation, QString newLocation) {
     return false;
 }
 
-void TrackDAO::verifyTracksOutside(const QString& libraryPath) {
+void TrackDAO::verifyTracksOutside(const QString& libraryPath, volatile bool* pCancel) {
+    // This function is called from the LibraryScanner Thread
+    ScopedTransaction transaction(m_database);
     QSqlQuery query(m_database);
     QSqlQuery query2(m_database);
     QString trackLocation;
@@ -1419,7 +1421,13 @@ void TrackDAO::verifyTracksOutside(const QString& libraryPath) {
         if (!query2.exec()) {
             LOG_FAILED_QUERY(query2);
         }
+        if (*pCancel) {
+            break;
+        }
+        emit(progressVerifyTracksOutside(trackLocation));
     }
+    transaction.commit();
+    qDebug() << "verifyTracksOutside finished";
 }
 
 void TrackDAO::markTrackAsDeleted(TrackPointer pTrack){

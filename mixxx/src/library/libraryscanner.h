@@ -70,8 +70,7 @@ class LibraryScanner : public QThread {
     DirectoryDAO m_directoryDao;
 
     QStringList m_nameFilters;
-    bool m_bCancelLibraryScan;
-    QMutex m_libraryScanMutex;
+    volatile bool m_bCancelLibraryScan;
     QStringList m_directoriesBlacklist;
 };
 

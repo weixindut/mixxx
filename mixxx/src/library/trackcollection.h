@@ -55,7 +55,8 @@ class TrackCollection : public QObject
     bool importDirectory(QString directory, TrackDAO &trackDao,
                          const QStringList & nameFilters,
                          QSet<int>& restoredTracks,
-                         int dirId);
+                         int dirId,
+                         volatile bool* cancel);
 
     void resetLibaryCancellation();
     QSqlDatabase& getDatabase();
@@ -66,9 +67,7 @@ class TrackCollection : public QObject
     DirectoryDAO& getDirectoryDAO();
     QSharedPointer<BaseTrackCache> getTrackSource(const QString name);
     void addTrackSource(const QString name, QSharedPointer<BaseTrackCache> trackSource);
-
-  public slots:
-    void slotCancelLibraryScan();
+    void cancelLibraryScan();
 
   signals:
     void startedLoading();

@@ -38,11 +38,11 @@ LibraryScanner::LibraryScanner(TrackCollection* collection) :
     m_trackDao(m_database, m_cueDao, m_playlistDao, m_crateDao, m_analysisDao, m_directoryDao),
     // Don't initialize m_database here, we need to do it in run() so the DB
     // conn is in the right thread.
-    m_nameFilters(SoundSourceProxy::supportedFileExtensionsString().split(" "))
+    m_nameFilters(SoundSourceProxy::supportedFileExtensionsString().split(" ")),
+    m_bCancelLibraryScan(0)
 {
 
     qDebug() << "Constructed LibraryScanner";
-    resetCancel();
 
     // Force the GUI thread's TrackInfoObject cache to be cleared when a library
     // scan is finished, because we might have modified the database directly
@@ -92,9 +92,7 @@ LibraryScanner::~LibraryScanner()
 
     if (isRunning()) {
         // Cancel any running library scan...
-        m_pCollection->slotCancelLibraryScan();
-        this->cancel();
-
+        cancel();
         wait(); // Wait for thread to finish
     }
 
@@ -186,7 +184,7 @@ void LibraryScanner::run()
     m_playlistDao.initialize();
     m_analysisDao.initialize();
 
-    m_pCollection->resetLibaryCancellation();
+    resetCancel();
 
     QTime t2;
     t2.start();
@@ -245,7 +243,7 @@ void LibraryScanner::run()
         int dirId = m_directoryDao.getDirId(dir);
         bScanFinishedCleanly = recursiveScan(dir,verifiedDirectories,restoredTracks,dirId);
         //Verify all Tracks inside Library but outside the library path
-        m_trackDao.verifyTracksOutside(dir);
+        m_trackDao.verifyTracksOutside(dir, &m_bCancelLibraryScan);
 
         if (!bScanFinishedCleanly) {
             qDebug() << "Recursive scan interrupted.";
@@ -259,7 +257,6 @@ void LibraryScanner::run()
     m_trackDao.addTracksFinish();
     // this will cause BaseTrackCache to update the index of all restored tracks
     emit(tracksRestored(restoredTracks));
-
 
     // Start a transaction for all the library hashing (moved file detection)
     // stuff.
@@ -309,23 +306,7 @@ void LibraryScanner::run()
     // Update BaseTrackCache via the main TrackDao
     m_pCollection->getTrackDAO().databaseTracksMoved(tracksMovedSetOld, tracksMovedSetNew);
 
-    resetCancel();
     emit(scanFinished());
-}
-
-
-void LibraryScanner::cancel()
-{
-    m_libraryScanMutex.lock();
-    m_bCancelLibraryScan = 1;
-    m_libraryScanMutex.unlock();
-}
-
-void LibraryScanner::resetCancel()
-{
-    m_libraryScanMutex.lock();
-    m_bCancelLibraryScan = 0;
-    m_libraryScanMutex.unlock();
 }
 
 void LibraryScanner::scan()
@@ -349,10 +330,21 @@ void LibraryScanner::scan()
     connect(this, SIGNAL(scanFinished()),
             m_pProgress, SLOT(slotScanFinished()));
     connect(m_pProgress, SIGNAL(scanCancelled()),
-            m_pCollection, SLOT(slotCancelLibraryScan()));
-    connect(m_pProgress, SIGNAL(scanCancelled()),
             this, SLOT(cancel()));
-    start(); // Starts the thread by calling run()
+    connect(&m_trackDao, SIGNAL(progressVerifyTracksOutside(QString)),
+            m_pProgress, SLOT(slotUpdate(QString)));
+    start();
+}
+
+//slot
+void LibraryScanner::cancel()
+{
+    m_bCancelLibraryScan = 1;
+}
+
+void LibraryScanner::resetCancel()
+{
+    m_bCancelLibraryScan = 0;
 }
 
 // Recursively scan a music library. Doesn't import tracks for any directories that
@@ -400,7 +392,7 @@ bool LibraryScanner::recursiveScan(QString dirPath, QStringList& verifiedDirecto
 
         // Rescan that mofo!
         bScanFinishedCleanly = m_pCollection->importDirectory(dirPath, m_trackDao, m_nameFilters,
-                                                              restoredTracks,dirId);
+                                                              restoredTracks,dirId,&m_bCancelLibraryScan);
     } else { //prevHash == newHash
         // Add the directory to the verifiedDirectories list, so that later they
         // (and the tracks inside them) will be marked as verified
@@ -410,10 +402,7 @@ bool LibraryScanner::recursiveScan(QString dirPath, QStringList& verifiedDirecto
 
     // Let us break out of library directory hashing (the actual file scanning
     // stuff is in TrackCollection::importDirectory)
-    m_libraryScanMutex.lock();
-    bool cancel = m_bCancelLibraryScan;
-    m_libraryScanMutex.unlock();
-    if (cancel) {
+    if (m_bCancelLibraryScan) {
         return false;
     }
 
