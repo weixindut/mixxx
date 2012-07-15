@@ -362,7 +362,7 @@ class MixxxCore(Feature):
                    "dlgabout.cpp",
                    "dlgprefeq.cpp",
                    "dlgprefcrossfader.cpp",
-                   "trackselectiondialog.cpp",
+                   "dlgtagfetcher.cpp",
                    "dlgtrackinfo.cpp",
                    "dlgprepare.cpp",
                    "dlgautodj.cpp",
@@ -675,7 +675,7 @@ class MixxxCore(Feature):
         build.env.Uic4('dlgprefnovinyldlg.ui')
         build.env.Uic4('dlgprefrecorddlg.ui')
         build.env.Uic4('dlgaboutdlg.ui')
-        build.env.Uic4('trackselectiondialog.ui')
+        build.env.Uic4('dlgtagfetcher.ui')
         build.env.Uic4('dlgtrackinfo.ui')
         build.env.Uic4('dlgprepare.ui')
         build.env.Uic4('dlgautodj.ui')

@@ -14,7 +14,7 @@
 #include "controlobjectthreadmain.h"
 #include "widget/wtracktableview.h"
 #include "dlgtrackinfo.h"
-#include "trackselectiondialog.h"
+#include "dlgtagfetcher.h"
 #include "musicbrainz/tagfetcher.h"
 #include "soundsourceproxy.h"
 
@@ -30,16 +30,16 @@ WTrackTableView::WTrackTableView(QWidget * parent,
     // Give a NULL parent because otherwise it inherits our style which can make
     // it unreadable. Bug #673411
     m_pTagFetcher = new TagFetcher(NULL);
-    m_pTrackSelectionDialog = new TrackSelectionDialog(NULL);
-    m_pTrackInfo = new DlgTrackInfo(NULL,m_pTagFetcher,m_pTrackSelectionDialog);
+    m_pDlgTagFetcher = new DlgTagFetcher(NULL);
+    m_pTrackInfo = new DlgTrackInfo(NULL,m_pTagFetcher,m_pDlgTagFetcher);
     connect(m_pTrackInfo, SIGNAL(next()),
             this, SLOT(slotNextTrackInfo()));
     connect(m_pTrackInfo, SIGNAL(previous()),
             this, SLOT(slotPrevTrackInfo()));
-    connect(m_pTrackSelectionDialog, SIGNAL(next()),
-            this, SLOT(slotNextTrackSelectionDialog()));
-    connect(m_pTrackSelectionDialog, SIGNAL(previous()),
-            this, SLOT(slotPrevTrackSelectionDialog()));
+    connect(m_pDlgTagFetcher, SIGNAL(next()),
+            this, SLOT(slotNextDlgTagFetcher()));
+    connect(m_pDlgTagFetcher, SIGNAL(previous()),
+            this, SLOT(slotPrevDlgTagFetcher()));
 
 
     connect(&m_loadTrackMapper, SIGNAL(mapped(QString)),
@@ -307,7 +307,7 @@ void WTrackTableView::createActions() {
 
     m_pReloadMetadataFromMusicBrainzAct = new QAction(tr("Reload from Musicbrainz"),this);
     connect(m_pReloadMetadataFromMusicBrainzAct, SIGNAL(triggered()),
-            this, SLOT(slotShowTrackSelectionDialog()));
+            this, SLOT(slotShowDlgTagFetcher()));
 
     m_pResetPlayedAct = new QAction(tr("Reset Play Count"), this);
     connect(m_pResetPlayedAct, SIGNAL(triggered()),
@@ -484,21 +484,21 @@ void WTrackTableView::showTrackInfo(QModelIndex index) {
     m_pTrackInfo->show();
 }
 
-void WTrackTableView::slotNextTrackSelectionDialog() {
+void WTrackTableView::slotNextDlgTagFetcher() {
     QModelIndex nextRow = currentTrackInfoIndex.sibling(
         currentTrackInfoIndex.row()+1, currentTrackInfoIndex.column());
     if (nextRow.isValid())
-        showTrackSelectionDialog(nextRow);
+        showDlgTagFetcher(nextRow);
 }
 
-void WTrackTableView::slotPrevTrackSelectionDialog() {
+void WTrackTableView::slotPrevDlgTagFetcher() {
     QModelIndex prevRow = currentTrackInfoIndex.sibling(
         currentTrackInfoIndex.row()-1, currentTrackInfoIndex.column());
     if (prevRow.isValid())
-        showTrackSelectionDialog(prevRow);
+        showDlgTagFetcher(prevRow);
 }
 
-void WTrackTableView::showTrackSelectionDialog(QModelIndex index) {
+void WTrackTableView::showDlgTagFetcher(QModelIndex index) {
     TrackModel* trackModel = getTrackModel();
 
     if (!trackModel) {
@@ -508,16 +508,16 @@ void WTrackTableView::showTrackSelectionDialog(QModelIndex index) {
     TrackPointer pTrack = trackModel->getTrack(index);
     // NULL is fine
     m_pTagFetcher->StartFetch(pTrack);
-    m_pTrackSelectionDialog->init(pTrack);
+    m_pDlgTagFetcher->init(pTrack);
     currentTrackInfoIndex = index;
-    m_pTrackSelectionDialog->show();
+    m_pDlgTagFetcher->show();
 }
 
-void WTrackTableView::slotShowTrackSelectionDialog(){
+void WTrackTableView::slotShowDlgTagFetcher(){
     QModelIndexList indices = selectionModel()->selectedRows();
 
     if (indices.size() > 0) {
-        showTrackSelectionDialog(indices[0]);
+        showDlgTagFetcher(indices[0]);
     }
 }
 

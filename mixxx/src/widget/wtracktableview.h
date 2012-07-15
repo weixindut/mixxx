@@ -14,7 +14,7 @@
 class ControlObjectThreadMain;
 class DlgTrackInfo;
 class TagFetcher;
-class TrackSelectionDialog;
+class DlgTagFetcher;
 class TrackCollection;
 
 const QString WTRACKTABLEVIEW_VSCROLLBARPOS_KEY = "VScrollBarPos"; /** ConfigValue key for QTable vertical scrollbar position */
@@ -49,11 +49,11 @@ class WTrackTableView : public WLibraryTableView {
     void slotPurge();
     void slotOpenInFileBrowser();
     void slotShowTrackInfo();
-    void slotShowTrackSelectionDialog();
+    void slotShowDlgTagFetcher();
     void slotNextTrackInfo();
-    void slotNextTrackSelectionDialog();
+    void slotNextDlgTagFetcher();
     void slotPrevTrackInfo();
-    void slotPrevTrackSelectionDialog();
+    void slotPrevDlgTagFetcher();
     void slotSendToAutoDJ();
     void slotSendToAutoDJTop();
     void slotReloadTrackMetadata();
@@ -69,7 +69,7 @@ class WTrackTableView : public WLibraryTableView {
   private:
     void sendToAutoDJ(bool bTop);
     void showTrackInfo(QModelIndex index);
-    void showTrackSelectionDialog(QModelIndex index);
+    void showDlgTagFetcher(QModelIndex index);
     void createActions();
     void dragMoveEvent(QDragMoveEvent * event);
     void dragEnterEvent(QDragEnterEvent * event);
@@ -91,7 +91,7 @@ class WTrackTableView : public WLibraryTableView {
 
     DlgTrackInfo* m_pTrackInfo;
     TagFetcher* m_pTagFetcher;
-    TrackSelectionDialog* m_pTrackSelectionDialog;
+    DlgTagFetcher* m_pDlgTagFetcher;
     QModelIndex currentTrackInfoIndex;
 
     SearchThread m_searchThread;

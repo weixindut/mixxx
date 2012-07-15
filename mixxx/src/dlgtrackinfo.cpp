@@ -7,11 +7,11 @@
 #include "library/dao/cue.h"
 #include "trackinfoobject.h"
 #include "musicbrainz/tagfetcher.h"
-#include "trackselectiondialog.h"
+#include "dlgtagfetcher.h"
 
 DlgTrackInfo::DlgTrackInfo(QWidget* parent) :
         QDialog(parent),
-        m_pTrackSelectionDialog(new TrackSelectionDialog(this)),
+        m_pDlgTagFetcher(new DlgTagFetcher(this)),
         m_pLoadedTrack(),
         m_pTagFetcher(new TagFetcher(this)){
     init();
@@ -19,9 +19,9 @@ DlgTrackInfo::DlgTrackInfo(QWidget* parent) :
 
 DlgTrackInfo::DlgTrackInfo(QWidget* parent,
                            TagFetcher* pTagFetcher,
-                           TrackSelectionDialog* pTrackSelectionDialog)
+                           DlgTagFetcher* pDlgTagFetcher)
             : QDialog(parent),
-              m_pTrackSelectionDialog(pTrackSelectionDialog),
+              m_pDlgTagFetcher(pDlgTagFetcher),
               m_pLoadedTrack(),
               m_pTagFetcher(pTagFetcher){
     init();
@@ -49,10 +49,8 @@ void DlgTrackInfo::init(){
     connect(btnFetchTag, SIGNAL(clicked()),
             this, SLOT(fetchTag()));
     connect(m_pTagFetcher, SIGNAL(ResultAvailable(const TrackPointer,const QList<TrackPointer>&)),
-            m_pTrackSelectionDialog, SLOT(FetchTagFinished(const TrackPointer,const QList<TrackPointer>&)));
-    connect(m_pTagFetcher, SIGNAL(Progress(TrackPointer,QString)),
-            m_pTrackSelectionDialog, SLOT(FetchTagProgress(TrackPointer,QString)));
-    connect(m_pTrackSelectionDialog, SIGNAL(finished(int)), m_pTagFetcher, SLOT(Cancel()));
+            m_pDlgTagFetcher, SLOT(FetchTagFinished(const TrackPointer,const QList<TrackPointer>&)));
+    connect(m_pDlgTagFetcher, SIGNAL(finished()), m_pTagFetcher, SLOT(Cancel()));
 
     connect(bpmDouble, SIGNAL(clicked()),
             this, SLOT(slotBpmDouble()));
@@ -347,7 +345,7 @@ void DlgTrackInfo::reloadTrackMetadata() {
 }
 
 void DlgTrackInfo::fetchTag() {
-    m_pTrackSelectionDialog->init(m_pLoadedTrack);
+    m_pDlgTagFetcher->init(m_pLoadedTrack);
     m_pTagFetcher->StartFetch(m_pLoadedTrack);
-    m_pTrackSelectionDialog->show();
+    m_pDlgTagFetcher->show();
 }

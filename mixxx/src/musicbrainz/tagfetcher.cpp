@@ -25,7 +25,7 @@ QString TagFetcher::GetFingerprint(const TrackPointer tio) {
 
 void TagFetcher::StartFetch(const TrackPointer track) {
     Cancel();
-
+    // qDebug() << "start to fetch track metadata";
     QList<TrackPointer> tracks;
     tracks.append(track);
     m_tracks = tracks;

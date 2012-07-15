@@ -13,14 +13,14 @@
 
 class Cue;
 class TagFetcher;
-class TrackSelectionDialog;
+class DlgTagFetcher;
 
 class DlgTrackInfo : public QDialog, public Ui::DlgTrackInfo {
     Q_OBJECT
   public:
     DlgTrackInfo(QWidget* parent);
     DlgTrackInfo(QWidget* parent, TagFetcher* pTagFetcher,
-                 TrackSelectionDialog* pTrackSelectionDialog);
+                 DlgTagFetcher* pDlgTagFetcher);
     virtual ~DlgTrackInfo();
 
   public slots:
@@ -63,7 +63,7 @@ class DlgTrackInfo : public QDialog, public Ui::DlgTrackInfo {
     QTime m_bpmTapTimer;
 
     QMutex m_mutex;
-    TrackSelectionDialog* m_pTrackSelectionDialog;
+    DlgTagFetcher* m_pDlgTagFetcher;
     TagFetcher* m_pTagFetcher;
 
 };

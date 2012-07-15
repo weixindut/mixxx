@@ -3,36 +3,33 @@
 #define TRACKSELECTIONDIALOG_H
 
 #include <QDialog>
-#include "ui_trackselectiondialog.h"
+#include "ui_dlgtagfetcher.h"
 #include "trackinfoobject.h"
 
 
 class QTreeWidget;
 
-class TrackSelectionDialog : public QDialog, public Ui::TrackSelectionDialog {
+class DlgTagFetcher : public QDialog, public Ui::DlgTagFetcher {
   Q_OBJECT
 
   public:
-    TrackSelectionDialog(QWidget *parent = 0);
-    ~TrackSelectionDialog();
+    DlgTagFetcher(QWidget *parent = 0);
+    ~DlgTagFetcher();
 
     void init(const TrackPointer track);
 
   signals:
     void next();
     void previous();
+    void finished();
 
   public slots:
-    void FetchTagProgress(TrackPointer, QString&);
     void FetchTagFinished(const TrackPointer,const QList<TrackPointer>& tracks);
 
   private slots:
     void apply();
     void cancel();
-    void UpdateStack(int row);
-    
-    // void cResultSelected();
-    // void AcceptFinished();
+    void UpdateStack();
 
   private:
 
@@ -43,22 +40,14 @@ class TrackSelectionDialog : public QDialog, public Ui::TrackSelectionDialog {
 
   private:
     struct Data {
-        Data() : m_pending(true), m_selectedResult(0) {}
+        Data() : m_pending(true) {}
 
-        TrackPointer m_originalTrack;
         bool m_pending;
-        QString m_progressString;
         QList<TrackPointer> m_results;
-        int m_selectedResult;
     };
 
-    QList<Data> m_data;
     TrackPointer m_track;
-    QPushButton* m_pPreviousButton;
-    QPushButton* m_pNextButton;
-    
-    int m_row;
-    bool m_saveOnClose;
+    Data m_data;
 };
 
 #endif // TRACKSELECTIONDIALOG_H
