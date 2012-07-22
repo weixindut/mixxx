@@ -39,24 +39,27 @@ WaveformWidgetHolder::WaveformWidgetHolder(WaveformWidgetAbstract* waveformWidge
 
 ///////////////////////////////////////////
 
-WaveformWidgetFactory::WaveformWidgetFactory() {
-    m_time = new QTime();
-    m_config = 0;
-    m_skipRender = false;
-    setFrameRate(33);
-    m_defaultZoom = 3;
-    m_zoomSync = false;
+WaveformWidgetFactory::WaveformWidgetFactory() :
+        m_config(0),
+        m_time(new QTime()),
+        m_skipRender(false),
+        m_defaultZoom(3),
+        m_zoomSync(false),
+        m_overviewNormalized(false),
+        //setup the opengl default format
+        m_openGLAvailable(false),
+        m_openGLShaderAvailable(false),
+        m_actualFrameRate(0),
+        m_lastFrameTime(0), 
+        m_type(WaveformWidgetType::Count_WaveformwidgetType) {
+
     m_visualGain[All] = 1.5;
     m_visualGain[Low] = 1.0;
     m_visualGain[Mid] = 1.0;
     m_visualGain[High] = 1.0;
 
-    m_lastFrameTime = 0;
-    m_actualFrameRate = 0;
+    setFrameRate(33);
 
-    //setup the opengl default format
-    m_openGLAvailable = false;
-    m_openGLShaderAvailable = false;
 
     if (QGLFormat::hasOpenGL()) {
         QGLFormat glFormat;
@@ -102,6 +105,8 @@ WaveformWidgetFactory::WaveformWidgetFactory() {
             m_openGLVersion = QString::number(majorVersion) + "." +
                     QString::number(minorVersion);
         }
+        // TODO(xxx) unusual code
+        // QGLShaderProgram::hasOpenGLShaderPrograms(); valgind error
         m_openGLAvailable = true;
         {
             QGLWidget glWidget;
@@ -140,7 +145,6 @@ bool WaveformWidgetFactory::setConfig(ConfigObject<ConfigValue> *config){
         m_config->set(ConfigKey("[Waveform]","DefaultZoom"), ConfigValue(m_defaultZoom));
     }
 
-
     int zoomSync = m_config->getValueString(ConfigKey("[Waveform]","ZoomSynchronization")).toInt(&ok);
     if (ok) {
         setZoomSync(static_cast<bool>(zoomSync));
@@ -164,6 +168,13 @@ bool WaveformWidgetFactory::setConfig(ConfigObject<ConfigValue> *config){
             m_config->set(ConfigKey("[Waveform]","VisualGain_" + QString::number(i)),
                           QString::number(m_visualGain[i]));
         }
+    }
+
+    int overviewNormalized = m_config->getValueString(ConfigKey("[Waveform]","OverviewNormalized")).toInt(&ok);
+    if (ok) {
+        setOverviewNormalized(static_cast<bool>(overviewNormalized));
+    } else {
+        m_config->set(ConfigKey("[Waveform]","OverviewNormalized"), ConfigValue(m_overviewNormalized));
     }
 
     return true;
@@ -346,6 +357,13 @@ void WaveformWidgetFactory::setVisualGain(FilterIndex index, double gain) {
 
 double WaveformWidgetFactory::getVisualGain(FilterIndex index) const {
     return m_visualGain[index];
+}
+
+void WaveformWidgetFactory::setOverviewNormalized(bool normalize) {
+    m_overviewNormalized = normalize;
+    if (m_config) {
+        m_config->set(ConfigKey("[Waveform]","OverviewNormalized"), ConfigValue(m_overviewNormalized));
+    }
 }
 
 void WaveformWidgetFactory::notifyZoomChange(WWaveformViewer* viewer) {
