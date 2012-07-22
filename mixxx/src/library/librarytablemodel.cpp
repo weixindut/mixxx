@@ -1,6 +1,7 @@
 #include <QtCore>
 #include <QtGui>
 #include <QtSql>
+#include <QApplication>
 
 #include "library/trackcollection.h"
 #include "library/librarytablemodel.h"
@@ -181,18 +182,9 @@ void LibraryTableModel::relocateTracks(const QModelIndexList& indices) {
 
         QString oldLocation = m_trackDao.getTrackLocation(trackId);
         qDebug() << oldLocation;
-        /*
-        QString newLocation = QFileDialog::getOpenFileName(NULL,
-        QString(tr("trilolaladlHASHDAHSDHASDHASD")));
-        */
-        QFileDialog dialog(NULL);
-        dialog.setFileMode(QFileDialog::AnyFile);
-        dialog.setViewMode(QFileDialog::Detail);
-        QStringList newLocations;
-        if (dialog.exec()) {
-            newLocations = dialog.selectedFiles();
-        }
-        qDebug() << newLocations;
+        QString newLocation = QFileDialog::getOpenFileName(QApplication::desktop(),
+                                        QString(tr("trilolaladlHASHDAHSDHASDHASD")));
+        qDebug() << newLocation;
 
 //      m_trackDAO.relocateTrack(oldLocation, newLocation);
     }

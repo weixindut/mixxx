@@ -2,6 +2,7 @@
 #define CHROMAPRINTER_H
 
 #include <QObject>
+#include <QFile>
 
 #include "trackinfoobject.h"
 #include "soundsourceproxy.h"

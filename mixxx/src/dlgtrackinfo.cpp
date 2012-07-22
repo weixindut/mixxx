@@ -11,8 +11,8 @@
 
 DlgTrackInfo::DlgTrackInfo(QWidget* parent) :
         QDialog(parent),
+        m_pLoadedTrack(NULL),
         m_pDlgTagFetcher(new DlgTagFetcher(this)),
-        m_pLoadedTrack(),
         m_pTagFetcher(new TagFetcher(this)){
     init();
 }
@@ -21,8 +21,8 @@ DlgTrackInfo::DlgTrackInfo(QWidget* parent,
                            TagFetcher* pTagFetcher,
                            DlgTagFetcher* pDlgTagFetcher)
             : QDialog(parent),
+              m_pLoadedTrack(NULL),
               m_pDlgTagFetcher(pDlgTagFetcher),
-              m_pLoadedTrack(),
               m_pTagFetcher(pTagFetcher){
     init();
 }
@@ -48,9 +48,21 @@ void DlgTrackInfo::init(){
 
     connect(btnFetchTag, SIGNAL(clicked()),
             this, SLOT(fetchTag()));
+
     connect(m_pTagFetcher, SIGNAL(ResultAvailable(const TrackPointer,const QList<TrackPointer>&)),
             m_pDlgTagFetcher, SLOT(FetchTagFinished(const TrackPointer,const QList<TrackPointer>&)));
     connect(m_pDlgTagFetcher, SIGNAL(finished()), m_pTagFetcher, SLOT(Cancel()));
+    connect(m_pDlgTagFetcher, SIGNAL(StartSubmit(TrackPointer, QString)),
+            m_pTagFetcher, SLOT(StartSubmit(TrackPointer, QString)));
+
+    connect(m_pTagFetcher, SIGNAL(submitProgress(QString)),
+            m_pDlgTagFetcher, SLOT(submitProgress(QString)));
+
+    connect(m_pTagFetcher, SIGNAL(fetchProgress(QString)),
+            m_pDlgTagFetcher, SLOT(FetchTagProgress(QString)));
+
+    connect(m_pTagFetcher, SIGNAL(submited(int,QString)),
+            m_pDlgTagFetcher, SLOT(submitFinished(int,QString)));
 
     connect(bpmDouble, SIGNAL(clicked()),
             this, SLOT(slotBpmDouble()));

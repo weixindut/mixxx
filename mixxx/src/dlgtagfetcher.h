@@ -1,6 +1,5 @@
-
-#ifndef TRACKSELECTIONDIALOG_H
-#define TRACKSELECTIONDIALOG_H
+#ifndef DLGTAGFETCHER_H
+#define DLGTAGFETCHER_H
 
 #include <QDialog>
 #include "ui_dlgtagfetcher.h"
@@ -22,34 +21,44 @@ class DlgTagFetcher : public QDialog, public Ui::DlgTagFetcher {
     void next();
     void previous();
     void finished();
+    void StartSubmit(TrackPointer, QString);
 
   public slots:
     void FetchTagFinished(const TrackPointer,const QList<TrackPointer>& tracks);
+    void submitProgress(QString);
+    void ResultSelected();
+    void submitFinished(int,QString);
+    void FetchTagProgress(QString);
 
   private slots:
     void apply();
     void cancel();
-    void UpdateStack();
+    void submitPage();
+    void submit();
+    void getApiKey();
 
   private:
 
+    void UpdateStack();
     void AddDivider(const QString& text, QTreeWidget* parent) const;
-    void AddTrack(const TrackPointer track,
-                  int resultIndex,
+    void AddTrack(const TrackPointer track, int resultIndex,
                   QTreeWidget* parent) const;
 
   private:
     struct Data {
-        Data() : m_pending(true) {}
+        Data() : m_pending(true), m_selectedResult(0) {}
 
         bool m_pending;
+        int m_selectedResult;
         QList<TrackPointer> m_results;
     };
 
     TrackPointer m_track;
     Data m_data;
+    bool m_submit;
+    QString m_progress;
 };
 
-#endif // TRACKSELECTIONDIALOG_H
+#endif // DLGTAGFETCHER_H
 
 

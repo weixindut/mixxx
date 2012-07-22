@@ -52,7 +52,7 @@ const QString TRACKLOCATIONSTABLE_DIRECTORY = "directory";
 const QString TRACKLOCATIONSTABLE_FILESIZE = "filesize";
 const QString TRACKLOCATIONSTABLE_FSDELETED = "fs_deleted";
 const QString TRACKLOCATIONSTABLE_NEEDSVERIFICATION = "needs_verification";
-const QString TRACKLOCATIONSTABLE_FINGERPRINT = "FINGERPRINT";
+const QString TRACKLOCATIONSTABLE_FINGERPRINT = "fingerprint";
 
 class ScopedTransaction;
 class PlaylistDAO;
@@ -137,10 +137,11 @@ class TrackDAO : public QObject, public virtual DAO {
     void saveTrack(TrackInfoObject* pTrack);
     void updateTrack(TrackInfoObject* pTrack);
     void addTrack(TrackInfoObject* pTrack, bool unremove);
+    QString calcChecksum(TrackInfoObject& pTrack);
     TrackPointer getTrackFromDB(int id) const;
     QString absoluteFilePath(QString location);
 
-    void bindTrackToTrackLocationsInsert(TrackInfoObject* pTrack, int dirId);
+    void bindTrackToTrackLocationsInsert(TrackInfoObject* pTrack, int dirId,QString& checksum);
     void bindTrackToLibraryInsert(TrackInfoObject* pTrack, int trackLocationId);
 
     void writeAudioMetaData(TrackInfoObject* pTrack);

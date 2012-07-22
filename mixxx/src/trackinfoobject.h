@@ -248,9 +248,6 @@ public:
     const Segmentation<QString>* getChordData();
     void setChordData(Segmentation<QString> cd);
 
-    void setFingerPrint(QString& fingerPrint);
-    QString getFingerPrint();
-
   public slots:
     void slotCueUpdated();
 
@@ -377,9 +374,6 @@ private:
     //Visual waveform data
     Waveform* m_waveform;
     Waveform* m_waveformSummary;
-
-    //FingerPrint
-    QString m_FingerPrint;
 
     friend class TrackDAO;
 };

@@ -460,6 +460,8 @@ class MixxxCore(Feature):
 
                    "network.cpp",
                    "musicbrainz/tagfetcher.cpp",
+                   "musicbrainz/gzip.cpp",
+                   "musicbrainz/crc.c",
                    "musicbrainz/acoustidclient.cpp",
                    "musicbrainz/musicbrainzclient.cpp",
 

@@ -338,7 +338,7 @@ METADATA
       directory varchar(1024)
     );
     ALTER TABLE track_locations ADD COLUMN dir_id INTEGER DEFAULT 0;
-    ALTER TABLE track_locations ADD COLUMN fingerprint varchar(4096);
+    ALTER TABLE track_locations ADD COLUMN checksum varchar(1024);
     </sql>
   </revision>
 </schema>

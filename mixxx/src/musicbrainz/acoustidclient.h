@@ -6,6 +6,7 @@
 #include <QtNetwork>
 
 #include "network.h"
+#include "trackinfoobject.h"
 
 // class QNetworkReply;
 class QXmlStreamReader;
@@ -30,6 +31,8 @@ class AcoustidClient : public QObject {
     // Starts a request and returns immediately.  Finished() will be emitted
     // later with the same ID.
     void Start(int id, const QString& fingerprint, int duration);
+    void Submit(int id, const QString& fingerprint,
+                const QString& apiKey, TrackPointer track);
 
     // Cancels the request with the given ID.  Finished() will never be emitted
     // for that ID.  Does nothing if there is no request with the given ID.
@@ -43,13 +46,16 @@ class AcoustidClient : public QObject {
 
   signals:
     void Finished(int id, const QString& mbid);
+    void submited(int id, const QString& );
 
   private slots:
     void RequestFinished();
+    void SubmitFinished();
 
   private:
     static const QString m_ClientId;
     static const QString m_Url;
+    static const QString m_submitUrl;
     static const int m_DefaultTimeout;
 
     QNetworkAccessManager m_network;

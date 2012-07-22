@@ -1,5 +1,4 @@
 #include <QtCore>
-#include <QtNetwork>
 #include <chromaprint.h>
 
 #include "library/chromaprinter.h"
@@ -30,8 +29,8 @@ QString chromaprinter::calcFingerPrint(SoundSourceProxy& soundSource, bool mixxx
     }
 
     if (mixxx) {
-        // we want to have 10sec of audio from the front, middle amd end
-        m_NumSamples = 30*2*m_SampleRate;
+        // we want to have 5 sec from the beginning for indexing
+        m_NumSamples = 5*2*m_SampleRate;  
     } else {
         // this is worth 2min of audio, multiply by 2 because we have 2 channels
         // AcoustID only stores a fingerprint for the first to min of a song on their
@@ -47,23 +46,14 @@ QString chromaprinter::calcFingerPrint(SoundSourceProxy& soundSource, bool mixxx
 
     SAMPLE *pData = new SAMPLE[m_NumSamples];
     unsigned int read =0;
-    // QTime t2;
-    // t2.start();
+    QTime t2;
+    t2.start();
     if (mixxx) {
         if (m_NumSamples > length) {
-            // 10 secs of audio samples
-            int readSamples = 10*2*m_SampleRate;
-            // read front
-            read = soundSource.read(readSamples, pData);
-            // read middle
             int pos = length/2;
-            pos -= pos%2; //make sure pos is even
-            soundSource.seek(pos - readSamples/2);
-            // pointer magic
-            read += soundSource.read(readSamples, pData + readSamples);
-            // read end
-            soundSource.seek(length-readSamples);
-            read += soundSource.read(readSamples, pData + 2*readSamples);
+            pos -= pos%2;
+            soundSource.seek(pos);
+            read = soundSource.read(m_NumSamples, pData);
         } else {
             // just read the whole file
             read = soundSource.read(m_NumSamples, pData);
@@ -76,13 +66,13 @@ QString chromaprinter::calcFingerPrint(SoundSourceProxy& soundSource, bool mixxx
         qDebug() << "oh that's embarrasing I couldn't read a file";
         return QString();
     }
-    // qDebug("reading file took: %d ms" , t2.elapsed());
+    qDebug("reading file took: %d ms" , t2.elapsed());
     ChromaprintContext* ctx = chromaprint_new(CHROMAPRINT_ALGORITHM_DEFAULT);
     // we have 2 channels in mixxx always
     chromaprint_start(ctx, m_SampleRate, 2);
 
-    // QTime t;
-    // t.start();
+    QTime t;
+    t.start();
     int success = chromaprint_feed(ctx, pData, m_NumSamples);
     if (!success) {
         qDebug() << "could not generate fingerprint";
@@ -109,7 +99,7 @@ QString chromaprinter::calcFingerPrint(SoundSourceProxy& soundSource, bool mixxx
     }
     chromaprint_free(ctx);
     
-    // qDebug("generating fingerprint took: %d ms" , t.elapsed());
+    qDebug("generating fingerprint took: %d ms" , t.elapsed());
     delete pData;
 
     return fingerprint;

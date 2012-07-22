@@ -246,7 +246,8 @@ void TrackDAO::slotTrackSave(TrackInfoObject* pTrack) {
 
 // No need to check here if the querys exist, this is already done in
 // addTracksAdd, which is the only function that calls this
-void TrackDAO::bindTrackToTrackLocationsInsert(TrackInfoObject* pTrack, int dirId) {
+void TrackDAO::bindTrackToTrackLocationsInsert(TrackInfoObject* pTrack, int dirId,
+                                               QString& checksum) {
     // gets called only in addTracksAdd
     m_pQueryTrackLocationInsert->bindValue(":location", pTrack->getLocation());
     m_pQueryTrackLocationInsert->bindValue(":directory", pTrack->getDirectory());
@@ -256,7 +257,7 @@ void TrackDAO::bindTrackToTrackLocationsInsert(TrackInfoObject* pTrack, int dirI
     m_pQueryTrackLocationInsert->bindValue(":fs_deleted", 0);
     m_pQueryTrackLocationInsert->bindValue(":needs_verification", 0);
     m_pQueryTrackLocationInsert->bindValue(":dir_id", dirId);
-    m_pQueryTrackLocationInsert->bindValue(":fingerprint", pTrack->getFingerPrint());
+    m_pQueryTrackLocationInsert->bindValue(":checksum", checksum);
 }
 
 // No need to check here if the querys exist, this is already done in
@@ -329,8 +330,8 @@ void TrackDAO::addTracksPrepare() {
     m_pQueryLibrarySelect = new QSqlQuery(m_database);
 
     m_pQueryTrackLocationInsert->prepare("INSERT INTO track_locations "
-            "(location, directory, filename, filesize, fs_deleted, needs_verification, dir_id, fingerprint) "
-            "VALUES (:location, :directory, :filename, :filesize, :fs_deleted, :needs_verification, :dir_id, :fingerprint)");
+            "(location, directory, filename, filesize, fs_deleted, needs_verification, dir_id, checksum) "
+            "VALUES (:location, :directory, :filename, :filesize, :fs_deleted, :needs_verification, :dir_id, :checksum)");
 
     m_pQueryTrackLocationSelect->prepare("SELECT id FROM track_locations WHERE location=:location");
 
@@ -384,11 +385,12 @@ bool TrackDAO::addTracksAdd(TrackInfoObject* pTrack, bool unremove,int dirId) {
 
     int trackLocationId = -1;
     int trackId = -1;
+    QString checksum = calcChecksum(*pTrack);
 
     // Insert the track location into the corresponding table. This will fail
     // silently if the location is already in the table because it has a UNIQUE
     // constraint.
-    bindTrackToTrackLocationsInsert(pTrack,dirId);
+    bindTrackToTrackLocationsInsert(pTrack,dirId,checksum);
 
     if (!m_pQueryTrackLocationInsert->exec()) {
         qDebug() << "Location " << pTrack->getLocation() << " is already in the DB";
@@ -681,7 +683,7 @@ TrackPointer TrackDAO::getTrackFromDB(int id) const {
         "track_locations.filesize as filesize, comment, url, duration, bitrate, "
         "samplerate, cuepoint, bpm, replaygain, channels, "
         "header_parsed, timesplayed, played, beats_version, beats_sub_version, beats, "
-        "datetime_added, bpm_lock , fingerprint "
+        "datetime_added, bpm_lock "
         "FROM Library "
         "INNER JOIN track_locations "
             "ON library.location = track_locations.id "
@@ -717,7 +719,6 @@ TrackPointer TrackDAO::getTrackFromDB(int id) const {
             QString location = query.value(query.record().indexOf("location")).toString();
             bool header_parsed = query.value(query.record().indexOf("header_parsed")).toBool();
             bool has_bpm_lock = query.value(query.record().indexOf("bpm_lock")).toBool();
-            QString fingerPrint = query.value(query.record().indexOf("fingerprint")).toString();
 
             TrackPointer pTrack = TrackPointer(new TrackInfoObject(location, false), &TrackDAO::deleteTrack);
 
@@ -762,7 +763,6 @@ TrackPointer TrackDAO::getTrackFromDB(int id) const {
             pTrack->setLocation(location);
             pTrack->setHeaderParsed(header_parsed);
             pTrack->setCuePoints(m_cueDao.getCuesForTrack(id));
-            pTrack->setFingerPrint(fingerPrint);
 
             pTrack->setDirty(false);
 
@@ -880,7 +880,7 @@ void TrackDAO::updateTrack(TrackInfoObject* pTrack) {
                   "timesplayed=:timesplayed, played=:played, "
                   "channels=:channels, header_parsed=:header_parsed, "
                   "beats_version=:beats_version, beats_sub_version=:beats_sub_version, beats=:beats, "
-                  "bpm_lock=:bpm_lock, fingerprint=:fingerprint "
+                  "bpm_lock=:bpm_lock"
                   "WHERE id=:track_id");
     query.bindValue(":artist", pTrack->getArtist());
     query.bindValue(":title", pTrack->getTitle());
@@ -908,7 +908,6 @@ void TrackDAO::updateTrack(TrackInfoObject* pTrack) {
     query.bindValue(":track_id", trackId);
 
     query.bindValue(":bpm_lock", pTrack->hasBpmLock() ? 1 : 0);
-    query.bindValue(":fingerprint", pTrack->getFingerPrint());
 
     BeatsPointer pBeats = pTrack->getBeats();
     QByteArray* pBeatsBlob = NULL;
@@ -1057,10 +1056,10 @@ void TrackDAO::detectMovedFiles(QSet<int>& tracksMovedSetOld, QSet<int>& tracksM
     QSqlQuery query3(m_database);
     int oldTrackLocationId = -1;
     int newTrackLocationId = -1;
-    QString fingerprint;
+    QString checksum;
     int fileSize;
 
-    query.prepare("SELECT id, fingerprint, filesize FROM track_locations WHERE fs_deleted=1");
+    query.prepare("SELECT id, checksum, filesize FROM track_locations WHERE fs_deleted=1");
 
     if (!query.exec()) {
         LOG_FAILED_QUERY(query);
@@ -1068,17 +1067,17 @@ void TrackDAO::detectMovedFiles(QSet<int>& tracksMovedSetOld, QSet<int>& tracksM
 
     query2.prepare("SELECT id FROM track_locations WHERE "
                    "fs_deleted=0 AND "
-                   "fingerprint=:fingerprint AND "
+                   "checksum=:checksum AND "
                    "filesize=:filesize");
 
     //For each track that's been "deleted" on disk...
     while (query.next()) {
         newTrackLocationId = -1; //Reset this var
         oldTrackLocationId = query.value(query.record().indexOf("id")).toInt();
-        fingerprint = query.value(query.record().indexOf("fingerprint")).toString();
+        checksum = query.value(query.record().indexOf("checksum")).toString();
         fileSize = query.value(query.record().indexOf("filesize")).toInt();
 
-        query2.bindValue(":fingerprint", fingerprint);
+        query2.bindValue(":checksum", checksum);
         query2.bindValue(":filesize", fileSize);
         Q_ASSERT(query2.exec());
 
@@ -1093,7 +1092,7 @@ void TrackDAO::detectMovedFiles(QSet<int>& tracksMovedSetOld, QSet<int>& tracksM
         //If we found a moved track...
         if (newTrackLocationId >= 0)
         {
-            qDebug() << "Found moved track!" << fingerprint;
+            qDebug() << "Found moved track!" << checksum;
 
             //Remove old row from track_locations table
             query3.prepare("DELETE FROM track_locations WHERE "
@@ -1440,4 +1439,21 @@ void TrackDAO::markTrackAsDeleted(TrackPointer pTrack){
     QSet<int> ids;
     ids.insert(id);
     emit(tracksRemoved(ids));
+}
+
+QString TrackDAO::calcChecksum(TrackInfoObject& pTrack) {
+    QFile file(pTrack.getLocation());
+    file.open(QIODevice::ReadOnly);
+    const int block_size = 2048;
+    char buffer[block_size];
+    int bytes_read;
+    // only ID3v1-Tags are at the end of the file and have a fixed size of
+    // 128byte this way we only calc the checksum of the audio
+    file.seek(file.size() - 2*block_size);
+
+    QCryptographicHash hash(QCryptographicHash::Md5);
+    if ( (bytes_read = file.read(buffer, block_size)) ) {
+        hash.addData(buffer,bytes_read);
+    }
+    return hash.result().toHex();
 }
