@@ -85,8 +85,7 @@ bool loadTranslations(const QLocale& systemLocale, QString userLocale,
 }
 
 MixxxApp::MixxxApp(QApplication *pApp, const CmdlineArgs& args)
-{
-
+        : m_automount(NULL) {
     QString buildBranch, buildRevision, buildFlags;
 #ifdef BUILD_BRANCH
     buildBranch = BUILD_BRANCH;
@@ -527,6 +526,7 @@ MixxxApp::MixxxApp(QApplication *pApp, const CmdlineArgs& args)
     // Wait until all other ControlObjects are set up
     //  before initializing controllers
     m_pControllerManager->setUpDevices();
+
 }
 
 MixxxApp::~MixxxApp()
