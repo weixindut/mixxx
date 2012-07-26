@@ -283,7 +283,7 @@ void DlgAutoDJ::toggleAutoDJ(double v) {
     }
 }
 
-void DlgAutoDJ::toggleAutoDJ(bool toggle) {
+void DlgAutoDJ::toggleAutoDJButton(bool toggle) {
     bool deck1Playing = m_pCOPlay1Fb->get() == 1.0f;
     bool deck2Playing = m_pCOPlay2Fb->get() == 1.0f;
 
@@ -680,8 +680,4 @@ void DlgAutoDJ::transitionValueChanged(int value) {
     }
     m_pConfig->set(ConfigKey(CONFIG_KEY, kTransitionPreferenceName),
                    ConfigValue(value));
-}
-
-bool DlgAutoDJ::appendTrack(int trackId) {
-    return m_pAutoDJTableModel->appendTrack(trackId);
 }

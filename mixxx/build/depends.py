@@ -426,6 +426,7 @@ class MixxxCore(Feature):
                    "controllers/softtakeover.cpp",
 
                    "main.cpp",
+                   "automount.cpp",
                    "mixxx.cpp",
                    "errordialoghandler.cpp",
                    "upgrade.cpp",
