@@ -426,7 +426,6 @@ class MixxxCore(Feature):
                    "controllers/softtakeover.cpp",
 
                    "main.cpp",
-                   "automount.cpp",
                    "mixxx.cpp",
                    "errordialoghandler.cpp",
                    "upgrade.cpp",
@@ -475,6 +474,7 @@ class MixxxCore(Feature):
                    "widget/wpreparelibrarytableview.cpp",
                    "widget/wpreparecratestableview.cpp",
                    "widget/wlibrarytextbrowser.cpp",
+                   "library/automount.cpp",
                    "library/chromaprinter.cpp",
                    "library/preparecratedelegate.cpp",
                    "library/trackcollection.cpp",

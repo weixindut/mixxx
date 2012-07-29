@@ -18,12 +18,16 @@ const QString AutoDJFeature::m_sAutoDJViewName = QString("Auto DJ");
 
 AutoDJFeature::AutoDJFeature(QObject* parent,
                              ConfigObject<ConfigValue>* pConfig,
-                             TrackCollection* pTrackCollection)
+                             TrackCollection* pTrackCollection,
+                             QStringList availableDirs)
         : LibraryFeature(parent),
           m_pConfig(pConfig),
           m_pTrackCollection(pTrackCollection),
-          m_playlistDao(pTrackCollection->getPlaylistDAO()) {
+          m_playlistDao(pTrackCollection->getPlaylistDAO()),
+          m_availableDirs(availableDirs){
     m_pAutoDJView = NULL;
+    connect(parent ,SIGNAL(availableDirsChanged(QStringList, QString)),
+            this, SIGNAL(availableDirs(QStringList, QString)));
 }
 
 AutoDJFeature::~AutoDJFeature() {
@@ -43,13 +47,15 @@ void AutoDJFeature::bindWidget(WLibrarySidebar* /*sidebarWidget*/,
     m_pAutoDJView = new DlgAutoDJ(libraryWidget,
                                   m_pConfig,
                                   m_pTrackCollection,
-                                  keyboard);
+                                  keyboard,m_availableDirs);
     m_pAutoDJView->installEventFilter(keyboard);
     libraryWidget->registerView(m_sAutoDJViewName, m_pAutoDJView);
     connect(m_pAutoDJView, SIGNAL(loadTrack(TrackPointer)),
             this, SIGNAL(loadTrack(TrackPointer)));
     connect(m_pAutoDJView, SIGNAL(loadTrackToPlayer(TrackPointer, QString)),
             this, SIGNAL(loadTrackToPlayer(TrackPointer, QString)));
+    connect(this, SIGNAL(availableDirsChanged(QStringList,QString)),
+            m_pAutoDJView, SIGNAL(availableDirsChanged(QStringList,QString)));
 }
 
 TreeItemModel* AutoDJFeature::getChildModel() {

@@ -9,6 +9,11 @@ DirectoryDAO::DirectoryDAO(QSqlDatabase& database)
         : m_database(database) {
 }
 
+DirectoryDAO::DirectoryDAO(const DirectoryDAO& directoryDao)
+            : m_database(directoryDao.m_database){
+    
+}
+
 DirectoryDAO::~DirectoryDAO(){
 }
 

@@ -1,4 +1,3 @@
-#include <QTextStream>
 #include <QFile>
 #include <QDebug>
 #include <QByteArray>
@@ -7,16 +6,14 @@
 
 #include "automount.h"
 
-Automount::Automount(QWidget* parent)
-         : QWidget(parent),
+Automount::Automount(QObject* parent)
+         : QObject(parent),
            m_timer(this) {
     connect(&m_timer, SIGNAL(timeout()), this , SLOT(slotReadMtab()));
     m_timer.start(5000);// call every 5 seconds
 
-
-
     // generated list of devices known at start
-    m_devices = parseMtab();
+    m_devices = attachedDevices();
 }
 
 Automount::~Automount(){
@@ -24,12 +21,12 @@ Automount::~Automount(){
 }
 
 void Automount::slotReadMtab(){
-
-    // look for connected devices
-    QList<QString> devices = parseMtab();
-
     QTime time;
     time.start();
+
+    // look for connected devices
+    QStringList devices = attachedDevices();
+
     if (m_devices.size()!=devices.size()) {
         if (m_devices.size() > devices.size()) {
             removedDevice(devices);
@@ -40,7 +37,7 @@ void Automount::slotReadMtab(){
     qDebug("checking for changes took: %d ms" , time.elapsed());
 }
 
-QList<QString> Automount::parseMtab(){
+QStringList Automount::attachedDevices(){
     // This will parse the entries in /etc/mtab to look for known storage devices
     // a line in this file with a device will typically look like this.
     //
@@ -65,9 +62,9 @@ QList<QString> Automount::parseMtab(){
         }
     }
     filesystems.close();
-    
+
     QFile file("/etc/mtab");
-    QList<QString> devices;
+    QStringList devices;
     if (file.open(QIODevice::ReadOnly | QIODevice::Text)){
         QString line = file.readLine();
         while (!line.isEmpty()) {
@@ -84,8 +81,8 @@ QList<QString> Automount::parseMtab(){
     return devices;
 }
 
-void Automount::removedDevice(QList<QString> devices){
-    QList<QString> diff;
+void Automount::removedDevice(QStringList devices){
+    QStringList diff;
     foreach (QString device, m_devices) {
         if (!devices.removeOne(device)) {
             diff.append(device);
@@ -94,13 +91,14 @@ void Automount::removedDevice(QList<QString> devices){
     qDebug() << "removed the following devices";
     qDebug() << diff;
 
+    emit removedStorage(diff);
     foreach (QString device, diff) {
         m_devices.removeOne(device);
     }
 }
 
-void Automount::addedDevice(QList<QString> devices){
-    QList<QString> diff;
+void Automount::addedDevice(QStringList devices){
+    QStringList diff;
     foreach (QString device, devices) {
         if (!m_devices.removeOne(device)) {
             diff.append(device);
@@ -109,5 +107,6 @@ void Automount::addedDevice(QList<QString> devices){
     qDebug() << "added the following devices";
     qDebug() << diff;
 
+    emit foundNewStorage(diff);
     m_devices = devices;
 }

@@ -43,7 +43,6 @@ class DlgPreferences;
 class SoundManager;
 
 #include "configobject.h"
-#include "automount.h"
 
 /**
   * This Class is the base class for Mixxx. It sets up the main
@@ -204,7 +203,6 @@ class MixxxApp : public QMainWindow {
 
     ConfigObject<ConfigValueKbd>* m_pKbdConfig;
     ConfigObject<ConfigValueKbd>* m_pKbdConfigEmpty;
-    Automount m_automount;
 };
 
 //A structure to store the parsed command-line arguments

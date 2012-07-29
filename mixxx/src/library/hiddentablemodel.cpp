@@ -8,23 +8,25 @@
 
 
 HiddenTableModel::HiddenTableModel(QObject* parent,
-                                     TrackCollection* pTrackCollection)
+                                     TrackCollection* pTrackCollection,
+                                     QStringList availableDirs)
         : BaseSqlTableModel(parent, pTrackCollection,
                             pTrackCollection->getDatabase(),
                             "mixxx.db.model.missing"),
           m_pTrackCollection(pTrackCollection),
-          m_trackDao(m_pTrackCollection->getTrackDAO()) {
+          m_trackDao(m_pTrackCollection->getTrackDAO()),
+          m_availableDirs(availableDirs) {
     connect(this, SIGNAL(doSearch(const QString&)),
             this, SLOT(slotSearch(const QString&)));
-    setHidden();
+    setHidden(QString());
 }
 
 HiddenTableModel::~HiddenTableModel() {
 }
 
-void HiddenTableModel::setHidden(){
+void HiddenTableModel::setHidden(QString name){
     QSqlQuery query;
-    QString tableName("hidden_songs");
+    QString tableName("hidden_songs_"+name);
 
     QStringList columns;
     columns << "library." + LIBRARYTABLE_ID;
@@ -37,7 +39,7 @@ void HiddenTableModel::setHidden(){
                   " FROM library "
                   "INNER JOIN track_locations "
                   "ON library.location=track_locations.id "
-                  "WHERE " + filter);
+                  "WHERE " + filter +" AND track_locations.dir in (\""+m_availableDirs.join("\",\"")+"\")");
     if (!query.exec()) {
         qDebug() << query.executedQuery() << query.lastError();
     }
@@ -162,4 +164,10 @@ TrackModel::CapabilitiesFlags HiddenTableModel::getCapabilities() const {
     return TRACKMODELCAPS_NONE
             | TRACKMODELCAPS_PURGE
             | TRACKMODELCAPS_UNHIDE;
+}
+
+void HiddenTableModel::slotAvailableDirsChanged(QStringList availableDirs,QString name) {
+    m_availableDirs = availableDirs;
+    setHidden(name);
+    select();
 }

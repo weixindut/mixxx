@@ -11,6 +11,7 @@ PlaylistTableModel::PlaylistTableModel(QObject* parent,
                                     TrackCollection* pTrackCollection,
                                     QString settingsNamespace,
                                     ConfigObject<ConfigValue>* pConfig,
+                                    QStringList availableDirs,
                                     bool showAll)
         : BaseSqlTableModel(parent, pTrackCollection,
                             pTrackCollection->getDatabase(),
@@ -18,17 +19,18 @@ PlaylistTableModel::PlaylistTableModel(QObject* parent,
                             m_pTrackCollection(pTrackCollection),
                             m_playlistDao(m_pTrackCollection->getPlaylistDAO()),
                             m_trackDao(m_pTrackCollection->getTrackDAO()),
-                            m_iPlaylistId(-1) {
+                            m_iPlaylistId(-1),
+                            m_pConfig(pConfig),
+                            m_availableDirs(availableDirs),
+                            m_showAll(showAll) {
     connect(this, SIGNAL(doSearch(const QString&)),
             this, SLOT(slotSearch(const QString&)));
-    m_showAll = showAll;
-    m_pConfig = pConfig;
 }
 
 PlaylistTableModel::~PlaylistTableModel() {
 }
 
-void PlaylistTableModel::setPlaylist(int playlistId) {
+void PlaylistTableModel::setPlaylist(int playlistId, QString name) {
     //qDebug() << "PlaylistTableModel::setPlaylist" << playlistId;
 
     /*TODO(kain88) reactivate this in a way that I can call the function on a configchange|overwrite?
@@ -60,6 +62,7 @@ void PlaylistTableModel::setPlaylist(int playlistId) {
     } else {
         filter = "library.mixxx_deleted=0 AND track_locations.fs_deleted=0";
     }
+    playlistTableName.append("_"+name);
 
     // We drop files that have been explicitly deleted from mixxx
     // (mixxx_deleted=0) from the view. There was a bug in <= 1.9.0 where
@@ -77,6 +80,9 @@ void PlaylistTableModel::setPlaylist(int playlistId) {
     if (!m_showAll) {
         queryString.append(" AND " + filter);
     }
+    qDebug() << m_availableDirs;
+    queryString.append(" AND track_locations.dir in (\""+m_availableDirs.join("\",\"")+"\")");
+    qDebug() << queryString;
     query.prepare(queryString);
     if (!query.exec()) {
         LOG_FAILED_QUERY(query);
@@ -411,7 +417,13 @@ TrackModel::CapabilitiesFlags PlaylistTableModel::getCapabilities() const {
 void PlaylistTableModel::slotConfigChanged(QString identifier, QString key){
     Q_UNUSED(identifier);
     if (key=="ShowMissingSongs") {
-        setPlaylist(m_iPlaylistId);
+        setPlaylist(m_iPlaylistId,QString());
         select();
     }
+}
+
+void PlaylistTableModel::slotAvailableDirsChanged(QStringList availableDirs, QString name){
+    m_availableDirs = availableDirs;
+    setPlaylist(m_iPlaylistId,name);
+    select();
 }

@@ -18,7 +18,8 @@ class CrateFeature : public LibraryFeature {
   public:
     CrateFeature(QObject* parent, 
                  TrackCollection* pTrackCollection, 
-                 ConfigObject<ConfigValue>* pConfig);
+                 ConfigObject<ConfigValue>* pConfig,
+                 QStringList availableDirs);
     virtual ~CrateFeature();
 
     QVariant title();
@@ -72,6 +73,7 @@ class CrateFeature : public LibraryFeature {
     QModelIndex m_lastRightClickedIndex;
     TreeItemModel m_childModel;
     ConfigObject<ConfigValue>* m_pConfig;
+    QStringList m_availableDirs;
 };
 
 #endif /* CRATEFEATURE_H */

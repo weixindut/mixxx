@@ -21,7 +21,8 @@ class MixxxLibraryFeature : public LibraryFeature {
     public:
     MixxxLibraryFeature(QObject* parent,
                         TrackCollection* pTrackCollection,
-                        ConfigObject<ConfigValue>* pConfig);
+                        ConfigObject<ConfigValue>* pConfig,
+                        QStringList availableDirs);
     virtual ~MixxxLibraryFeature();
 
     QVariant title();

@@ -16,7 +16,8 @@ class PlaylistFeature : public BasePlaylistFeature {
   public:
     PlaylistFeature(QObject* parent, 
                     TrackCollection* pTrackCollection,
-                    ConfigObject<ConfigValue>* pConfig);
+                    ConfigObject<ConfigValue>* pConfig,
+                    QStringList availableDirs);
     virtual ~PlaylistFeature();
 
     QVariant title();

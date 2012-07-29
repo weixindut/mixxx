@@ -6,6 +6,6 @@
 #include "library/libraryfeature.h"
 
 LibraryFeature::LibraryFeature(QObject* parent)
-    : QObject(parent) {
+              : QObject(parent){
 }
 

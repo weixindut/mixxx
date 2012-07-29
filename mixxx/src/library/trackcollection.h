@@ -32,7 +32,6 @@
 #include "library/dao/playlistdao.h"
 #include "library/dao/analysisdao.h"
 #include "library/dao/directorydao.h"
-#include "library/chromaprinter.h"
 
 class TrackInfoObject;
 
@@ -55,7 +54,7 @@ class TrackCollection : public QObject
     bool importDirectory(QString directory, TrackDAO &trackDao,
                          const QStringList & nameFilters,
                          QSet<int>& restoredTracks,
-                         int dirId,
+                         QString dir,
                          volatile bool* cancel);
 
     void resetLibaryCancellation();
@@ -89,7 +88,7 @@ class TrackCollection : public QObject
     int bCancelLibraryScan;
     QMutex m_libraryScanMutex;
 
-    chromaprinter m_chromaprinter;
+
 };
 
 #endif

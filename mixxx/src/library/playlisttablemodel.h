@@ -19,9 +19,10 @@ class PlaylistTableModel : public BaseSqlTableModel {
     PlaylistTableModel(QObject* parent, TrackCollection* pTrackCollection,
                     QString settingsNamespace, 
                     ConfigObject<ConfigValue>* pConfig,
+                    QStringList availableDirs,
                     bool showAll=false);
     virtual ~PlaylistTableModel();
-    void setPlaylist(int playlistId);
+    void setPlaylist(int playlistId,QString name);
     int getPlaylist() const {
         return m_iPlaylistId;
     }
@@ -45,6 +46,7 @@ class PlaylistTableModel : public BaseSqlTableModel {
   private slots:
     void slotSearch(const QString& searchText);
     void slotConfigChanged(QString,QString);
+    void slotAvailableDirsChanged(QStringList, QString);
 
   signals:
     void doSearch(const QString& searchText);
@@ -55,6 +57,7 @@ class PlaylistTableModel : public BaseSqlTableModel {
     TrackDAO& m_trackDao;
     int m_iPlaylistId;
     ConfigObject<ConfigValue>* m_pConfig;
+    QStringList m_availableDirs;
     bool m_showAll;
 };
 

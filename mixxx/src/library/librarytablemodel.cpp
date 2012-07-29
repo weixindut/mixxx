@@ -18,22 +18,26 @@ const QString LibraryTableModel::DEFAULT_LIBRARYFILTER =
 LibraryTableModel::LibraryTableModel(QObject* parent,
                                      TrackCollection* pTrackCollection,
                                      ConfigObject<ConfigValue>* pConfig,
+                                     QStringList availableDirs,
                                      QString settingsNamespace)
         : BaseSqlTableModel(parent, pTrackCollection,
                             pTrackCollection->getDatabase(),
                             settingsNamespace),
-          m_trackDao(pTrackCollection->getTrackDAO()) {
+          m_trackDao(pTrackCollection->getTrackDAO()),
+          m_availableDirs(availableDirs) {
     m_pConfig=pConfig;
     m_pTrackCollection = pTrackCollection;
     connect(this, SIGNAL(doSearch(const QString&)),
             this, SLOT(slotSearch(const QString&)));
-    setLibrary();
+    connect(parent, SIGNAL(availableDirsChanged(QStringList,QString)),
+            this, SLOT(slotAvailableDirsChanged(QStringList,QString)));
+    setLibrary(QString());
 }
 
 LibraryTableModel::~LibraryTableModel() {
 }
 
-void LibraryTableModel::setLibrary(){
+void LibraryTableModel::setLibrary(QString name){
     QStringList columns;
     columns << "library."+LIBRARYTABLE_ID;
 
@@ -52,14 +56,17 @@ void LibraryTableModel::setLibrary(){
     } else {
         libraryFilter = "mixxx_deleted=0 AND fs_deleted=0";
     }
+    tableName.append("_"+name);
 
-
+    qDebug() << "kani88kain88kain88kin88kain88aksjdaksjdakdakdj";
+    qDebug() << m_availableDirs;
     QSqlQuery query(m_pTrackCollection->getDatabase());
     QString queryString = "CREATE TEMPORARY VIEW IF NOT EXISTS "+tableName+" AS "
+    // QString queryString = "CREATE TEMPORARY "+tableName+" AS "
             "SELECT " + columns.join(", ") +
             " FROM library INNER JOIN track_locations "
             "ON library.location = track_locations.id "
-            "WHERE (" + libraryFilter + ")";
+            "WHERE (" + libraryFilter + ") AND track_locations.dir in (\""+m_availableDirs.join("\",\"")+"\")" ;
     query.prepare(queryString);
     if (!query.exec()) {
         LOG_FAILED_QUERY(query);
@@ -126,6 +133,14 @@ void LibraryTableModel::slotSearch(const QString& searchText) {
     BaseSqlTableModel::search(searchText);
 }
 
+void LibraryTableModel::slotAvailableDirsChanged(QStringList availableDirs,
+                                            QString name){
+    m_availableDirs = availableDirs;
+    setLibrary(name);
+    select();
+}
+
+
 bool LibraryTableModel::isColumnInternal(int column) {
     if ((column == fieldIndex(LIBRARYTABLE_ID)) ||
         (column == fieldIndex(LIBRARYTABLE_URL)) ||
@@ -171,7 +186,7 @@ TrackModel::CapabilitiesFlags LibraryTableModel::getCapabilities() const {
 void LibraryTableModel::slotConfigChanged(QString identifier, QString key){
     Q_UNUSED(identifier);
     if (key=="ShowMissingSongs"){
-        setLibrary();
+        setLibrary(QString());
         select();
     }
 }
@@ -181,12 +196,18 @@ void LibraryTableModel::relocateTracks(const QModelIndexList& indices) {
         int trackId = getTrackId(index);
 
         QString oldLocation = m_trackDao.getTrackLocation(trackId);
+        TrackPointer track = m_trackDao.getTrack(trackId);
         qDebug() << oldLocation;
         QString newLocation = QFileDialog::getOpenFileName(QApplication::desktop(),
-                                        QString(tr("trilolaladlHASHDAHSDHASDHASD")));
+                                        QString(tr("Relocate track")),
+                                        oldLocation);
         qDebug() << newLocation;
 
-//      m_trackDAO.relocateTrack(oldLocation, newLocation);
+        if (!m_trackDao.relocateTrack(oldLocation, newLocation)) {
+            QMessageBox::warning(QApplication::desktop(), tr("Mixxx"),
+                                           tr("The tracks do not match"));
+        }
+
     }
 }
 

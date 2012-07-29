@@ -21,7 +21,8 @@ class AutoDJFeature : public LibraryFeature {
   public:
     AutoDJFeature(QObject* parent,
                   ConfigObject<ConfigValue>* pConfig,
-                  TrackCollection* pTrackCollection);
+                  TrackCollection* pTrackCollection,
+                  QStringList availableDirs);
     virtual ~AutoDJFeature();
 
     QVariant title();
@@ -38,6 +39,9 @@ class AutoDJFeature : public LibraryFeature {
 
     TreeItemModel* getChildModel();
 
+  signals:
+    void availableDirsChanged(QStringList, QString);
+
   public slots:
     void activate();
     void activateChild(const QModelIndex& index);
@@ -52,6 +56,7 @@ class AutoDJFeature : public LibraryFeature {
     const static QString m_sAutoDJViewName;
     TreeItemModel m_childModel;
     DlgAutoDJ* m_pAutoDJView;
+    QStringList m_availableDirs;
 };
 
 

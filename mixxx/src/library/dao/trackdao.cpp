@@ -246,7 +246,7 @@ void TrackDAO::slotTrackSave(TrackInfoObject* pTrack) {
 
 // No need to check here if the querys exist, this is already done in
 // addTracksAdd, which is the only function that calls this
-void TrackDAO::bindTrackToTrackLocationsInsert(TrackInfoObject* pTrack, int dirId,
+void TrackDAO::bindTrackToTrackLocationsInsert(TrackInfoObject* pTrack, QString dir,
                                                QString& checksum) {
     // gets called only in addTracksAdd
     m_pQueryTrackLocationInsert->bindValue(":location", pTrack->getLocation());
@@ -256,7 +256,7 @@ void TrackDAO::bindTrackToTrackLocationsInsert(TrackInfoObject* pTrack, int dirI
     // Should this check pTrack->exists()?
     m_pQueryTrackLocationInsert->bindValue(":fs_deleted", 0);
     m_pQueryTrackLocationInsert->bindValue(":needs_verification", 0);
-    m_pQueryTrackLocationInsert->bindValue(":dir_id", dirId);
+    m_pQueryTrackLocationInsert->bindValue(":dir", dir);
     m_pQueryTrackLocationInsert->bindValue(":checksum", checksum);
 }
 
@@ -330,8 +330,8 @@ void TrackDAO::addTracksPrepare() {
     m_pQueryLibrarySelect = new QSqlQuery(m_database);
 
     m_pQueryTrackLocationInsert->prepare("INSERT INTO track_locations "
-            "(location, directory, filename, filesize, fs_deleted, needs_verification, dir_id, checksum) "
-            "VALUES (:location, :directory, :filename, :filesize, :fs_deleted, :needs_verification, :dir_id, :checksum)");
+            "(location, directory, filename, filesize, fs_deleted, needs_verification, dir, checksum) "
+            "VALUES (:location, :directory, :filename, :filesize, :fs_deleted, :needs_verification, :dir, :checksum)");
 
     m_pQueryTrackLocationSelect->prepare("SELECT id FROM track_locations WHERE location=:location");
 
@@ -374,7 +374,7 @@ void TrackDAO::addTracksFinish() {
     m_tracksAddedSet.clear();
 }
 
-bool TrackDAO::addTracksAdd(TrackInfoObject* pTrack, bool unremove,int dirId) {
+bool TrackDAO::addTracksAdd(TrackInfoObject* pTrack, bool unremove,QString dir) {
 
     if (!m_pQueryLibraryInsert || !m_pQueryTrackLocationInsert ||
         !m_pQueryLibrarySelect || !m_pQueryTrackLocationSelect) {
@@ -390,7 +390,7 @@ bool TrackDAO::addTracksAdd(TrackInfoObject* pTrack, bool unremove,int dirId) {
     // Insert the track location into the corresponding table. This will fail
     // silently if the location is already in the table because it has a UNIQUE
     // constraint.
-    bindTrackToTrackLocationsInsert(pTrack,dirId,checksum);
+    bindTrackToTrackLocationsInsert(pTrack,dir,checksum);
 
     if (!m_pQueryTrackLocationInsert->exec()) {
         qDebug() << "Location " << pTrack->getLocation() << " is already in the DB";
@@ -501,7 +501,7 @@ void TrackDAO::addTrack(TrackInfoObject* pTrack, bool unremove) {
     }
 
     addTracksPrepare();
-    addTracksAdd(pTrack, unremove, 0);
+    addTracksAdd(pTrack, unremove, QString());
     addTracksFinish();
 }
 
@@ -516,7 +516,7 @@ QList<int> TrackDAO::addTracks(QList<QFileInfo> fileInfoList, bool unremove) {
     while (it.hasNext()) {
         QFileInfo& info = it.next();
         pTrack = new TrackInfoObject(info);
-        addTracksAdd(pTrack, unremove, 0);
+        addTracksAdd(pTrack, unremove, QString());
         int trackID = pTrack->getId();
         if (trackID >= 0) {
             trackIDs.append(trackID);
@@ -1177,217 +1177,82 @@ bool TrackDAO::isTrackFormatSupported(TrackInfoObject* pTrack) const {
 }
 
 bool TrackDAO::relocateTrack(QString oldLocation, QString newLocation) {
-/*
-    if(!newLocation){
-        qDebug() << "TrackDAO::relocateTrack received NULL for newLocation";
-        return false;
-    }
-
     int oldFileSize=0;
-    int newFileSize=-1;
+    int newFileSize=0;
     int oldTrackLocationId = -1;
     int newTrackLocationId = -1;
+    QString oldCheckSum;
+    QString newCheckSum;
+
+    ScopedTransaction transaction(m_database);
+
     QSqlQuery query(m_database);
-    query.prepare("SELECT id, filesize FROM track_locations WHERE location=:location");
+    query.prepare("SELECT id, filesize, checksum FROM track_locations WHERE location=:location");
     query.bindValue(":location", oldLocation);
-    //XXX does this make sense? we should only have one hit, while suggests
-    //several
     while (query.next()) {
         oldTrackLocationId = query.value(query.record().indexOf("id")).toInt();
         oldFileSize = query.value(query.record().indexOf("filesize")).toInt();
+        oldCheckSum = query.value(query.record().indexOf("checksum")).toString();
     }
-    //woot
+
     query.bindValue(":location", newLocation);
     while (query.next()) {
         newTrackLocationId = query.value(query.record().indexOf("id")).toInt();
         newFileSize = query.value(query.record().indexOf("filesize")).toInt();
+        newCheckSum = query.value(query.record().indexOf("checksum")).toString();
     }
 
-    if (newFileSize != oldFileSize) {
-        qDebug() << "Failed to relocate track filesizes to not match " <<
-                    "old:" << oldFileSize << ", new:" << newFileSize;
-        return false;
-    }
 
-    if (newTrackLocationId >= 0) {
+    if (newTrackLocationId >= 0 && ((newFileSize == oldFileSize) && (oldCheckSum==newCheckSum) )) {
         // New Track is already in Database;
-        // Remove old row from track_locations table
-        query.prepare("DELETE FROM track_locations WHERE "
-                      "id=:id");
-        query.bindValue(":id", oldTrackLocationId);
-        Q_ASSERT(query.exec());
 
         //The library scanner will have added a new row to the Library
         //table which corresponds to the track in the new location. We need
         //to remove that so we don't end up with two rows in the library table
         //for the same track.
-        query.prepare("SELECT id FROM library WHERE "
-                       "location=:location");
-        query.bindValue(":location", newTrackLocationId);
+        query.prepare("DELETE FROM library INNER JOIN track_locations ON "
+        "library.locations = track_locations.id WHERE library.location=:newid");
+        query.bindValue(":newid", newTrackLocationId);
         Q_ASSERT(query.exec());
-
-        while (query.next()) {
-            int newTrackId = query.value(query.record().indexOf("id")).toInt();
-            query.prepare("DELETE FROM library WHERE "
-                           "id=:newid");
-            query.bindValue(":newid", newTrackLocationId);
-            Q_ASSERT(query.exec());
-
-            // We collect all the new tracks the where added to BaseTrackCache as well
-            //tracksMovedSetNew->insert(newTrackId);
-        }
 
         // Update the location foreign key for the existing row in the library table
         // to point to the correct row in the track_locations table.
-        query.prepare("SELECT id FROM library WHERE "
-                       "location=:location");
-        query.bindValue(":location", oldTrackLocationId);
-        Q_ASSERT(query.exec());
-
-
-        while (query.next()) {
-            int oldTrackId = query.value(query.record().indexOf("id")).toInt();
-
-            query.prepare("UPDATE library "
-                           "SET location=:newloc WHERE id=:oldid");
-            query.bindValue(":newloc", newTrackLocationId);
-            query.bindValue(":oldid", oldTrackId);
-            Q_ASSERT(query.exec());
-            // oldFileSize
-            // We collect all the old tracks that has to be updated in BaseTrackCache as well
-            tracksMovedSetOld->insert(oldTrackId);
-        }
-        return true;
-    } else {
-        // New locazion was unknown,
-        // we can simply change the location
-
         query.prepare("UPDATE track_locations "
-                      "SET location=:location filename=:filename directory=:directory"
-                      "WHERE id=:id");
-
-        QFileInfo fileInfo(sLocation);
-        m_sFilename = fileInfo.fileName();
-        m_sLocation = fileInfo.absoluteFilePath();
-        m_sDirectory = fileInfo.absolutePath();
-        m_iLength = fileInfo.size();
-        m_bExists = fileInfo.exists();
-
-        // ok we need to to this stuff to accord for a broad set of possible
-        // changes. But FILESIZE should be the same nontheless
-        
-        m_pQueryTrackLocationInsert->bindValue(":location", pTrack->getLocation());
-        m_pQueryTrackLocationInsert->bindValue(":directory", pTrack->getDirectory());
-        m_pQueryTrackLocationInsert->bindValue(":filename", pTrack->getFilename());
-        m_pQueryTrackLocationInsert->bindValue(":filesize", pTrack->getLength());
-        // Should this check pTrack->exists()?
-        m_pQueryTrackLocationInsert->bindValue(":fs_deleted", 0);
-        m_pQueryTrackLocationInsert->bindValue(":needs_verification", 0);
-        return true;
-    }
-
-    return false;
-}
-
-bool TrackDAO::relocateTrack(QString oldLocation, QString newLocation) {
-/*
-    int oldFileSize;
-    int oldTrackLocationId = -1;
-    int newTrackLocationId = -1;
-    int newFileSize;
-    QSqlQuery query(m_database);
-    query.prepare("SELECT id, filesize FROM track_locations WHERE location=:location");
-    query.bindValue(":location", oldLocation);
-    while (query.next()) {
-        oldTrackLocationId = query.value(query.record().indexOf("id")).toInt();
-        oldFileSize = query.value(query.record().indexOf("filesize")).toInt();
-    }
-
-    query.bindValue(":location", newLocation);
-    while (query.next()) {
-        newTrackLocationId = query.value(query.record().indexOf("id")).toInt();
-        newFileSize = query.value(query.record().indexOf("filesize")).toInt();
-    }
-
-
-    if (newTrackLocationId >= 0 && (newFileSize == oldFileSize)) {
-        // New Track is already in Database;
-        // Remove old row from track_locations table
-        query.prepare("DELETE FROM track_locations WHERE "
-                      "id=:id");
-        query.bindValue(":id", oldTrackLocationId);
+                        "SET location=:newloc WHERE id=:oldid");
+        query.bindValue(":newloc", newLocation);
+        query.bindValue(":oldid", oldTrackLocationId);
         Q_ASSERT(query.exec());
-
-        //The library scanner will have added a new row to the Library
-        //table which corresponds to the track in the new location. We need
-        //to remove that so we don't end up with two rows in the library table
-        //for the same track.
-        query.prepare("SELECT id FROM library WHERE "
-                       "location=:location");
-        query.bindValue(":location", newTrackLocationId);
-        Q_ASSERT(query.exec());
-
-        while (query.next())
-        {
-            int newTrackId = query.value(query.record().indexOf("id")).toInt();
-            query.prepare("DELETE FROM library WHERE "
-                           "id=:newid");
-            query.bindValue(":newid", newTrackLocationId);
-            Q_ASSERT(query.exec());
-
-            // We collect all the new tracks the where added to BaseTrackCache as well
-//            tracksMovedSetNew->insert(newTrackId);
-        }
-
-        //Update the location foreign key for the existing row in the library table
-        //to point to the correct row in the track_locations table.
-        query.prepare("SELECT id FROM library WHERE "
-                       "location=:location");
-        query.bindValue(":location", oldTrackLocationId);
-        Q_ASSERT(query.exec());
-
-
-        while (query.next())
-        {
-            int oldTrackId = query.value(query.record().indexOf("id")).toInt();
-
-            query.prepare("UPDATE library "
-                           "SET location=:newloc WHERE id=:oldid");
-            query.bindValue(":newloc", newTrackLocationId);
-            query.bindValue(":oldid", oldTrackId);
-            Q_ASSERT(query.exec());
-            oldFileSize
-            // We collect all the old tracks that has to be updated in BaseTrackCache as well
-            tracksMovedSetOld->insert(oldTrackId);
-        }
     } else {
         // New locazion was unknown,
         // we can simply change the loacation
+        QFileInfo fileInfo(newLocation);
+        QString filename = fileInfo.fileName();
+        QString location = fileInfo.absoluteFilePath();
+        QString directory = fileInfo.absolutePath();
+        int filesize = fileInfo.size();
+        // m_bExists = fileInfo.exists();
+
+        newCheckSum = calcChecksum(newLocation);
+        if ((newCheckSum != oldCheckSum) && (oldFileSize != filesize)) {
+            // that is another song
+            return false;
+        }
 
         query.prepare("UPDATE track_locations "
                       "SET location=:location filename=:filename directory=:directory"
                       "WHERE id=:id");
 
-        QFileInfo fileInfo(sLocation);
-        m_sFilename = fileInfo.fileName();
-        m_sLocation = fileInfo.absoluteFilePath();
-        m_sDirectory = fileInfo.absolutePath();
-        m_iLength = fileInfo.size();
-        m_bExists = fileInfo.exists();
-
-        m_pQueryTrackLocationInsert->bindValue(":location", pTrack->getLocation());
-        m_pQueryTrackLocationInsert->bindValue(":directory", pTrack->getDirectory());
-        m_pQueryTrackLocationInsert->bindValue(":filename", pTrack->getFilename());
-        m_pQueryTrackLocationInsert->bindValue(":filesize", pTrack->getLength());
-        // Should this check pTrack->exists()?
+        m_pQueryTrackLocationInsert->bindValue(":location", location);
+        m_pQueryTrackLocationInsert->bindValue(":directory", directory);
+        m_pQueryTrackLocationInsert->bindValue(":filename", filename);
+        m_pQueryTrackLocationInsert->bindValue(":filesize", filesize);
         m_pQueryTrackLocationInsert->bindValue(":fs_deleted", 0);
         m_pQueryTrackLocationInsert->bindValue(":needs_verification", 0);
-
+        Q_ASSERT(query.exec());
     }
 
-
-*/
-    return false;
+    transaction.commit();
+    return true;
 }
 
 void TrackDAO::verifyTracksOutside(volatile bool* pCancel) {
@@ -1442,7 +1307,11 @@ void TrackDAO::markTrackAsDeleted(TrackPointer pTrack){
 }
 
 QString TrackDAO::calcChecksum(TrackInfoObject& pTrack) {
-    QFile file(pTrack.getLocation());
+    return calcChecksum(pTrack.getLocation());
+}
+
+QString TrackDAO::calcChecksum(QString location){
+    QFile file(location);
     file.open(QIODevice::ReadOnly);
     const int block_size = 2048;
     char buffer[block_size];

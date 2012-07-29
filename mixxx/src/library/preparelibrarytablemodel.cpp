@@ -7,8 +7,9 @@
 const QString RECENT_FILTER = "datetime_added > datetime('now', '-7 days')";
 
 PrepareLibraryTableModel::PrepareLibraryTableModel(QObject* parent,
-                                                   TrackCollection* pTrackCollection)
-        : LibraryTableModel(parent, pTrackCollection, NULL ,
+                                                   TrackCollection* pTrackCollection,
+                                                   QStringList availableDirs)
+        : LibraryTableModel(parent, pTrackCollection, NULL , availableDirs,
                             "mixxx.db.model.prepare") {
     m_bShowRecentSongs = true;
     setSearch("", m_bShowRecentSongs ? RECENT_FILTER : QString());

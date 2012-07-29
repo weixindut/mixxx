@@ -82,7 +82,7 @@ class TrackDAO : public QObject, public virtual DAO {
     int addTrack(const QString& file, bool unremove);
     int addTrack(const QFileInfo& fileInfo, bool unremove);
     void addTracksPrepare();
-    bool addTracksAdd(TrackInfoObject* pTrack, bool unremove,int dirId);
+    bool addTracksAdd(TrackInfoObject* pTrack, bool unremove,QString dir);
     void addTracksFinish();
     QList<int> addTracks(QList<QFileInfo> fileInfoList, bool unremove);
     void hideTracks(QList<int> ids);
@@ -138,10 +138,11 @@ class TrackDAO : public QObject, public virtual DAO {
     void updateTrack(TrackInfoObject* pTrack);
     void addTrack(TrackInfoObject* pTrack, bool unremove);
     QString calcChecksum(TrackInfoObject& pTrack);
+    QString calcChecksum(QString location);
     TrackPointer getTrackFromDB(int id) const;
     QString absoluteFilePath(QString location);
 
-    void bindTrackToTrackLocationsInsert(TrackInfoObject* pTrack, int dirId,QString& checksum);
+    void bindTrackToTrackLocationsInsert(TrackInfoObject* pTrack, QString dir,QString& checksum);
     void bindTrackToLibraryInsert(TrackInfoObject* pTrack, int trackLocationId);
 
     void writeAudioMetaData(TrackInfoObject* pTrack);

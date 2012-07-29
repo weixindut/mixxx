@@ -16,10 +16,11 @@ class CrateTableModel : public BaseSqlTableModel {
     Q_OBJECT
   public:
     CrateTableModel(QObject* parent, TrackCollection* pTrackCollection,
-                    ConfigObject<ConfigValue>* pConfig);
+                    ConfigObject<ConfigValue>* pConfig,
+                    QStringList availableDirs);
     virtual ~CrateTableModel();
 
-    void setCrate(int crateId);
+    void setCrate(int crateId,QString name);
     int getCrate() const {
         return m_iCrateId;
     }
@@ -41,6 +42,7 @@ class CrateTableModel : public BaseSqlTableModel {
   private slots:
     void slotSearch(const QString& searchText);
     void slotConfigChanged(QString, QString);
+    void slotAvailableDirsChanged(QStringList, QString);
 
   signals:
     void doSearch(const QString& searchText);
@@ -49,6 +51,7 @@ class CrateTableModel : public BaseSqlTableModel {
     TrackCollection* m_pTrackCollection;
     int m_iCrateId;
     ConfigObject<ConfigValue>* m_pConfig;
+    QStringList m_availableDirs;
 };
 
 #endif /* CRATETABLEMODEL_H */

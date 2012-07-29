@@ -20,6 +20,7 @@ class BasePlaylistFeature : public LibraryFeature {
     BasePlaylistFeature(QObject* parent,
                         ConfigObject<ConfigValue>* pConfig,
                         TrackCollection* pTrackCollection,
+                        QStringList availableDirs,
                         QString rootViewName);
     virtual ~BasePlaylistFeature();
 
@@ -73,6 +74,7 @@ class BasePlaylistFeature : public LibraryFeature {
     QSqlTableModel m_playlistTableModel;
     QModelIndex m_lastRightClickedIndex;
     TreeItemModel m_childModel;
+    QStringList m_availableDirs;
 
   private:
     virtual QString getRootViewHtml() const = 0;

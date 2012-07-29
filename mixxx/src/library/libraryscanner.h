@@ -55,7 +55,7 @@ class LibraryScanner : public QThread {
     void tracksRestored(QSet<int>);
   private:
     bool recursiveScan(QString dirPath, QStringList& verifiedDirectories,
-                       QSet<int>& restoredTracks,int dirId);
+                       QSet<int>& restoredTracks,QString dir);
     TrackCollection* m_pCollection; // The library trackcollection
     QSqlDatabase m_database; // Hang on to a different DB connection
                              // since we run in a different thread */
@@ -66,8 +66,8 @@ class LibraryScanner : public QThread {
     PlaylistDAO m_playlistDao;
     CrateDAO m_crateDao;
     AnalysisDao m_analysisDao;
-    TrackDAO m_trackDao;
     DirectoryDAO m_directoryDao;
+    TrackDAO m_trackDao;
 
     QStringList m_nameFilters;
     volatile bool m_bCancelLibraryScan;

@@ -14,10 +14,10 @@ class TrackCollection;
 class HiddenTableModel : public BaseSqlTableModel {
     Q_OBJECT
   public:
-    HiddenTableModel(QObject* parent, TrackCollection* pTrackCollection);
+    HiddenTableModel(QObject* parent, TrackCollection* pTrackCollection,QStringList availableDirs);
     virtual ~HiddenTableModel();
     virtual TrackPointer getTrack(const QModelIndex& index) const;
-    void setHidden();
+    void setHidden(QString);
     virtual void search(const QString& searchText);
     virtual bool isColumnInternal(int column);
     virtual bool isColumnHiddenByDefault(int column);
@@ -31,6 +31,7 @@ class HiddenTableModel : public BaseSqlTableModel {
 
   private slots:
     void slotSearch(const QString& searchText);
+    void slotAvailableDirsChanged(QStringList, QString);
 
   signals:
     void doSearch(const QString& searchText);
@@ -38,6 +39,7 @@ class HiddenTableModel : public BaseSqlTableModel {
   private:
     TrackCollection* m_pTrackCollection;
     TrackDAO& m_trackDao;
+    QStringList m_availableDirs;
 };
 
 #endif

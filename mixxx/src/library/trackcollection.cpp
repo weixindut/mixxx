@@ -24,8 +24,7 @@ TrackCollection::TrackCollection(ConfigObject<ConfigValue>* pConfig)
                    m_analysisDao, m_directoryDao, pConfig),
         m_supportedFileExtensionsRegex(
             SoundSourceProxy::supportedFileExtensionsRegex(),
-            Qt::CaseInsensitive),
-        m_chromaprinter() {
+            Qt::CaseInsensitive) {
     bCancelLibraryScan = false;
     qDebug() << "Available QtSQL drivers:" << QSqlDatabase::drivers();
 
@@ -130,7 +129,7 @@ QSqlDatabase& TrackCollection::getDatabase() {
 bool TrackCollection::importDirectory(QString directory, TrackDAO &trackDao,
                                       const QStringList & nameFilters,
                                       QSet<int>& restoredTracks,
-                                      int dirId,
+                                      QString dir,
                                       volatile bool* cancel) {
     //qDebug() << "TrackCollection::importDirectory(" << directory<< ")";
 
@@ -169,7 +168,7 @@ bool TrackCollection::importDirectory(QString directory, TrackDAO &trackDao,
 
             TrackPointer pTrack = TrackPointer(new TrackInfoObject(
                               absoluteFilePath), &QObject::deleteLater);
-            if (trackDao.addTracksAdd(pTrack.data(), false,dirId)) {
+            if (trackDao.addTracksAdd(pTrack.data(), false,dir)) {
                 // Successful added
                 // signal the main instance of TrackDao, that there is a
                 // new Track in the database

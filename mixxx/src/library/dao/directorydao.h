@@ -12,6 +12,7 @@ class DirectoryDAO : public DAO {
   public:
     // normal method
     DirectoryDAO(QSqlDatabase& database);
+    DirectoryDAO(const DirectoryDAO& directoryDao);
     virtual ~DirectoryDAO();
 
     void initialize();

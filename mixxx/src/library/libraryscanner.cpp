@@ -240,8 +240,7 @@ void LibraryScanner::run()
     bool bScanFinishedCleanly=false;
     //recursivly scan each dir that is saved in the directories table
     foreach (QString dir , dirs) {
-        int dirId = m_directoryDao.getDirId(dir);
-        bScanFinishedCleanly = recursiveScan(dir,verifiedDirectories,restoredTracks,dirId);
+        bScanFinishedCleanly = recursiveScan(dir,verifiedDirectories,restoredTracks,dir);
         //Verify all Tracks inside Library but outside the library path
         if (!bScanFinishedCleanly) {
             qDebug() << "Recursive scan interrupted.";
@@ -349,7 +348,7 @@ void LibraryScanner::resetCancel()
 // have already been scanned and have not changed. Changes are tracked by performing
 // a hash of the directory's file list, and those hashes are stored in the database.
 bool LibraryScanner::recursiveScan(QString dirPath, QStringList& verifiedDirectories,
-                                   QSet<int>& restoredTracks, int dirId) {
+                                   QSet<int>& restoredTracks, QString dir) {
     QDirIterator fileIt(dirPath, m_nameFilters, QDir::Files | QDir::NoDotAndDotDot);
     QString currentFile;
     bool bScanFinishedCleanly = true;
@@ -390,7 +389,7 @@ bool LibraryScanner::recursiveScan(QString dirPath, QStringList& verifiedDirecto
 
         // Rescan that mofo!
         bScanFinishedCleanly = m_pCollection->importDirectory(dirPath, m_trackDao, m_nameFilters,
-                                                              restoredTracks,dirId,&m_bCancelLibraryScan);
+                                                              restoredTracks,dir,&m_bCancelLibraryScan);
     } else { //prevHash == newHash
         // Add the directory to the verifiedDirectories list, so that later they
         // (and the tracks inside them) will be marked as verified
@@ -415,7 +414,7 @@ bool LibraryScanner::recursiveScan(QString dirPath, QStringList& verifiedDirecto
         if (m_directoriesBlacklist.contains(nextPath))
             continue;
 
-        if (!recursiveScan(nextPath, verifiedDirectories,restoredTracks,dirId)) {
+        if (!recursiveScan(nextPath, verifiedDirectories,restoredTracks,dir)) {
             bScanFinishedCleanly = false;
         }
     }

@@ -16,6 +16,8 @@
 #include "recording/recordingmanager.h"
 #include "mixxxlibraryfeature.h"
 #include "preparefeature.h"
+#include "library/dao/directorydao.h"
+#include "library/automount.h"
 
 class TrackModel;
 class TrackCollection;
@@ -66,6 +68,8 @@ public slots:
     void slotCreatePlaylist();
     void slotCreateCrate();
     void slotDirsChanged(QString,QString);
+    void slotFoundNewStorage(QStringList);
+    void slotRemovedStorage(QStringList);
     
 signals:
     void showTrackModel(QAbstractItemModel* model);
@@ -75,6 +79,7 @@ signals:
     void restoreSearch(const QString&);
     void configChanged(QString, QString);
     void dirsChanged(QString,QString);
+    void availableDirsChanged(QStringList, QString);
     void loadTrackFailed(TrackPointer);
 
 private:
@@ -92,6 +97,11 @@ private:
     LibraryControl* m_pLibraryControl;
     RecordingManager* m_pRecordingManager;
     TrackModel* m_ptrackModel;
+    DirectoryDAO m_directoryDAO;
+
+    Automount m_automount;
+    QStringList m_availableDirs;
+    QStringList m_unavailableDirs;
 };
 
 #endif /* LIBRARY_H */

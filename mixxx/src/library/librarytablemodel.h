@@ -16,10 +16,11 @@ class LibraryTableModel : public BaseSqlTableModel {
   public:
     LibraryTableModel(QObject* parent, TrackCollection* pTrackCollection,
                       ConfigObject<ConfigValue>* pConfig,
+                      QStringList availableDirs,
                       QString settingsNamespace="mixxx.db.model.library");
     virtual ~LibraryTableModel();
     
-    void setLibrary();
+    void setLibrary(QString);
 
     virtual TrackPointer getTrack(const QModelIndex& index) const;
     virtual void search(const QString& searchText);
@@ -38,6 +39,7 @@ class LibraryTableModel : public BaseSqlTableModel {
   public slots:
     void slotConfigChanged(QString, QString);
     void slotLoadTrackFailed(TrackPointer);
+    void slotAvailableDirsChanged(QStringList, QString);
 
 
   private slots:
@@ -50,7 +52,7 @@ class LibraryTableModel : public BaseSqlTableModel {
     TrackDAO& m_trackDao;
     ConfigObject<ConfigValue>* m_pConfig;
     TrackCollection* m_pTrackCollection;
-
+    QStringList m_availableDirs;
 };
 
 #endif

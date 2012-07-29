@@ -9,6 +9,7 @@
 #include <QModelIndex>
 #include <QObject>
 #include <QString>
+#include <QStringList>
 #include <QVariant>
 #include <QAbstractItemModel>
 #include <QUrl>
@@ -67,6 +68,8 @@ class LibraryFeature : public QObject {
     void featureLoadingFinished(LibraryFeature*s);
     /** emit this signal to select pFeature **/
     void featureSelect(LibraryFeature* pFeature, const QModelIndex& index);
+    void foundNewStorage(QStringList);
+    void removedStorage(QStringList);
 
 };
 

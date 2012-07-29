@@ -36,15 +36,36 @@ const QString Library::m_sTrackViewName = QString("WTrackTableView");
 Library::Library(QObject* parent, ConfigObject<ConfigValue>* pConfig, bool firstRun,
                  RecordingManager* pRecordingManager)
     : m_pConfig(pConfig),
+      m_pSidebarModel(new SidebarModel(parent)),
+      m_pTrackCollection(new TrackCollection(pConfig)),
+      m_pLibraryControl(new LibraryControl(this)),
       m_pRecordingManager(pRecordingManager),
-      m_ptrackModel(NULL) {
-    m_pTrackCollection = new TrackCollection(pConfig);
-    m_pSidebarModel = new SidebarModel(parent);
-    m_pLibraryControl = new LibraryControl(this);
+      m_ptrackModel(NULL),
+      m_directoryDAO(m_pTrackCollection->getDirectoryDAO()),
+      m_automount(parent){
+    // check if all directories are accessable 
+    QStringList dirs = m_directoryDAO.getDirs();
+    qDebug() << "kain88kna88knaskdnaskndakndakdnakdna";
+    qDebug() << "List of dirs to check" <<dirs;
+    foreach( QString dir, dirs) {
+        if (QDir(dir).exists()) {
+            m_availableDirs << dir;
+            qDebug() << "dir found:"<<dir;
+        } else {
+            m_unavailableDirs << dir;
+            qDebug() << "dir not found" << dir;
+        }
+    }
+    
+    connect(&m_automount, SIGNAL(foundNewStorage(QStringList)),
+            this, SLOT(slotFoundNewStorage(QStringList)));
+    connect(&m_automount, SIGNAL(removedStorage(QStringList)),
+            this, SLOT(slotRemovedStorage(QStringList)));
 
     // TODO(rryan) -- turn this construction / adding of features into a static
     // method or something -- CreateDefaultLibrary
-    m_pMixxxLibraryFeature = new MixxxLibraryFeature(this, m_pTrackCollection,pConfig);
+    m_pMixxxLibraryFeature = new MixxxLibraryFeature(this, m_pTrackCollection,pConfig,
+                            m_availableDirs);
     addFeature(m_pMixxxLibraryFeature,true);
     connect(this, SIGNAL(dirsChanged(QString,QString)),
             m_pMixxxLibraryFeature, SLOT(slotDirsChanged(QString,QString)));
@@ -62,15 +83,15 @@ Library::Library(QObject* parent, ConfigObject<ConfigValue>* pConfig, bool first
         m_pPromoTracksFeature = NULL;
     }
 
-    addFeature(new AutoDJFeature(this, pConfig, m_pTrackCollection),true);
-    m_pPlaylistFeature = new PlaylistFeature(this, m_pTrackCollection, pConfig);
+    addFeature(new AutoDJFeature(this, pConfig, m_pTrackCollection,m_availableDirs),true);
+    m_pPlaylistFeature = new PlaylistFeature(this, m_pTrackCollection, pConfig, m_availableDirs);
     addFeature(m_pPlaylistFeature,true);
-    m_pCrateFeature = new CrateFeature(this, m_pTrackCollection, pConfig);
+    m_pCrateFeature = new CrateFeature(this, m_pTrackCollection, pConfig, m_availableDirs);
     addFeature(m_pCrateFeature,true);
     addFeature(new BrowseFeature(this, pConfig, m_pTrackCollection, m_pRecordingManager));
     addFeature(new RecordingFeature(this, pConfig, m_pTrackCollection, m_pRecordingManager));
-    addFeature(new SetlogFeature(this, pConfig, m_pTrackCollection));
-    m_pPrepareFeature = new PrepareFeature(this, pConfig, m_pTrackCollection);
+    addFeature(new SetlogFeature(this, pConfig, m_pTrackCollection,dirs));
+    m_pPrepareFeature = new PrepareFeature(this, pConfig, m_pTrackCollection,m_availableDirs);
     addFeature(m_pPrepareFeature);
     //iTunes and Rhythmbox should be last until we no longer have an obnoxious
     //messagebox popup when you select them. (This forces you to reach for your
@@ -180,6 +201,8 @@ void Library::addFeature(LibraryFeature* feature, bool config) {
         connect(this, SIGNAL(configChanged(QString,QString)),
                 feature, SIGNAL(configChanged(QString,QString)));
     }
+    connect(this, SIGNAL(availableDirsChanged(QStringList,QString)),
+            feature, SIGNAL(availableDirsChanged(QStringList,QString)));
 }
 
 void Library::slotShowTrackModel(QAbstractItemModel* model) {
@@ -238,4 +261,26 @@ void Library::slotDirsChanged(QString op, QString dir){
 
 MixxxLibraryFeature* Library::getpMixxxLibraryFeature(){
     return m_pMixxxLibraryFeature;
+}
+
+void Library::slotFoundNewStorage(QStringList newStorage){
+    qDebug() << "called new storage";
+    foreach (QString dir, m_unavailableDirs) {
+        if (dir.contains(QRegExp(newStorage.join("|")))) {
+            m_availableDirs << dir;
+            m_unavailableDirs.removeOne(dir);
+        }
+    }
+    emit availableDirsChanged(m_availableDirs,"added");
+}
+
+void Library::slotRemovedStorage(QStringList removedStorage){
+    qDebug() << "called removed storage";
+    foreach (QString dir, m_availableDirs) {
+        if (dir.contains(QRegExp(removedStorage.join("|")))) {
+            m_unavailableDirs << dir;
+            m_availableDirs.removeOne(dir);
+        }
+    }
+    emit availableDirsChanged(m_availableDirs,"removed");
 }

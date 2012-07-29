@@ -13,12 +13,14 @@
 
 CrateTableModel::CrateTableModel(QObject* pParent, 
                                  TrackCollection* pTrackCollection,
-                                 ConfigObject<ConfigValue>* pConfig)
+                                 ConfigObject<ConfigValue>* pConfig,
+                                 QStringList availableDirs)
         : BaseSqlTableModel(pParent, pTrackCollection,
                             pTrackCollection->getDatabase(),
                             "mixxx.db.model.crate"),
           m_pTrackCollection(pTrackCollection),
-          m_iCrateId(-1) {
+          m_iCrateId(-1),
+          m_availableDirs(availableDirs) {
     connect(this, SIGNAL(doSearch(const QString&)),
             this, SLOT(slotSearch(const QString&)));
         m_pConfig = pConfig;
@@ -27,7 +29,7 @@ CrateTableModel::CrateTableModel(QObject* pParent,
 CrateTableModel::~CrateTableModel() {
 }
 
-void CrateTableModel::setCrate(int crateId) {
+void CrateTableModel::setCrate(int crateId,QString name) {
     //qDebug() << "CrateTableModel::setCrate()" << crateId;
     m_iCrateId = crateId;
 
@@ -47,7 +49,7 @@ void CrateTableModel::setCrate(int crateId) {
     } else {
         filter = "library.mixxx_deleted=0 AND track_locations.fs_deleted=0";
     }
-
+    tableName.append(name);
     // We drop files that have been explicitly deleted from mixxx
     // (mixxx_deleted=0) from the view. There was a bug in <= 1.9.0 where
     // removed files were not removed from playlists, so some users will have
@@ -65,6 +67,7 @@ void CrateTableModel::setCrate(int crateId) {
                  CRATETRACKSTABLE_CRATEID,
                  QString::number(crateId),
                  filter);
+    queryString.append(" AND track_locations.dir in (\""+m_availableDirs.join("\",\"")+"\")");
     query.prepare(queryString);
     if (!query.exec()) {
         LOG_FAILED_QUERY(query);
@@ -226,7 +229,15 @@ TrackModel::CapabilitiesFlags CrateTableModel::getCapabilities() const {
 void CrateTableModel::slotConfigChanged(QString identifier, QString key){
     Q_UNUSED(identifier);
     if (key=="ShowMissingSongs") {
-        setCrate(m_iCrateId);
+        setCrate(m_iCrateId,QString());
         select();
     }
 }
+
+void CrateTableModel::slotAvailableDirsChanged(QStringList availableDirs,
+                                            QString name){
+    m_availableDirs = availableDirs;
+    setCrate(m_iCrateId, name);
+    select();
+}
+

@@ -22,16 +22,20 @@
 
 CrateFeature::CrateFeature(QObject* parent,
                            TrackCollection* pTrackCollection, 
-                           ConfigObject<ConfigValue>* pConfig)
+                           ConfigObject<ConfigValue>* pConfig,
+                           QStringList availableDirs)
         : m_pTrackCollection(pTrackCollection),
           m_crateDao(pTrackCollection->getCrateDAO()),
           m_crateListTableModel(this, pTrackCollection->getDatabase()),
-          m_crateTableModel(this, pTrackCollection,pConfig),
-          m_pConfig(pConfig) {
+          m_crateTableModel(this, pTrackCollection,pConfig,availableDirs),
+          m_pConfig(pConfig),
+          m_availableDirs(availableDirs) {
     Q_UNUSED(parent);
     m_pCreateCrateAction = new QAction(tr("New Crate"),this);
     connect(m_pCreateCrateAction, SIGNAL(triggered()),
             this, SLOT(slotCreateCrate()));
+    connect(parent, SIGNAL(availableDirsChanged(QStringList,QString)),
+            &m_crateTableModel, SLOT(slotAvailableDirsChanged(QStringList,QString)));
 
     m_pDeleteCrateAction = new QAction(tr("Remove"),this);
     connect(m_pDeleteCrateAction, SIGNAL(triggered()),
@@ -169,7 +173,7 @@ void CrateFeature::activateChild(const QModelIndex& index) {
         return;
     QString crateName = index.data().toString();
     int crateId = m_crateDao.getCrateIdByName(crateName);
-    m_crateTableModel.setCrate(crateId);
+    m_crateTableModel.setCrate(crateId,QString());
     emit(showTrackModel(&m_crateTableModel));
 }
 
@@ -447,8 +451,8 @@ void CrateFeature::slotExportPlaylist(){
     QList<QString> playlist_items;
     // Create a new table model since the main one might have an active search.
     QScopedPointer<CrateTableModel> pCrateTableModel(
-        new CrateTableModel(this, m_pTrackCollection,m_pConfig));
-    pCrateTableModel->setCrate(m_crateTableModel.getCrate());
+        new CrateTableModel(this, m_pTrackCollection,m_pConfig, m_availableDirs));
+    pCrateTableModel->setCrate(m_crateTableModel.getCrate(),QString());
     pCrateTableModel->select();
 
     if (file_location.endsWith(".csv", Qt::CaseInsensitive)) {
@@ -487,7 +491,7 @@ void CrateFeature::slotCrateTableChanged(int crateId) {
     m_crateListTableModel.select();
     m_lastRightClickedIndex = constructChildModel(crateId);
     // Switch the view to the crate.
-    m_crateTableModel.setCrate(crateId);
+    m_crateTableModel.setCrate(crateId,QString());
     // Update selection
     emit(featureSelect(this, m_lastRightClickedIndex));
 }

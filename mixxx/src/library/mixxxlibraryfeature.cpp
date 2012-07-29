@@ -15,7 +15,8 @@
 
 MixxxLibraryFeature::MixxxLibraryFeature(QObject* parent,
                                          TrackCollection* pTrackCollection,
-                                         ConfigObject<ConfigValue>* pConfig)
+                                         ConfigObject<ConfigValue>* pConfig,
+                                         QStringList availableDirs)
         : LibraryFeature(parent),
           kHiddenTitle(tr("Hidden Tracks")),
           m_directoryDAO(pTrackCollection->getDirectoryDAO()) {
@@ -85,12 +86,18 @@ MixxxLibraryFeature::MixxxLibraryFeature(QObject* parent,
     pTrackCollection->addTrackSource(QString("default"), m_pBaseTrackCache);
 
     // These rely on the 'default' track source being present.
-    m_pLibraryTableModel = new LibraryTableModel(this, pTrackCollection,pConfig);
+    m_pLibraryTableModel = new LibraryTableModel(this, pTrackCollection,pConfig,
+                            availableDirs);
     connect(parent,SIGNAL(configChanged(QString,QString)),
             m_pLibraryTableModel, SLOT(slotConfigChanged(QString, QString)));
     connect(this, SIGNAL(loadTrackFailed(TrackPointer)),
             m_pLibraryTableModel, SLOT(slotLoadTrackFailed(TrackPointer)));
-    m_pHiddenTableModel = new HiddenTableModel(this, pTrackCollection);
+    connect(parent, SIGNAL(availableDirsChanged(QStringList,QString)),
+            m_pLibraryTableModel, SLOT(slotAvailableDirsChanged(QStringList, QString)));
+    m_pHiddenTableModel = new HiddenTableModel(this, pTrackCollection, availableDirs);
+    connect(parent, SIGNAL(availableDirsChanged(QStringList,QString)),
+            m_pHiddenTableModel, SLOT(slotAvailableDirsChanged(QStringList, QString)));
+
 
 
     TreeItem* pRootItem = new TreeItem();
