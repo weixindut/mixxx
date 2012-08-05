@@ -188,15 +188,14 @@ void PlaylistFeature::slotPlaylistTableChanged(int playlistId) {
     //qDebug() << "slotPlaylistTableChanged() playlistId:" << playlistId;
     enum PlaylistDAO::HiddenType type = m_playlistDao.getHiddenType(playlistId);
     if (   type == PlaylistDAO::PLHT_NOT_HIDDEN
-        || type == PlaylistDAO::PLHT_UNKNOWN      // In case of a deleted Playlist
-    ){
+        || type == PlaylistDAO::PLHT_UNKNOWN ) {  // In case of a deleted Playlist
         clearChildModel();
         m_playlistTableModel.select();
         m_lastRightClickedIndex = constructChildModel(playlistId);
 
         if(type != PlaylistDAO::PLHT_UNKNOWN) {
             // Switch the view to the playlist.
-            m_pPlaylistTableModel->setPlaylist(playlistId,QString());
+            m_pPlaylistTableModel->setTableModel(playlistId,QString());
             // Update selection
             emit(featureSelect(this, m_lastRightClickedIndex));
         }

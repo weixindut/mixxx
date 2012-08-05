@@ -207,7 +207,7 @@ void SetlogFeature::slotJoinWithPrevious() {
             int previousPlaylistId = m_playlistDao.getPreviousPlaylist(currentPlaylistId, PlaylistDAO::PLHT_SET_LOG);
             if (previousPlaylistId >= 0) {
 
-                m_pPlaylistTableModel->setPlaylist(previousPlaylistId,QString());
+                m_pPlaylistTableModel->setTableModel(previousPlaylistId,QString());
 
                 if (currentPlaylistId == m_playlistId) {
                     // mark all the Tracks in the previous Playlist as played
@@ -277,12 +277,11 @@ void SetlogFeature::slotPlayingDeckChanged(int deck) {
             return;
         }
 
+        m_playlistDao.appendTrackToPlaylist(currentPlayingTrackId,
+                                            m_playlistId);
         if (m_pPlaylistTableModel->getPlaylist() == m_playlistId) {
             // View needs a refresh
-            m_pPlaylistTableModel->appendTrack(currentPlayingTrackId);
-        } else {
-            m_playlistDao.appendTrackToPlaylist(currentPlayingTrackId,
-                                                m_playlistId);
+            m_pPlaylistTableModel->select();
         }
     }
 }
@@ -302,7 +301,7 @@ void SetlogFeature::slotPlaylistTableChanged(int playlistId) {
 
         if (type != PlaylistDAO::PLHT_UNKNOWN) {
             // Switch the view to the playlist.
-            m_pPlaylistTableModel->setPlaylist(playlistId,QString());
+            m_pPlaylistTableModel->setTableModel(playlistId,QString());
             // Update selection
             emit(featureSelect(this, m_lastRightClickedIndex));
         }

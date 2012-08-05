@@ -44,8 +44,8 @@ DlgAutoDJ::DlgAutoDJ(QWidget* parent, ConfigObject<ConfigValue>* pConfig,
     box->insertWidget(1, m_pTrackTableView);
 
     m_pAutoDJTableModel = new PlaylistTableModel(this, pTrackCollection,
-                                                 "mixxx.db.model.autodj",
-                                                 pConfig, availableDirs);
+                                                "mixxx.db.model.autodj",
+                                                 m_pConfig, availableDirs);
     connect(this, SIGNAL(availableDirsChanged(QStringList, QString)),
             m_pAutoDJTableModel, SLOT(slotAvailableDirsChanged(QStringList,QString)));
     int playlistId = m_playlistDao.getPlaylistIdFromName(AUTODJ_TABLE);
@@ -53,7 +53,7 @@ DlgAutoDJ::DlgAutoDJ(QWidget* parent, ConfigObject<ConfigValue>* pConfig,
         playlistId = m_playlistDao.createPlaylist(AUTODJ_TABLE,
                                                   PlaylistDAO::PLHT_AUTO_DJ);
     }
-    m_pAutoDJTableModel->setPlaylist(playlistId,QString());
+    m_pAutoDJTableModel->setTableModel(playlistId,QString());
     m_pTrackTableView->loadTrackModel(m_pAutoDJTableModel);
 
     // Override some playlist-view properties:

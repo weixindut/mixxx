@@ -21,8 +21,8 @@ Automount::~Automount(){
 }
 
 void Automount::slotReadMtab(){
-    QTime time;
-    time.start();
+    // QTime time;
+    // time.start();
 
     // look for connected devices
     QStringList devices = attachedDevices();
@@ -34,7 +34,7 @@ void Automount::slotReadMtab(){
             addedDevice(devices);
         }
     }
-    qDebug("checking for changes took: %d ms" , time.elapsed());
+    // qDebug("checking for changes took: %d ms" , time.elapsed());
 }
 
 QStringList Automount::attachedDevices(){

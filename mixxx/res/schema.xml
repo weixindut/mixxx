@@ -336,6 +336,7 @@ METADATA
     CREATE TABLE IF NOT EXISTS directories (
       directory varchar(1024)
     );
+    CREATE UNIQUE INDEX directory_idx ON directories(directory);
     ALTER TABLE track_locations ADD COLUMN dir varchar(1024);
     ALTER TABLE track_locations ADD COLUMN checksum varchar(1024);
     </sql>

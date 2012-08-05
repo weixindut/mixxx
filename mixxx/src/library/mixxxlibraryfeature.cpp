@@ -1,9 +1,6 @@
 // mixxxlibraryfeature.cpp
 // Created 8/23/2009 by RJ Ryan (rryan@mit.edu)
 
-#include <QtDebug>
-
-
 #include "library/mixxxlibraryfeature.h"
 
 #include "library/basetrackcache.h"
@@ -143,9 +140,6 @@ void MixxxLibraryFeature::activate() {
 void MixxxLibraryFeature::activateChild(const QModelIndex& index) {
     QString itemName = index.data().toString();
 
-    /*if (itemName == m_childModel.stringList().at(0))
-        emit(showTrackModel(m_pDeletedTableModel));
-     */
     if (itemName == kHiddenTitle) {
         emit(showTrackModel(m_pHiddenTableModel));
     }
@@ -204,6 +198,7 @@ void MixxxLibraryFeature::slotDirsChanged(QString op, QString dir){
         m_directoryDAO.addDirectory(dir);
         m_directoryDAO.updateTrackLocations(dir);
     } else if (op=="relocate") {
+        // see dlgprefplaylist for this
         QStringList dirs = dir.split("!(~)!");
         QString newFolder = dirs[0];
         QString oldFolder = dirs[1];
@@ -212,8 +207,4 @@ void MixxxLibraryFeature::slotDirsChanged(QString op, QString dir){
         qDebug() << "MixxxLibraryFeature::slotDirsChanged "
                     "op not recognised";
     }
-}
-
-QStringList MixxxLibraryFeature::getDirs(){
-    return m_directoryDAO.getDirs();
 }

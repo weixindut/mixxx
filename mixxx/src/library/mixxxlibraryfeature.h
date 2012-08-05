@@ -8,7 +8,6 @@
 
 #include "library/dao/directorydao.h"
 #include "library/libraryfeature.h"
-#include "treeitemmodel.h"
 #include "configobject.h"
 
 class BaseTrackCache;
@@ -32,7 +31,6 @@ class MixxxLibraryFeature : public LibraryFeature {
     bool dragMoveAccept(QUrl url);
     bool dragMoveAcceptChild(const QModelIndex& index, QUrl url);
     TreeItemModel* getChildModel();
-    QStringList getDirs();
 
   signals:
     void configChanged(QString, QString);

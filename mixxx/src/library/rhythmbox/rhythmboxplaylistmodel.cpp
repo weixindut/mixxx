@@ -1,21 +1,9 @@
-#include <QtCore>
-#include <QtGui>
-#include <QtSql>
-
-#include "library/trackcollection.h"
 #include "library/rhythmbox/rhythmboxplaylistmodel.h"
-#include "track/beatfactory.h"
-#include "track/beats.h"
 
 RhythmboxPlaylistModel::RhythmboxPlaylistModel(QObject* parent,
                                          TrackCollection* pTrackCollection)
-        : BaseSqlTableModel(parent, pTrackCollection,
-                            pTrackCollection->getDatabase(),
-                            "mixxx.db.model.rhythmbox_playlist"),
-          m_pTrackCollection(pTrackCollection),
-          m_database(m_pTrackCollection->getDatabase()) {
-    connect(this, SIGNAL(doSearch(const QString&)),
-            this, SLOT(slotSearch(const QString&)));
+        : BaseSqlTableModel(parent, pTrackCollection, NULL, QStringList(),
+                            "mixxx.db.model.rhythmbox_playlist") {
 }
 
 RhythmboxPlaylistModel::~RhythmboxPlaylistModel() {
@@ -71,16 +59,6 @@ TrackPointer RhythmboxPlaylistModel::getTrack(const QModelIndex& index) const {
         pTrack->setBpm(bpm);
     }
     return pTrack;
-}
-
-void RhythmboxPlaylistModel::search(const QString& searchText) {
-    // qDebug() << "RhythmboxPlaylistModel::search()" << searchText
-    //          << QThread::currentThread();
-    emit(doSearch(searchText));
-}
-
-void RhythmboxPlaylistModel::slotSearch(const QString& searchText) {
-    BaseSqlTableModel::search(searchText);
 }
 
 bool RhythmboxPlaylistModel::isColumnInternal(int column) {

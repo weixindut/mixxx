@@ -51,10 +51,9 @@ class LibraryFeature : public QObject {
     virtual void onRightClick(const QPoint& globalPos) = 0;
     /** called when you right click on a child item, e.g., a concrete playlist or crate **/
     virtual void onRightClickChild(const QPoint& globalPos, QModelIndex index) = 0;
-    /*
-     * Only implement this, if using incremental or lazy childmodels, see BrowseFeature.
-     * This method is executed whenever you **double** click child items
-     */
+    
+    // Only implement this, if using incremental or lazy childmodels, see BrowseFeature.
+    // This method is executed whenever you **double** click child items
     virtual void onLazyChildExpandation(const QModelIndex& index) = 0;
   signals:
     void showTrackModel(QAbstractItemModel* model);

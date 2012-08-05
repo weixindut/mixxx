@@ -253,10 +253,24 @@ QList<TrackPointer> Library::getTracksToAutoLoad() {
 }
 
 void Library::slotDirsChanged(QString op, QString dir){
-    Q_UNUSED(dir);
-    if (op=="removed") {
-        m_ptrackModel->select();
+
+    qDebug() << "kain88 libray received single that dirs changed";
+
+    if (op=="added") {
+        m_availableDirs << dir;
+    } else if (op=="removed") {
+        m_availableDirs.removeOne(dir);
+    } else if (op=="relocate") {
+        // see dlgprefplaylist for this
+        QStringList dirs = dir.split("!(~)!");
+        QString newFolder = dirs[0];
+        QString oldFolder = dirs[1];
+        m_availableDirs.removeOne(oldFolder);
+        m_availableDirs << newFolder;
     }
+    qDebug() << m_availableDirs;
+    emit availableDirsChanged(m_availableDirs,"added");
+    emit dirsChanged(op,dir);
 }
 
 MixxxLibraryFeature* Library::getpMixxxLibraryFeature(){
@@ -283,4 +297,8 @@ void Library::slotRemovedStorage(QStringList removedStorage){
         }
     }
     emit availableDirsChanged(m_availableDirs,"removed");
+}
+
+QStringList Library::getDirs(){
+    return m_directoryDAO.getDirs();
 }

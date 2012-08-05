@@ -268,7 +268,7 @@ MixxxApp::MixxxApp(QApplication *pApp, const CmdlineArgs& args) {
                              bFirstRun || bUpgraded,
                              m_pRecordingManager);
     connect(this, SIGNAL(dirsChanged(QString,QString)),
-            m_pLibrary, SIGNAL(dirsChanged(QString,QString)));
+            m_pLibrary, SLOT(slotDirsChanged(QString,QString)));
 
     // Check if we update from an old db without relative library paths
     // getValueString will return "" if no value was set
@@ -288,7 +288,7 @@ MixxxApp::MixxxApp(QApplication *pApp, const CmdlineArgs& args) {
     // Get Music dir
     bool hasChanged_MusicDir = false;
 
-    QStringList dirs = m_pLibrary->getpMixxxLibraryFeature()->getDirs();
+    QStringList dirs = m_pLibrary->getDirs();
     if (dirs.size() < 1) {
         // TODO(XXX) this needs to be smarter, we can't distinguish between an empty
         // path return value (not sure if this is normally possible, but it is

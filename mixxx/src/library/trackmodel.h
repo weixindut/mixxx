@@ -60,7 +60,10 @@ class TrackModel {
     virtual const QLinkedList<int> getTrackRows(int trackId) const = 0;
 
     bool isTrackModel() { return true;}
-    virtual void search(const QString& searchText) = 0;
+    virtual void search(const QString& searchText, const QString& extraFilter=QString()) {
+        Q_UNUSED(searchText);
+        Q_UNUSED(extraFilter);
+    };
     virtual const QString currentSearch() const = 0;
     virtual bool isColumnInternal(int column) = 0;
     // if no header state exists, we may hide some columns so that the user can
@@ -68,9 +71,7 @@ class TrackModel {
     virtual bool isColumnHiddenByDefault(int column) = 0;
     virtual const QList<int>& showableColumns() const { return m_emptyColumns; }
     virtual const QList<int>& searchColumns() const { return m_emptyColumns; }
-    virtual void removeTrack(const QModelIndex& index) {
-        Q_UNUSED(index);
-    }
+
     virtual void removeTracks(const QModelIndexList& indices) {
         Q_UNUSED(indices);
     }
@@ -85,11 +86,6 @@ class TrackModel {
     }
     virtual void purgeTracks(const QModelIndexList& indices) {
         Q_UNUSED(indices);
-    }
-    virtual bool addTrack(const QModelIndex& index, QString location) {
-        Q_UNUSED(index);
-        Q_UNUSED(location);
-        return false;
     }
     virtual int addTracks(const QModelIndex& index, QList<QString> locations) {
         Q_UNUSED(index);

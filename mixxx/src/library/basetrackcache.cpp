@@ -74,6 +74,7 @@ void BaseTrackCache::slotTracksAdded(QSet<int> trackIds) {
         qDebug() << this << "slotTracksAdded" << trackIds.size();
     }
     updateTracksInIndex(trackIds);
+    buildIndex();
 }
 
 void BaseTrackCache::slotDbTrackAdded(TrackPointer pTrack) {
@@ -105,6 +106,7 @@ void BaseTrackCache::slotTrackChanged(int trackId) {
     }
     QSet<int> trackIds;
     trackIds.insert(trackId);
+    updateTracksInIndex(trackIds);
     emit(tracksChanged(trackIds));
 }
 

@@ -44,7 +44,7 @@ public:
 
 
   private:
-    virtual QString getRootViewHtml() const;
+    QString getRootViewHtml() const;
 
     QLinkedList<int> m_recentTracks;
     QAction *m_pJoinWithPreviousAction;

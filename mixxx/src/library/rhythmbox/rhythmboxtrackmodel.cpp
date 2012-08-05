@@ -1,21 +1,10 @@
-#include <QtCore>
-#include <QtGui>
-#include <QtSql>
 
-#include "library/trackcollection.h"
 #include "library/rhythmbox/rhythmboxtrackmodel.h"
-#include "track/beatfactory.h"
-#include "track/beats.h"
 
 RhythmboxTrackModel::RhythmboxTrackModel(QObject* parent,
                                    TrackCollection* pTrackCollection)
-        : BaseSqlTableModel(parent, pTrackCollection,
-                            pTrackCollection->getDatabase(),
-                            "mixxx.db.model.rhythmbox"),
-          m_pTrackCollection(pTrackCollection),
-          m_database(m_pTrackCollection->getDatabase()) {
-    connect(this, SIGNAL(doSearch(const QString&)), this, SLOT(slotSearch(const QString&)));
-
+        : BaseSqlTableModel(parent, pTrackCollection,NULL,QStringList(),
+                            "mixxx.db.model.rhythmbox") {
     QStringList columns;
     columns << "id";
     setTable("rhythmbox_library", columns[0], columns,
@@ -73,15 +62,6 @@ TrackPointer RhythmboxTrackModel::getTrack(const QModelIndex& index) const {
     return pTrack;
 }
 
-void RhythmboxTrackModel::search(const QString& searchText) {
-    // qDebug() << "RhythmboxTrackModel::search()" << searchText
-    //          << QThread::currentThread();
-    emit(doSearch(searchText));
-}
-
-void RhythmboxTrackModel::slotSearch(const QString& searchText) {
-    BaseSqlTableModel::search(searchText);
-}
 
 bool RhythmboxTrackModel::isColumnInternal(int column) {
     if (column == fieldIndex(LIBRARYTABLE_ID)) {

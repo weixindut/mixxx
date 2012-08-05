@@ -1,14 +1,7 @@
 #ifndef ITUNES_PLAYLIST_MODEL_H
 #define ITUNES_PLAYLIST_MODEL_H
 
-#include <QtSql>
-#include <QItemDelegate>
-#include <QtCore>
-#include "library/trackmodel.h"
 #include "library/basesqltablemodel.h"
-#include "library/librarytablemodel.h"
-#include "library/dao/playlistdao.h"
-#include "library/dao/trackdao.h"
 
 class TrackCollection;
 
@@ -18,23 +11,14 @@ class ITunesPlaylistModel : public BaseSqlTableModel {
     ITunesPlaylistModel(QObject* parent, TrackCollection* pTrackCollection);
     virtual ~ITunesPlaylistModel();
 
-    virtual TrackPointer getTrack(const QModelIndex& index) const;
-    virtual void search(const QString& searchText);
-    virtual bool isColumnInternal(int column);
-    virtual bool isColumnHiddenByDefault(int column);
-    virtual Qt::ItemFlags flags(const QModelIndex &index) const;
+    TrackPointer getTrack(const QModelIndex& index) const;
+    bool isColumnInternal(int column);
+    bool isColumnHiddenByDefault(int column);
+    Qt::ItemFlags flags(const QModelIndex &index) const;
+    //TODO (kain88) this should be setTableModel and why has it a path_name?
     void setPlaylist(QString path_name);
     TrackModel::CapabilitiesFlags getCapabilities() const;
 
-  private slots:
-    void slotSearch(const QString& searchText);
-
-  signals:
-    void doSearch(const QString& searchText);
-
-  private:
-    TrackCollection* m_pTrackCollection;
-    QSqlDatabase &m_database;
 };
 
 #endif /* ITUNES_PLAYLIST_MODEL_H */

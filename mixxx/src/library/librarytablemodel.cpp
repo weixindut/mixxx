@@ -1,9 +1,5 @@
-#include <QtCore>
-#include <QtGui>
-#include <QtSql>
 #include <QApplication>
 
-#include "library/trackcollection.h"
 #include "library/librarytablemodel.h"
 #include "library/queryutil.h"
 #include "controlobjectthread.h"
@@ -20,24 +16,18 @@ LibraryTableModel::LibraryTableModel(QObject* parent,
                                      ConfigObject<ConfigValue>* pConfig,
                                      QStringList availableDirs,
                                      QString settingsNamespace)
-        : BaseSqlTableModel(parent, pTrackCollection,
-                            pTrackCollection->getDatabase(),
-                            settingsNamespace),
-          m_trackDao(pTrackCollection->getTrackDAO()),
-          m_availableDirs(availableDirs) {
-    m_pConfig=pConfig;
-    m_pTrackCollection = pTrackCollection;
-    connect(this, SIGNAL(doSearch(const QString&)),
-            this, SLOT(slotSearch(const QString&)));
+        : BaseSqlTableModel(parent, pTrackCollection, pConfig,
+                            availableDirs, settingsNamespace){
     connect(parent, SIGNAL(availableDirsChanged(QStringList,QString)),
             this, SLOT(slotAvailableDirsChanged(QStringList,QString)));
-    setLibrary(QString());
+    setTableModel(0,QString());
 }
 
 LibraryTableModel::~LibraryTableModel() {
 }
 
-void LibraryTableModel::setLibrary(QString name){
+void LibraryTableModel::setTableModel(int id, QString name){
+    Q_UNUSED(id);
     QStringList columns;
     columns << "library."+LIBRARYTABLE_ID;
 
@@ -53,10 +43,12 @@ void LibraryTableModel::setLibrary(QString name){
     if (showMissing) {
         libraryFilter = "mixxx_deleted=0";
         tableName.append("_missing");
+        qDebug() << "hei show also missing songs";
     } else {
         libraryFilter = "mixxx_deleted=0 AND fs_deleted=0";
     }
     tableName.append("_"+name);
+    qDebug() <<"kain88 tablename="<<tableName;
 
     qDebug() << "kani88kain88kain88kin88kain88aksjdaksjdakdakdj";
     qDebug() << m_availableDirs;
@@ -84,20 +76,6 @@ void LibraryTableModel::setLibrary(QString name){
     setDefaultSort(fieldIndex("artist"), Qt::AscendingOrder);
 }
 
-bool LibraryTableModel::addTrack(const QModelIndex& index, QString location) {
-    Q_UNUSED(index);
-    QFileInfo fileInfo(location);
-
-    // Adds track, does not insert duplicates, handles unremoving logic.
-    int trackId = m_trackDao.addTrack(fileInfo, true);
-    if (trackId >= 0) {
-        // TODO(rryan) do not select since we will get a signal. instead, do
-        // something nice UI wise and select the track they dropped.
-        select(); //Repopulate the data model.
-        return true;
-    }
-    return false;
-}
 
 int LibraryTableModel::addTracks(const QModelIndex& index, QList<QString> locations) {
     Q_UNUSED(index);
@@ -105,41 +83,9 @@ int LibraryTableModel::addTracks(const QModelIndex& index, QList<QString> locati
     foreach (QString fileLocation, locations) {
         fileInfoList.append(QFileInfo(fileLocation));
     }
-    QList<int> trackIds = m_trackDao.addTracks(fileInfoList, true);
+    QList<int> trackIds = m_trackDAO.addTracks(fileInfoList, true);
     return trackIds.size();
 }
-
-TrackPointer LibraryTableModel::getTrack(const QModelIndex& index) const {
-    int trackId = getTrackId(index);
-    return m_trackDao.getTrack(trackId);
-}
-
-void LibraryTableModel::moveTrack(const QModelIndex& sourceIndex,
-                                  const QModelIndex& destIndex) {
-    Q_UNUSED(sourceIndex);
-    Q_UNUSED(destIndex);
-    // Does nothing because we don't support reordering tracks in the library,
-    // and getCapabilities() reports that.
-}
-
-void LibraryTableModel::search(const QString& searchText) {
-    // qDebug() << "LibraryTableModel::search()" << searchText
-    //          << QThread::currentThread();
-    emit(doSearch(searchText));
-}
-
-void LibraryTableModel::slotSearch(const QString& searchText) {
-    // qDebug() << "slotSearch()" << searchText << QThread::currentThread();
-    BaseSqlTableModel::search(searchText);
-}
-
-void LibraryTableModel::slotAvailableDirsChanged(QStringList availableDirs,
-                                            QString name){
-    m_availableDirs = availableDirs;
-    setLibrary(name);
-    select();
-}
-
 
 bool LibraryTableModel::isColumnInternal(int column) {
     if ((column == fieldIndex(LIBRARYTABLE_ID)) ||
@@ -165,8 +111,6 @@ bool LibraryTableModel::isColumnHiddenByDefault(int column) {
     return false;
 }
 
-
-
 TrackModel::CapabilitiesFlags LibraryTableModel::getCapabilities() const {
     return TRACKMODELCAPS_NONE
             | TRACKMODELCAPS_RECEIVEDROPS
@@ -183,34 +127,6 @@ TrackModel::CapabilitiesFlags LibraryTableModel::getCapabilities() const {
             | TRACKMODELCAPS_RELOCATE;
 }
 
-void LibraryTableModel::slotConfigChanged(QString identifier, QString key){
-    Q_UNUSED(identifier);
-    if (key=="ShowMissingSongs"){
-        setLibrary(QString());
-        select();
-    }
-}
-
-void LibraryTableModel::relocateTracks(const QModelIndexList& indices) {
-    foreach (QModelIndex index, indices) {
-        int trackId = getTrackId(index);
-
-        QString oldLocation = m_trackDao.getTrackLocation(trackId);
-        TrackPointer track = m_trackDao.getTrack(trackId);
-        qDebug() << oldLocation;
-        QString newLocation = QFileDialog::getOpenFileName(QApplication::desktop(),
-                                        QString(tr("Relocate track")),
-                                        oldLocation);
-        qDebug() << newLocation;
-
-        if (!m_trackDao.relocateTrack(oldLocation, newLocation)) {
-            QMessageBox::warning(QApplication::desktop(), tr("Mixxx"),
-                                           tr("The tracks do not match"));
-        }
-
-    }
-}
-
 void LibraryTableModel::slotLoadTrackFailed(TrackPointer pTrack){
-    m_trackDao.markTrackAsDeleted(pTrack);
+    m_trackDAO.markTrackAsDeleted(pTrack);
 }

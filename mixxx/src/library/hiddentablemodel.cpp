@@ -1,30 +1,19 @@
-#include <QtCore>
-#include <QtGui>
-#include <QtSql>
-#include "library/trackcollection.h"
 #include "library/hiddentablemodel.h"
-#include "library/librarytablemodel.h"
-#include "mixxxutils.cpp"
-
 
 HiddenTableModel::HiddenTableModel(QObject* parent,
                                      TrackCollection* pTrackCollection,
                                      QStringList availableDirs)
         : BaseSqlTableModel(parent, pTrackCollection,
-                            pTrackCollection->getDatabase(),
-                            "mixxx.db.model.missing"),
-          m_pTrackCollection(pTrackCollection),
-          m_trackDao(m_pTrackCollection->getTrackDAO()),
-          m_availableDirs(availableDirs) {
-    connect(this, SIGNAL(doSearch(const QString&)),
-            this, SLOT(slotSearch(const QString&)));
-    setHidden(QString());
+                            NULL, availableDirs,
+                            "mixxx.db.model.missing") {
+    setTableModel(0,QString());
 }
 
 HiddenTableModel::~HiddenTableModel() {
 }
 
-void HiddenTableModel::setHidden(QString name){
+void HiddenTableModel::setTableModel(int id,QString name){
+    Q_UNUSED(id);
     QSqlQuery query;
     QString tableName("hidden_songs_"+name);
 
@@ -60,21 +49,6 @@ void HiddenTableModel::setHidden(QString name){
 
 }
 
-bool HiddenTableModel::addTrack(const QModelIndex& index, QString location) {
-    Q_UNUSED(index);
-    Q_UNUSED(location);
-    return false;
-}
-
-TrackPointer HiddenTableModel::getTrack(const QModelIndex& index) const {
-    //FIXME: use position instead of location for playlist tracks?
-
-    //const int locationColumnIndex = this->fieldIndex(LIBRARYTABLE_LOCATION);
-    //QString location = index.sibling(index.row(), locationColumnIndex).data().toString();
-    int trackId = getTrackId(index);
-    return m_trackDao.getTrack(trackId);
-}
-
 void HiddenTableModel::purgeTracks(const QModelIndexList& indices) {
     QList<int> trackIds;
 
@@ -83,7 +57,7 @@ void HiddenTableModel::purgeTracks(const QModelIndexList& indices) {
         trackIds.append(trackId);
     }
 
-    m_trackDao.purgeTracks(trackIds);
+   m_trackDAO.purgeTracks(trackIds);
 
     // TODO(rryan) : do not select, instead route event to BTC and notify from
     // there.
@@ -105,7 +79,7 @@ void HiddenTableModel::purgeTracks(const int dirId){
         trackIds.append(query.value(query.record().indexOf("id")).toInt());
     }
     qDebug() << "starting to purge Tracks " << trackIds;
-    m_trackDao.purgeTracks(trackIds);
+   m_trackDAO.purgeTracks(trackIds);
 
     // TODO(rryan) : do not select, instead route event to BTC and notify from
     // there.
@@ -120,22 +94,11 @@ void HiddenTableModel::unhideTracks(const QModelIndexList& indices) {
         trackIds.append(trackId);
     }
 
-    m_trackDao.unhideTracks(trackIds);
+   m_trackDAO.unhideTracks(trackIds);
 
     // TODO(rryan) : do not select, instead route event to BTC and notify from
     // there.
     select(); //Repopulate the data model.
-}
-
-
-void HiddenTableModel::search(const QString& searchText) {
-    // qDebug() << "HiddenTableModel::search()" << searchText
-    //          << QThread::currentThread();
-    emit(doSearch(searchText));
-}
-
-void HiddenTableModel::slotSearch(const QString& searchText) {
-    BaseSqlTableModel::search(searchText);
 }
 
 bool HiddenTableModel::isColumnInternal(int column) {
@@ -163,11 +126,6 @@ Qt::ItemFlags HiddenTableModel::flags(const QModelIndex &index) const {
 TrackModel::CapabilitiesFlags HiddenTableModel::getCapabilities() const {
     return TRACKMODELCAPS_NONE
             | TRACKMODELCAPS_PURGE
-            | TRACKMODELCAPS_UNHIDE;
-}
-
-void HiddenTableModel::slotAvailableDirsChanged(QStringList availableDirs,QString name) {
-    m_availableDirs = availableDirs;
-    setHidden(name);
-    select();
+            | TRACKMODELCAPS_UNHIDE
+            | TRACKMODELCAPS_RELOCATE;
 }

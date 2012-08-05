@@ -1,11 +1,5 @@
-#include <QtCore>
-#include <QtGui>
-#include <QtSql>
-#include <QDateTime>
-#include "library/trackcollection.h"
 #include "library/playlisttablemodel.h"
 #include "library/queryutil.h"
-#include "mixxxutils.cpp"
 
 PlaylistTableModel::PlaylistTableModel(QObject* parent,
                                     TrackCollection* pTrackCollection,
@@ -13,32 +7,26 @@ PlaylistTableModel::PlaylistTableModel(QObject* parent,
                                     ConfigObject<ConfigValue>* pConfig,
                                     QStringList availableDirs,
                                     bool showAll)
-        : BaseSqlTableModel(parent, pTrackCollection,
-                            pTrackCollection->getDatabase(),
-                            settingsNamespace),
-                            m_pTrackCollection(pTrackCollection),
+        : BaseSqlTableModel(parent, pTrackCollection, pConfig,
+                            availableDirs, settingsNamespace),
                             m_playlistDao(m_pTrackCollection->getPlaylistDAO()),
-                            m_trackDao(m_pTrackCollection->getTrackDAO()),
                             m_iPlaylistId(-1),
-                            m_pConfig(pConfig),
-                            m_availableDirs(availableDirs),
                             m_showAll(showAll) {
-    connect(this, SIGNAL(doSearch(const QString&)),
-            this, SLOT(slotSearch(const QString&)));
 }
 
 PlaylistTableModel::~PlaylistTableModel() {
 }
 
-void PlaylistTableModel::setPlaylist(int playlistId, QString name) {
+void PlaylistTableModel::setTableModel(int playlistId, QString name) {
     //qDebug() << "PlaylistTableModel::setPlaylist" << playlistId;
 
-    /*TODO(kain88) reactivate this in a way that I can call the function on a configchange|overwrite?
-    if (m_iPlaylistId == playlistId) {
+    if (playlistId == m_iPlaylistId) {
         qDebug() << "Already focused on playlist " << playlistId;
         return;
+    } else if (playlistId == -1) {
+        // calls from parent class use -1 as id then just set the current playlist
+        playlistId = m_iPlaylistId;
     }
-    */
 
     m_iPlaylistId = playlistId;
     QString playlistTableName = "playlist_" + QString::number(m_iPlaylistId);
@@ -96,45 +84,6 @@ void PlaylistTableModel::setPlaylist(int playlistId, QString name) {
     setSort(defaultSortColumn(),defaultSortOrder());
 }
 
-bool PlaylistTableModel::addTrack(const QModelIndex& index, QString location) {
-    const int positionColumn = fieldIndex(PLAYLISTTRACKSTABLE_POSITION);
-    int position = index.sibling(index.row(), positionColumn).data().toInt();
-
-    // Handle weird cases like a drag-and-drop to an invalid index
-    if (position <= 0) {
-        position = rowCount() + 1;
-    }
-
-    // If a track is dropped but it isn't in the library, then add it because
-    // the user probably dropped a file from outside Mixxx into this playlist.
-    QFileInfo fileInfo(location);
-
-    // Adds track, does not insert duplicates, handles unremoving logic.
-    int trackId = m_trackDao.addTrack(fileInfo, true);
-
-    // Do nothing if the location still isn't in the database.
-    if (trackId < 0) {
-        return false;
-    }
-
-    m_playlistDao.insertTrackIntoPlaylist(trackId, m_iPlaylistId, position);
-
-    // TODO(rryan) signal an add to the base, don't select
-    select(); //Repopulate the data model.
-    return true;
-}
-
-bool PlaylistTableModel::appendTrack(int trackId) {
-    if (trackId < 0) {
-        return false;
-    }
-
-    m_playlistDao.appendTrackToPlaylist(trackId, m_iPlaylistId);
-
-    select(); //Repopulate the data model.
-    return true;
-}
-
 int PlaylistTableModel::addTracks(const QModelIndex& index, QList<QString> locations) {
     const int positionColumn = fieldIndex(PLAYLISTTRACKSTABLE_POSITION);
     int position = index.sibling(index.row(), positionColumn).data().toInt();
@@ -149,7 +98,7 @@ int PlaylistTableModel::addTracks(const QModelIndex& index, QList<QString> locat
         fileInfoList.append(QFileInfo(fileLocation));
     }
 
-    QList<int> trackIds = m_trackDao.addTracks(fileInfoList, true);
+    QList<int> trackIds = m_trackDAO.addTracks(fileInfoList, true);
 
     int tracksAdded = m_playlistDao.insertTracksIntoPlaylist(
         trackIds, m_iPlaylistId, position);
@@ -162,15 +111,6 @@ int PlaylistTableModel::addTracks(const QModelIndex& index, QList<QString> locat
                  << "to playlist" << m_iPlaylistId;
     }
     return tracksAdded;
-}
-
-TrackPointer PlaylistTableModel::getTrack(const QModelIndex& index) const {
-    //FIXME: use position instead of location for playlist tracks?
-
-    //const int locationColumnIndex = this->fieldIndex(LIBRARYTABLE_LOCATION);
-    //QString location = index.sibling(index.row(), locationColumnIndex).data().toString();
-    int trackId = getTrackId(index);
-    return m_trackDao.getTrack(trackId);
 }
 
 void PlaylistTableModel::removeTrack(const QModelIndex& index) {
@@ -355,17 +295,6 @@ void PlaylistTableModel::shuffleTracks(const QModelIndex& shuffleStartIndex) {
     select();
 }
 
-void PlaylistTableModel::search(const QString& searchText) {
-    // qDebug() << "PlaylistTableModel::search()" << searchText
-    //          << QThread::currentThread();
-    emit(doSearch(searchText));
-}
-
-void PlaylistTableModel::slotSearch(const QString& searchText) {
-    BaseSqlTableModel::search(
-        searchText, LibraryTableModel::DEFAULT_LIBRARYFILTER);
-}
-
 bool PlaylistTableModel::isColumnInternal(int column) {
     if (column == fieldIndex(PLAYLISTTRACKSTABLE_TRACKID) ||
         column == fieldIndex(LIBRARYTABLE_PLAYED) ||
@@ -396,6 +325,7 @@ TrackModel::CapabilitiesFlags PlaylistTableModel::getCapabilities() const {
             | TRACKMODELCAPS_LOADTODECK
             | TRACKMODELCAPS_LOADTOSAMPLER
             | TRACKMODELCAPS_REMOVE
+            | TRACKMODELCAPS_RELOCATE
             | TRACKMODELCAPS_BPMLOCK
             | TRACKMODELCAPS_CLEAR_BEATS
             | TRACKMODELCAPS_RESETPLAYED;
@@ -412,18 +342,4 @@ TrackModel::CapabilitiesFlags PlaylistTableModel::getCapabilities() const {
     }
 
     return caps;
-}
-
-void PlaylistTableModel::slotConfigChanged(QString identifier, QString key){
-    Q_UNUSED(identifier);
-    if (key=="ShowMissingSongs") {
-        setPlaylist(m_iPlaylistId,QString());
-        select();
-    }
-}
-
-void PlaylistTableModel::slotAvailableDirsChanged(QStringList availableDirs, QString name){
-    m_availableDirs = availableDirs;
-    setPlaylist(m_iPlaylistId,name);
-    select();
 }

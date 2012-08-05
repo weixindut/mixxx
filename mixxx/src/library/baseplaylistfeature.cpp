@@ -94,7 +94,7 @@ void BasePlaylistFeature::activateChild(const QModelIndex& index) {
     QString playlistName = index.data().toString();
     int playlistId = m_playlistDao.getPlaylistIdFromName(playlistName);
     if (m_pPlaylistTableModel) {
-        m_pPlaylistTableModel->setPlaylist(playlistId,QString());
+        m_pPlaylistTableModel->setTableModel(playlistId,QString());
         emit(showTrackModel(m_pPlaylistTableModel));
     }
 }
@@ -265,9 +265,7 @@ void BasePlaylistFeature::slotImportPlaylist() {
     QList<QString> entries = playlist_parser->parse(playlist_file);
 
     // Iterate over the List that holds URLs of playlist entires
-    for (int i = 0; i < entries.size(); ++i) {
-        m_pPlaylistTableModel->addTrack(QModelIndex(), entries[i]);
-    }
+    m_pPlaylistTableModel->addTracks(QModelIndex(), entries);
 
     // delete the parser object
     if (playlist_parser) {
@@ -304,7 +302,7 @@ void BasePlaylistFeature::slotExportPlaylist() {
                                "mixxx.db.model.playlist_export",
                                 m_pConfig, m_availableDirs));
 
-    pPlaylistTableModel->setPlaylist(m_pPlaylistTableModel->getPlaylist(),QString());
+    pPlaylistTableModel->setTableModel(m_pPlaylistTableModel->getPlaylist(),QString());
     pPlaylistTableModel->setSort(pPlaylistTableModel->fieldIndex(PLAYLISTTRACKSTABLE_POSITION), Qt::AscendingOrder);
     pPlaylistTableModel->select();
 

@@ -376,6 +376,7 @@ void TrackDAO::addTracksFinish() {
 
 bool TrackDAO::addTracksAdd(TrackInfoObject* pTrack, bool unremove,QString dir) {
 
+
     if (!m_pQueryLibraryInsert || !m_pQueryTrackLocationInsert ||
         !m_pQueryLibrarySelect || !m_pQueryTrackLocationSelect) {
         qDebug() << "TrackDAO::addTracksAdd: needed SqlQuerys have not "
@@ -507,7 +508,7 @@ void TrackDAO::addTrack(TrackInfoObject* pTrack, bool unremove) {
 
 QList<int> TrackDAO::addTracks(QList<QFileInfo> fileInfoList, bool unremove) {
     QList<int> trackIDs;
-	TrackInfoObject* pTrack;
+    TrackInfoObject* pTrack;
 
     addTracksPrepare();
 
@@ -543,6 +544,7 @@ void TrackDAO::hideTracks(QList<int> ids) {
 
     // This is signal is received by beasetrackcache to remove the tracks from cache
     QSet<int> tracksRemovedSet = QSet<int>::fromList(ids);
+    uncacheTracks(tracksRemovedSet);
     emit(tracksRemoved(tracksRemovedSet));
 }
 
@@ -565,6 +567,7 @@ void TrackDAO::unhideTracks(QList<int> ids) {
         LOG_FAILED_QUERY(query);
     }
     QSet<int> tracksAddedSet = QSet<int>::fromList(ids);
+    uncacheTracks(tracksAddedSet);
     emit(tracksAdded(tracksAddedSet));
 }
 
@@ -642,13 +645,13 @@ void TrackDAO::purgeTracks(QList<int> ids) {
     transaction.commit();
 
     // also need to clean playlists, crates, cues and track_analyses
-
     m_cueDao.deleteCuesForTracks(ids);
     m_playlistDao.removeTracksFromPlaylists(ids);
     m_crateDao.removeTracksFromCrates(ids);
     m_analysisDao.deleteAnalysises(ids);
 
     QSet<int> tracksRemovedSet = QSet<int>::fromList(ids);
+    uncacheTracks(tracksRemovedSet);
     emit(tracksRemoved(tracksRemovedSet));
 }
 
@@ -880,7 +883,7 @@ void TrackDAO::updateTrack(TrackInfoObject* pTrack) {
                   "timesplayed=:timesplayed, played=:played, "
                   "channels=:channels, header_parsed=:header_parsed, "
                   "beats_version=:beats_version, beats_sub_version=:beats_sub_version, beats=:beats, "
-                  "bpm_lock=:bpm_lock"
+                  "bpm_lock=:bpm_lock "
                   "WHERE id=:track_id");
     query.bindValue(":artist", pTrack->getArtist());
     query.bindValue(":title", pTrack->getTitle());
@@ -1176,32 +1179,53 @@ bool TrackDAO::isTrackFormatSupported(TrackInfoObject* pTrack) const {
     return false;
 }
 
-bool TrackDAO::relocateTrack(QString oldLocation, QString newLocation) {
+bool TrackDAO::relocateTrack(TrackPointer pTrack, QString newLocation) {
     int oldFileSize=0;
     int newFileSize=0;
-    int oldTrackLocationId = -1;
     int newTrackLocationId = -1;
+    int oldTrackLocationId = -1;
     QString oldCheckSum;
     QString newCheckSum;
+    QString newMainDir;
+    int id =getTrackId(pTrack->getLocation());
 
     ScopedTransaction transaction(m_database);
 
-    QSqlQuery query(m_database);
-    query.prepare("SELECT id, filesize, checksum FROM track_locations WHERE location=:location");
-    query.bindValue(":location", oldLocation);
-    while (query.next()) {
-        oldTrackLocationId = query.value(query.record().indexOf("id")).toInt();
-        oldFileSize = query.value(query.record().indexOf("filesize")).toInt();
-        oldCheckSum = query.value(query.record().indexOf("checksum")).toString();
-    }
+    QString oldLocation = pTrack->getLocation();
+    oldFileSize = pTrack->getLength();
 
-    query.bindValue(":location", newLocation);
+    QSqlQuery query(m_database);
+    query.prepare("SELECT id, filesize, checksum FROM track_locations WHERE "
+                  "location= \"" + newLocation +  "\"");
+    query.exec();
     while (query.next()) {
         newTrackLocationId = query.value(query.record().indexOf("id")).toInt();
         newFileSize = query.value(query.record().indexOf("filesize")).toInt();
         newCheckSum = query.value(query.record().indexOf("checksum")).toString();
     }
 
+    query.prepare("SELECT id, checksum FROM track_locations WHERE location = \""+oldLocation+"\"");
+    query.exec();
+    while (query.next()) {
+        oldCheckSum = query.value(query.record().indexOf("checksum")).toString();
+        oldTrackLocationId = query.value(query.record().indexOf("id")).toInt();
+        qDebug() << oldTrackLocationId << " old id";
+    }
+
+    query.prepare("SELECT directory FROM directories");
+    if (!query.exec()) {
+        LOG_FAILED_QUERY(query) << "There are no directories saved in the db";
+    }
+    QStringList dirs;
+    while (query.next()) {
+        dirs << query.value(query.record().indexOf("directory")).toString();
+    }
+
+    foreach (QString dir, dirs) {
+        if (newLocation.contains(dir)) {
+            newMainDir = dir;
+        }
+    }
 
     if (newTrackLocationId >= 0 && ((newFileSize == oldFileSize) && (oldCheckSum==newCheckSum) )) {
         // New Track is already in Database;
@@ -1218,13 +1242,14 @@ bool TrackDAO::relocateTrack(QString oldLocation, QString newLocation) {
         // Update the location foreign key for the existing row in the library table
         // to point to the correct row in the track_locations table.
         query.prepare("UPDATE track_locations "
-                        "SET location=:newloc WHERE id=:oldid");
-        query.bindValue(":newloc", newLocation);
-        query.bindValue(":oldid", oldTrackLocationId);
+                      "SET location=:newloc, dir=:dir WHERE location=:oldloc");
+        query.bindValue(":newloc", "\"" +newLocation + "\"");
+        query.bindValue(":dir", "\"" +newMainDir + "\"");
+        query.bindValue(":oldloc","\"" +oldLocation + "\"");
         Q_ASSERT(query.exec());
     } else {
         // New locazion was unknown,
-        // we can simply change the loacation
+        // we can simply change the location
         QFileInfo fileInfo(newLocation);
         QString filename = fileInfo.fileName();
         QString location = fileInfo.absoluteFilePath();
@@ -1235,23 +1260,32 @@ bool TrackDAO::relocateTrack(QString oldLocation, QString newLocation) {
         newCheckSum = calcChecksum(newLocation);
         if ((newCheckSum != oldCheckSum) && (oldFileSize != filesize)) {
             // that is another song
+            qDebug() << newLocation << " " << fileInfo.exists();
+            qDebug() << "checksum " << oldCheckSum << " vs " << newCheckSum;
+            qDebug() << "filesize " << oldFileSize << " vs " << filesize;
             return false;
         }
 
         query.prepare("UPDATE track_locations "
-                      "SET location=:location filename=:filename directory=:directory"
-                      "WHERE id=:id");
+                      "SET location=\""+location+"\", filename=\""+filename+"\", directory=\""+directory+"\", "
+                      "fs_deleted=0, dir=\""+newMainDir+"\" WHERE id="+QString::number(oldTrackLocationId));
 
-        m_pQueryTrackLocationInsert->bindValue(":location", location);
-        m_pQueryTrackLocationInsert->bindValue(":directory", directory);
-        m_pQueryTrackLocationInsert->bindValue(":filename", filename);
-        m_pQueryTrackLocationInsert->bindValue(":filesize", filesize);
-        m_pQueryTrackLocationInsert->bindValue(":fs_deleted", 0);
-        m_pQueryTrackLocationInsert->bindValue(":needs_verification", 0);
-        Q_ASSERT(query.exec());
+        qDebug() << "will update it";
+        qDebug() << query.lastQuery();
+
+        if (!query.exec()) {
+            LOG_FAILED_QUERY(query) << " update failed";
+            return false;
+        }
+
     }
-
     transaction.commit();
+
+    // remove tracks from cache and BTC
+    QSet<int> ids;
+    ids.insert(id);
+    databaseTracksMoved(ids,ids);
+    uncacheTracks(ids);
     return true;
 }
 
@@ -1303,6 +1337,7 @@ void TrackDAO::markTrackAsDeleted(TrackPointer pTrack){
     transaction.commit();
     QSet<int> ids;
     ids.insert(id);
+    uncacheTracks(ids);
     emit(tracksRemoved(ids));
 }
 
@@ -1310,10 +1345,21 @@ QString TrackDAO::calcChecksum(TrackInfoObject& pTrack) {
     return calcChecksum(pTrack.getLocation());
 }
 
+void TrackDAO::uncacheTracks(QSet<int> ids){
+    QMutexLocker locker(&m_sTracksMutex);
+    foreach (int id, ids) {
+        m_sTracks.remove(id);
+        m_trackCache.remove(id);
+    }
+}
+
 QString TrackDAO::calcChecksum(QString location){
     QFile file(location);
+    if (!file.exists()) {
+        return QString();
+    }
     file.open(QIODevice::ReadOnly);
-    const int block_size = 2048;
+    const int block_size = 4096;
     char buffer[block_size];
     int bytes_read;
     // only ID3v1-Tags are at the end of the file and have a fixed size of

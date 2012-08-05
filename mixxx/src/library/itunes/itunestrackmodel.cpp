@@ -1,21 +1,10 @@
-#include <QtCore>
-#include <QtGui>
-#include <QtSql>
 
 #include "library/itunes/itunestrackmodel.h"
-#include "library/trackcollection.h"
-#include "track/beatfactory.h"
-#include "track/beats.h"
 
 ITunesTrackModel::ITunesTrackModel(QObject* parent,
                                    TrackCollection* pTrackCollection)
-        : BaseSqlTableModel(parent, pTrackCollection,
-                            pTrackCollection->getDatabase(),
-                            "mixxx.db.model.itunes"),
-          m_pTrackCollection(pTrackCollection),
-          m_database(m_pTrackCollection->getDatabase()) {
-    connect(this, SIGNAL(doSearch(const QString&)),
-            this, SLOT(slotSearch(const QString&)));
+        : BaseSqlTableModel(parent, pTrackCollection, NULL, QStringList(),
+                            "mixxx.db.model.itunes"){
     QStringList columns;
     columns << "id";
     setTable("itunes_library", columns[0], columns,
@@ -71,16 +60,6 @@ TrackPointer ITunesTrackModel::getTrack(const QModelIndex& index) const {
         pTrack->setBpm(bpm);
     }
     return pTrack;
-}
-
-void ITunesTrackModel::search(const QString& searchText) {
-    // qDebug() << "ITunesTrackModel::search()" << searchText
-    //          << QThread::currentThread();
-    emit(doSearch(searchText));
-}
-
-void ITunesTrackModel::slotSearch(const QString& searchText) {
-    BaseSqlTableModel::search(searchText);
 }
 
 bool ITunesTrackModel::isColumnInternal(int column) {

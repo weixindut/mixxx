@@ -1,21 +1,9 @@
-#include <QtCore>
-#include <QtGui>
-#include <QtSql>
-
-#include "library/trackcollection.h"
 #include "library/traktor/traktorplaylistmodel.h"
-#include "track/beatfactory.h"
-#include "track/beats.h"
 
 TraktorPlaylistModel::TraktorPlaylistModel(QObject* parent,
                                        TrackCollection* pTrackCollection)
-        : BaseSqlTableModel(parent, pTrackCollection,
-                            pTrackCollection->getDatabase(),
-                            "mixxx.db.model.traktor.playlistmodel"),
-          m_pTrackCollection(pTrackCollection),
-          m_database(m_pTrackCollection->getDatabase()) {
-    connect(this, SIGNAL(doSearch(const QString&)),
-            this, SLOT(slotSearch(const QString&)));
+        : BaseSqlTableModel(parent, pTrackCollection, NULL, QStringList(),
+                            "mixxx.db.model.traktor.playlistmodel"){
 }
 
 TraktorPlaylistModel::~TraktorPlaylistModel() {
@@ -72,16 +60,6 @@ TrackPointer TraktorPlaylistModel::getTrack(const QModelIndex& index) const {
         pTrack->setBpm(bpm);
     }
     return pTrack;
-}
-
-void TraktorPlaylistModel::search(const QString& searchText) {
-    // qDebug() << "TraktorPlaylistModel::search()" << searchText
-    //          << QThread::currentThread();
-    emit(doSearch(searchText));
-}
-
-void TraktorPlaylistModel::slotSearch(const QString& searchText) {
-    BaseSqlTableModel::search(searchText);
 }
 
 bool TraktorPlaylistModel::isColumnInternal(int column) {

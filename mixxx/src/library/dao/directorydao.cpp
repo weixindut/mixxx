@@ -26,7 +26,7 @@ void DirectoryDAO::initialize()
 bool DirectoryDAO::addDirectory(QString dir){
     ScopedTransaction transaction(m_database);
     QSqlQuery query(m_database);
-    query.prepare("INSERT INTO directories (directory) "
+    query.prepare("INSERT OR REPLACE INTO directories (directory) "
                   "VALUES (\""% dir %"\")");
 
     if (!query.exec()) {
@@ -61,12 +61,8 @@ bool DirectoryDAO::relocateDirectory(QString oldFolder, QString newFolder){
     }
     // update location and directory in track_locations table
     query.prepare("UPDATE track_locations SET location="
-                  "REPLACE(location,\""%oldFolder%"\",\""%newFolder%"\")");
-    if (!query.exec()) {
-        LOG_FAILED_QUERY(query) << "coud not relocate path of tracks";
-        return false;
-    }
-    query.prepare("UPDATE track_locations SET directory="
+                  "REPLACE(location,\""%oldFolder%"\",\""%newFolder%"\")"
+                  " SET directory="
                   "REPLACE(directory,\""%oldFolder%"\",\""%newFolder%"\")");
     if (!query.exec()) {
         LOG_FAILED_QUERY(query) << "coud not relocate path of tracks";

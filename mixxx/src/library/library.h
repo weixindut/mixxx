@@ -47,6 +47,7 @@ public:
     void addFeature(LibraryFeature* feature, bool config=false);
     QList<TrackPointer> getTracksToAutoLoad();
     MixxxLibraryFeature* getpMixxxLibraryFeature();
+    QStringList getDirs();
 
     // TODO(rryan) Transitionary only -- the only reason this is here is so the
     // waveform widgets can signal to a player to load a track. This can be

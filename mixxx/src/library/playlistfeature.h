@@ -41,7 +41,7 @@ class PlaylistFeature : public BasePlaylistFeature {
     QModelIndex constructChildModel(int selected_id);
 
   private:
-    virtual QString getRootViewHtml() const;
+    QString getRootViewHtml() const;
 };
 
 #endif /* PLAYLISTFEATURE_H */

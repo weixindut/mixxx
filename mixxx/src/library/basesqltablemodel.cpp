@@ -15,14 +15,17 @@ const bool sDebug = false;
 
 BaseSqlTableModel::BaseSqlTableModel(QObject* pParent,
                                      TrackCollection* pTrackCollection,
-                                     QSqlDatabase db,
+                                     ConfigObject<ConfigValue>* pConfig,
+                                     QStringList availableDirs,
                                      QString settingsNamespace)
         :  QAbstractTableModel(pParent),
-           TrackModel(db, settingsNamespace),
-           m_currentSearch(""),
+           TrackModel(pTrackCollection->getDatabase(), settingsNamespace),
            m_pTrackCollection(pTrackCollection),
            m_trackDAO(m_pTrackCollection->getTrackDAO()),
-           m_database(db) {
+           m_availableDirs(availableDirs),
+           m_pConfig(pConfig),
+           m_currentSearch(""),
+           m_database(pTrackCollection->getDatabase()) {
     m_bInitialized = false;
     m_bDirty = true;
     m_iSortColumn = 0;
@@ -203,7 +206,7 @@ void BaseSqlTableModel::select() {
         tableColumnIndices.push_back(record.indexOf(column));
     }
 
-	// sqlite does not set size and m_rowInfo was just cleared    
+    // sqlite does not set size and m_rowInfo was just cleared
     //int rows = query.size();
     //if (sDebug) {
     //    qDebug() << "Rows returned" << rows << m_rowInfo.size();
@@ -213,13 +216,13 @@ void BaseSqlTableModel::select() {
     QSet<int> trackIds;
     while (query.next()) {
         int id = query.value(idColumn).toInt();
-        
-        
+
+
         trackIds.insert(id);
 
         RowInfo thisRowInfo;
         thisRowInfo.trackId = id;
-        thisRowInfo.order = rowInfo.size(); // save rows where this currently track id is located        
+        thisRowInfo.order = rowInfo.size(); // save rows where this currently track id is located
         // Get all the table columns and store them in the hash for this
         // row-info section.
 
@@ -617,6 +620,10 @@ int BaseSqlTableModel::getTrackId(const QModelIndex& index) const {
     return index.sibling(index.row(), fieldIndex(m_idColumn)).data().toInt();
 }
 
+TrackPointer BaseSqlTableModel::getTrack(const QModelIndex& index) const {
+    return m_trackDAO.getTrack(getTrackId(index));
+}
+
 QString BaseSqlTableModel::getTrackLocation(const QModelIndex& index) const {
     if (!index.isValid()) {
         return "";
@@ -630,7 +637,7 @@ void BaseSqlTableModel::tracksChanged(QSet<int> trackIds) {
     if (sDebug) {
         qDebug() << this << "trackChanged" << trackIds.size();
     }
-
+    qDebug() <<this<< "kain88 ok trackschanged from BSTM was called "<<trackIds;
     const int numColumns = columnCount();
     foreach (int trackId, trackIds) {
         QLinkedList<int> rows = getTrackRows(trackId);
@@ -717,7 +724,7 @@ QVariant BaseSqlTableModel::getBaseValue(
         }
         return columns[column];
     }
-    
+
 
     // Otherwise, return the information from the track record cache for the
     // given track ID
@@ -786,4 +793,57 @@ void BaseSqlTableModel::hideTracks(const QModelIndexList& indices) {
     select(); //Repopulate the data model.
 }
 
+void BaseSqlTableModel::slotConfigChanged(QString identifier, QString key){
+    Q_UNUSED(identifier);
+    if (key=="ShowMissingSongs") {
+        setTableModel(-1, QString());
+        select();
+    }
+}
 
+void BaseSqlTableModel::slotAvailableDirsChanged(QStringList availableDirs, QString name){
+    m_availableDirs = availableDirs;
+    setTableModel(0, name);
+    select();
+}
+
+void BaseSqlTableModel::setTableModel(int id,QString name){
+    Q_UNUSED(id);
+    Q_UNUSED(name);
+}
+
+void BaseSqlTableModel::relocateTracks(const QModelIndexList& indices) {
+    foreach (QModelIndex index, indices) {
+        int trackId = getTrackId(index);
+        TrackPointer ptrack = m_trackDAO.getTrack(trackId);
+        if (!ptrack) {
+            qDebug() << "strange I can't get that thing";
+        }
+        QString newLocation = QFileDialog::getOpenFileName(QApplication::desktop(),
+                                        QString(ptrack->getTitle()),
+                                        ptrack->getLocation());
+
+        if (!newLocation.isEmpty()) {
+            if (!m_trackDAO.relocateTrack(ptrack, newLocation)) {
+                QMessageBox::warning(QApplication::desktop(), tr("Mixxx"),
+                                            tr("The tracks do not match"));
+            }
+        }
+    }
+    setTableModel(0,QString());
+    select();
+}
+
+bool BaseSqlTableModel::isColumnInternal(int column) {
+    Q_UNUSED(column);
+    return false;
+}
+
+bool BaseSqlTableModel::isColumnHiddenByDefault(int column) {
+    Q_UNUSED(column);
+    return false;
+}
+
+TrackModel::CapabilitiesFlags BaseSqlTableModel::getCapabilities() const {
+    return TRACKMODELCAPS_NONE;
+}
