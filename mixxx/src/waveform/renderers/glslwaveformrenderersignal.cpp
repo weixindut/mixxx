@@ -273,10 +273,12 @@ void GLSLWaveformRendererSignal::draw(QPainter* painter, QPaintEvent* /*event*/)
     }
 
     glMatrixMode(GL_PROJECTION);
+    glPushMatrix(); 
     glLoadIdentity();
     glOrtho(-1.0, 1.0, -1.0, 1.0, -10.0, 10.0);
 
     glMatrixMode(GL_MODELVIEW);
+    glPushMatrix(); 
     glLoadIdentity();
     glTranslatef(.0f,.0f,.0f);
 
@@ -398,7 +400,9 @@ void GLSLWaveformRendererSignal::draw(QPainter* painter, QPaintEvent* /*event*/)
     glEnd();
     */
 
-    glDisable(GL_BLEND);
+    glPopMatrix();
+    glMatrixMode(GL_PROJECTION);
+    glPopMatrix();
 
     painter->endNativePainting();
 }
