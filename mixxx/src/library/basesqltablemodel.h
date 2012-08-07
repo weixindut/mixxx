@@ -23,7 +23,7 @@ class BaseSqlTableModel : public QAbstractTableModel, public TrackModel {
     BaseSqlTableModel(QObject* pParent,
                       TrackCollection* pTrackCollection,
                       ConfigObject<ConfigValue>* pConfig,
-                      QStringList availableDirs,
+                      QList<int> availableDirIds,
                       QString settingsNamespace);
     virtual ~BaseSqlTableModel();
 
@@ -32,12 +32,11 @@ class BaseSqlTableModel : public QAbstractTableModel, public TrackModel {
     virtual bool isColumnInternal(int column);
     virtual bool isColumnHiddenByDefault(int column);
     virtual TrackModel::CapabilitiesFlags getCapabilities() const;
-
-    // function to reimplement for external libraries
-    virtual TrackPointer getTrack(const QModelIndex& index) const;
     // calls readWriteFlags() by default, reimplement this if the child calls
     // should be readOnly
     virtual Qt::ItemFlags flags(const QModelIndex &index) const;
+    // function to reimplement for external libraries
+    virtual TrackPointer getTrack(const QModelIndex& index) const;
 
     // Other public methods
     int getTrackId(const QModelIndex& index) const;
@@ -81,12 +80,12 @@ class BaseSqlTableModel : public QAbstractTableModel, public TrackModel {
     //variables
     TrackCollection* m_pTrackCollection;
     TrackDAO& m_trackDAO;
-    QStringList m_availableDirs;
+    QList<int> m_availableDirIds;
     ConfigObject<ConfigValue>* m_pConfig;
     QSqlDatabase m_database;
 
   protected slots:
-    void slotAvailableDirsChanged(QStringList, QString);
+    void slotAvailableDirsChanged(QList<int>, QString);
     void slotConfigChanged(QString,QString);
 
   private slots:

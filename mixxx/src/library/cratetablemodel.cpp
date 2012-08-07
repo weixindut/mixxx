@@ -9,9 +9,9 @@
 CrateTableModel::CrateTableModel(QObject* pParent, 
                                  TrackCollection* pTrackCollection,
                                  ConfigObject<ConfigValue>* pConfig,
-                                 QStringList availableDirs)
+                                 QList<int> availableDirIds)
         : BaseSqlTableModel(pParent, pTrackCollection,
-                            pConfig, availableDirs,
+                            pConfig, availableDirIds,
                             "mixxx.db.model.crate"),
           m_iCrateId(-1),
           m_crateDAO(pTrackCollection->getCrateDAO()) {
@@ -42,7 +42,7 @@ void CrateTableModel::setTableModel(int crateId,QString name) {
     QString filter;
     columns << "crate_tracks."+CRATETRACKSTABLE_TRACKID;
     tableColumns << CRATETRACKSTABLE_TRACKID;
-    bool showMissing = m_pConfig->getValueString(ConfigKey("[Library]","ShowMissingSongs")).toInt();
+    bool showMissing = m_pConfig->getValueString(ConfigKey("[Library]","ShowMissingSongs"),"1").toInt();
     if(showMissing){
         filter = "library.mixxx_deleted=0";
         tableName.append("_missing");
@@ -67,7 +67,11 @@ void CrateTableModel::setTableModel(int crateId,QString name) {
                  CRATETRACKSTABLE_CRATEID,
                  QString::number(crateId),
                  filter);
-    queryString.append(" AND track_locations.dir in (\""+m_availableDirs.join("\",\"")+"\")");
+    QStringList ids;
+    foreach(int id, m_availableDirIds){
+        ids << QString::number(id);
+    }
+    queryString.append(" AND track_locations.maindir_id in ("+ids.join(",")+",0)");
     query.prepare(queryString);
     if (!query.exec()) {
         LOG_FAILED_QUERY(query);

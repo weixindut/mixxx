@@ -2,7 +2,7 @@
 
 TraktorTableModel::TraktorTableModel(QObject* parent,
                                      TrackCollection* pTrackCollection)
-        : BaseSqlTableModel(parent, pTrackCollection, NULL, QStringList(),
+        : BaseSqlTableModel(parent, pTrackCollection, NULL, QList<int>(),
                             "mixxx.db.model.traktor_tablemodel") {
 
     QStringList columns;

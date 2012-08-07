@@ -8,7 +8,7 @@ class LibraryTableModel : public BaseSqlTableModel {
   public:
     LibraryTableModel(QObject* parent, TrackCollection* pTrackCollection,
                       ConfigObject<ConfigValue>* pConfig,
-                      QStringList availableDirs,
+                      QList<int> availableDirIds,
                       QString settingsNamespace="mixxx.db.model.library");
     virtual ~LibraryTableModel();
     void setTableModel(int,QString);

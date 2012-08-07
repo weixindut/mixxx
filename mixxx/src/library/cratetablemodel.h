@@ -12,7 +12,7 @@ class CrateTableModel : public BaseSqlTableModel {
   public:
     CrateTableModel(QObject* parent, TrackCollection* pTrackCollection,
                     ConfigObject<ConfigValue>* pConfig,
-                    QStringList availableDirs);
+                    QList<int> availableDirIds);
     virtual ~CrateTableModel();
 
     void setTableModel(int crateId,QString name);

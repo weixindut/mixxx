@@ -246,7 +246,7 @@ void TrackDAO::slotTrackSave(TrackInfoObject* pTrack) {
 
 // No need to check here if the querys exist, this is already done in
 // addTracksAdd, which is the only function that calls this
-void TrackDAO::bindTrackToTrackLocationsInsert(TrackInfoObject* pTrack, QString dir,
+void TrackDAO::bindTrackToTrackLocationsInsert(TrackInfoObject* pTrack, int dirId,
                                                QString& checksum) {
     // gets called only in addTracksAdd
     m_pQueryTrackLocationInsert->bindValue(":location", pTrack->getLocation());
@@ -256,7 +256,7 @@ void TrackDAO::bindTrackToTrackLocationsInsert(TrackInfoObject* pTrack, QString 
     // Should this check pTrack->exists()?
     m_pQueryTrackLocationInsert->bindValue(":fs_deleted", 0);
     m_pQueryTrackLocationInsert->bindValue(":needs_verification", 0);
-    m_pQueryTrackLocationInsert->bindValue(":dir", dir);
+    m_pQueryTrackLocationInsert->bindValue(":maindir_id", dirId);
     m_pQueryTrackLocationInsert->bindValue(":checksum", checksum);
 }
 
@@ -330,8 +330,8 @@ void TrackDAO::addTracksPrepare() {
     m_pQueryLibrarySelect = new QSqlQuery(m_database);
 
     m_pQueryTrackLocationInsert->prepare("INSERT INTO track_locations "
-            "(location, directory, filename, filesize, fs_deleted, needs_verification, dir, checksum) "
-            "VALUES (:location, :directory, :filename, :filesize, :fs_deleted, :needs_verification, :dir, :checksum)");
+            "(location, directory, filename, filesize, fs_deleted, needs_verification, maindir_id, checksum) "
+            "VALUES (:location, :directory, :filename, :filesize, :fs_deleted, :needs_verification, :maindir_id, :checksum)");
 
     m_pQueryTrackLocationSelect->prepare("SELECT id FROM track_locations WHERE location=:location");
 
@@ -374,7 +374,7 @@ void TrackDAO::addTracksFinish() {
     m_tracksAddedSet.clear();
 }
 
-bool TrackDAO::addTracksAdd(TrackInfoObject* pTrack, bool unremove,QString dir) {
+bool TrackDAO::addTracksAdd(TrackInfoObject* pTrack, bool unremove,const int dirId) {
 
 
     if (!m_pQueryLibraryInsert || !m_pQueryTrackLocationInsert ||
@@ -391,7 +391,7 @@ bool TrackDAO::addTracksAdd(TrackInfoObject* pTrack, bool unremove,QString dir) 
     // Insert the track location into the corresponding table. This will fail
     // silently if the location is already in the table because it has a UNIQUE
     // constraint.
-    bindTrackToTrackLocationsInsert(pTrack,dir,checksum);
+    bindTrackToTrackLocationsInsert(pTrack,dirId,checksum);
 
     if (!m_pQueryTrackLocationInsert->exec()) {
         qDebug() << "Location " << pTrack->getLocation() << " is already in the DB";
@@ -502,7 +502,7 @@ void TrackDAO::addTrack(TrackInfoObject* pTrack, bool unremove) {
     }
 
     addTracksPrepare();
-    addTracksAdd(pTrack, unremove, QString());
+    addTracksAdd(pTrack, unremove, 0);
     addTracksFinish();
 }
 
@@ -517,7 +517,7 @@ QList<int> TrackDAO::addTracks(QList<QFileInfo> fileInfoList, bool unremove) {
     while (it.hasNext()) {
         QFileInfo& info = it.next();
         pTrack = new TrackInfoObject(info);
-        addTracksAdd(pTrack, unremove, QString());
+        addTracksAdd(pTrack, unremove, 0);
         int trackID = pTrack->getId();
         if (trackID >= 0) {
             trackIDs.append(trackID);
@@ -596,18 +596,17 @@ void TrackDAO::purgeTracks(QList<int> ids) {
 
     FieldEscaper escaper(m_database);
     QStringList locationList;
-    QSet<QString> dirs;
+    QStringList dirs;
     while (query.next()) {
         QString filePath = query.value(query.record().indexOf("location")).toString();
         locationList << escaper.escapeString(filePath);
         QString directory = query.value(query.record().indexOf("directory")).toString();
-        dirs.insert(directory);
+        dirs << directory;
     }
 
     QStringList dirList;
-    for (QSet<QString>::const_iterator it = dirs.constBegin();
-         it != dirs.constEnd(); ++it) {
-        dirList << escaper.escapeString(*it);
+    foreach(QString dir, dirs) {
+        dirList << escaper.escapeString(dir);
     }
 
     if (locationList.empty()) {
@@ -653,6 +652,45 @@ void TrackDAO::purgeTracks(QList<int> ids) {
     QSet<int> tracksRemovedSet = QSet<int>::fromList(ids);
     uncacheTracks(tracksRemovedSet);
     emit(tracksRemoved(tracksRemovedSet));
+}
+
+void TrackDAO::deleteTracksFromFS(QList<int> ids){
+     if (ids.empty()) {
+        return;
+    }
+
+    QStringList idList;
+    foreach (int id, ids) {
+        idList << QString::number(id);
+    }
+    QString idListJoined = idList.join(",");
+
+    QSqlQuery query(m_database);
+    query.prepare(QString("SELECT track_locations.location, track_locations.directory FROM "
+                          "track_locations INNER JOIN library ON library.location = "
+                          "track_locations.id WHERE library.id in (%1)").arg(idListJoined));
+    if (!query.exec()) {
+        LOG_FAILED_QUERY(query);
+    }
+
+    FieldEscaper escaper(m_database);
+    QStringList locationList;
+    while (query.next()) {
+        locationList << query.value(query.record().indexOf("location")).toString();
+    }
+
+
+    //TODO kain88 display a warning message for all files that could not be removed
+    // because some other programm still had a handle on it
+    foreach (QString loc, locationList) {
+        if (QFile::remove(loc)) {
+            qDebug() << "hei it is actually removed from the fs";
+        }
+    }
+
+    // clean all DB entries AFTER the file is removed, otherwise the remove 
+    // function fail.
+    purgeTracks(ids);
 }
 
 // deleter of the TrackInfoObject, for delete a Track from Library use hide or purge
@@ -1301,7 +1339,7 @@ void TrackDAO::verifyTracksOutside(volatile bool* pCancel) {
     query.setForwardOnly(true);
     query.prepare("SELECT location "
                   "FROM track_locations "
-                  "WHERE dir_id=0");
+                  "WHERE maindir_id=0");
     if (!query.exec()) {
         LOG_FAILED_QUERY(query);
         return;
@@ -1343,9 +1381,6 @@ void TrackDAO::markTrackAsDeleted(TrackPointer pTrack){
     emit(tracksRemoved(ids));
 }
 
-QString TrackDAO::calcChecksum(TrackInfoObject& pTrack) {
-    return calcChecksum(pTrack.getLocation());
-}
 
 void TrackDAO::uncacheTracks(QSet<int> ids){
     QMutexLocker locker(&m_sTracksMutex);
@@ -1353,6 +1388,10 @@ void TrackDAO::uncacheTracks(QSet<int> ids){
         m_sTracks.remove(id);
         m_trackCache.remove(id);
     }
+}
+
+QString TrackDAO::calcChecksum(TrackInfoObject& pTrack) {
+    return calcChecksum(pTrack.getLocation());
 }
 
 QString TrackDAO::calcChecksum(QString location){
@@ -1374,3 +1413,5 @@ QString TrackDAO::calcChecksum(QString location){
     }
     return hash.result().toHex();
 }
+
+

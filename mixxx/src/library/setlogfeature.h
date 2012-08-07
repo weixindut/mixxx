@@ -17,7 +17,7 @@ class SetlogFeature : public BasePlaylistFeature {
     Q_OBJECT
 public:
     SetlogFeature(QObject* parent, ConfigObject<ConfigValue>* pConfig,
-                  TrackCollection* pTrackCollection,QStringList availableDirs);
+                  TrackCollection* pTrackCollection,QList<int> availableDirIds);
     virtual ~SetlogFeature();
 
     QVariant title();

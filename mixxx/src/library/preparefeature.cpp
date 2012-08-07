@@ -18,14 +18,14 @@ const QString PrepareFeature::m_sPrepareViewName = QString("Prepare");
 PrepareFeature::PrepareFeature(QObject* parent,
                                ConfigObject<ConfigValue>* pConfig,
                                TrackCollection* pTrackCollection,
-                               QStringList availableDirs)
+                               QList<int> availableDirIds)
         : LibraryFeature(parent),
           m_pConfig(pConfig),
           m_pTrackCollection(pTrackCollection),
           m_pAnalyserQueue(NULL),
-          m_availableDirs(availableDirs) {
-    connect(parent, SIGNAL(availableDirsChanged(QStringList,QString)),
-            this, SIGNAL(availableDirsChanged(QStringList,QString)));
+          m_availableDirIds(availableDirIds) {
+    connect(parent, SIGNAL(availableDirsChanged(QList<int>,QString)),
+            this, SIGNAL(availableDirsChanged(QList<int>,QString)));
 }
 
 PrepareFeature::~PrepareFeature() {
@@ -48,7 +48,7 @@ void PrepareFeature::bindWidget(WLibrarySidebar* sidebarWidget,
     m_pPrepareView = new DlgPrepare(libraryWidget,
                                     m_pConfig,
                                     m_pTrackCollection,
-                                    m_availableDirs);
+                                    m_availableDirIds);
     connect(m_pPrepareView, SIGNAL(loadTrack(TrackPointer)),
             this, SIGNAL(loadTrack(TrackPointer)));
     connect(m_pPrepareView, SIGNAL(loadTrackToPlayer(TrackPointer, QString)),
@@ -57,8 +57,8 @@ void PrepareFeature::bindWidget(WLibrarySidebar* sidebarWidget,
             this, SLOT(analyzeTracks(QList<int>)));
     connect(m_pPrepareView, SIGNAL(stopAnalysis()),
             this, SLOT(stopAnalysis()));
-    connect(this, SIGNAL(availableDirsChanged(QStringList , QString)),
-            m_pPrepareView, SIGNAL(availableDirsChanged(QStringList,QString)));
+    connect(this, SIGNAL(availableDirsChanged(QList<int> , QString)),
+            m_pPrepareView, SIGNAL(availableDirsChanged(QList<int>,QString)));
 
     connect(this, SIGNAL(analysisActive(bool)),
             m_pPrepareView, SLOT(analysisActive(bool)));

@@ -2,6 +2,7 @@
 // Created 10/22/2009 by RJ Ryan (rryan@mit.edu)
 
 #include <QtCore>
+#include <QMessageBox>
 #include <QVariant>
 
 #include "library/proxytrackmodel.h"
@@ -87,7 +88,19 @@ QAbstractItemDelegate* ProxyTrackModel::delegateForColumn(const int i, QObject* 
 }
 
 TrackModel::CapabilitiesFlags ProxyTrackModel::getCapabilities() const {
-    return m_pTrackModel->getCapabilities();
+    return TRACKMODELCAPS_NONE
+            | TRACKMODELCAPS_DELETEFS;
+}
+
+void ProxyTrackModel::deleteTracks(const QModelIndexList& indices){
+    QMessageBox::StandardButton btn = QMessageBox::question(
+        NULL, tr("Confirm Delete"),
+        tr("Are you sure you want to delete these files?"),
+        QMessageBox::Yes | QMessageBox::No, QMessageBox::No);
+    if (btn == QMessageBox::No) {
+        return ;
+    }
+    //TODO(kain88) ask rryan what the row of the location field is
 }
 
 bool ProxyTrackModel::filterAcceptsRow(int sourceRow,

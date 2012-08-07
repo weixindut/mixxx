@@ -16,13 +16,13 @@ const bool sDebug = false;
 BaseSqlTableModel::BaseSqlTableModel(QObject* pParent,
                                      TrackCollection* pTrackCollection,
                                      ConfigObject<ConfigValue>* pConfig,
-                                     QStringList availableDirs,
+                                     QList<int> availableDirIds,
                                      QString settingsNamespace)
         :  QAbstractTableModel(pParent),
            TrackModel(pTrackCollection->getDatabase(), settingsNamespace),
            m_pTrackCollection(pTrackCollection),
            m_trackDAO(m_pTrackCollection->getTrackDAO()),
-           m_availableDirs(availableDirs),
+           m_availableDirIds(availableDirIds),
            m_pConfig(pConfig),
            m_currentSearch(""),
            m_database(pTrackCollection->getDatabase()) {
@@ -801,8 +801,9 @@ void BaseSqlTableModel::slotConfigChanged(QString identifier, QString key){
     }
 }
 
-void BaseSqlTableModel::slotAvailableDirsChanged(QStringList availableDirs, QString name){
-    m_availableDirs = availableDirs;
+void BaseSqlTableModel::slotAvailableDirsChanged(QList<int> availableDirIds, 
+                                                 QString name){
+    m_availableDirIds = availableDirIds;
     setTableModel(0, name);
     select();
 }

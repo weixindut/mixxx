@@ -413,7 +413,7 @@ MixxxApp::MixxxApp(QApplication *pApp, const CmdlineArgs& args) {
     connect(m_pPrefDlg, SIGNAL(configChanged(QString,QString)),
             m_pLibrary, SIGNAL(configChanged(QString,QString)));
     connect(m_pPrefDlg, SIGNAL(dirsChanged(QString,QString)),
-            m_pLibrary, SIGNAL(dirsChanged(QString,QString)));
+            m_pLibrary, SLOT(slotDirsChanged(QString,QString)));
 
     m_pPrefDlg->setWindowIcon(QIcon(":/images/ic_mixxx_window.png"));
     m_pPrefDlg->setHidden(true);

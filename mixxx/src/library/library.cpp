@@ -45,7 +45,7 @@ Library::Library(QObject* parent, ConfigObject<ConfigValue>* pConfig, bool first
       m_automount(parent){
     // check if all directories are accessable 
     QStringList dirs = m_directoryDAO.getDirs();
-    qDebug() << "kain88kna88knaskdnaskndakndakdnakdna";
+    qDebug() << "kain88";
     qDebug() << "List of dirs to check" <<dirs;
     foreach( QString dir, dirs) {
         if (QDir(dir).exists()) {
@@ -56,7 +56,11 @@ Library::Library(QObject* parent, ConfigObject<ConfigValue>* pConfig, bool first
             qDebug() << "dir not found" << dir;
         }
     }
-    
+
+    qDebug() << m_availableDirs;
+    QList<int> availableDirIds = m_directoryDAO.getDirIds(m_availableDirs);
+    qDebug() << availableDirIds;
+
     connect(&m_automount, SIGNAL(foundNewStorage(QStringList)),
             this, SLOT(slotFoundNewStorage(QStringList)));
     connect(&m_automount, SIGNAL(removedStorage(QStringList)),
@@ -65,7 +69,7 @@ Library::Library(QObject* parent, ConfigObject<ConfigValue>* pConfig, bool first
     // TODO(rryan) -- turn this construction / adding of features into a static
     // method or something -- CreateDefaultLibrary
     m_pMixxxLibraryFeature = new MixxxLibraryFeature(this, m_pTrackCollection,pConfig,
-                            m_availableDirs);
+                            availableDirIds);
     addFeature(m_pMixxxLibraryFeature,true);
     connect(this, SIGNAL(dirsChanged(QString,QString)),
             m_pMixxxLibraryFeature, SLOT(slotDirsChanged(QString,QString)));
@@ -83,15 +87,17 @@ Library::Library(QObject* parent, ConfigObject<ConfigValue>* pConfig, bool first
         m_pPromoTracksFeature = NULL;
     }
 
-    addFeature(new AutoDJFeature(this, pConfig, m_pTrackCollection,m_availableDirs),true);
-    m_pPlaylistFeature = new PlaylistFeature(this, m_pTrackCollection, pConfig, m_availableDirs);
+    addFeature(new AutoDJFeature(this, pConfig, m_pTrackCollection,availableDirIds),true);
+    m_pPlaylistFeature = new PlaylistFeature(this, m_pTrackCollection, pConfig, availableDirIds);
     addFeature(m_pPlaylistFeature,true);
-    m_pCrateFeature = new CrateFeature(this, m_pTrackCollection, pConfig, m_availableDirs);
+    m_pCrateFeature = new CrateFeature(this, m_pTrackCollection, pConfig, availableDirIds);
     addFeature(m_pCrateFeature,true);
     addFeature(new BrowseFeature(this, pConfig, m_pTrackCollection, m_pRecordingManager));
     addFeature(new RecordingFeature(this, pConfig, m_pTrackCollection, m_pRecordingManager));
-    addFeature(new SetlogFeature(this, pConfig, m_pTrackCollection,dirs));
-    m_pPrepareFeature = new PrepareFeature(this, pConfig, m_pTrackCollection,m_availableDirs);
+    // the history should show ALL songs 
+    addFeature(new SetlogFeature(this, pConfig, m_pTrackCollection,
+                                    m_directoryDAO.getDirIds(dirs)));
+    m_pPrepareFeature = new PrepareFeature(this, pConfig, m_pTrackCollection,availableDirIds);
     addFeature(m_pPrepareFeature);
     //iTunes and Rhythmbox should be last until we no longer have an obnoxious
     //messagebox popup when you select them. (This forces you to reach for your
@@ -201,8 +207,8 @@ void Library::addFeature(LibraryFeature* feature, bool config) {
         connect(this, SIGNAL(configChanged(QString,QString)),
                 feature, SIGNAL(configChanged(QString,QString)));
     }
-    connect(this, SIGNAL(availableDirsChanged(QStringList,QString)),
-            feature, SIGNAL(availableDirsChanged(QStringList,QString)));
+    connect(this, SIGNAL(availableDirsChanged(QList<int>,QString)),
+            feature, SIGNAL(availableDirsChanged(QList<int>,QString)));
 }
 
 void Library::slotShowTrackModel(QAbstractItemModel* model) {
@@ -258,18 +264,24 @@ void Library::slotDirsChanged(QString op, QString dir){
 
     if (op=="added") {
         m_availableDirs << dir;
+        emit availableDirsChanged(m_directoryDAO.getDirIds(m_availableDirs),
+                                  "added");
     } else if (op=="removed") {
+        qDebug() << "kain88 testing why the fuck there is a loop " << dir;
+        qDebug() << m_availableDirs;
         m_availableDirs.removeOne(dir);
+        emit availableDirsChanged(m_directoryDAO.getDirIds(m_availableDirs),"removed");
     } else if (op=="relocate") {
         // see dlgprefplaylist for this
         QStringList dirs = dir.split("!(~)!");
         QString newFolder = dirs[0];
         QString oldFolder = dirs[1];
         m_availableDirs.removeOne(oldFolder);
+        emit availableDirsChanged(m_directoryDAO.getDirIds(m_availableDirs),"removed");
         m_availableDirs << newFolder;
+        emit availableDirsChanged(m_directoryDAO.getDirIds(m_availableDirs),"added");
     }
-    qDebug() << m_availableDirs;
-    emit availableDirsChanged(m_availableDirs,"added");
+    qDebug() <<"kain88 available dirs are now = "<< m_availableDirs;
     emit dirsChanged(op,dir);
 }
 
@@ -285,7 +297,7 @@ void Library::slotFoundNewStorage(QStringList newStorage){
             m_unavailableDirs.removeOne(dir);
         }
     }
-    emit availableDirsChanged(m_availableDirs,"added");
+    emit availableDirsChanged(m_directoryDAO.getDirIds(m_availableDirs),"added");
 }
 
 void Library::slotRemovedStorage(QStringList removedStorage){
@@ -296,7 +308,7 @@ void Library::slotRemovedStorage(QStringList removedStorage){
             m_availableDirs.removeOne(dir);
         }
     }
-    emit availableDirsChanged(m_availableDirs,"removed");
+    emit availableDirsChanged(m_directoryDAO.getDirIds(m_availableDirs),"removed");
 }
 
 QStringList Library::getDirs(){

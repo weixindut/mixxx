@@ -10,7 +10,7 @@ class PlaylistTableModel : public BaseSqlTableModel {
     PlaylistTableModel(QObject* parent, TrackCollection* pTrackCollection,
                     QString settingsNamespace, 
                     ConfigObject<ConfigValue>* pConfig,
-                    QStringList availableDirs,
+                    QList<int> availableDirIds,
                     bool showAll=false);
     virtual ~PlaylistTableModel();
     void setTableModel(int playlistId,QString name);

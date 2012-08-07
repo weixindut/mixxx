@@ -13,8 +13,9 @@
 MixxxLibraryFeature::MixxxLibraryFeature(QObject* parent,
                                          TrackCollection* pTrackCollection,
                                          ConfigObject<ConfigValue>* pConfig,
-                                         QStringList availableDirs)
+                                         QList<int> availableDirIds)
         : LibraryFeature(parent),
+          m_pTrackCollection(pTrackCollection),
           kHiddenTitle(tr("Hidden Tracks")),
           m_directoryDAO(pTrackCollection->getDirectoryDAO()) {
     QStringList columns;
@@ -84,16 +85,16 @@ MixxxLibraryFeature::MixxxLibraryFeature(QObject* parent,
 
     // These rely on the 'default' track source being present.
     m_pLibraryTableModel = new LibraryTableModel(this, pTrackCollection,pConfig,
-                            availableDirs);
+                            availableDirIds);
     connect(parent,SIGNAL(configChanged(QString,QString)),
             m_pLibraryTableModel, SLOT(slotConfigChanged(QString, QString)));
     connect(this, SIGNAL(loadTrackFailed(TrackPointer)),
             m_pLibraryTableModel, SLOT(slotLoadTrackFailed(TrackPointer)));
-    connect(parent, SIGNAL(availableDirsChanged(QStringList,QString)),
-            m_pLibraryTableModel, SLOT(slotAvailableDirsChanged(QStringList, QString)));
-    m_pHiddenTableModel = new HiddenTableModel(this, pTrackCollection, availableDirs);
-    connect(parent, SIGNAL(availableDirsChanged(QStringList,QString)),
-            m_pHiddenTableModel, SLOT(slotAvailableDirsChanged(QStringList, QString)));
+    connect(parent, SIGNAL(availableDirsChanged(QList<int>,QString)),
+            m_pLibraryTableModel, SLOT(slotAvailableDirsChanged(QList<int>, QString)));
+    m_pHiddenTableModel = new HiddenTableModel(this, pTrackCollection, availableDirIds);
+    connect(parent, SIGNAL(availableDirsChanged(QList<int>,QString)),
+            m_pHiddenTableModel, SLOT(slotAvailableDirsChanged(QList<int>, QString)));
 
 
 
@@ -161,8 +162,8 @@ bool MixxxLibraryFeature::dropAccept(QList<QUrl> urls) {
 }
 
 bool MixxxLibraryFeature::dropAcceptChild(const QModelIndex& index, QList<QUrl> urls) {
-    Q_UNUSED(urls);
     Q_UNUSED(index);
+    Q_UNUSED(urls);
     return false;
 }
 
@@ -189,9 +190,6 @@ void MixxxLibraryFeature::slotDirsChanged(QString op, QString dir){
     } else if (op=="removed") {
         m_pHiddenTableModel->purgeTracks(m_directoryDAO.getDirId(dir));
         m_directoryDAO.purgeDirectory(dir);
-        // this should signal to library to do a select on the currenty active
-        // trackmodel
-        emit(dirsChanged(op,dir));
     } else if (op=="update"){
         // this will be signaled from the library scanner if the db needs to be 
         // updated

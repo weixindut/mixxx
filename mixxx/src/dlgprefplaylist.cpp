@@ -189,8 +189,7 @@ void DlgPrefPlaylist::slotUpdate()
             ConfigKey("[Library]","ShowMissingSongs"),"1").toInt());
 }
 
-void DlgPrefPlaylist::slotBrowseDir()
-{
+void DlgPrefPlaylist::slotBrowseDir() {
     QString fd = QFileDialog::getExistingDirectory(this,
                             tr("Choose music library directory"),
                             QDesktopServices::storageLocation(QDesktopServices::MusicLocation));
@@ -201,17 +200,17 @@ void DlgPrefPlaylist::slotBrowseDir()
     }
 }
 
-void DlgPrefPlaylist::slotRemoveDir()
-{
+void DlgPrefPlaylist::slotRemoveDir() {
     QModelIndex index = list->currentIndex();
     QString fd = index.data().toString();
+    qDebug() << "kain88 befor emit";
     emit(dirsChanged("removed",fd));
+    qDebug() << "kain88 after emit";
     slotUpdate();
     m_dirsModified = true;
 }
 
-void DlgPrefPlaylist::slotRelocateDir()
-{
+void DlgPrefPlaylist::slotRelocateDir() {
     QModelIndex index = list->currentIndex();
     QString currentFd = index.data().toString();
     QString fd = QFileDialog::getExistingDirectory(this,
@@ -219,9 +218,11 @@ void DlgPrefPlaylist::slotRelocateDir()
                             QDesktopServices::storageLocation(QDesktopServices::MusicLocation));
 
     //use !(~)! as a sign where the string has to be seperated later
-    emit(dirsChanged("relocate",fd+"!(~)!"+currentFd));
-    slotUpdate();
-    m_dirsModified = true;
+    if(!fd.isEmpty()){
+        emit(dirsChanged("relocate",fd+"!(~)!"+currentFd));
+        slotUpdate();
+        m_dirsModified = true;
+    }
 }
 
 void DlgPrefPlaylist::slotApply()

@@ -7,7 +7,7 @@ class HiddenTableModel : public BaseSqlTableModel {
     Q_OBJECT
   public:
     HiddenTableModel(QObject* parent, TrackCollection* pTrackCollection,
-                     QStringList availableDirs);
+                     QList<int> availableDirIds);
     virtual ~HiddenTableModel();
     void setTableModel(int,QString);
     bool isColumnInternal(int column);
@@ -15,6 +15,7 @@ class HiddenTableModel : public BaseSqlTableModel {
     void purgeTracks(const QModelIndexList& indices);
     //TODO (kain88) check why this function is here
     void purgeTracks(const int dirId);
+    void deleteTracks(const QModelIndexList& indices);
     void unhideTracks(const QModelIndexList& indices);
 
     Qt::ItemFlags flags(const QModelIndex &index) const;

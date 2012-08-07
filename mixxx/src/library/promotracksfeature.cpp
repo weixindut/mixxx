@@ -48,7 +48,7 @@ PromoTracksFeature::PromoTracksFeature(QObject* parent,
           m_pFeaturedArtistsView(NULL),
           m_pBundledSongsView(NULL),
           //TODO (kain88) empty QStringList may not be the best idea
-          m_downloadsTableModel(this, pTrackCollection,config,QStringList()),
+          m_downloadsTableModel(this, pTrackCollection,config,QList<int>()),
           m_bFirstRun(firstRun) {
 
     m_sPromoRemoteHTMLLocation = QString("http://promo.mixxx.org/%1/index.html").arg(MIXXX_PROMO_VERSION); //m_pConfig->getConfigPath() + "/promo/promotracks.html";

@@ -94,6 +94,7 @@ WTrackTableView::~WTrackTableView()
     delete m_pAutoDJAct;
     delete m_pAutoDJTopAct;
     delete m_pRemoveAct;
+    delete m_pDeleteAct;
     delete m_pRelocateAct;
     delete m_pHideAct;
     delete m_pUnhideAct;
@@ -283,6 +284,9 @@ void WTrackTableView::createActions() {
     m_pPurgeAct = new QAction(tr("Purge from Library"), this);
     connect(m_pPurgeAct, SIGNAL(triggered()), this, SLOT(slotPurge()));
 
+    m_pDeleteAct = new QAction(tr("Delete from Filesysem"), this);
+    connect(m_pDeleteAct, SIGNAL(triggered()), this, SLOT(slotDelete()));
+
     m_pRelocateAct = new QAction(tr("Relocate Track") , this);
     connect(m_pRelocateAct, SIGNAL(triggered()), this, SLOT(slotRelocate()));
 
@@ -363,8 +367,7 @@ void WTrackTableView::loadSelectionToGroup(QString group) {
 void WTrackTableView::slotRemove()
 {
     QModelIndexList indices = selectionModel()->selectedRows();
-    if (indices.size() > 0)
-    {
+    if (indices.size() > 0) {
         TrackModel* trackModel = getTrackModel();
         if (trackModel) {
             trackModel->removeTracks(indices);
@@ -374,11 +377,20 @@ void WTrackTableView::slotRemove()
 
 void WTrackTableView::slotPurge(){
     QModelIndexList indices = selectionModel()->selectedRows();
-    if (indices.size() > 0)
-    {
+    if (indices.size() > 0) {
         TrackModel* trackModel = getTrackModel();
         if (trackModel) {
             trackModel->purgeTracks(indices);
+        }
+    }
+}
+
+void WTrackTableView::slotDelete(){
+    QModelIndexList indices = selectionModel()->selectedRows();
+    if (indices.size() > 0) {
+        TrackModel* trackModel = getTrackModel();
+        if (trackModel) {
+            trackModel->deleteTracks(indices);
         }
     }
 }
@@ -667,6 +679,10 @@ void WTrackTableView::contextMenuEvent(QContextMenuEvent* event) {
     if (modelHasCapabilities(TrackModel::TRACKMODELCAPS_PURGE)) {
         m_pPurgeAct->setEnabled(!locked);
         m_pMenu->addAction(m_pPurgeAct);
+    }
+    if (modelHasCapabilities(TrackModel::TRACKMODELCAPS_DELETEFS)) {
+        m_pDeleteAct->setEnabled(!locked);
+        m_pMenu->addAction(m_pDeleteAct);
     }
     if (modelHasCapabilities(TrackModel::TRACKMODELCAPS_RESETPLAYED)) {
         m_pMenu->addAction(m_pResetPlayedAct);
@@ -975,7 +991,6 @@ void WTrackTableView::dropEvent(QDropEvent * event){
             }
             // calling the addTracks returns number of failed additions
             int tracksAdded = trackModel->addTracks(destIndex, fileLocationList);
-
             // Decrement # of rows to select if some were skipped
             numNewRows -= (fileLocationList.size() - tracksAdded);
 

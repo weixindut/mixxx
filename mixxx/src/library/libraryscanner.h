@@ -55,7 +55,7 @@ class LibraryScanner : public QThread {
     void tracksRestored(QSet<int>);
   private:
     bool recursiveScan(QString dirPath, QStringList& verifiedDirectories,
-                       QSet<int>& restoredTracks,QString dir);
+                       QSet<int>& restoredTracks,const int dirId);
     TrackCollection* m_pCollection; // The library trackcollection
     QSqlDatabase m_database; // Hang on to a different DB connection
                              // since we run in a different thread */

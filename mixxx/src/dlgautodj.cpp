@@ -17,7 +17,7 @@ const int kTransitionPreferenceDefault = 10;
 
 DlgAutoDJ::DlgAutoDJ(QWidget* parent, ConfigObject<ConfigValue>* pConfig,
                      TrackCollection* pTrackCollection,
-                     MixxxKeyboard* pKeyboard,QStringList availableDirs)
+                     MixxxKeyboard* pKeyboard,QList<int> availableDirIds)
         : QWidget(parent),
           Ui::DlgAutoDJ(),
           m_pConfig(pConfig),
@@ -45,9 +45,11 @@ DlgAutoDJ::DlgAutoDJ(QWidget* parent, ConfigObject<ConfigValue>* pConfig,
 
     m_pAutoDJTableModel = new PlaylistTableModel(this, pTrackCollection,
                                                 "mixxx.db.model.autodj",
-                                                 m_pConfig, availableDirs);
-    connect(this, SIGNAL(availableDirsChanged(QStringList, QString)),
-            m_pAutoDJTableModel, SLOT(slotAvailableDirsChanged(QStringList,QString)));
+                                                 m_pConfig, availableDirIds);
+    connect(this, SIGNAL(availableDirsChanged(QSList<int<, QString)),
+            m_pAutoDJTableModel, SLOT(slotAvailableDirsChanged(QList<int>,QString)));
+    connect(this, SIGNAL(configChanged(QString,QString)),
+            m_pAutoDJTableModel, SLOT(slotConfigChanged(QString,QString)));
     int playlistId = m_playlistDao.getPlaylistIdFromName(AUTODJ_TABLE);
     if (playlistId < 0) {
         playlistId = m_playlistDao.createPlaylist(AUTODJ_TABLE,
@@ -100,7 +102,7 @@ DlgAutoDJ::DlgAutoDJ(QWidget* parent, ConfigObject<ConfigValue>* pConfig,
     connect(m_pCOToggleAutoDJ, SIGNAL(valueChanged(double)),
             this, SLOT(toggleAutoDJ(double)));
     connect(pushButtonAutoDJ, SIGNAL(toggled(bool)),
-            this,  SLOT(toggleAutoDJButton(bool))); _blah;
+            this, SLOT(toggleAutoDJButton(bool))); _blah;
 
     // playposition is from -0.14 to + 1.14
     m_pCOPlayPos1 = new ControlObjectThreadMain(

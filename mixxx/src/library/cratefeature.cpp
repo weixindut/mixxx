@@ -23,19 +23,19 @@
 CrateFeature::CrateFeature(QObject* parent,
                            TrackCollection* pTrackCollection, 
                            ConfigObject<ConfigValue>* pConfig,
-                           QStringList availableDirs)
+                           QList<int> availableDirIds)
         : m_pTrackCollection(pTrackCollection),
           m_crateDao(pTrackCollection->getCrateDAO()),
           m_crateListTableModel(this, pTrackCollection->getDatabase()),
-          m_crateTableModel(this, pTrackCollection,pConfig,availableDirs),
+          m_crateTableModel(this, pTrackCollection,pConfig,availableDirIds),
           m_pConfig(pConfig),
-          m_availableDirs(availableDirs) {
+          m_availableDirIds(availableDirIds) {
     Q_UNUSED(parent);
     m_pCreateCrateAction = new QAction(tr("New Crate"),this);
     connect(m_pCreateCrateAction, SIGNAL(triggered()),
             this, SLOT(slotCreateCrate()));
-    connect(parent, SIGNAL(availableDirsChanged(QStringList,QString)),
-            &m_crateTableModel, SLOT(slotAvailableDirsChanged(QStringList,QString)));
+    connect(parent, SIGNAL(availableDirsChanged(QList<int>,QString)),
+            &m_crateTableModel, SLOT(slotAvailableDirsChanged(QList<int>,QString)));
 
     m_pDeleteCrateAction = new QAction(tr("Remove"),this);
     connect(m_pDeleteCrateAction, SIGNAL(triggered()),
@@ -447,7 +447,7 @@ void CrateFeature::slotExportPlaylist(){
     QList<QString> playlist_items;
     // Create a new table model since the main one might have an active search.
     QScopedPointer<CrateTableModel> pCrateTableModel(
-        new CrateTableModel(this, m_pTrackCollection,m_pConfig, m_availableDirs));
+        new CrateTableModel(this, m_pTrackCollection,m_pConfig, m_availableDirIds));
     pCrateTableModel->setTableModel(m_crateTableModel.getCrate(),QString());
     pCrateTableModel->select();
 

@@ -18,7 +18,7 @@ class DlgPrepare : public QWidget, public Ui::DlgPrepare, public virtual Library
     DlgPrepare(QWidget *parent,
                ConfigObject<ConfigValue>* pConfig,
                TrackCollection* pTrackCollection,
-               QStringList availableDirs);
+               QList<int> availableDirIds);
     virtual ~DlgPrepare();
 
     virtual void setup(QDomNode node);
@@ -48,7 +48,7 @@ class DlgPrepare : public QWidget, public Ui::DlgPrepare, public virtual Library
     void loadTrackToPlayer(TrackPointer pTrack, QString player);
     void analyzeTracks(QList<int> trackIds);
     void stopAnalysis();
-    void availableDirsChanged(QStringList,QString);
+    void availableDirsChanged(QList<int>,QString);
 
   private:
     //Note m_pTrackTablePlaceholder is defined in the .ui file

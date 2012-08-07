@@ -1,10 +1,12 @@
+#include <QMessageBox>
+
 #include "library/hiddentablemodel.h"
 
 HiddenTableModel::HiddenTableModel(QObject* parent,
                                      TrackCollection* pTrackCollection,
-                                     QStringList availableDirs)
+                                     QList<int> availableDirIds)
         : BaseSqlTableModel(parent, pTrackCollection,
-                            NULL, availableDirs,
+                            NULL, availableDirIds,
                             "mixxx.db.model.missing") {
     setTableModel(0,QString());
 }
@@ -22,20 +24,25 @@ void HiddenTableModel::setTableModel(int id,QString name){
 
     QString filter("mixxx_deleted=1");
 
+    QStringList ids;
+    foreach (int id, m_availableDirIds) {
+        ids << QString::number(id);
+    }
+
     query.prepare("CREATE TEMPORARY VIEW IF NOT EXISTS " + tableName + " AS "
                   "SELECT "
                   + columns.join(",") +
                   " FROM library "
                   "INNER JOIN track_locations "
                   "ON library.location=track_locations.id "
-                  "WHERE " + filter +" AND track_locations.dir in (\""+m_availableDirs.join("\",\"")+"\")");
+                  "WHERE " + filter +" AND track_locations.maindir_id in ("+ids.join(",")+",0)");
     if (!query.exec()) {
         qDebug() << query.executedQuery() << query.lastError();
     }
 
     //Print out any SQL error, if there was one.
     if (query.lastError().isValid()) {
-     	qDebug() << __FILE__ << __LINE__ << query.lastError();
+        qDebug() << __FILE__ << __LINE__ << query.lastError();
     }
 
     QStringList tableColumns;
@@ -66,15 +73,15 @@ void HiddenTableModel::purgeTracks(const QModelIndexList& indices) {
 
 void HiddenTableModel::purgeTracks(const int dirId){
     QSqlQuery query;
+    QList<int> trackIds;
     query.prepare("SELECT library.id FROM library INNER JOIN track_locations "
-                  "ON library.location=track_locations.id "
-                  "WHERE dir_id="+QString::number(dirId));
+                "ON library.location=track_locations.id "
+                "WHERE maindir_id="+QString::number(dirId));
 
     if (!query.exec()) {
         qDebug() << "could not purge tracks from libraryPath "<<dirId;
     }
 
-    QList<int> trackIds;
     while (query.next()) {
         trackIds.append(query.value(query.record().indexOf("id")).toInt());
     }
@@ -96,6 +103,26 @@ void HiddenTableModel::unhideTracks(const QModelIndexList& indices) {
 
    m_trackDAO.unhideTracks(trackIds);
 
+    // TODO(rryan) : do not select, instead route event to BTC and notify from
+    // there.
+    select(); //Repopulate the data model.
+}
+
+void HiddenTableModel::deleteTracks(const QModelIndexList& indices) {
+    QMessageBox::StandardButton btn = QMessageBox::question(
+        NULL, tr("Confirm Delete"),
+        tr("Are you sure you want to delete these files?"),
+        QMessageBox::Yes | QMessageBox::No, QMessageBox::No);
+    if (btn == QMessageBox::No) {
+        return ;
+    }
+
+    QList<int> trackIds;
+    foreach (QModelIndex index, indices) {
+        int trackId = getTrackId(index);
+        trackIds.append(trackId);
+    }
+    m_trackDAO.deleteTracksFromFS(trackIds);
     // TODO(rryan) : do not select, instead route event to BTC and notify from
     // there.
     select(); //Repopulate the data model.
@@ -127,5 +154,6 @@ TrackModel::CapabilitiesFlags HiddenTableModel::getCapabilities() const {
     return TRACKMODELCAPS_NONE
             | TRACKMODELCAPS_PURGE
             | TRACKMODELCAPS_UNHIDE
-            | TRACKMODELCAPS_RELOCATE;
+            | TRACKMODELCAPS_RELOCATE
+            | TRACKMODELCAPS_DELETEFS   ;
 }

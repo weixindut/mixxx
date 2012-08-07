@@ -22,12 +22,12 @@
 PlaylistFeature::PlaylistFeature(QObject* parent,
                                  TrackCollection* pTrackCollection,
                                  ConfigObject<ConfigValue>* pConfig,
-                                 QStringList availableDirs)
-        : BasePlaylistFeature(parent, pConfig, pTrackCollection, availableDirs,
+                                 QList<int> availableDirIds)
+        : BasePlaylistFeature(parent, pConfig, pTrackCollection, availableDirIds,
                               "PLAYLISTHOME") {
     m_pPlaylistTableModel = new PlaylistTableModel(this, pTrackCollection,
                                                    "mixxx.db.model.playlist",
-                                                   pConfig, availableDirs);
+                                                   pConfig, availableDirIds);
     // Setup the sidebar playlist model
     m_playlistTableModel.setTable("Playlists");
     m_playlistTableModel.setFilter("hidden=0");
@@ -36,8 +36,8 @@ PlaylistFeature::PlaylistFeature(QObject* parent,
     m_playlistTableModel.select();
     connect(this, SIGNAL(configChanged(QString,QString)),
             m_pPlaylistTableModel, SLOT(slotConfigChanged(QString,QString)));
-    connect(parent, SIGNAL(availableDirsChanged(QStringList,QString)),
-            m_pPlaylistTableModel, SLOT(slotAvailableDirsChanged(QStringList,QString)));
+    connect(parent, SIGNAL(availableDirsChanged(QList<int>,QString)),
+            m_pPlaylistTableModel, SLOT(slotAvailableDirsChanged(QSList<int>,QString)));
     //construct child model
     TreeItem *rootItem = new TreeItem();
     m_childModel.setRootItem(rootItem);

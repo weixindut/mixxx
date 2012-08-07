@@ -54,7 +54,7 @@ class TrackCollection : public QObject
     bool importDirectory(QString directory, TrackDAO &trackDao,
                          const QStringList & nameFilters,
                          QSet<int>& restoredTracks,
-                         QString dir,
+                         const int dirId,
                          volatile bool* cancel);
 
     void resetLibaryCancellation();

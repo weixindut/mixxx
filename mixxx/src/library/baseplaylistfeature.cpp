@@ -14,7 +14,7 @@
 BasePlaylistFeature::BasePlaylistFeature(
     QObject* parent, ConfigObject<ConfigValue>* pConfig,
     TrackCollection* pTrackCollection,
-    QStringList availableDirs,
+    QList<int> availableDirIds,
     QString rootViewName)
         : LibraryFeature(parent),
           m_pConfig(pConfig),
@@ -23,7 +23,7 @@ BasePlaylistFeature::BasePlaylistFeature(
           m_trackDao(pTrackCollection->getTrackDAO()),
           m_pPlaylistTableModel(NULL),
           m_playlistTableModel(this, pTrackCollection->getDatabase()),
-          m_availableDirs(availableDirs),
+          m_availableDirIds(availableDirIds),
           m_rootViewName(rootViewName) {
     m_pCreatePlaylistAction = new QAction(tr("New Playlist"),this);
     connect(m_pCreatePlaylistAction, SIGNAL(triggered()),
@@ -300,7 +300,7 @@ void BasePlaylistFeature::slotExportPlaylist() {
     QScopedPointer<PlaylistTableModel> pPlaylistTableModel(
         new PlaylistTableModel(this, m_pTrackCollection,
                                "mixxx.db.model.playlist_export",
-                                m_pConfig, m_availableDirs));
+                                m_pConfig, m_availableDirIds));
 
     pPlaylistTableModel->setTableModel(m_pPlaylistTableModel->getPlaylist(),QString());
     pPlaylistTableModel->setSort(pPlaylistTableModel->fieldIndex(PLAYLISTTRACKSTABLE_POSITION), Qt::AscendingOrder);

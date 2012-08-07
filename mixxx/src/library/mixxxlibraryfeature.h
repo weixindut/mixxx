@@ -21,7 +21,7 @@ class MixxxLibraryFeature : public LibraryFeature {
     MixxxLibraryFeature(QObject* parent,
                         TrackCollection* pTrackCollection,
                         ConfigObject<ConfigValue>* pConfig,
-                        QStringList availableDirs);
+                        QList<int> availableDirIds);
     virtual ~MixxxLibraryFeature();
 
     QVariant title();
@@ -47,6 +47,7 @@ class MixxxLibraryFeature : public LibraryFeature {
     void slotDirsChanged(QString,QString);
 
   private:
+    TrackCollection* m_pTrackCollection;
     const QString kHiddenTitle;
     QSharedPointer<BaseTrackCache> m_pBaseTrackCache;
     LibraryTableModel* m_pLibraryTableModel;

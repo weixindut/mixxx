@@ -14,12 +14,12 @@ const QString LibraryTableModel::DEFAULT_LIBRARYFILTER =
 LibraryTableModel::LibraryTableModel(QObject* parent,
                                      TrackCollection* pTrackCollection,
                                      ConfigObject<ConfigValue>* pConfig,
-                                     QStringList availableDirs,
+                                     QList<int> availableDirIds,
                                      QString settingsNamespace)
         : BaseSqlTableModel(parent, pTrackCollection, pConfig,
-                            availableDirs, settingsNamespace){
-    connect(parent, SIGNAL(availableDirsChanged(QStringList,QString)),
-            this, SLOT(slotAvailableDirsChanged(QStringList,QString)));
+                            availableDirIds, settingsNamespace){
+    connect(parent, SIGNAL(availableDirsChanged(QList<int>,QString)),
+            this, SLOT(slotAvailableDirsChanged(QList<int>,QString)));
     setTableModel(0,QString());
 }
 
@@ -34,7 +34,7 @@ void LibraryTableModel::setTableModel(int id, QString name){
     //prepareLibrary give a NULL to the constructor so check for it
     bool showMissing;
     if (m_pConfig) {
-        showMissing = m_pConfig->getValueString(ConfigKey("[Library]","ShowMissingSongs")).toInt();
+        showMissing = m_pConfig->getValueString(ConfigKey("[Library]","ShowMissingSongs"),"1").toInt();
     } else {
         showMissing = false;
     }
@@ -50,16 +50,23 @@ void LibraryTableModel::setTableModel(int id, QString name){
     tableName.append("_"+name);
     qDebug() <<"kain88 tablename="<<tableName;
 
-    qDebug() << "kani88kain88kain88kin88kain88aksjdaksjdakdakdj";
-    qDebug() << m_availableDirs;
+    qDebug() << m_availableDirIds;
+    QStringList ids;
+    foreach (int id, m_availableDirIds) {
+        ids << QString::number(id);
+    }
+    qDebug() << ids;
+
     QSqlQuery query(m_pTrackCollection->getDatabase());
     QString queryString = "CREATE TEMPORARY VIEW IF NOT EXISTS "+tableName+" AS "
     // QString queryString = "CREATE TEMPORARY "+tableName+" AS "
             "SELECT " + columns.join(", ") +
             " FROM library INNER JOIN track_locations "
             "ON library.location = track_locations.id "
-            "WHERE (" + libraryFilter + ") AND track_locations.dir in (\""+m_availableDirs.join("\",\"")+"\")" ;
+            "WHERE (" + libraryFilter + ") AND track_locations.maindir_id in ("+ids.join(",")+",0)" ;
     query.prepare(queryString);
+    qDebug() << "kain88 LTM query string";
+    qDebug() << queryString;
     if (!query.exec()) {
         LOG_FAILED_QUERY(query);
     }
@@ -84,6 +91,7 @@ int LibraryTableModel::addTracks(const QModelIndex& index, QList<QString> locati
         fileInfoList.append(QFileInfo(fileLocation));
     }
     QList<int> trackIds = m_trackDAO.addTracks(fileInfoList, true);
+    select();
     return trackIds.size();
 }
 

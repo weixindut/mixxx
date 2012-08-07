@@ -22,7 +22,7 @@ class DlgAutoDJ : public QWidget, public Ui::DlgAutoDJ, public virtual LibraryVi
   public:
     DlgAutoDJ(QWidget *parent, ConfigObject<ConfigValue>* pConfig,
               TrackCollection* pTrackCollection, MixxxKeyboard* pKeyboard,
-              QStringList availableDirs);
+              QList<int> availableDirIds);
     virtual ~DlgAutoDJ();
 
     virtual void setup(QDomNode node);
@@ -52,7 +52,8 @@ class DlgAutoDJ : public QWidget, public Ui::DlgAutoDJ, public virtual LibraryVi
   signals:
     void loadTrack(TrackPointer tio);
     void loadTrackToPlayer(TrackPointer tio, QString group);
-    void availableDirsChanged(QStringList, QString);
+    void availableDirsChanged(QList<int>, QString);
+    void configChanged(QString,QString);
 
   private:
     enum ADJstates {

@@ -12,7 +12,7 @@
 DlgPrepare::DlgPrepare(QWidget* parent,
                        ConfigObject<ConfigValue>* pConfig,
                        TrackCollection* pTrackCollection,
-                       QStringList availableDirs)
+                       QList<int> availableDirIds)
         : QWidget(parent),
           m_pConfig(pConfig),
           m_pTrackCollection(pTrackCollection),
@@ -35,9 +35,9 @@ DlgPrepare::DlgPrepare(QWidget* parent,
     box->insertWidget(1, m_pPrepareLibraryTableView);
 
     m_pPrepareLibraryTableModel =  new PrepareLibraryTableModel(this,
-                                    pTrackCollection,availableDirs);
-    connect(this, SIGNAL(availableDirsChanged(QStringList,QString)),
-            m_pPrepareLibraryTableModel, SLOT(slotAvailableDirsChanged(QStringList,QString)));
+                                    pTrackCollection,availableDirIds);
+    connect(this, SIGNAL(availableDirsChanged(QList<int>,QString)),
+            m_pPrepareLibraryTableModel, SLOT(slotAvailableDirsChanged(QList<int>,QString)));
     m_pPrepareLibraryTableView->loadTrackModel(m_pPrepareLibraryTableModel);
 
 /*

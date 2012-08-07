@@ -2,7 +2,7 @@
 
 TraktorPlaylistModel::TraktorPlaylistModel(QObject* parent,
                                        TrackCollection* pTrackCollection)
-        : BaseSqlTableModel(parent, pTrackCollection, NULL, QStringList(),
+        : BaseSqlTableModel(parent, pTrackCollection, NULL, QList<int>(),
                             "mixxx.db.model.traktor.playlistmodel"){
 }
 

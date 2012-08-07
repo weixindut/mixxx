@@ -19,15 +19,13 @@ const QString AutoDJFeature::m_sAutoDJViewName = QString("Auto DJ");
 AutoDJFeature::AutoDJFeature(QObject* parent,
                              ConfigObject<ConfigValue>* pConfig,
                              TrackCollection* pTrackCollection,
-                             QStringList availableDirs)
+                             QList<int> availableDirIds)
         : LibraryFeature(parent),
           m_pConfig(pConfig),
           m_pTrackCollection(pTrackCollection),
           m_playlistDao(pTrackCollection->getPlaylistDAO()),
-          m_availableDirs(availableDirs){
+          m_availableDirIds(availableDirIds){
     m_pAutoDJView = NULL;
-    connect(parent ,SIGNAL(availableDirsChanged(QStringList, QString)),
-            this, SIGNAL(availableDirs(QStringList, QString)));
 }
 
 AutoDJFeature::~AutoDJFeature() {
@@ -47,15 +45,17 @@ void AutoDJFeature::bindWidget(WLibrarySidebar* /*sidebarWidget*/,
     m_pAutoDJView = new DlgAutoDJ(libraryWidget,
                                   m_pConfig,
                                   m_pTrackCollection,
-                                  keyboard,m_availableDirs);
+                                  keyboard,m_availableDirIds);
     m_pAutoDJView->installEventFilter(keyboard);
     libraryWidget->registerView(m_sAutoDJViewName, m_pAutoDJView);
     connect(m_pAutoDJView, SIGNAL(loadTrack(TrackPointer)),
             this, SIGNAL(loadTrack(TrackPointer)));
     connect(m_pAutoDJView, SIGNAL(loadTrackToPlayer(TrackPointer, QString)),
             this, SIGNAL(loadTrackToPlayer(TrackPointer, QString)));
-    connect(this, SIGNAL(availableDirsChanged(QStringList,QString)),
-            m_pAutoDJView, SIGNAL(availableDirsChanged(QStringList,QString)));
+    connect(this, SIGNAL(availableDirsChanged(QList<int>,QString)),
+            m_pAutoDJView, SIGNAL(availableDirsChanged(QList<int>,QString)));
+    connect(this, SIGNAL(configChanged(QString,QString)),
+            m_pAutoDJView, SIGNAL(configChanged(QString,QString)));
 }
 
 TreeItemModel* AutoDJFeature::getChildModel() {

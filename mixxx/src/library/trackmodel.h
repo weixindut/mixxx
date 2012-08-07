@@ -41,6 +41,7 @@ class TrackModel {
         TRACKMODELCAPS_HIDE           = 0x3000,
         TRACKMODELCAPS_UNHIDE         = 0x4000,
         TRACKMODELCAPS_PURGE          = 0x8000,
+        TRACKMODELCAPS_DELETEFS       = 0x1004
     };
 
     typedef int CapabilitiesFlags; /** Enables us to do ORing */
@@ -82,6 +83,9 @@ class TrackModel {
         Q_UNUSED(indices);
     }
     virtual void relocateTracks(const QModelIndexList& indices) {
+        Q_UNUSED(indices);
+    }
+    virtual void deleteTracks(const QModelIndexList& indices) {
         Q_UNUSED(indices);
     }
     virtual void purgeTracks(const QModelIndexList& indices) {

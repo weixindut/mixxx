@@ -5,10 +5,10 @@ PlaylistTableModel::PlaylistTableModel(QObject* parent,
                                     TrackCollection* pTrackCollection,
                                     QString settingsNamespace,
                                     ConfigObject<ConfigValue>* pConfig,
-                                    QStringList availableDirs,
+                                    QList<int> availableDirIds,
                                     bool showAll)
         : BaseSqlTableModel(parent, pTrackCollection, pConfig,
-                            availableDirs, settingsNamespace),
+                            availableDirIds, settingsNamespace),
                             m_playlistDao(m_pTrackCollection->getPlaylistDAO()),
                             m_iPlaylistId(-1),
                             m_showAll(showAll) {
@@ -43,7 +43,7 @@ void PlaylistTableModel::setTableModel(int playlistId, QString name) {
         tableColumns << PLAYLISTTRACKSTABLE_TRACKID
                     << PLAYLISTTRACKSTABLE_POSITION
                     << PLAYLISTTRACKSTABLE_DATETIMEADDED;
-    bool showMissing = m_pConfig->getValueString(ConfigKey("[Library]","ShowMissingSongs")).toInt();
+    bool showMissing = m_pConfig->getValueString(ConfigKey("[Library]","ShowMissingSongs"),"1").toInt();
     if (showMissing) {
         filter = "library.mixxx_deleted=0";
         playlistTableName.append("_missing");
@@ -68,8 +68,11 @@ void PlaylistTableModel::setTableModel(int playlistId, QString name) {
     if (!m_showAll) {
         queryString.append(" AND " + filter);
     }
-    qDebug() << m_availableDirs;
-    queryString.append(" AND track_locations.dir in (\""+m_availableDirs.join("\",\"")+"\")");
+    QStringList ids;
+    foreach (int id, m_availableDirIds) {
+        ids << QString::number(id);
+    }
+    queryString.append(" AND track_locations.maindir_id in ("+ids.join(",")+",0)");
     qDebug() << queryString;
     query.prepare(queryString);
     if (!query.exec()) {

@@ -21,7 +21,7 @@ class PrepareFeature : public LibraryFeature {
     PrepareFeature(QObject* parent,
                    ConfigObject<ConfigValue>* pConfig,
                    TrackCollection* pTrackCollection,
-                   QStringList availableDirs);
+                   QList<int> availableDirIds);
     virtual ~PrepareFeature();
 
     QVariant title();
@@ -43,7 +43,7 @@ class PrepareFeature : public LibraryFeature {
     void trackAnalysisProgress(TrackPointer pTrack, int progress);
     void trackAnalysisFinished(TrackPointer pTrack);
     void analysisActive(bool bActive);
-    void availableDirsChanged(QStringList,QString);
+    void availableDirsChanged(QList<int>,QString);
 
   public slots:
     void activate();
@@ -68,7 +68,7 @@ class PrepareFeature : public LibraryFeature {
     TreeItemModel m_childModel;
     const static QString m_sPrepareViewName;
     DlgPrepare* m_pPrepareView;
-    QStringList m_availableDirs;
+    QList<int> m_availableDirIds;
 };
 
 

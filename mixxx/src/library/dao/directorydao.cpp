@@ -93,18 +93,39 @@ QStringList DirectoryDAO::getDirs(){
     return dirs;
 }
 
-int DirectoryDAO::getDirId(QString dir){
+QList<int> DirectoryDAO::getDirIds(QStringList& dirs){
     QSqlQuery query(m_database);
     query.prepare("SELECT " % DIRECTORYDAO_ID % " FROM " % DIRECTORYDAO_TABLE %
-                  " WHERE " % DIRECTORYDAO_DIR %"=\"" % dir % "\"");
+                  " WHERE " % DIRECTORYDAO_DIR %" in (\"" % dirs.join("\",\"") % "\")");
+    qDebug() << "kain88 query to parse the contents";
+    qDebug() << query.lastQuery();
+    if (!query.exec()) {
+        LOG_FAILED_QUERY(query) << "couldn't find directory:"<<dirs;
+    }
+    QList<int> ids;
+    while (query.next()) {
+        ids.append(query.value(query.record().indexOf(DIRECTORYDAO_ID)).toInt());
+    }
+
+    if (dirs.size() != ids.size()) {
+        qDebug() << "There is an sql error there are duplicated dirs in the library";
+    }
+    qDebug() << ids;
+    return ids;
+}
+
+int DirectoryDAO::getDirId(const QString dir){
+    QSqlQuery query(m_database);
+    query.prepare("SELECT " % DIRECTORYDAO_ID % " FROM " % DIRECTORYDAO_TABLE %
+                  " WHERE " % DIRECTORYDAO_DIR %" in (\"" % dir % "\")");
     if (!query.exec()) {
         LOG_FAILED_QUERY(query) << "couldn't find directory:"<<dir;
     }
-    qDebug() << query.size() << "number of dirs with that name";
-    int id =0;
+    int id=0;
     while (query.next()) {
         id = query.value(query.record().indexOf(DIRECTORYDAO_ID)).toInt();
     }
+    qDebug() << query.size() << "number of dirs with that name :" << dir;
     return id;
 }
 
