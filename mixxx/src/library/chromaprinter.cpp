@@ -2,7 +2,7 @@
 #include <chromaprint.h>
 
 #include "library/chromaprinter.h"
-// #include "soundsourceproxy.h"
+#include "soundsourceproxy.h"
 #include "defs.h"
 
 chromaprinter::chromaprinter(QObject* parent)

@@ -63,6 +63,7 @@ class DlgTrackInfo : public QDialog, public Ui::DlgTrackInfo {
     QTime m_bpmTapTimer;
 
     QMutex m_mutex;
+    //TODO(kain88) use references instead
     DlgTagFetcher* m_pDlgTagFetcher;
     TagFetcher* m_pTagFetcher;
 

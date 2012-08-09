@@ -3,8 +3,6 @@
 
 #include "library/basesqltablemodel.h"
 
-class TrackCollection;
-
 class ITunesPlaylistModel : public BaseSqlTableModel {
     Q_OBJECT
   public:

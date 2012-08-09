@@ -11,7 +11,6 @@ DirectoryDAO::DirectoryDAO(QSqlDatabase& database)
 
 DirectoryDAO::DirectoryDAO(const DirectoryDAO& directoryDao)
             : m_database(directoryDao.m_database){
-    
 }
 
 DirectoryDAO::~DirectoryDAO(){
@@ -97,8 +96,6 @@ QList<int> DirectoryDAO::getDirIds(QStringList& dirs){
     QSqlQuery query(m_database);
     query.prepare("SELECT " % DIRECTORYDAO_ID % " FROM " % DIRECTORYDAO_TABLE %
                   " WHERE " % DIRECTORYDAO_DIR %" in (\"" % dirs.join("\",\"") % "\")");
-    qDebug() << "kain88 query to parse the contents";
-    qDebug() << query.lastQuery();
     if (!query.exec()) {
         LOG_FAILED_QUERY(query) << "couldn't find directory:"<<dirs;
     }
@@ -109,6 +106,7 @@ QList<int> DirectoryDAO::getDirIds(QStringList& dirs){
 
     if (dirs.size() != ids.size()) {
         qDebug() << "There is an sql error there are duplicated dirs in the library";
+        qDebug() << query.lastQuery();
     }
     qDebug() << ids;
     return ids;
@@ -125,7 +123,6 @@ int DirectoryDAO::getDirId(const QString dir){
     while (query.next()) {
         id = query.value(query.record().indexOf(DIRECTORYDAO_ID)).toInt();
     }
-    qDebug() << query.size() << "number of dirs with that name :" << dir;
     return id;
 }
 
@@ -133,7 +130,7 @@ bool DirectoryDAO::updateTrackLocations(QString dir){
     QString dirId = QString::number(getDirId(dir));
     ScopedTransaction transaction(m_database);
     QSqlQuery query(m_database);
-    query.prepare("UPDATE track_locations SET "%DIRECTORYDAO_ID%" = "%dirId);
+    query.prepare("UPDATE track_locations SET maindir_id = "%dirId);
     if (!query.exec()) {
         LOG_FAILED_QUERY(query) << " could not update TrackLocations";
         return false;

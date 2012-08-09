@@ -26,8 +26,8 @@
 DlgPrefPlaylist::DlgPrefPlaylist(QWidget * parent, ConfigObject<ConfigValue> * config)
             : QWidget(parent), 
                 m_model(),
-                m_dirsModified(false) {
-    m_pconfig = config;
+                m_dirsModified(false),
+                m_pconfig(config) {
     setupUi(this);
     slotUpdate();
     checkbox_ID3_sync->setVisible(false);
@@ -57,7 +57,6 @@ DlgPrefPlaylist::DlgPrefPlaylist(QWidget * parent, ConfigObject<ConfigValue> * c
     //connect(pushButtonM4A, SIGNAL(clicked()), this, SLOT(slotM4ACheck()));
     connect(pushButtonExtraPlugins, SIGNAL(clicked()),
             this, SLOT(slotExtraPlugins()));
-
 
     if (!PromoTracksFeature::isSupported(m_pconfig)) {
         groupBoxBundledSongs->hide();
@@ -106,7 +105,7 @@ void DlgPrefPlaylist::slotExtraPlugins()
 
 /*
 void DlgPrefPlaylist::slotM4ADownloadProgress(qint64 bytesReceived,
-                                            qint64 bytesTotal)
+                                              qint64 bytesTotal)
 {
     pushButtonM4A->setText(QString("%1\%").arg(100*(float)bytesReceived/bytesTotal, 0, 'g', 1));
 }
@@ -203,9 +202,7 @@ void DlgPrefPlaylist::slotBrowseDir() {
 void DlgPrefPlaylist::slotRemoveDir() {
     QModelIndex index = list->currentIndex();
     QString fd = index.data().toString();
-    qDebug() << "kain88 befor emit";
     emit(dirsChanged("removed",fd));
-    qDebug() << "kain88 after emit";
     slotUpdate();
     m_dirsModified = true;
 }
@@ -225,8 +222,7 @@ void DlgPrefPlaylist::slotRelocateDir() {
     }
 }
 
-void DlgPrefPlaylist::slotApply()
-{
+void DlgPrefPlaylist::slotApply() {
 
     m_pconfig->set(ConfigKey("[Promo]","StatTracking"),
                 ConfigValue((int)checkBoxPromoStats->isChecked()));

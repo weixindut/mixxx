@@ -2,8 +2,6 @@
 #define AUTOMOUNT_H
 
 #include <QtCore>
-// #include <QTimer>
-// #include <QString>
 
 // This class will periodically check if there are new storage devices connected
 // and inform the main app if this happens

@@ -184,6 +184,7 @@ void MixxxLibraryFeature::onLazyChildExpandation(const QModelIndex &index){
     // Nothing to do because the childmodel is not of lazy nature.
 }
 
+//TODO(kain88) check if this causes the other features to update their TMs as well
 void MixxxLibraryFeature::slotDirsChanged(QString op, QString dir){
     if (op=="added") {
         m_directoryDAO.addDirectory(dir);

@@ -18,7 +18,7 @@
 #ifndef DLGPREFPLAYLIST_H
 #define DLGPREFPLAYLIST_H
 
-#include <QtGui>
+#include <QStandardItemModel>
 
 #include "ui_dlgprefplaylistdlg.h"
 #include "configobject.h"
@@ -62,14 +62,11 @@ class DlgPrefPlaylist : public QWidget, public Ui::DlgPrefPlaylistDlg  {
 
   private:
     bool initializeModel();
-
-    ConfigObject<ConfigValue> *m_pconfig;
-    // QSqlQueryModel m_model;
     QStandardItemModel m_model;
     bool m_dirsModified;
+    ConfigObject<ConfigValue> *m_pconfig;
     // SoundSource Plugin Downloader
     //PluginDownloader* m_pPluginDownloader;
-    
 };
 
 #endif

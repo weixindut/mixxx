@@ -1,4 +1,3 @@
-#include <QApplication>
 
 #include "library/librarytablemodel.h"
 #include "library/queryutil.h"
@@ -34,7 +33,8 @@ void LibraryTableModel::setTableModel(int id){
     //prepareLibrary give a NULL to the constructor so check for it
     bool showMissing;
     if (m_pConfig) {
-        showMissing = m_pConfig->getValueString(ConfigKey("[Library]","ShowMissingSongs"),"1").toInt();
+        showMissing = m_pConfig->getValueString(
+                        ConfigKey("[Library]","ShowMissingSongs"),"1").toInt();
     } else {
         showMissing = false;
     }
@@ -43,7 +43,6 @@ void LibraryTableModel::setTableModel(int id){
     if (showMissing) {
         libraryFilter = "mixxx_deleted=0";
         tableName.append("_issing_");
-        // qDebug() << "hei show also missing songs";
     } else {
         libraryFilter = "mixxx_deleted=0 AND fs_deleted=0";
     }
@@ -52,19 +51,14 @@ void LibraryTableModel::setTableModel(int id){
         ids << QString::number(id);
     }
     tableName.append(ids.join(""));
-    qDebug() << "kain show the tablename of ltm";
-    qDebug() << tableName;
 
     QSqlQuery query(m_pTrackCollection->getDatabase());
     QString queryString = "CREATE TEMPORARY VIEW IF NOT EXISTS "+tableName+" AS "
-    // QString queryString = "CREATE TEMPORARY "+tableName+" AS "
             "SELECT " + columns.join(", ") +
             " FROM library INNER JOIN track_locations "
             "ON library.location = track_locations.id "
             "WHERE (" + libraryFilter + ") AND track_locations.maindir_id in ("+ids.join(",")+",0)" ;
     query.prepare(queryString);
-    qDebug() << "kain88 LTM query string";
-    qDebug() << queryString;
     if (!query.exec()) {
         LOG_FAILED_QUERY(query);
     }
@@ -133,6 +127,7 @@ TrackModel::CapabilitiesFlags LibraryTableModel::getCapabilities() const {
             | TRACKMODELCAPS_RELOCATE;
 }
 
+//TODO(kain88) hm this should go into BSTM
 void LibraryTableModel::slotLoadTrackFailed(TrackPointer pTrack){
     m_trackDAO.markTrackAsDeleted(pTrack);
 }

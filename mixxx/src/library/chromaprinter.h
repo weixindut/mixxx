@@ -5,7 +5,8 @@
 #include <QFile>
 
 #include "trackinfoobject.h"
-#include "soundsourceproxy.h"
+
+class SoundSourceProxy;
 
 class chromaprinter: public QObject {
   Q_OBJECT

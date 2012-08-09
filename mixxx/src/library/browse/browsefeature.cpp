@@ -114,13 +114,11 @@ BrowseFeature::BrowseFeature(QObject* parent,
 }
 
 BrowseFeature::~BrowseFeature() {
-    /*
     delete m_pAddQuickLinkAction;
     delete m_pRemoveQuickLinkAction;
     delete m_pAddtoLibraryAction;
     delete m_pLastRightClickedItem;
     delete m_pQuickLinkItem;
-    */
 }
 
 QVariant BrowseFeature::title() {
@@ -145,6 +143,7 @@ void BrowseFeature::slotAddToLibrary() {
         return;
     }
 
+    //TODO(kain88) signal the library that we have a new dir available
     QString spath = m_pLastRightClickedItem->dataPath().toString();
     m_directoryDao.addDirectory(spath);
 }

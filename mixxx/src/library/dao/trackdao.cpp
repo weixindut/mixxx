@@ -396,8 +396,6 @@ bool TrackDAO::addTracksAdd(TrackInfoObject* pTrack, bool unremove,const int dir
 
     if (!m_pQueryTrackLocationInsert->exec()) {
         qDebug() << "Location " << pTrack->getLocation() << " is already in the DB";
-        qDebug() << m_pQueryTrackLocationInsert->lastError();
-        qDebug() << m_pQueryTrackLocationInsert->lastQuery();
         // Inserting into track_locations failed, so the file already
         // exists. Query for its trackLocationId.
 
@@ -677,7 +675,8 @@ void TrackDAO::deleteTracksFromFS(QList<int> ids){
     FieldEscaper escaper(m_database);
     QStringList locationList;
     while (query.next()) {
-        locationList << query.value(query.record().indexOf("location")).toString();
+        locationList << escaper.escapeString(query.value(
+                        query.record().indexOf("location")).toString());
     }
 
     foreach (QString loc, locationList) {
@@ -1130,8 +1129,6 @@ void TrackDAO::detectMovedFiles(QSet<int>& tracksMovedSetOld, QSet<int>& tracksM
         Q_ASSERT(query2.exec());
 
         Q_ASSERT(query2.size() <= 1); //WTF duplicate tracks?
-        //ok why do we need while loops here, thats just sucks
-        //for understanding code
         while (query2.next()) {
             newTrackLocationId = query2.value(query2.record().indexOf("id")).toInt();
             qDebug() << "Found moved track!" << checksum;

@@ -3,8 +3,6 @@
 
 #include "library/basesqltablemodel.h"
 
-class TrackCollection;
-
 class TraktorTableModel : public BaseSqlTableModel {
     Q_OBJECT
   public:

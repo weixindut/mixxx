@@ -226,6 +226,7 @@ QString PlaylistFeature::getRootViewHtml() const {
     return html;
 }
 
+//TODO(kain88) is this still connected?
 void PlaylistFeature::slotConfigChanged(QString identifier, QString key){
     emit(configChanged(identifier,key));
 }

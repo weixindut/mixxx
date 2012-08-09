@@ -64,7 +64,7 @@ void HiddenTableModel::purgeTracks(const QModelIndexList& indices) {
         trackIds.append(trackId);
     }
 
-   m_trackDAO.purgeTracks(trackIds);
+    m_trackDAO.purgeTracks(trackIds);
 
     // TODO(rryan) : do not select, instead route event to BTC and notify from
     // there.

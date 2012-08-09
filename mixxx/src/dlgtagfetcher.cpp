@@ -36,6 +36,7 @@ DlgTagFetcher::DlgTagFetcher(QWidget *parent)
     results->setColumnWidth(3, 160); // Artist column
     results->setColumnWidth(4, 160); // Album column
 
+    //TODO(kain88) read this from config
     apikey->setPlaceholderText("API-Key");
     // QString apiKey("cRYbgf0M");
     // apikey->insert("");
