@@ -8,16 +8,16 @@ HiddenTableModel::HiddenTableModel(QObject* parent,
         : BaseSqlTableModel(parent, pTrackCollection,
                             NULL, availableDirIds,
                             "mixxx.db.model.missing") {
-    setTableModel(0,QString());
+    setTableModel();
 }
 
 HiddenTableModel::~HiddenTableModel() {
 }
 
-void HiddenTableModel::setTableModel(int id,QString name){
+void HiddenTableModel::setTableModel(int id){
     Q_UNUSED(id);
     QSqlQuery query;
-    QString tableName("hidden_songs_"+name);
+    QString tableName("hidden_songs_");
 
     QStringList columns;
     columns << "library." + LIBRARYTABLE_ID;
@@ -28,7 +28,7 @@ void HiddenTableModel::setTableModel(int id,QString name){
     foreach (int id, m_availableDirIds) {
         ids << QString::number(id);
     }
-
+    tableName.append(ids.join(""));
     query.prepare("CREATE TEMPORARY VIEW IF NOT EXISTS " + tableName + " AS "
                   "SELECT "
                   + columns.join(",") +
@@ -86,7 +86,7 @@ void HiddenTableModel::purgeTracks(const int dirId){
         trackIds.append(query.value(query.record().indexOf("id")).toInt());
     }
     qDebug() << "starting to purge Tracks " << trackIds;
-   m_trackDAO.purgeTracks(trackIds);
+    m_trackDAO.purgeTracks(trackIds); 
 
     // TODO(rryan) : do not select, instead route event to BTC and notify from
     // there.
@@ -155,5 +155,5 @@ TrackModel::CapabilitiesFlags HiddenTableModel::getCapabilities() const {
             | TRACKMODELCAPS_PURGE
             | TRACKMODELCAPS_UNHIDE
             | TRACKMODELCAPS_RELOCATE
-            | TRACKMODELCAPS_DELETEFS   ;
+            | TRACKMODELCAPS_DELETEFS;
 }

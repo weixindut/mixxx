@@ -20,13 +20,13 @@ LibraryTableModel::LibraryTableModel(QObject* parent,
                             availableDirIds, settingsNamespace){
     connect(parent, SIGNAL(availableDirsChanged(QList<int>,QString)),
             this, SLOT(slotAvailableDirsChanged(QList<int>,QString)));
-    setTableModel(0,QString());
+    setTableModel();
 }
 
 LibraryTableModel::~LibraryTableModel() {
 }
 
-void LibraryTableModel::setTableModel(int id, QString name){
+void LibraryTableModel::setTableModel(int id){
     Q_UNUSED(id);
     QStringList columns;
     columns << "library."+LIBRARYTABLE_ID;
@@ -38,24 +38,22 @@ void LibraryTableModel::setTableModel(int id, QString name){
     } else {
         showMissing = false;
     }
-    QString tableName = "library_view";
+    QString tableName = "library_view_";
     QString libraryFilter;
     if (showMissing) {
         libraryFilter = "mixxx_deleted=0";
-        tableName.append("_missing");
-        qDebug() << "hei show also missing songs";
+        tableName.append("_issing_");
+        // qDebug() << "hei show also missing songs";
     } else {
         libraryFilter = "mixxx_deleted=0 AND fs_deleted=0";
     }
-    tableName.append("_"+name);
-    qDebug() <<"kain88 tablename="<<tableName;
-
-    qDebug() << m_availableDirIds;
     QStringList ids;
     foreach (int id, m_availableDirIds) {
         ids << QString::number(id);
     }
-    qDebug() << ids;
+    tableName.append(ids.join(""));
+    qDebug() << "kain show the tablename of ltm";
+    qDebug() << tableName;
 
     QSqlQuery query(m_pTrackCollection->getDatabase());
     QString queryString = "CREATE TEMPORARY VIEW IF NOT EXISTS "+tableName+" AS "

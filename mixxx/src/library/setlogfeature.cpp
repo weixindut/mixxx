@@ -207,7 +207,7 @@ void SetlogFeature::slotJoinWithPrevious() {
             int previousPlaylistId = m_playlistDao.getPreviousPlaylist(currentPlaylistId, PlaylistDAO::PLHT_SET_LOG);
             if (previousPlaylistId >= 0) {
 
-                m_pPlaylistTableModel->setTableModel(previousPlaylistId,QString());
+                m_pPlaylistTableModel->setTableModel(previousPlaylistId);
 
                 if (currentPlaylistId == m_playlistId) {
                     // mark all the Tracks in the previous Playlist as played
@@ -301,7 +301,7 @@ void SetlogFeature::slotPlaylistTableChanged(int playlistId) {
 
         if (type != PlaylistDAO::PLHT_UNKNOWN) {
             // Switch the view to the playlist.
-            m_pPlaylistTableModel->setTableModel(playlistId,QString());
+            m_pPlaylistTableModel->setTableModel(playlistId);
             // Update selection
             emit(featureSelect(this, m_lastRightClickedIndex));
         }

@@ -9,7 +9,7 @@ class HiddenTableModel : public BaseSqlTableModel {
     HiddenTableModel(QObject* parent, TrackCollection* pTrackCollection,
                      QList<int> availableDirIds);
     virtual ~HiddenTableModel();
-    void setTableModel(int,QString);
+    void setTableModel(int id = -1);
     bool isColumnInternal(int column);
     bool isColumnHiddenByDefault(int column);
     void purgeTracks(const QModelIndexList& indices);

@@ -15,7 +15,7 @@ class CrateTableModel : public BaseSqlTableModel {
                     QList<int> availableDirIds);
     virtual ~CrateTableModel();
 
-    void setTableModel(int crateId,QString name);
+    void setTableModel(int crateId=-1);
     int getCrate() const {
         return m_iCrateId;
     }

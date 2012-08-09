@@ -796,21 +796,21 @@ void BaseSqlTableModel::hideTracks(const QModelIndexList& indices) {
 void BaseSqlTableModel::slotConfigChanged(QString identifier, QString key){
     Q_UNUSED(identifier);
     if (key=="ShowMissingSongs") {
-        setTableModel(-1, QString());
+        setTableModel();
         select();
     }
 }
 
 void BaseSqlTableModel::slotAvailableDirsChanged(QList<int> availableDirIds, 
                                                  QString name){
+    Q_UNUSED(name);
     m_availableDirIds = availableDirIds;
-    setTableModel(0, name);
+    setTableModel();
     select();
 }
 
-void BaseSqlTableModel::setTableModel(int id,QString name){
+void BaseSqlTableModel::setTableModel(int id) {
     Q_UNUSED(id);
-    Q_UNUSED(name);
 }
 
 void BaseSqlTableModel::relocateTracks(const QModelIndexList& indices) {
@@ -826,12 +826,12 @@ void BaseSqlTableModel::relocateTracks(const QModelIndexList& indices) {
 
         if (!newLocation.isEmpty()) {
             if (!m_trackDAO.relocateTrack(ptrack, newLocation)) {
-                QMessageBox::warning(QApplication::desktop(), tr("Mixxx"),
-                                            tr("The tracks do not match"));
+                QMessageBox::warning(NULL, tr("Mixxx"),
+                                     tr("The track could not be relocated"));
             }
         }
     }
-    setTableModel(0,QString());
+    setTableModel();
     select();
 }
 

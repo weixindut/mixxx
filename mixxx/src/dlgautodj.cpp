@@ -55,7 +55,7 @@ DlgAutoDJ::DlgAutoDJ(QWidget* parent, ConfigObject<ConfigValue>* pConfig,
         playlistId = m_playlistDao.createPlaylist(AUTODJ_TABLE,
                                                   PlaylistDAO::PLHT_AUTO_DJ);
     }
-    m_pAutoDJTableModel->setTableModel(playlistId,QString());
+    m_pAutoDJTableModel->setTableModel(playlistId);
     m_pTrackTableView->loadTrackModel(m_pAutoDJTableModel);
 
     // Override some playlist-view properties:

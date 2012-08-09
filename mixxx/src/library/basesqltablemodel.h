@@ -28,7 +28,7 @@ class BaseSqlTableModel : public QAbstractTableModel, public TrackModel {
     virtual ~BaseSqlTableModel();
 
     // functions that HAVE to be implemented in a child class
-    virtual void setTableModel(int id, QString name);
+    virtual void setTableModel(int id=-1);
     virtual bool isColumnInternal(int column);
     virtual bool isColumnHiddenByDefault(int column);
     virtual TrackModel::CapabilitiesFlags getCapabilities() const;

@@ -13,7 +13,7 @@ class PlaylistTableModel : public BaseSqlTableModel {
                     QList<int> availableDirIds,
                     bool showAll=false);
     virtual ~PlaylistTableModel();
-    void setTableModel(int playlistId,QString name);
+    void setTableModel(int playlistId = -1);
 
     int getPlaylist() const {
         return m_iPlaylistId;

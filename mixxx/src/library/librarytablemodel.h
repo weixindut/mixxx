@@ -11,7 +11,7 @@ class LibraryTableModel : public BaseSqlTableModel {
                       QList<int> availableDirIds,
                       QString settingsNamespace="mixxx.db.model.library");
     virtual ~LibraryTableModel();
-    void setTableModel(int,QString);
+    void setTableModel(int id =-1);
 
     bool isColumnInternal(int column);
     bool isColumnHiddenByDefault(int column);

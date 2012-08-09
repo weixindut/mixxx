@@ -94,7 +94,7 @@ void BasePlaylistFeature::activateChild(const QModelIndex& index) {
     QString playlistName = index.data().toString();
     int playlistId = m_playlistDao.getPlaylistIdFromName(playlistName);
     if (m_pPlaylistTableModel) {
-        m_pPlaylistTableModel->setTableModel(playlistId,QString());
+        m_pPlaylistTableModel->setTableModel(playlistId);
         emit(showTrackModel(m_pPlaylistTableModel));
     }
 }
@@ -296,13 +296,13 @@ void BasePlaylistFeature::slotExportPlaylist() {
     }
 
     // Create a new table model since the main one might have an active search.
-    //TODO(kain88) showMissing==false here a good default choice?
+    // This PTM will only use tracks that are not deleted from the FS
     QScopedPointer<PlaylistTableModel> pPlaylistTableModel(
         new PlaylistTableModel(this, m_pTrackCollection,
                                "mixxx.db.model.playlist_export",
                                 m_pConfig, m_availableDirIds));
 
-    pPlaylistTableModel->setTableModel(m_pPlaylistTableModel->getPlaylist(),QString());
+    pPlaylistTableModel->setTableModel(m_pPlaylistTableModel->getPlaylist());
     pPlaylistTableModel->setSort(pPlaylistTableModel->fieldIndex(PLAYLISTTRACKSTABLE_POSITION), Qt::AscendingOrder);
     pPlaylistTableModel->select();
 

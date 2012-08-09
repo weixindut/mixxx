@@ -73,8 +73,6 @@ Library::Library(QObject* parent, ConfigObject<ConfigValue>* pConfig, bool first
     addFeature(m_pMixxxLibraryFeature,true);
     connect(this, SIGNAL(dirsChanged(QString,QString)),
             m_pMixxxLibraryFeature, SLOT(slotDirsChanged(QString,QString)));
-    connect(m_pMixxxLibraryFeature, SIGNAL(dirsChanged(QString,QString)),
-            this, SLOT(slotDirsChanged(QString,QString)));
     connect(this, SIGNAL(loadTrackFailed(TrackPointer)),
             m_pMixxxLibraryFeature, SIGNAL(loadTrackFailed(TrackPointer)));
 
@@ -140,8 +138,6 @@ Library::~Library() {
     //Update:  - OR NOT! As of Dec 8, 2009, this pointer must be destroyed manually otherwise
     // we never see the TrackCollection's destructor being called... - Albert
     delete m_pTrackCollection;
-    //TODO (kain88) check if the TM is not deleted somewhere else
-    // delete m_ptrackModel;
 }
 
 void Library::bindWidget(WLibrarySidebar* pSidebarWidget,
@@ -258,16 +254,18 @@ QList<TrackPointer> Library::getTracksToAutoLoad() {
         return QList<TrackPointer>();
 }
 
-void Library::slotDirsChanged(QString op, QString dir){
+MixxxLibraryFeature* Library::getpMixxxLibraryFeature(){
+    return m_pMixxxLibraryFeature;
+}
 
-    qDebug() << "kain88 libray received single that dirs changed";
+void Library::slotDirsChanged(QString op, QString dir){
+    emit dirsChanged(op,dir);
 
     if (op=="added") {
         m_availableDirs << dir;
         emit availableDirsChanged(m_directoryDAO.getDirIds(m_availableDirs),
                                   "added");
     } else if (op=="removed") {
-        qDebug() << "kain88 testing why the fuck there is a loop " << dir;
         qDebug() << m_availableDirs;
         m_availableDirs.removeOne(dir);
         emit availableDirsChanged(m_directoryDAO.getDirIds(m_availableDirs),"removed");
@@ -281,12 +279,6 @@ void Library::slotDirsChanged(QString op, QString dir){
         m_availableDirs << newFolder;
         emit availableDirsChanged(m_directoryDAO.getDirIds(m_availableDirs),"added");
     }
-    qDebug() <<"kain88 available dirs are now = "<< m_availableDirs;
-    emit dirsChanged(op,dir);
-}
-
-MixxxLibraryFeature* Library::getpMixxxLibraryFeature(){
-    return m_pMixxxLibraryFeature;
 }
 
 void Library::slotFoundNewStorage(QStringList newStorage){

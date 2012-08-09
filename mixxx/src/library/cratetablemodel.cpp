@@ -20,7 +20,7 @@ CrateTableModel::CrateTableModel(QObject* pParent,
 CrateTableModel::~CrateTableModel() {
 }
 
-void CrateTableModel::setTableModel(int crateId,QString name) {
+void CrateTableModel::setTableModel(int crateId) {
     //qDebug() << "CrateTableModel::setCrate()" << crateId;
     
     if (crateId == m_iCrateId) {
@@ -33,7 +33,7 @@ void CrateTableModel::setTableModel(int crateId,QString name) {
     
     m_iCrateId = crateId;
 
-    QString tableName = QString("crate_%1").arg(m_iCrateId);
+    QString tableName = QString("crate_%1_").arg(m_iCrateId);
     QSqlQuery query(m_pTrackCollection->getDatabase());
     FieldEscaper escaper(m_pTrackCollection->getDatabase());
 
@@ -45,11 +45,15 @@ void CrateTableModel::setTableModel(int crateId,QString name) {
     bool showMissing = m_pConfig->getValueString(ConfigKey("[Library]","ShowMissingSongs"),"1").toInt();
     if(showMissing){
         filter = "library.mixxx_deleted=0";
-        tableName.append("_missing");
+        tableName.append("missing_");
     } else {
         filter = "library.mixxx_deleted=0 AND track_locations.fs_deleted=0";
     }
-    tableName.append(name);
+    QStringList ids;
+    foreach(int id, m_availableDirIds){
+        ids << QString::number(id);
+    }
+    tableName.append(ids.join(""));
     // We drop files that have been explicitly deleted from mixxx
     // (mixxx_deleted=0) from the view. There was a bug in <= 1.9.0 where
     // removed files were not removed from crates, so some users will have
@@ -67,10 +71,6 @@ void CrateTableModel::setTableModel(int crateId,QString name) {
                  CRATETRACKSTABLE_CRATEID,
                  QString::number(crateId),
                  filter);
-    QStringList ids;
-    foreach(int id, m_availableDirIds){
-        ids << QString::number(id);
-    }
     queryString.append(" AND track_locations.maindir_id in ("+ids.join(",")+",0)");
     query.prepare(queryString);
     if (!query.exec()) {

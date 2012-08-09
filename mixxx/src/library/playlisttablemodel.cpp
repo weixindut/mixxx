@@ -17,7 +17,7 @@ PlaylistTableModel::PlaylistTableModel(QObject* parent,
 PlaylistTableModel::~PlaylistTableModel() {
 }
 
-void PlaylistTableModel::setTableModel(int playlistId, QString name) {
+void PlaylistTableModel::setTableModel(int playlistId) {
     //qDebug() << "PlaylistTableModel::setPlaylist" << playlistId;
 
     if (playlistId == m_iPlaylistId) {
@@ -29,8 +29,8 @@ void PlaylistTableModel::setTableModel(int playlistId, QString name) {
     }
 
     m_iPlaylistId = playlistId;
-    QString playlistTableName = "playlist_" + QString::number(m_iPlaylistId);
-    
+    QString playlistTableName = "playlist_" + QString::number(m_iPlaylistId)+"_";
+
     QSqlQuery query(m_pTrackCollection->getDatabase());
     FieldEscaper escaper(m_pTrackCollection->getDatabase());
 
@@ -46,11 +46,15 @@ void PlaylistTableModel::setTableModel(int playlistId, QString name) {
     bool showMissing = m_pConfig->getValueString(ConfigKey("[Library]","ShowMissingSongs"),"1").toInt();
     if (showMissing) {
         filter = "library.mixxx_deleted=0";
-        playlistTableName.append("_missing");
+        playlistTableName.append("missing_");
     } else {
         filter = "library.mixxx_deleted=0 AND track_locations.fs_deleted=0";
     }
-    playlistTableName.append("_"+name);
+    QStringList ids;
+    foreach (int id, m_availableDirIds) {
+        ids << QString::number(id);
+    }
+    playlistTableName.append(ids.join(""));
 
     // We drop files that have been explicitly deleted from mixxx
     // (mixxx_deleted=0) from the view. There was a bug in <= 1.9.0 where
@@ -67,10 +71,6 @@ void PlaylistTableModel::setTableModel(int playlistId, QString name) {
                  QString::number(playlistId));
     if (!m_showAll) {
         queryString.append(" AND " + filter);
-    }
-    QStringList ids;
-    foreach (int id, m_availableDirIds) {
-        ids << QString::number(id);
     }
     queryString.append(" AND track_locations.maindir_id in ("+ids.join(",")+",0)");
     qDebug() << queryString;

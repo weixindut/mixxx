@@ -173,7 +173,7 @@ void CrateFeature::activateChild(const QModelIndex& index) {
         return;
     QString crateName = index.data().toString();
     int crateId = m_crateDao.getCrateIdByName(crateName);
-    m_crateTableModel.setTableModel(crateId,QString());
+    m_crateTableModel.setTableModel(crateId);
     emit(showTrackModel(&m_crateTableModel));
 }
 
@@ -448,7 +448,7 @@ void CrateFeature::slotExportPlaylist(){
     // Create a new table model since the main one might have an active search.
     QScopedPointer<CrateTableModel> pCrateTableModel(
         new CrateTableModel(this, m_pTrackCollection,m_pConfig, m_availableDirIds));
-    pCrateTableModel->setTableModel(m_crateTableModel.getCrate(),QString());
+    pCrateTableModel->setTableModel(m_crateTableModel.getCrate());
     pCrateTableModel->select();
 
     if (file_location.endsWith(".csv", Qt::CaseInsensitive)) {
@@ -487,7 +487,7 @@ void CrateFeature::slotCrateTableChanged(int crateId) {
     m_crateListTableModel.select();
     m_lastRightClickedIndex = constructChildModel(crateId);
     // Switch the view to the crate.
-    m_crateTableModel.setTableModel(crateId,QString());
+    m_crateTableModel.setTableModel(crateId);
     // Update selection
     emit(featureSelect(this, m_lastRightClickedIndex));
 }
