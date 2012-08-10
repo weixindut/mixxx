@@ -11,7 +11,7 @@
       <LightBrick name="Brick9" ipaddress="192.168.0.16" port="12344" id="brick16"/>
       <LightBrick name="Brick10" ipaddress="192.168.0.17" port="12344" id="brick17"/>
     </LightBrickManager>
-    <DMXLightManager ipaddress="192.168.0.3" universe="1">
+    <!--<DMXLightManager ipaddress="18.248.1.30" universe="1">
       <DMXLight name="Fresco1" number="0" id="dmx0"/>
       <DMXLight name="Fresco2" number="1" id="dmx1"/>
       <DMXLight name="Fresco3" number="2" id="dmx2"/>
@@ -20,42 +20,221 @@
       <DMXLight name="Fresco6" number="5" id="dmx5"/>
       <DMXLight name="Fresco7" number="6" id="dmx6"/>
       <DMXLight name="Fresco8" number="7" id="dmx7"/>
+    </DMXLightManager>-->
+    <DMXLightManager ipaddress="10.32.0.10" universe="1" type="2">
+<DMXLight name="String1" number="0" id="dmx_1_0"/>
+<DMXLight name="String2" number="1" id="dmx_1_1"/>
+<DMXLight name="String3" number="2" id="dmx_1_2"/>
+<DMXLight name="String4" number="3" id="dmx_1_3"/>
+<DMXLight name="String5" number="4" id="dmx_1_4"/>
+<DMXLight name="String6" number="5" id="dmx_1_5"/>
+<DMXLight name="String7" number="6" id="dmx_1_6"/>
+<DMXLight name="String8" number="7" id="dmx_1_7"/>
+<DMXLight name="String9" number="8" id="dmx_1_8"/>
+<DMXLight name="String10" number="9" id="dmx_1_9"/>
+<DMXLight name="String11" number="10" id="dmx_1_10"/>
+<DMXLight name="String12" number="11" id="dmx_1_11"/>
+<DMXLight name="String13" number="12" id="dmx_1_12"/>
+<DMXLight name="String14" number="13" id="dmx_1_13"/>
+<DMXLight name="String15" number="14" id="dmx_1_14"/>
+<DMXLight name="String16" number="15" id="dmx_1_15"/>
+<DMXLight name="String17" number="16" id="dmx_1_16"/>
+<DMXLight name="String18" number="17" id="dmx_1_17"/>
+<DMXLight name="String19" number="18" id="dmx_1_18"/>
+<DMXLight name="String20" number="19" id="dmx_1_19"/>
+<DMXLight name="String21" number="20" id="dmx_1_20"/>
+<DMXLight name="String22" number="21" id="dmx_1_21"/>
+<DMXLight name="String23" number="22" id="dmx_1_22"/>
+<DMXLight name="String24" number="23" id="dmx_1_23"/>
+ <DMXLight name="String25" number="24" id="dmx_1_24"/>
+<DMXLight name="String26" number="25" id="dmx_1_25"/>
+<DMXLight name="String27" number="26" id="dmx_1_26"/>
+<DMXLight name="String28" number="27" id="dmx_1_27"/>
+<DMXLight name="String29" number="28" id="dmx_1_28"/>
+<DMXLight name="String30" number="29" id="dmx_1_29"/>
+<DMXLight name="String31" number="30" id="dmx_1_30"/>
+<DMXLight name="String32" number="31" id="dmx_1_31"/>
+<DMXLight name="String33" number="32" id="dmx_1_32"/>
+<DMXLight name="String34" number="33" id="dmx_1_33"/>
+<DMXLight name="String35" number="34" id="dmx_1_34"/>
+<DMXLight name="String36" number="35" id="dmx_1_35"/>
+<DMXLight name="String37" number="36" id="dmx_1_36"/>
+<DMXLight name="String38" number="37" id="dmx_1_37"/>
+<DMXLight name="String39" number="38" id="dmx_1_38"/>
+<DMXLight name="String40" number="39" id="dmx_1_39"/>
+<DMXLight name="String41" number="40" id="dmx_1_40"/>
+<DMXLight name="String42" number="41" id="dmx_1_41"/>
+<DMXLight name="String43" number="42" id="dmx_1_42"/>
+<DMXLight name="String44" number="43" id="dmx_1_43"/>
+<DMXLight name="String45" number="44" id="dmx_1_44"/>
+<DMXLight name="String46" number="45" id="dmx_1_45"/>
+<DMXLight name="String47" number="46" id="dmx_1_46"/>
+<DMXLight name="String48" number="47" id="dmx_1_47"/>
+<DMXLight name="String49" number="48" id="dmx_1_48"/>
+<DMXLight name="String50" number="49" id="dmx_1_49"/>
+    </DMXLightManager>
+    <DMXLightManager ipaddress="10.32.0.10" universe="2" type="2">
+<DMXLight name="String1" number="0" id="dmx_2_0"/>
+<DMXLight name="String2" number="1" id="dmx_2_1"/>
+<DMXLight name="String3" number="2" id="dmx_2_2"/>
+<DMXLight name="String4" number="3" id="dmx_2_3"/>
+<DMXLight name="String5" number="4" id="dmx_2_4"/>
+<DMXLight name="String6" number="5" id="dmx_2_5"/>
+<DMXLight name="String7" number="6" id="dmx_2_6"/>
+<DMXLight name="String8" number="7" id="dmx_2_7"/>
+<DMXLight name="String9" number="8" id="dmx_2_8"/>
+<DMXLight name="String10" number="9" id="dmx_2_9"/>
+<DMXLight name="String11" number="10" id="dmx_2_10"/>
+<DMXLight name="String12" number="11" id="dmx_2_11"/>
+<DMXLight name="String13" number="12" id="dmx_2_12"/>
+<DMXLight name="String14" number="13" id="dmx_2_13"/>
+<DMXLight name="String15" number="14" id="dmx_2_14"/>
+<DMXLight name="String16" number="15" id="dmx_2_15"/>
+<DMXLight name="String17" number="16" id="dmx_2_16"/>
+<DMXLight name="String18" number="17" id="dmx_2_17"/>
+<DMXLight name="String19" number="18" id="dmx_2_18"/>
+<DMXLight name="String20" number="19" id="dmx_2_19"/>
+<DMXLight name="String21" number="20" id="dmx_2_20"/>
+<DMXLight name="String22" number="21" id="dmx_2_21"/>
+<DMXLight name="String23" number="22" id="dmx_2_22"/>
+<DMXLight name="String24" number="23" id="dmx_2_23"/>
+ <DMXLight name="String25" number="24" id="dmx_2_24"/>
+<DMXLight name="String26" number="25" id="dmx_2_25"/>
+<DMXLight name="String27" number="26" id="dmx_2_26"/>
+<DMXLight name="String28" number="27" id="dmx_2_27"/>
+<DMXLight name="String29" number="28" id="dmx_2_28"/>
+<DMXLight name="String30" number="29" id="dmx_2_29"/>
+<DMXLight name="String31" number="30" id="dmx_2_30"/>
+<DMXLight name="String32" number="31" id="dmx_2_31"/>
+<DMXLight name="String33" number="32" id="dmx_2_32"/>
+<DMXLight name="String34" number="33" id="dmx_2_33"/>
+<DMXLight name="String35" number="34" id="dmx_2_34"/>
+<DMXLight name="String36" number="35" id="dmx_2_35"/>
+<DMXLight name="String37" number="36" id="dmx_2_36"/>
+<DMXLight name="String38" number="37" id="dmx_2_37"/>
+<DMXLight name="String39" number="38" id="dmx_2_38"/>
+<DMXLight name="String40" number="39" id="dmx_2_39"/>
+<DMXLight name="String41" number="40" id="dmx_2_40"/>
+<DMXLight name="String42" number="41" id="dmx_2_41"/>
+<DMXLight name="String43" number="42" id="dmx_2_42"/>
+<DMXLight name="String44" number="43" id="dmx_2_43"/>
+<DMXLight name="String45" number="44" id="dmx_2_44"/>
+<DMXLight name="String46" number="45" id="dmx_2_45"/>
+<DMXLight name="String47" number="46" id="dmx_2_46"/>
+<DMXLight name="String48" number="47" id="dmx_2_47"/>
+<DMXLight name="String49" number="48" id="dmx_2_48"/>
+<DMXLight name="String50" number="49" id="dmx_2_49"/>
     </DMXLightManager>
   </LightManagers>
 
   <ControlGroups>
-    <ControlGroup name="Frontline">
+    <ControlGroup name="Strand1">
       <Lights>
-        <Light id="dmx0"/>
-        <Light id="dmx1"/>
-        <Light id="dmx2"/>
-        <Light id="dmx3"/>
-        <Light id="dmx4"/>
-        <Light id="dmx5"/>
-        <Light id="dmx6"/>
-        <Light id="dmx7"/>
+<Light id="dmx_1_0"/>
+<Light id="dmx_1_1"/>
+<Light id="dmx_1_2"/>
+<Light id="dmx_1_3"/>
+<Light id="dmx_1_4"/>
+<Light id="dmx_1_5"/>
+<Light id="dmx_1_6"/>
+<Light id="dmx_1_7"/>
+<Light id="dmx_1_8"/>
+<Light id="dmx_1_9"/>
+<Light id="dmx_1_10"/>
+<Light id="dmx_1_11"/>
+<Light id="dmx_1_12"/>
+<Light id="dmx_1_13"/>
+<Light id="dmx_1_14"/>
+<Light id="dmx_1_15"/>
+<Light id="dmx_1_16"/>
+<Light id="dmx_1_17"/>
+<Light id="dmx_1_18"/>
+<Light id="dmx_1_19"/>
+<Light id="dmx_1_20"/>
+<Light id="dmx_1_21"/>
+<Light id="dmx_1_22"/>
+<Light id="dmx_1_23"/>
+<Light id="dmx_1_24"/>
+<Light id="dmx_1_25"/>
+<Light id="dmx_1_26"/>
+<Light id="dmx_1_27"/>
+<Light id="dmx_1_28"/>
+<Light id="dmx_1_29"/>
+<Light id="dmx_1_30"/>
+<Light id="dmx_1_31"/>
+<Light id="dmx_1_32"/>
+<Light id="dmx_1_33"/>
+<Light id="dmx_1_34"/>
+<Light id="dmx_1_35"/>
+<Light id="dmx_1_36"/>
+<Light id="dmx_1_37"/>
+<Light id="dmx_1_38"/>
+<Light id="dmx_1_39"/>
+<Light id="dmx_1_40"/>
+<Light id="dmx_1_41"/>
+<Light id="dmx_1_42"/>
+<Light id="dmx_1_43"/>
+<Light id="dmx_1_44"/>
+<Light id="dmx_1_45"/>
+<Light id="dmx_1_46"/>
+<Light id="dmx_1_47"/>
+<Light id="dmx_1_48"/>
+<Light id="dmx_1_49"/>
       </Lights>
-      <TriggerState>
-      </TriggerState>
-      <ControlMode>
-      </ControlMode>
     </ControlGroup>
-    <ControlGroup name="Bricks">
+    <ControlGroup name="Strand2">
       <Lights>
-        <Light id="brick13"/>
-        <Light id="brick14"/>
-        <Light id="brick9"/>
-        <Light id="brick12"/>
-        <Light id="brick17"/>
-        <Light id="brick11"/>
-        <Light id="brick16"/>
-        <Light id="brick10"/>
-        <Light id="brick8"/>
+<Light id="dmx_2_0"/>
+<Light id="dmx_2_1"/>
+<Light id="dmx_2_2"/>
+<Light id="dmx_2_3"/>
+<Light id="dmx_2_4"/>
+<Light id="dmx_2_5"/>
+<Light id="dmx_2_6"/>
+<Light id="dmx_2_7"/>
+<Light id="dmx_2_8"/>
+<Light id="dmx_2_9"/>
+<Light id="dmx_2_10"/>
+<Light id="dmx_2_11"/>
+<Light id="dmx_2_12"/>
+<Light id="dmx_2_13"/>
+<Light id="dmx_2_14"/>
+<Light id="dmx_2_15"/>
+<Light id="dmx_2_16"/>
+<Light id="dmx_2_17"/>
+<Light id="dmx_2_18"/>
+<Light id="dmx_2_19"/>
+<Light id="dmx_2_20"/>
+<Light id="dmx_2_21"/>
+<Light id="dmx_2_22"/>
+<Light id="dmx_2_23"/>
+<Light id="dmx_2_24"/>
+<Light id="dmx_2_25"/>
+<Light id="dmx_2_26"/>
+<Light id="dmx_2_27"/>
+<Light id="dmx_2_28"/>
+<Light id="dmx_2_29"/>
+<Light id="dmx_2_30"/>
+<Light id="dmx_2_31"/>
+<Light id="dmx_2_32"/>
+<Light id="dmx_2_33"/>
+<Light id="dmx_2_34"/>
+<Light id="dmx_2_35"/>
+<Light id="dmx_2_36"/>
+<Light id="dmx_2_37"/>
+<Light id="dmx_2_38"/>
+<Light id="dmx_2_39"/>
+<Light id="dmx_2_40"/>
+<Light id="dmx_2_41"/>
+<Light id="dmx_2_42"/>
+<Light id="dmx_2_43"/>
+<Light id="dmx_2_44"/>
+<Light id="dmx_2_45"/>
+<Light id="dmx_2_46"/>
+<Light id="dmx_2_47"/>
+<Light id="dmx_2_48"/>
+<Light id="dmx_2_49"/>
       </Lights>
-      <TriggerState>
-      </TriggerState>
-      <ControlMode>
-      </ControlMode>
     </ControlGroup>
   </ControlGroups>
 </LightController>

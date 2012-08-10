@@ -13,7 +13,7 @@ class LightController;
 
 class DMXLightManager : public LightManager {
   public:
-    DMXLightManager(QObject* pParent, QString ip_address);
+    DMXLightManager(QObject* pParent, QString ip_address, int type, DWord universe);
     virtual ~DMXLightManager();
     Light* newLight(QString id, int light_number);
     void sync();
@@ -24,7 +24,7 @@ class DMXLightManager : public LightManager {
 
     QList<DMXLight*> m_lights;
     DMX_Handle* m_pHandle;
-
+    DWord m_iUniverse;
     friend class DMXLight;
 };
 

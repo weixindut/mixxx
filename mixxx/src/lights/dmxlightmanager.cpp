@@ -4,9 +4,10 @@
 #include "lights/dmxlight.h"
 #include "lights/lightcontroller.h"
 
-DMXLightManager::DMXLightManager(QObject* pParent, QString ip_address)
+DMXLightManager::DMXLightManager(QObject* pParent, QString ip_address, int type, DWord universe)
         : LightManager(pParent) {
-    m_pHandle = new_dmx_handle(ip_address.toAscii().data());
+    m_pHandle = new_dmx_handle(ip_address.toAscii().data(), type);
+    m_iUniverse = universe;
 }
 
 DMXLightManager::~DMXLightManager() {
@@ -30,7 +31,7 @@ void DMXLightManager::sync() {
     foreach (DMXLight* pLight, m_lights) {
         setColor(pLight, pLight->getColor());
     }
-    publish_dmx_update(m_pHandle);
+    publish_dmx_update(m_pHandle, m_iUniverse);
 }
 
 // static
@@ -38,10 +39,24 @@ DMXLightManager* DMXLightManager::fromXml(LightController* pController, QDomNode
     Q_ASSERT(node.nodeName() == "DMXLightManager");
     QDomElement element = node.toElement();
     QString ip_address = element.attribute("ipaddress", "");
+    bool ok = false;
+
+    QString type = element.attribute("type", "");
+    int iType = type.toInt(&ok);
+    if (!ok) {
+        iType = 1;
+    }
+
+    QString universe = element.attribute("universe", "");
+    DWord uni = universe.toInt(&ok);
+    if (!ok) {
+        uni = -1;
+    }
     Q_ASSERT(ip_address != "");
 
-    DMXLightManager* pManager = new DMXLightManager(pController, ip_address);
-    qDebug() << "Constructing DMXLightManager with ip" << ip_address;
+    DMXLightManager* pManager = new DMXLightManager(pController, ip_address, iType, uni);
+    qDebug() << "Constructing DMXLightManager with ip" << ip_address
+             << "universe" << uni << "type" << iType;
 
     QDomNodeList children = node.childNodes();
     for (int i = 0; i < children.count(); ++i) {

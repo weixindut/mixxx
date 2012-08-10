@@ -188,11 +188,11 @@ MixxxApp::MixxxApp(QApplication * a, struct CmdlineArgs args)
         QDomElement root = lightsDocument.documentElement();
         qDebug() << "ROOT" << root.nodeName();
         LightController* pController = LightController::fromXml(root);
-        //m_pEngine->setLightController(pController);
-        soundmanager->setLightController(pController);
+        m_pEngine->setLightController(pController);
+        //soundmanager->setLightController(pController);
     } else {
-      //m_pEngine->setLightController(new LightController());
-        soundmanager->setLightController(new LightController());
+        m_pEngine->setLightController(new LightController());
+        //soundmanager->setLightController(new LightController());
     }
 
     // Find path of skin
