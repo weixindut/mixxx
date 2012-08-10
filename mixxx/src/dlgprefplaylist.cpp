@@ -81,7 +81,7 @@ bool DlgPrefPlaylist::initializeModel(){
     // --kain88 July 2012
     QSqlDatabase database = QSqlDatabase::database();
     QSqlQuery query;
-    query.prepare("SELECT * from directories");
+    query.prepare("SELECT directory from directories");
     if (!query.exec()) {
         qDebug() << "damn there are no directories to display";
         return false;
@@ -165,8 +165,7 @@ void DlgPrefPlaylist::slotM4ACheck()
     }
 }*/
 
-void DlgPrefPlaylist::slotUpdate()
-{
+void DlgPrefPlaylist::slotUpdate() {
     // Song path
     initializeModel();
     //Bundled songs stat tracking

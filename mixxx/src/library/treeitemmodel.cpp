@@ -28,14 +28,12 @@
  * - *feature.cpp
  */
 TreeItemModel::TreeItemModel(QObject *parent)
-        : QAbstractItemModel(parent) {
-
-    m_rootItem = new TreeItem();
-
+        : QAbstractItemModel(parent),
+          m_prootItem(new TreeItem()) {
 }
 
 TreeItemModel::~TreeItemModel() {
-    delete m_rootItem;
+    delete m_prootItem;
 }
 
 //Our Treeview Model supports exactly a single column
@@ -73,7 +71,7 @@ QModelIndex TreeItemModel::index(int row, int column, const QModelIndex &parent)
     TreeItem *parentItem = NULL;
 
     if (!parent.isValid())
-        parentItem = m_rootItem;
+        parentItem = m_prootItem;
     else
         parentItem = static_cast<TreeItem*>(parent.internalPointer());
 
@@ -91,7 +89,7 @@ QModelIndex TreeItemModel::parent(const QModelIndex &index) const {
     TreeItem *childItem = static_cast<TreeItem*>(index.internalPointer());
     TreeItem *parentItem = childItem->parent();
 
-    if (parentItem == m_rootItem)
+    if (parentItem == m_prootItem)
         return QModelIndex();
 
     return createIndex(parentItem->row(), 0, parentItem);
@@ -104,7 +102,7 @@ int TreeItemModel::rowCount(const QModelIndex &parent) const {
     TreeItem *parentItem = NULL;
     //qDebug() << "parent data: " << parent.data();
     if (!parent.isValid()){
-        parentItem = m_rootItem;
+        parentItem = m_prootItem;
     }
     else{
         parentItem = static_cast<TreeItem*>(parent.internalPointer());
@@ -121,9 +119,9 @@ int TreeItemModel::rowCount(const QModelIndex &parent) const {
  * Call this method first, before you do call any other methods.
  */
 void TreeItemModel::setRootItem(TreeItem *item) {
-    if(m_rootItem) delete m_rootItem;
+    if(m_prootItem) delete m_prootItem;
 
-    m_rootItem = item;
+    m_prootItem = item;
     reset();
 }
 
@@ -158,5 +156,5 @@ TreeItem* TreeItemModel::getItem(const QModelIndex &index) const {
         TreeItem *item = static_cast<TreeItem*>(index.internalPointer());
         if (item) return item;
     }
-    return m_rootItem;
+    return m_prootItem;
 }

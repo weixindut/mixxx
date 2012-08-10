@@ -48,6 +48,8 @@ TreeItem::~TreeItem() {
 }
 
 void TreeItem::appendChild(TreeItem *item) {
+    Q_ASSERT(item);
+    qDebug() << "kain88 added a treeitem child";
     m_childItems.append(item);
 }
 

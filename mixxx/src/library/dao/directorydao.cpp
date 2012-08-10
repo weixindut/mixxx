@@ -53,7 +53,7 @@ bool DirectoryDAO::relocateDirectory(QString oldFolder, QString newFolder){
     QSqlQuery query(m_database);
     // update directory in directories table
     query.prepare("UPDATE "%DIRECTORYDAO_TABLE%" SET "%DIRECTORYDAO_DIR%"="
-                  "REPLACE("%DIRECTORYDAO_DIR%",\""%oldFolder%"\",\""%newFolder%"\")");
+                  "\""%newFolder%"\" WHERE "%DIRECTORYDAO_DIR%"=\""%oldFolder%"\"");
     if (!query.exec()) {
         LOG_FAILED_QUERY(query) << "coud not relocate directory";
         return false;
@@ -61,8 +61,9 @@ bool DirectoryDAO::relocateDirectory(QString oldFolder, QString newFolder){
     // update location and directory in track_locations table
     query.prepare("UPDATE track_locations SET location="
                   "REPLACE(location,\""%oldFolder%"\",\""%newFolder%"\")"
-                  " SET directory="
-                  "REPLACE(directory,\""%oldFolder%"\",\""%newFolder%"\")");
+                  ", directory="
+                  "REPLACE(directory,\""%oldFolder%"\",\""%newFolder%"\") "
+                  "WHERE "%DIRECTORYDAO_DIR%"=\""%oldFolder%"\"");
     if (!query.exec()) {
         LOG_FAILED_QUERY(query) << "coud not relocate path of tracks";
         return false;
