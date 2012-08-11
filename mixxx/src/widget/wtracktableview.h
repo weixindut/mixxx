@@ -10,11 +10,11 @@
 #include "library/searchthread.h"
 #include "library/trackmodel.h" // Can't forward declare enums
 #include "widget/wlibrarytableview.h"
+#include "musicbrainz/tagfetcher.h"
+#include "dlgtagfetcher.h"
 
 class ControlObjectThreadMain;
 class DlgTrackInfo;
-class TagFetcher;
-class DlgTagFetcher;
 class TrackCollection;
 
 const QString WTRACKTABLEVIEW_VSCROLLBARPOS_KEY = "VScrollBarPos"; /** ConfigValue key for QTable vertical scrollbar position */
@@ -89,13 +89,13 @@ class WTrackTableView : public WLibraryTableView {
     TrackCollection* m_pTrackCollection;
 
     QSignalMapper m_loadTrackMapper;
+    SearchThread m_searchThread;
 
     DlgTrackInfo* m_pTrackInfo;
-    TagFetcher* m_pTagFetcher;
-    DlgTagFetcher* m_pDlgTagFetcher;
+    TagFetcher m_TagFetcher;
+    DlgTagFetcher m_DlgTagFetcher;
     QModelIndex currentTrackInfoIndex;
 
-    SearchThread m_searchThread;
 
     ControlObjectThreadMain* m_pNumSamplers;
     ControlObjectThreadMain* m_pNumDecks;

@@ -33,6 +33,7 @@ TreeItemModel::TreeItemModel(QObject *parent)
 }
 
 TreeItemModel::~TreeItemModel() {
+    qDebug() << "~TreeItemModel";
     delete m_prootItem;
 }
 

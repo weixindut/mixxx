@@ -31,7 +31,6 @@ DlgPrefPlaylist::DlgPrefPlaylist(QWidget * parent, ConfigObject<ConfigValue> * c
     setupUi(this);
     slotUpdate();
     checkbox_ID3_sync->setVisible(false);
-    initializeModel();
 
     /*
     m_pPluginDownloader = new PluginDownloader(this);
@@ -70,8 +69,7 @@ DlgPrefPlaylist::DlgPrefPlaylist(QWidget * parent, ConfigObject<ConfigValue> * c
     }
 }
 
-DlgPrefPlaylist::~DlgPrefPlaylist()
-{
+DlgPrefPlaylist::~DlgPrefPlaylist() {
 }
 
 bool DlgPrefPlaylist::initializeModel(){
@@ -98,8 +96,7 @@ bool DlgPrefPlaylist::initializeModel(){
     return true;
 }
 
-void DlgPrefPlaylist::slotExtraPlugins()
-{
+void DlgPrefPlaylist::slotExtraPlugins() {
     QDesktopServices::openUrl(QUrl(MIXXX_ADDONS_URL));
 }
 
@@ -261,7 +258,6 @@ void DlgPrefPlaylist::slotApply() {
 
         // Save preferences
         m_pconfig->Save();
-        qDebug() << "kain88 i save stuff here cool";
         emit(configChanged("[Library]","ShowMissingSongs"));
     }
 }

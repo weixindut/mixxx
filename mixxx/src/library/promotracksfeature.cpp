@@ -47,7 +47,8 @@ PromoTracksFeature::PromoTracksFeature(QObject* parent,
           m_pTrackCollection(pTrackCollection),
           m_pFeaturedArtistsView(NULL),
           m_pBundledSongsView(NULL),
-          //TODO (kain88) empty QStringList may not be the best idea
+          //TODO (kain88) an empty list is not good here I think, ask the others about this
+          // feature
           m_downloadsTableModel(this, pTrackCollection,config,QList<int>()),
           m_bFirstRun(firstRun) {
 

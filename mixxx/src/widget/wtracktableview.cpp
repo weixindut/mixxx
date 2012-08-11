@@ -14,8 +14,6 @@
 #include "controlobjectthreadmain.h"
 #include "widget/wtracktableview.h"
 #include "dlgtrackinfo.h"
-#include "dlgtagfetcher.h"
-#include "musicbrainz/tagfetcher.h"
 #include "soundsourceproxy.h"
 
 WTrackTableView::WTrackTableView(QWidget * parent,
@@ -26,20 +24,31 @@ WTrackTableView::WTrackTableView(QWidget * parent,
                                       WTRACKTABLEVIEW_VSCROLLBARPOS_KEY)),
           m_pConfig(pConfig),
           m_pTrackCollection(pTrackCollection),
-          m_searchThread(this) {
+          m_searchThread(this) ,
+          m_TagFetcher(NULL) ,
+          m_DlgTagFetcher(NULL, pConfig) {
     // Give a NULL parent because otherwise it inherits our style which can make
     // it unreadable. Bug #673411
-    m_pTagFetcher = new TagFetcher(NULL);
-    m_pDlgTagFetcher = new DlgTagFetcher(NULL);
-    m_pTrackInfo = new DlgTrackInfo(NULL,m_pTagFetcher,m_pDlgTagFetcher);
+    m_pTrackInfo = new DlgTrackInfo(NULL,m_TagFetcher,m_DlgTagFetcher);
     connect(m_pTrackInfo, SIGNAL(next()),
             this, SLOT(slotNextTrackInfo()));
     connect(m_pTrackInfo, SIGNAL(previous()),
             this, SLOT(slotPrevTrackInfo()));
-    connect(m_pDlgTagFetcher, SIGNAL(next()),
+    connect(&m_DlgTagFetcher, SIGNAL(next()),
             this, SLOT(slotNextDlgTagFetcher()));
-    connect(m_pDlgTagFetcher, SIGNAL(previous()),
+    connect(&m_DlgTagFetcher, SIGNAL(previous()),
             this, SLOT(slotPrevDlgTagFetcher()));
+    connect(&m_TagFetcher, SIGNAL(ResultAvailable(const TrackPointer,const QList<TrackPointer>&)),
+            &m_DlgTagFetcher, SLOT(FetchTagFinished(const TrackPointer,const QList<TrackPointer>&)));
+    connect(&m_DlgTagFetcher, SIGNAL(finished()), &m_TagFetcher, SLOT(Cancel()));
+    connect(&m_DlgTagFetcher, SIGNAL(StartSubmit(TrackPointer, QString)),
+            &m_TagFetcher, SLOT(StartSubmit(TrackPointer, QString)));
+    connect(&m_TagFetcher, SIGNAL(submitProgress(QString)),
+            &m_DlgTagFetcher, SLOT(submitProgress(QString)));
+    connect(&m_TagFetcher, SIGNAL(fetchProgress(QString)),
+            &m_DlgTagFetcher, SLOT(FetchTagProgress(QString)));
+    connect(&m_TagFetcher, SIGNAL(submited(int,QString)),
+            &m_DlgTagFetcher, SLOT(submitFinished(int,QString)));
 
 
     connect(&m_loadTrackMapper, SIGNAL(mapped(QString)),
@@ -81,8 +90,8 @@ WTrackTableView::WTrackTableView(QWidget * parent,
             this, SLOT(addSelectionToCrate(int)));
 }
 
-WTrackTableView::~WTrackTableView()
-{
+WTrackTableView::~WTrackTableView() {
+    qDebug() << "~WTrackTableView()";
     WTrackTableViewHeader* pHeader =
             dynamic_cast<WTrackTableViewHeader*>(horizontalHeader());
     if (pHeader) {
@@ -519,10 +528,10 @@ void WTrackTableView::showDlgTagFetcher(QModelIndex index) {
 
     TrackPointer pTrack = trackModel->getTrack(index);
     // NULL is fine
-    m_pTagFetcher->StartFetch(pTrack);
-    m_pDlgTagFetcher->init(pTrack);
+    m_TagFetcher.StartFetch(pTrack);
+    m_DlgTagFetcher.init(pTrack);
     currentTrackInfoIndex = index;
-    m_pDlgTagFetcher->show();
+    m_DlgTagFetcher.show();
 }
 
 void WTrackTableView::slotShowDlgTagFetcher(){

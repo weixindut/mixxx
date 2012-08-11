@@ -25,6 +25,7 @@ FolderTreeModel::FolderTreeModel(QObject *parent)
 }
 
 FolderTreeModel::~FolderTreeModel() {
+    qDebug() << "~FolderTreeModel()";
 }
 
 /* A tree model of the filesystem should be initialized lazy.

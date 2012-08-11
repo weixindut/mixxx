@@ -637,7 +637,6 @@ void BaseSqlTableModel::tracksChanged(QSet<int> trackIds) {
     if (sDebug) {
         qDebug() << this << "trackChanged" << trackIds.size();
     }
-    qDebug() <<this<< "kain88 ok trackschanged from BSTM was called "<<trackIds;
     const int numColumns = columnCount();
     foreach (int trackId, trackIds) {
         QLinkedList<int> rows = getTrackRows(trackId);

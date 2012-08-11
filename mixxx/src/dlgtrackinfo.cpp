@@ -9,21 +9,13 @@
 #include "musicbrainz/tagfetcher.h"
 #include "dlgtagfetcher.h"
 
-DlgTrackInfo::DlgTrackInfo(QWidget* parent) :
-        QDialog(parent),
-        m_pLoadedTrack(NULL),
-        m_pDlgTagFetcher(new DlgTagFetcher(this)),
-        m_pTagFetcher(new TagFetcher(this)){
-    init();
-}
-
 DlgTrackInfo::DlgTrackInfo(QWidget* parent,
-                           TagFetcher* pTagFetcher,
-                           DlgTagFetcher* pDlgTagFetcher)
+                           TagFetcher& TagFetcher,
+                           DlgTagFetcher& DlgTagFetcher)
             : QDialog(parent),
               m_pLoadedTrack(NULL),
-              m_pDlgTagFetcher(pDlgTagFetcher),
-              m_pTagFetcher(pTagFetcher){
+              m_DlgTagFetcher(DlgTagFetcher),
+              m_TagFetcher(TagFetcher){
     init();
 }
 
@@ -48,21 +40,6 @@ void DlgTrackInfo::init(){
 
     connect(btnFetchTag, SIGNAL(clicked()),
             this, SLOT(fetchTag()));
-
-    connect(m_pTagFetcher, SIGNAL(ResultAvailable(const TrackPointer,const QList<TrackPointer>&)),
-            m_pDlgTagFetcher, SLOT(FetchTagFinished(const TrackPointer,const QList<TrackPointer>&)));
-    connect(m_pDlgTagFetcher, SIGNAL(finished()), m_pTagFetcher, SLOT(Cancel()));
-    connect(m_pDlgTagFetcher, SIGNAL(StartSubmit(TrackPointer, QString)),
-            m_pTagFetcher, SLOT(StartSubmit(TrackPointer, QString)));
-
-    connect(m_pTagFetcher, SIGNAL(submitProgress(QString)),
-            m_pDlgTagFetcher, SLOT(submitProgress(QString)));
-
-    connect(m_pTagFetcher, SIGNAL(fetchProgress(QString)),
-            m_pDlgTagFetcher, SLOT(FetchTagProgress(QString)));
-
-    connect(m_pTagFetcher, SIGNAL(submited(int,QString)),
-            m_pDlgTagFetcher, SLOT(submitFinished(int,QString)));
 
     connect(bpmDouble, SIGNAL(clicked()),
             this, SLOT(slotBpmDouble()));
@@ -357,7 +334,7 @@ void DlgTrackInfo::reloadTrackMetadata() {
 }
 
 void DlgTrackInfo::fetchTag() {
-    m_pDlgTagFetcher->init(m_pLoadedTrack);
-    m_pTagFetcher->StartFetch(m_pLoadedTrack);
-    m_pDlgTagFetcher->show();
+    m_DlgTagFetcher.init(m_pLoadedTrack);
+    m_TagFetcher.StartFetch(m_pLoadedTrack);
+    m_DlgTagFetcher.show();
 }

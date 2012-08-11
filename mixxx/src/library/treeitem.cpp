@@ -29,7 +29,8 @@
  * - cratefeature.cpp
  * - *feature.cpp
  */
-TreeItem::TreeItem(const QString &data, const QString &data_path, LibraryFeature* feature, TreeItem* parent) {
+TreeItem::TreeItem(const QString &data, const QString &data_path,
+                   LibraryFeature* feature, TreeItem* parent) {
     m_data = data;
     m_dataPath = data_path;
     m_parentItem = parent;
@@ -44,12 +45,16 @@ TreeItem::TreeItem() {
 }
 
 TreeItem::~TreeItem() {
+    qDebug() << "~TreeItem()";
+    //TODO(kain88) this causes a segfault during shutdown, no idea why
+    qDebug() << m_childItems << " empty " << m_childItems.isEmpty();
+    if (m_childItems.isEmpty()) {
+        return;
+    }
     qDeleteAll(m_childItems);
 }
 
 void TreeItem::appendChild(TreeItem *item) {
-    Q_ASSERT(item);
-    qDebug() << "kain88 added a treeitem child";
     m_childItems.append(item);
 }
 

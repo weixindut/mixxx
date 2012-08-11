@@ -5,10 +5,11 @@
 
 #include "dlgtagfetcher.h"
 
-DlgTagFetcher::DlgTagFetcher(QWidget *parent)
+DlgTagFetcher::DlgTagFetcher(QWidget *parent, ConfigObject<ConfigValue>* pConfig)
                     : QDialog(parent),
                       m_track(NULL),
-                      m_submit(false){
+                      m_submit(false),
+                      m_pConfig(pConfig){
     // Setup dialog window
     setupUi(this);
 
@@ -38,12 +39,19 @@ DlgTagFetcher::DlgTagFetcher(QWidget *parent)
 
     //TODO(kain88) read this from config
     apikey->setPlaceholderText("API-Key");
-    // QString apiKey("cRYbgf0M");
-    // apikey->insert("");
+    // QString apiKey("cRYbgf0M"); <- kain88 this is my key for testing
+    QString apiKey = m_pConfig->getValueString(
+                                ConfigKey("[AcoustId]","apikey"),"");
+    if(!apiKey.isEmpty()) {
+        apikey->insert(apiKey);
+    }
     progressLabel->setText("");
 }
 
 DlgTagFetcher::~DlgTagFetcher() {
+    // save apikey
+    m_pConfig->set(ConfigKey("AcoustID","apikey"), ConfigValue(apikey->text()));
+    m_pConfig->Save();
 }
 
 void DlgTagFetcher::init(const TrackPointer track) {
@@ -133,6 +141,7 @@ void DlgTagFetcher::UpdateStack() {
         // Put the original tags at the top
         AddDivider(tr("Original tags"), submit_tree);
         AddTrack(m_track, -1, submit_tree);
+        btnApply->setEnabled(false);
         return;
     } else {
         if (m_data.m_pending) {
@@ -142,6 +151,7 @@ void DlgTagFetcher::UpdateStack() {
             stack->setCurrentWidget(error_page);
             return;
         }
+        btnApply->setEnabled(true);
         stack->setCurrentWidget(results_page);
 
         // Clear tree widget

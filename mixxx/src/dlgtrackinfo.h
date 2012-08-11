@@ -10,17 +10,16 @@
 #include "ui_dlgtrackinfo.h"
 #include "trackinfoobject.h"
 #include "controlbeat.h"
+#include "musicbrainz/tagfetcher.h"
+#include "dlgtagfetcher.h"
 
 class Cue;
-class TagFetcher;
-class DlgTagFetcher;
 
 class DlgTrackInfo : public QDialog, public Ui::DlgTrackInfo {
     Q_OBJECT
   public:
-    DlgTrackInfo(QWidget* parent);
-    DlgTrackInfo(QWidget* parent, TagFetcher* pTagFetcher,
-                 DlgTagFetcher* pDlgTagFetcher);
+    DlgTrackInfo(QWidget* parent, TagFetcher& TagFetcher,
+                 DlgTagFetcher& DlgTagFetcher);
     virtual ~DlgTrackInfo();
 
   public slots:
@@ -63,9 +62,8 @@ class DlgTrackInfo : public QDialog, public Ui::DlgTrackInfo {
     QTime m_bpmTapTimer;
 
     QMutex m_mutex;
-    //TODO(kain88) use references instead
-    DlgTagFetcher* m_pDlgTagFetcher;
-    TagFetcher* m_pTagFetcher;
+    DlgTagFetcher& m_DlgTagFetcher;
+    TagFetcher& m_TagFetcher;
 
 };
 
