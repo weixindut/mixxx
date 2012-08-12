@@ -84,6 +84,8 @@ signals:
     void loadTrackFailed(TrackPointer);
 
 private:
+    void purgeTracks(const int dirId);
+
     ConfigObject<ConfigValue>* m_pConfig;
     SidebarModel* m_pSidebarModel;
     TrackCollection* m_pTrackCollection;

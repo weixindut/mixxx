@@ -71,28 +71,6 @@ void HiddenTableModel::purgeTracks(const QModelIndexList& indices) {
     select(); //Repopulate the data model.
 }
 
-void HiddenTableModel::purgeTracks(const int dirId){
-    QSqlQuery query;
-    QList<int> trackIds;
-    query.prepare("SELECT library.id FROM library INNER JOIN track_locations "
-                "ON library.location=track_locations.id "
-                "WHERE maindir_id="+QString::number(dirId));
-
-    if (!query.exec()) {
-        qDebug() << "could not purge tracks from libraryPath "<<dirId;
-    }
-
-    while (query.next()) {
-        trackIds.append(query.value(query.record().indexOf("id")).toInt());
-    }
-    qDebug() << "starting to purge Tracks " << trackIds;
-    m_trackDAO.purgeTracks(trackIds); 
-
-    // TODO(rryan) : do not select, instead route event to BTC and notify from
-    // there.
-    select();
-}
-
 void HiddenTableModel::unhideTracks(const QModelIndexList& indices) {
     QList<int> trackIds;
 

@@ -34,7 +34,6 @@ class MixxxLibraryFeature : public LibraryFeature {
 
   signals:
     void configChanged(QString, QString);
-    void dirsChanged(QString,QString);
     void loadTrackFailed(TrackPointer);
 
   public slots:
@@ -44,7 +43,6 @@ class MixxxLibraryFeature : public LibraryFeature {
     void onRightClickChild(const QPoint& globalPos, QModelIndex index);
     void onLazyChildExpandation(const QModelIndex& index);
     void refreshLibraryModels();
-    void slotDirsChanged(QString,QString);
 
   private:
     TrackCollection* m_pTrackCollection;
@@ -53,7 +51,7 @@ class MixxxLibraryFeature : public LibraryFeature {
     LibraryTableModel* m_pLibraryTableModel;
     HiddenTableModel* m_pHiddenTableModel;
     TreeItemModel m_childModel;
-    DirectoryDAO m_directoryDAO;
+    DirectoryDAO& m_directoryDAO;
 };
 
 #endif /* MIXXXLIBRARYFEATURE_H */

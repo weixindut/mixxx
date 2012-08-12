@@ -71,8 +71,6 @@ Library::Library(QObject* parent, ConfigObject<ConfigValue>* pConfig, bool first
     m_pMixxxLibraryFeature = new MixxxLibraryFeature(this, m_pTrackCollection,pConfig,
                             availableDirIds);
     addFeature(m_pMixxxLibraryFeature,true);
-    connect(this, SIGNAL(dirsChanged(QString,QString)),
-            m_pMixxxLibraryFeature, SLOT(slotDirsChanged(QString,QString)));
     connect(this, SIGNAL(loadTrackFailed(TrackPointer)),
             m_pMixxxLibraryFeature, SIGNAL(loadTrackFailed(TrackPointer)));
 
@@ -124,7 +122,6 @@ Library::Library(QObject* parent, ConfigObject<ConfigValue>* pConfig, bool first
 }
 
 Library::~Library() {
-    qDebug() << "kain88 called destructor library";
     QMutableListIterator<LibraryFeature*> features_it(m_features);
     while(features_it.hasNext()) {
         LibraryFeature* feature = features_it.next();
@@ -134,7 +131,6 @@ Library::~Library() {
 
     delete m_pLibraryControl;
     delete m_pSidebarModel;
-    qDebug()<<"kain88 trying to delete trackcollection";
     //IMPORTANT: m_pTrackCollection gets destroyed via the QObject hierarchy somehow.
     //           Qt does it for us due to the way RJ wrote all this stuff.
     //Update:  - OR NOT! As of Dec 8, 2009, this pointer must be destroyed manually otherwise
@@ -261,14 +257,14 @@ MixxxLibraryFeature* Library::getpMixxxLibraryFeature(){
 }
 
 void Library::slotDirsChanged(QString op, QString dir){
-    emit dirsChanged(op,dir);
-
     if (op=="added") {
+        m_directoryDAO.addDirectory(dir);
         m_availableDirs << dir;
         emit availableDirsChanged(m_directoryDAO.getDirIds(m_availableDirs),
                                   "added");
     } else if (op=="removed") {
-        qDebug() << m_availableDirs;
+        purgeTracks(m_directoryDAO.getDirId(dir));
+        m_directoryDAO.purgeDirectory(dir);
         m_availableDirs.removeOne(dir);
         emit availableDirsChanged(m_directoryDAO.getDirIds(m_availableDirs),"removed");
     } else if (op=="relocate") {
@@ -276,11 +272,37 @@ void Library::slotDirsChanged(QString op, QString dir){
         QStringList dirs = dir.split("!(~)!");
         QString newFolder = dirs[0];
         QString oldFolder = dirs[1];
+        m_directoryDAO.relocateDirectory(oldFolder,newFolder);
         m_availableDirs.removeOne(oldFolder);
         emit availableDirsChanged(m_directoryDAO.getDirIds(m_availableDirs),"removed");
         m_availableDirs << newFolder;
         emit availableDirsChanged(m_directoryDAO.getDirIds(m_availableDirs),"added");
+    } else if (op=="update") {
+        // this will be signaled from the library scanner if the db needs to be 
+        // updated
+        m_directoryDAO.addDirectory(dir);
+        m_directoryDAO.updateTrackLocations(dir);
+        m_availableDirs << dir;
+        emit availableDirsChanged(m_directoryDAO.getDirIds(m_availableDirs),"added");
     }
+}
+
+void Library::purgeTracks(const int dirId) {
+    QSqlQuery query;
+    QList<int> trackIds;
+    query.prepare("SELECT library.id FROM library INNER JOIN track_locations "
+                "ON library.location=track_locations.id "
+                "WHERE maindir_id="+QString::number(dirId));
+
+    if (!query.exec()) {
+        qDebug() << "could not purge tracks from libraryPath "<<dirId;
+    }
+
+    while (query.next()) {
+        trackIds.append(query.value(query.record().indexOf("id")).toInt());
+    }
+    qDebug() << "starting to purge Tracks " << trackIds;
+    m_pTrackCollection->getTrackDAO().purgeTracks(trackIds); 
 }
 
 void Library::slotFoundNewStorage(QStringList newStorage){

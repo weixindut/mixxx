@@ -18,15 +18,15 @@ class Automount : public QObject {
     void removedStorage(QStringList);
   private slots:
     void slotReadMtab();
-	void slotDirectoryChanged(const QString&);
+    void slotDirectoryChanged(const QString&);
   private:
     void removedDevice(QStringList devices);
     void addedDevice(QStringList devices);
 
-#if defined(__LINUX)
+#if defined(__LINUX__)
     QTimer m_timer;
 #elif defined(__APPLE__)
-	QFileSystemWatcher m_watcher;
+    QFileSystemWatcher m_watcher;
 #endif
     QStringList m_devices;
 };

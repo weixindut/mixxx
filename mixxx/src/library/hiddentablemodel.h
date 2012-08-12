@@ -13,8 +13,6 @@ class HiddenTableModel : public BaseSqlTableModel {
     bool isColumnInternal(int column);
     bool isColumnHiddenByDefault(int column);
     void purgeTracks(const QModelIndexList& indices);
-    //TODO (kain88) check why this function is here
-    void purgeTracks(const int dirId);
     void deleteTracks(const QModelIndexList& indices);
     void unhideTracks(const QModelIndexList& indices);
 

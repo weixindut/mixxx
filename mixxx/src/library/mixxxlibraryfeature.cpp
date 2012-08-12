@@ -183,27 +183,3 @@ void MixxxLibraryFeature::onLazyChildExpandation(const QModelIndex &index){
     Q_UNUSED(index);
     // Nothing to do because the childmodel is not of lazy nature.
 }
-
-//TODO(kain88) check if this causes the other features to update their TMs as well
-void MixxxLibraryFeature::slotDirsChanged(QString op, QString dir){
-    if (op=="added") {
-        m_directoryDAO.addDirectory(dir);
-    } else if (op=="removed") {
-        m_pHiddenTableModel->purgeTracks(m_directoryDAO.getDirId(dir));
-        m_directoryDAO.purgeDirectory(dir);
-    } else if (op=="update"){
-        // this will be signaled from the library scanner if the db needs to be 
-        // updated
-        m_directoryDAO.addDirectory(dir);
-        m_directoryDAO.updateTrackLocations(dir);
-    } else if (op=="relocate") {
-        // see dlgprefplaylist for this
-        QStringList dirs = dir.split("!(~)!");
-        QString newFolder = dirs[0];
-        QString oldFolder = dirs[1];
-        m_directoryDAO.relocateDirectory(oldFolder,newFolder);
-    } else {
-        qDebug() << "MixxxLibraryFeature::slotDirsChanged "
-                    "op not recognised";
-    }
-}
