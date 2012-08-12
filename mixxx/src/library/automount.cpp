@@ -8,9 +8,16 @@
 
 Automount::Automount(QObject* parent)
          : QObject(parent),
+#if defined(__LINUX__)
            m_timer(this) {
     connect(&m_timer, SIGNAL(timeout()), this , SLOT(slotReadMtab()));
     m_timer.start(5000);// call every 5 seconds
+#elif defined(__APPLE__)
+           m_watcher(this) {
+	m_watcher.addPath("/Volumes");
+	connect(&m_watcher, SIGNAL(directoryChanged(const QString&)),
+			this, SLOT(slotDirectoryChanged(const QString&)));
+#endif
 
     // generated list of devices known at start
     m_devices = attachedDevices();
@@ -37,7 +44,32 @@ void Automount::slotReadMtab(){
     // qDebug("checking for changes took: %d ms" , time.elapsed());
 }
 
+void Automount::slotDirectoryChanged(const QString& path) {
+	Q_UNUSED(path);
+	QStringList devices = attachedDevices();
+
+    if (m_devices.size()!=devices.size()) {
+        if (m_devices.size() > devices.size()) {
+            removedDevice(devices);
+        } else {
+            addedDevice(devices);
+        }
+    }
+}
+
 QStringList Automount::attachedDevices(){
+#if defined(__APPLE__)
+	// this code is expensive, but it gets only executed at the start and when
+	// qt signals mixxx that the content of /Volumes has changed
+	QDir Volumes("/Volumes");
+	QFileInfoList dirs = Volumes.entryInfoList(QDir::Dirs | QDir::NoDotAndDotDot);
+	QStringList devices;
+	foreach (QFileInfo dir, dirs) {
+		devices << dir.absoluteFilePath();
+	}
+	qDebug() << "kain88 debug attached devices mac OS";
+	qDebug() << devices;
+#else
     // This will parse the entries in /etc/mtab to look for known storage devices
     // a line in this file with a device will typically look like this.
     //
@@ -78,6 +110,7 @@ QStringList Automount::attachedDevices(){
     }
     file.close();
     // qDebug("reading file took: %d ms" , time.elapsed());
+#endif
     return devices;
 }
 
