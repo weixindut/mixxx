@@ -1,7 +1,7 @@
 #include <QtCore>
 #include <chromaprint.h>
 
-#include "library/chromaprinter.h"
+#include "musicbrainz/chromaprinter.h"
 #include "soundsourceproxy.h"
 #include "defs.h"
 
@@ -29,8 +29,9 @@ QString chromaprinter::calcFingerPrint(SoundSourceProxy& soundSource, bool mixxx
     }
 
     if (mixxx) {
-        // we want to have 5 sec from the beginning for indexing
-        m_NumSamples = 5*2*m_SampleRate;  
+        // TODO(kain88) this will calculate a index for the whole song. This might
+        // cause problems for large mixes. check if 
+        m_NumSamples = length;
     } else {
         // this is worth 2min of audio, multiply by 2 because we have 2 channels
         // AcoustID only stores a fingerprint for the first to min of a song on their
@@ -41,7 +42,6 @@ QString chromaprinter::calcFingerPrint(SoundSourceProxy& soundSource, bool mixxx
     // check that the song is actually longer then the sec of audio we use
     if (m_NumSamples > length) {
         m_NumSamples = length;
-        qDebug() << "File is shorter then 30 or 120 secs";
     }
 
     SAMPLE *pData = new SAMPLE[m_NumSamples];

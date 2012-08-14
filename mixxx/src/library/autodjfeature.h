@@ -40,7 +40,6 @@ class AutoDJFeature : public LibraryFeature {
     TreeItemModel* getChildModel();
 
   signals:
-    void availableDirsChanged(QList<int>, QString);
     void configChanged(QString,QString);
 
   public slots:

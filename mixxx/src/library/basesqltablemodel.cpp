@@ -800,9 +800,7 @@ void BaseSqlTableModel::slotConfigChanged(QString identifier, QString key){
     }
 }
 
-void BaseSqlTableModel::slotAvailableDirsChanged(QList<int> availableDirIds, 
-                                                 QString name){
-    Q_UNUSED(name);
+void BaseSqlTableModel::slotAvailableDirsChanged(QList<int> availableDirIds){
     m_availableDirIds = availableDirIds;
     setTableModel();
     select();

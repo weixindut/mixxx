@@ -24,8 +24,6 @@ PrepareFeature::PrepareFeature(QObject* parent,
           m_pTrackCollection(pTrackCollection),
           m_pAnalyserQueue(NULL),
           m_availableDirIds(availableDirIds) {
-    connect(parent, SIGNAL(availableDirsChanged(QList<int>,QString)),
-            this, SIGNAL(availableDirsChanged(QList<int>,QString)));
 }
 
 PrepareFeature::~PrepareFeature() {

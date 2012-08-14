@@ -25,6 +25,10 @@ BasePlaylistFeature::BasePlaylistFeature(
           m_playlistTableModel(this, pTrackCollection->getDatabase()),
           m_availableDirIds(availableDirIds),
           m_rootViewName(rootViewName) {
+
+    connect(this, SIGNAL(availableDirsChanged(QList<int>)),
+            m_pPlaylistTableModel, SLOT(slotAvailableDirsChanged(QList<int>)));
+
     m_pCreatePlaylistAction = new QAction(tr("New Playlist"),this);
     connect(m_pCreatePlaylistAction, SIGNAL(triggered()),
             this, SLOT(slotCreatePlaylist()));
@@ -297,6 +301,7 @@ void BasePlaylistFeature::slotExportPlaylist() {
 
     // Create a new table model since the main one might have an active search.
     // This PTM will only use tracks that are not deleted from the FS
+    //TODO(kain88) argh this m_availableDirIds does not get notified of changes
     QScopedPointer<PlaylistTableModel> pPlaylistTableModel(
         new PlaylistTableModel(this, m_pTrackCollection,
                                "mixxx.db.model.playlist_export",

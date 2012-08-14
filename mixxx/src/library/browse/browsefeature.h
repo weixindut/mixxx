@@ -13,7 +13,6 @@
 #include "library/libraryfeature.h"
 
 #include "library/proxytrackmodel.h"
-#include "library/dao/directorydao.h"
 
 #define QUICK_LINK_NODE "::mixxx_quick_lnk_node::"
 #define DEVICE_NODE "::mixxx_device_node::"
@@ -56,6 +55,7 @@ class BrowseFeature : public LibraryFeature {
 
   signals:
     void setRootIndex(const QModelIndex&);
+    void dirsChanged(QString,QString);
 
   private:
     QString getRootViewHtml() const;
@@ -75,8 +75,6 @@ class BrowseFeature : public LibraryFeature {
     TreeItem* m_pLastRightClickedItem;
     TreeItem* m_pQuickLinkItem;
     QStringList m_quickLinkList;
-
-    DirectoryDAO m_directoryDao;
 };
 
 #endif /* BROWSEFEATURE_H */

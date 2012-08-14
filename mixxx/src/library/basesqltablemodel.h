@@ -85,7 +85,7 @@ class BaseSqlTableModel : public QAbstractTableModel, public TrackModel {
     QSqlDatabase m_database;
 
   protected slots:
-    void slotAvailableDirsChanged(QList<int>, QString);
+    void slotAvailableDirsChanged(QList<int>);
     void slotConfigChanged(QString,QString);
 
   private slots:

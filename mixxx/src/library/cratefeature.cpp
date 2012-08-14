@@ -34,8 +34,8 @@ CrateFeature::CrateFeature(QObject* parent,
     m_pCreateCrateAction = new QAction(tr("New Crate"),this);
     connect(m_pCreateCrateAction, SIGNAL(triggered()),
             this, SLOT(slotCreateCrate()));
-    connect(parent, SIGNAL(availableDirsChanged(QList<int>,QString)),
-            &m_crateTableModel, SLOT(slotAvailableDirsChanged(QList<int>,QString)));
+    connect(this, SIGNAL(availableDirsChanged(QList<int>)),
+            &m_crateTableModel, SLOT(slotAvailableDirsChanged(QList<int>)));
 
     m_pDeleteCrateAction = new QAction(tr("Remove"),this);
     connect(m_pDeleteCrateAction, SIGNAL(triggered()),

@@ -225,8 +225,3 @@ QString PlaylistFeature::getRootViewHtml() const {
     html.append("</td></tr></table>");
     return html;
 }
-
-//TODO(kain88) is this still connected?
-void PlaylistFeature::slotConfigChanged(QString identifier, QString key){
-    emit(configChanged(identifier,key));
-}

@@ -86,15 +86,15 @@ MixxxLibraryFeature::MixxxLibraryFeature(QObject* parent,
     // These rely on the 'default' track source being present.
     m_pLibraryTableModel = new LibraryTableModel(this, pTrackCollection,pConfig,
                             availableDirIds);
-    connect(parent,SIGNAL(configChanged(QString,QString)),
+    connect(this,SIGNAL(configChanged(QString,QString)),
             m_pLibraryTableModel, SLOT(slotConfigChanged(QString, QString)));
     connect(this, SIGNAL(loadTrackFailed(TrackPointer)),
             m_pLibraryTableModel, SLOT(slotLoadTrackFailed(TrackPointer)));
-    connect(parent, SIGNAL(availableDirsChanged(QList<int>,QString)),
+    connect(this, SIGNAL(availableDirsChanged(QList<int>)),
             m_pLibraryTableModel, SLOT(slotAvailableDirsChanged(QList<int>, QString)));
     m_pHiddenTableModel = new HiddenTableModel(this, pTrackCollection, availableDirIds);
-    connect(parent, SIGNAL(availableDirsChanged(QList<int>,QString)),
-            m_pHiddenTableModel, SLOT(slotAvailableDirsChanged(QList<int>, QString)));
+    connect(this, SIGNAL(availableDirsChanged(QList<int>)),
+            m_pHiddenTableModel, SLOT(slotAvailableDirsChanged(QList<int>)));
 
 
 

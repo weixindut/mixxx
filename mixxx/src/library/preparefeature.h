@@ -68,6 +68,9 @@ class PrepareFeature : public LibraryFeature {
     TreeItemModel m_childModel;
     const static QString m_sPrepareViewName;
     DlgPrepare* m_pPrepareView;
+    //TODO(kain88) hm what if this was changed during start up. there is no
+    // way this will get to prepare until the signal is emitted again
+    // dang
     QList<int> m_availableDirIds;
 };
 

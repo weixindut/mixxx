@@ -32,7 +32,6 @@ class PlaylistFeature : public BasePlaylistFeature {
   public slots:
     void onRightClick(const QPoint& globalPos);
     void onRightClickChild(const QPoint& globalPos, QModelIndex index);
-    void slotConfigChanged(QString, QString);
 
   private slots:
     void slotPlaylistTableChanged(int playlistId);

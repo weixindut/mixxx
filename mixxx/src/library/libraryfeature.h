@@ -61,15 +61,13 @@ class LibraryFeature : public QObject {
     void loadTrack(TrackPointer pTrack);
     void loadTrackToPlayer(TrackPointer pTrack, QString group);
     void restoreSearch(const QString&);
-    /** emit this signal before you parse a large music collection, e.g., iTunes, Traktor. **/
+    // emit this signal before you parse a large music collection, e.g., iTunes, Traktor.
     void featureIsLoading(LibraryFeature*);
-    /** emit this signal if the foreign music collection has been imported/parsed. **/
+    // emit this signal if the foreign music collection has been imported/parsed.
     void featureLoadingFinished(LibraryFeature*s);
-    /** emit this signal to select pFeature **/
+    // emit this signal to select pFeature
     void featureSelect(LibraryFeature* pFeature, const QModelIndex& index);
-    void foundNewStorage(QStringList);
-    void removedStorage(QStringList);
-
+    void availableDirsChanged(QList<int>);
 };
 
 #endif /* LIBRARYFEATURE_H */

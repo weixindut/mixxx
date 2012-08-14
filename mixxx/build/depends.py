@@ -457,6 +457,7 @@ class MixxxCore(Feature):
                    "musicbrainz/gzip.cpp",
                    "musicbrainz/crc.c",
                    "musicbrainz/acoustidclient.cpp",
+                   "musicbrainz/chromaprinter.cpp",
                    "musicbrainz/musicbrainzclient.cpp",
 
                    "rotary.cpp",
@@ -469,7 +470,6 @@ class MixxxCore(Feature):
                    "widget/wpreparecratestableview.cpp",
                    "widget/wlibrarytextbrowser.cpp",
                    "library/automount.cpp",
-                   "library/chromaprinter.cpp",
                    "library/preparecratedelegate.cpp",
                    "library/trackcollection.cpp",
                    "library/basesqltablemodel.cpp",

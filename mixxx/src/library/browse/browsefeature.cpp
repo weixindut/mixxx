@@ -32,8 +32,10 @@ BrowseFeature::BrowseFeature(QObject* parent,
           m_proxyModel(&m_browseModel),
           m_pAddtoLibraryAction(NULL),
           m_pLastRightClickedItem(NULL),
-          m_directoryDao(pTrackCollection->getDirectoryDAO()),
           m_pTrackCollection(pTrackCollection){
+
+    connect(this, SIGNAL(dirsChanged(QString,QString)),
+            parent, SLOT(slotDirsChanged(QString,QString)));
 
     m_pAddQuickLinkAction = new QAction(tr("Add to Quick Links"),this);
     connect(m_pAddQuickLinkAction, SIGNAL(triggered()), this, SLOT(slotAddQuickLink()));
@@ -114,9 +116,6 @@ BrowseFeature::BrowseFeature(QObject* parent,
 }
 
 BrowseFeature::~BrowseFeature() {
-    delete m_pAddQuickLinkAction;
-    delete m_pRemoveQuickLinkAction;
-    delete m_pAddtoLibraryAction;
     //delete m_pLastRightClickedItem;
     // delete m_pQuickLinkItem;
 }
@@ -142,10 +141,8 @@ void BrowseFeature::slotAddToLibrary() {
     if (!m_pLastRightClickedItem) {
         return;
     }
-
-    //TODO(kain88) signal the library that we have a new dir available
     QString spath = m_pLastRightClickedItem->dataPath().toString();
-    m_directoryDao.addDirectory(spath);
+    emit dirsChanged("added" ,spath);
 }
 
 void BrowseFeature::slotRemoveQuickLink() {

@@ -80,7 +80,7 @@ signals:
     void restoreSearch(const QString&);
     void configChanged(QString, QString);
     void dirsChanged(QString,QString);
-    void availableDirsChanged(QList<int>, QString);
+    void availableDirsChanged(QList<int>);
     void loadTrackFailed(TrackPointer);
 
 private:

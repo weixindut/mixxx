@@ -57,9 +57,7 @@ Library::Library(QObject* parent, ConfigObject<ConfigValue>* pConfig, bool first
         }
     }
 
-    qDebug() << m_availableDirs;
     QList<int> availableDirIds = m_directoryDAO.getDirIds(m_availableDirs);
-    qDebug() << availableDirIds;
 
     connect(&m_automount, SIGNAL(foundNewStorage(QStringList)),
             this, SLOT(slotFoundNewStorage(QStringList)));
@@ -201,8 +199,8 @@ void Library::addFeature(LibraryFeature* feature, bool config) {
         connect(this, SIGNAL(configChanged(QString,QString)),
                 feature, SIGNAL(configChanged(QString,QString)));
     }
-    connect(this, SIGNAL(availableDirsChanged(QList<int>,QString)),
-            feature, SIGNAL(availableDirsChanged(QList<int>,QString)));
+    connect(this, SIGNAL(availableDirsChanged(QList<int>)),
+            feature, SIGNAL(availableDirsChanged(QList<int>)));
 }
 
 void Library::slotShowTrackModel(QAbstractItemModel* model) {
@@ -260,13 +258,12 @@ void Library::slotDirsChanged(QString op, QString dir){
     if (op=="added") {
         m_directoryDAO.addDirectory(dir);
         m_availableDirs << dir;
-        emit availableDirsChanged(m_directoryDAO.getDirIds(m_availableDirs),
-                                  "added");
+        emit availableDirsChanged(m_directoryDAO.getDirIds(m_availableDirs));
     } else if (op=="removed") {
         purgeTracks(m_directoryDAO.getDirId(dir));
         m_directoryDAO.purgeDirectory(dir);
         m_availableDirs.removeOne(dir);
-        emit availableDirsChanged(m_directoryDAO.getDirIds(m_availableDirs),"removed");
+        emit availableDirsChanged(m_directoryDAO.getDirIds(m_availableDirs));
     } else if (op=="relocate") {
         // see dlgprefplaylist for this
         QStringList dirs = dir.split("!(~)!");
@@ -274,16 +271,16 @@ void Library::slotDirsChanged(QString op, QString dir){
         QString oldFolder = dirs[1];
         m_directoryDAO.relocateDirectory(oldFolder,newFolder);
         m_availableDirs.removeOne(oldFolder);
-        emit availableDirsChanged(m_directoryDAO.getDirIds(m_availableDirs),"removed");
+        emit availableDirsChanged(m_directoryDAO.getDirIds(m_availableDirs));
         m_availableDirs << newFolder;
-        emit availableDirsChanged(m_directoryDAO.getDirIds(m_availableDirs),"added");
+        emit availableDirsChanged(m_directoryDAO.getDirIds(m_availableDirs));
     } else if (op=="update") {
         // this will be signaled from the library scanner if the db needs to be 
         // updated
         m_directoryDAO.addDirectory(dir);
         m_directoryDAO.updateTrackLocations(dir);
         m_availableDirs << dir;
-        emit availableDirsChanged(m_directoryDAO.getDirIds(m_availableDirs),"added");
+        emit availableDirsChanged(m_directoryDAO.getDirIds(m_availableDirs));
     }
 }
 
@@ -313,7 +310,7 @@ void Library::slotFoundNewStorage(QStringList newStorage){
             m_unavailableDirs.removeOne(dir);
         }
     }
-    emit availableDirsChanged(m_directoryDAO.getDirIds(m_availableDirs),"added");
+    emit availableDirsChanged(m_directoryDAO.getDirIds(m_availableDirs));
 }
 
 void Library::slotRemovedStorage(QStringList removedStorage){
@@ -324,7 +321,7 @@ void Library::slotRemovedStorage(QStringList removedStorage){
             m_availableDirs.removeOne(dir);
         }
     }
-    emit availableDirsChanged(m_directoryDAO.getDirIds(m_availableDirs),"removed");
+    emit availableDirsChanged(m_directoryDAO.getDirIds(m_availableDirs));
 }
 
 QStringList Library::getDirs(){

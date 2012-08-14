@@ -52,8 +52,8 @@ void AutoDJFeature::bindWidget(WLibrarySidebar* /*sidebarWidget*/,
             this, SIGNAL(loadTrack(TrackPointer)));
     connect(m_pAutoDJView, SIGNAL(loadTrackToPlayer(TrackPointer, QString)),
             this, SIGNAL(loadTrackToPlayer(TrackPointer, QString)));
-    connect(this, SIGNAL(availableDirsChanged(QList<int>,QString)),
-            m_pAutoDJView, SIGNAL(availableDirsChanged(QList<int>,QString)));
+    connect(this, SIGNAL(availableDirsChanged(QList<int>)),
+            m_pAutoDJView, SIGNAL(availableDirsChanged(QList<int>)));
     connect(this, SIGNAL(configChanged(QString,QString)),
             m_pAutoDJView, SIGNAL(configChanged(QString,QString)));
 }

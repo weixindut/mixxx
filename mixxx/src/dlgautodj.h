@@ -52,7 +52,7 @@ class DlgAutoDJ : public QWidget, public Ui::DlgAutoDJ, public virtual LibraryVi
   signals:
     void loadTrack(TrackPointer tio);
     void loadTrackToPlayer(TrackPointer tio, QString group);
-    void availableDirsChanged(QList<int>, QString);
+    void availableDirsChanged(QList<int>);
     void configChanged(QString,QString);
 
   private:

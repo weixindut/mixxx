@@ -4,7 +4,7 @@
 #include <QtConcurrentMap>
 
 #include "musicbrainz/tagfetcher.h"
-#include "library/chromaprinter.h"
+#include "musicbrainz/chromaprinter.h"
 #include "musicbrainz/musicbrainzclient.h"
 
 TagFetcher::TagFetcher(QObject* parent)
