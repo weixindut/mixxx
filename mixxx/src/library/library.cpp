@@ -69,8 +69,6 @@ Library::Library(QObject* parent, ConfigObject<ConfigValue>* pConfig, bool first
     m_pMixxxLibraryFeature = new MixxxLibraryFeature(this, m_pTrackCollection,pConfig,
                             availableDirIds);
     addFeature(m_pMixxxLibraryFeature,true);
-    connect(this, SIGNAL(loadTrackFailed(TrackPointer)),
-            m_pMixxxLibraryFeature, SIGNAL(loadTrackFailed(TrackPointer)));
 
     if (PromoTracksFeature::isSupported(m_pConfig)) {
         m_pPromoTracksFeature = new PromoTracksFeature(this, pConfig,
@@ -322,6 +320,10 @@ void Library::slotRemovedStorage(QStringList removedStorage){
         }
     }
     emit availableDirsChanged(m_directoryDAO.getDirIds(m_availableDirs));
+}
+
+void Library::slotLoadTrackFailed(TrackPointer pTrack){
+    m_pTrackCollection->getTrackDAO().markTrackAsDeleted(pTrack);
 }
 
 QStringList Library::getDirs(){

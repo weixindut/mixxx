@@ -71,6 +71,7 @@ public slots:
     void slotDirsChanged(QString,QString);
     void slotFoundNewStorage(QStringList);
     void slotRemovedStorage(QStringList);
+    void slotLoadTrackFailed(TrackPointer pTrack);
     
 signals:
     void showTrackModel(QAbstractItemModel* model);

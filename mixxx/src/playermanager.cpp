@@ -75,7 +75,7 @@ Deck* PlayerManager::addDeck() {
     connect(pDeck, SIGNAL(newTrackLoaded(TrackPointer)),
             m_pAnalyserQueue, SLOT(queueAnalyseTrack(TrackPointer)));
     connect(pDeck, SIGNAL(loadTrackFailed(TrackPointer)),
-            m_pLibrary, SIGNAL(loadTrackFailed(TrackPointer)));
+            m_pLibrary, SLOT(slotLoadTrackFailed(TrackPointer)));
 
     Q_ASSERT(!m_players.contains(group));
     m_players[group] = pDeck;
@@ -99,7 +99,7 @@ Sampler* PlayerManager::addSampler() {
     connect(pSampler, SIGNAL(newTrackLoaded(TrackPointer)),
             m_pAnalyserQueue, SLOT(queueAnalyseTrack(TrackPointer)));
     connect(pSampler, SIGNAL(loadTrackFailed(TrackPointer)),
-            m_pLibrary, SIGNAL(loadTrackFailed(TrackPointer)));
+            m_pLibrary, SLOT(slotLoadTrackFailed(TrackPointer)));
 
     Q_ASSERT(!m_players.contains(group));
     m_players[group] = pSampler;

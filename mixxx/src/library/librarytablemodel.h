@@ -20,9 +20,6 @@ class LibraryTableModel : public BaseSqlTableModel {
     int addTracks(const QModelIndex& index, QList<QString> locations);
     TrackModel::CapabilitiesFlags getCapabilities() const;
     static const QString DEFAULT_LIBRARYFILTER;
-
-  public slots:
-    void slotLoadTrackFailed(TrackPointer);
 };
 
 #endif

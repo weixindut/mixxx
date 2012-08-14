@@ -126,8 +126,3 @@ TrackModel::CapabilitiesFlags LibraryTableModel::getCapabilities() const {
             | TRACKMODELCAPS_RESETPLAYED
             | TRACKMODELCAPS_RELOCATE;
 }
-
-//TODO(kain88) hm this should go into BSTM
-void LibraryTableModel::slotLoadTrackFailed(TrackPointer pTrack){
-    m_trackDAO.markTrackAsDeleted(pTrack);
-}

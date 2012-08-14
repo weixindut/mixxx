@@ -88,8 +88,6 @@ MixxxLibraryFeature::MixxxLibraryFeature(QObject* parent,
                             availableDirIds);
     connect(this,SIGNAL(configChanged(QString,QString)),
             m_pLibraryTableModel, SLOT(slotConfigChanged(QString, QString)));
-    connect(this, SIGNAL(loadTrackFailed(TrackPointer)),
-            m_pLibraryTableModel, SLOT(slotLoadTrackFailed(TrackPointer)));
     connect(this, SIGNAL(availableDirsChanged(QList<int>)),
             m_pLibraryTableModel, SLOT(slotAvailableDirsChanged(QList<int>, QString)));
     m_pHiddenTableModel = new HiddenTableModel(this, pTrackCollection, availableDirIds);

@@ -34,7 +34,6 @@ class MixxxLibraryFeature : public LibraryFeature {
 
   signals:
     void configChanged(QString, QString);
-    void loadTrackFailed(TrackPointer);
 
   public slots:
     void activate();
