@@ -13,7 +13,6 @@ class ITunesPlaylistModel : public BaseSqlTableModel {
     bool isColumnInternal(int column);
     bool isColumnHiddenByDefault(int column);
     Qt::ItemFlags flags(const QModelIndex &index) const;
-    //TODO (kain88) this should be setTableModel and why has it a path_name?
     void setPlaylist(QString path_name);
     TrackModel::CapabilitiesFlags getCapabilities() const;
 

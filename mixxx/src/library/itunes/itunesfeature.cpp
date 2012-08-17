@@ -19,8 +19,8 @@ const QString ITunesFeature::ITDB_PATH_KEY = "mixxx.itunesfeature.itdbpath";
 
 ITunesFeature::ITunesFeature(QObject* parent, TrackCollection* pTrackCollection)
         : BaseExternalLibraryFeature(parent, pTrackCollection),
-          m_pTrackCollection(pTrackCollection),
-          m_cancelImport(false) {
+        m_pTrackCollection(pTrackCollection),
+        m_cancelImport(false) {
     QString tableName = "itunes_library";
     QString idColumn = "id";
     QStringList columns;
@@ -40,7 +40,7 @@ ITunesFeature::ITunesFeature(QObject* parent, TrackCollection* pTrackCollection)
     pTrackCollection->addTrackSource(
         QString("itunes"), QSharedPointer<BaseTrackCache>(
             new BaseTrackCache(m_pTrackCollection, tableName, idColumn,
-                               columns, false)));
+                            columns, false)));
     m_pITunesTrackModel = new ITunesTrackModel(this, m_pTrackCollection);
     m_pITunesPlaylistModel = new ITunesPlaylistModel(this, m_pTrackCollection);
     m_isActivated = false;
@@ -116,21 +116,20 @@ void ITunesFeature::activate(bool forceReload) {
             settings.setValue(ITDB_PATH_KEY, m_dbfile);
         }
         m_isActivated =  true;
-        /* Ususally the maximum number of threads
-         * is > 2 depending on the CPU cores
-         * Unfortunately, within VirtualBox
-         * the maximum number of allowed threads
-         * is 1 at all times We'll need to increase
-         * the number to > 1, otherwise importing the music collection
-         * takes place when the GUI threads terminates, i.e., on
-         * Mixxx shutdown.
-         */
+        // Ususally the maximum number of threads
+        // is > 2 depending on the CPU cores
+        // Unfortunately, within VirtualBox
+        // the maximum number of allowed threads
+        // is 1 at all times We'll need to increase
+        // the number to > 1, otherwise importing the music collection
+        // takes place when the GUI threads terminates, i.e., on
+        // Mixxx shutdown.
         QThreadPool::globalInstance()->setMaxThreadCount(4); //Tobias decided to use 4
         // Let a worker thread do the XML parsing
         m_future = QtConcurrent::run(this, &ITunesFeature::importLibrary);
         m_future_watcher.setFuture(m_future);
         m_title = tr("(loading) iTunes");
-        //calls a slot in the sidebar model such that 'iTunes (isLoading)' is displayed.
+        // calls a slot in the sidebar model such that 'iTunes (isLoading)' is displayed.
         emit (featureIsLoading(this));
     }
 
@@ -203,15 +202,13 @@ QString ITunesFeature::getiTunesMusicPath() {
 #elif defined(__WINDOWS__)
     musicFolder = QDesktopServices::storageLocation(QDesktopServices::MusicLocation) + "\\iTunes\\iTunes Music Library.xml";
 #else
-		musicFolder = "";
+    musicFolder = "";
 #endif
     qDebug() << "ITunesLibrary=[" << musicFolder << "]";
     return musicFolder;
 }
-/*
- * This method is executed in a separate thread
- * via QtConcurrent::run
- */
+// This method is executed in a separate thread
+// via QtConcurrent::run
 TreeItem* ITunesFeature::importLibrary() {
     //Give thread a low priority
     QThread* thisThread = QThread::currentThread();
@@ -240,36 +237,36 @@ TreeItem* ITunesFeature::importLibrary() {
         xml.readNext();
         if (xml.isStartElement()) {
             if (xml.name() == "key") {
-            	QString key = xml.readElementText();
-            	if (key == "Music Folder") {
-					if (readNextStartElement(xml)) {
-						// Normally the Folder Layout it some thing like that
-						// iTunes/
-						// iTunes/Album Artwork
-						// iTunes/iTunes Media <- this is the "Music Folder"
-						// iTunes/iTunes Music Library.xml <- this location we already knew
-	                    QByteArray strlocbytes = xml.readElementText().toUtf8();
-	                    QString music_folder = QUrl::fromEncoded(strlocbytes).toLocalFile();
-						qDebug() << music_folder;
-						int i = music_folder.lastIndexOf(QDir::separator(),-2); // Skip tailing separator if any
-						if (i > -1) {
-							// strip folder "iTunes Media" (at least iTunes 9 it)
-							// or "iTunes Music" (at least iTunes 7 has it)
-							m_dbItunesRoot = music_folder.left(i);
-						}
-						i = m_dbfile.lastIndexOf(QDir::separator());
-						if (i > -1) {
-							// folder "iTunes Media" in Path
-							m_mixxxItunesRoot = m_dbfile.left(i);
-			            }
+                QString key = xml.readElementText();
+                if (key == "Music Folder") {
+                    if (readNextStartElement(xml)) {
+                        // Normally the Folder Layout it some thing like that
+                        // iTunes/
+                        // iTunes/Album Artwork
+                        // iTunes/iTunes Media <- this is the "Music Folder"
+                        // iTunes/iTunes Music Library.xml <- this location we already knew
+                        QByteArray strlocbytes = xml.readElementText().toUtf8();
+                        QString music_folder = QUrl::fromEncoded(strlocbytes).toLocalFile();
+                        qDebug() << music_folder;
+                        int i = music_folder.lastIndexOf(QDir::separator(),-2); // Skip tailing separator if any
+                        if (i > -1) {
+                            // strip folder "iTunes Media" (at least iTunes 9 it)
+                            // or "iTunes Music" (at least iTunes 7 has it)
+                            m_dbItunesRoot = music_folder.left(i);
+                        }
+                        i = m_dbfile.lastIndexOf(QDir::separator());
+                        if (i > -1) {
+                            // folder "iTunes Media" in Path
+                            m_mixxxItunesRoot = m_dbfile.left(i);
+                        }
                         // Remove matching tail part
-						while (m_mixxxItunesRoot.right(1) == m_dbItunesRoot.right(1)) {
-    						m_mixxxItunesRoot.chop(1);
-    						m_dbItunesRoot.chop(1);
-    					}
-    				}
-    			} else if (key == "Tracks") {
-                	parseTracks(xml);
+                        while (m_mixxxItunesRoot.right(1) == m_dbItunesRoot.right(1)) {
+                            m_mixxxItunesRoot.chop(1);
+                            m_dbItunesRoot.chop(1);
+                        }
+                    }
+                } else if (key == "Tracks") {
+                    parseTracks(xml);
                     playlist_root = parsePlaylists(xml);
                 }
             }
@@ -297,12 +294,12 @@ TreeItem* ITunesFeature::importLibrary() {
 void ITunesFeature::parseTracks(QXmlStreamReader &xml) {
     QSqlQuery query(m_database);
     query.prepare("INSERT INTO itunes_library (id, artist, title, album, year, genre, comment, tracknumber,"
-                  "bpm, bitrate,"
-                  "duration, location,"
-                  "rating ) "
-                  "VALUES (:id, :artist, :title, :album, :year, :genre, :comment, :tracknumber,"
-                  ":bpm, :bitrate,"
-                  ":duration, :location," ":rating )");
+                "bpm, bitrate,"
+                "duration, location,"
+                "rating ) "
+                "VALUES (:id, :artist, :title, :album, :year, :genre, :comment, :tracknumber,"
+                ":bpm, :bitrate,"
+                ":duration, :location," ":rating )");
 
 
     bool in_container_dictionary = false;
@@ -421,7 +418,7 @@ void ITunesFeature::parseTrack(QXmlStreamReader &xml, QSqlQuery &query) {
                     // on systems where iTunes installed it only strips //localhost
                     // on iTunes from foreign systems the mount point is replaced
                     if (!m_dbItunesRoot.isEmpty()) {
-                    	location.replace( m_dbItunesRoot, m_mixxxItunesRoot);
+                        location.replace( m_dbItunesRoot, m_mixxxItunesRoot);
                     }
                     continue;
                 }
@@ -442,8 +439,8 @@ void ITunesFeature::parseTrack(QXmlStreamReader &xml, QSqlQuery &query) {
         }
     }
     /* If we reach the end of <dict>
-     * Save parsed track to database
-     */
+    * Save parsed track to database
+    */
     query.bindValue(":id", id);
     query.bindValue(":artist", artist);
     query.bindValue(":title", title);
@@ -471,7 +468,7 @@ TreeItem* ITunesFeature::parsePlaylists(QXmlStreamReader &xml) {
     TreeItem* rootItem = new TreeItem();
     QSqlQuery query_insert_to_playlists(m_database);
     query_insert_to_playlists.prepare("INSERT INTO itunes_playlists (id, name) "
-                                      "VALUES (:id, :name)");
+                                    "VALUES (:id, :name)");
 
     QSqlQuery query_insert_to_playlist_tracks(m_database);
     query_insert_to_playlist_tracks.prepare(
@@ -483,9 +480,9 @@ TreeItem* ITunesFeature::parsePlaylists(QXmlStreamReader &xml) {
         //We process and iterate the <dict> tags holding playlist summary information here
         if (xml.isStartElement() && xml.name() == "dict") {
             parsePlaylist(xml,
-                          query_insert_to_playlists,
-                          query_insert_to_playlist_tracks,
-                          rootItem);
+                        query_insert_to_playlists,
+                        query_insert_to_playlist_tracks,
+                        rootItem);
             continue;
         }
         if (xml.isEndElement()) {
@@ -508,7 +505,7 @@ bool ITunesFeature::readNextStartElement(QXmlStreamReader& xml) {
 }
 
 void ITunesFeature::parsePlaylist(QXmlStreamReader &xml, QSqlQuery &query_insert_to_playlists,
-                                  QSqlQuery &query_insert_to_playlist_tracks, TreeItem* root) {
+                                QSqlQuery &query_insert_to_playlist_tracks, TreeItem* root) {
     //qDebug() << "Parse Playlist";
 
     QString playlistname;
@@ -529,12 +526,10 @@ void ITunesFeature::parsePlaylist(QXmlStreamReader &xml, QSqlQuery &query_insert
 
             if (xml.name() == "key") {
                 QString key = xml.readElementText();
-                /*
-                 * The rules are processed in sequence
-                 * That is, XML is ordered.
-                 * For iTunes Playlist names are always followed by the ID.
-                 * Afterwars the playlist entries occur
-                 */
+                // The rules are processed in sequence
+                // That is, XML is ordered.
+                // For iTunes Playlist names are always followed by the ID.
+                // Afterwars the playlist entries occur
                 if (key == "Name") {
                     readNextStartElement(xml);
                     playlistname = xml.readElementText();
@@ -549,7 +544,7 @@ void ITunesFeature::parsePlaylist(QXmlStreamReader &xml, QSqlQuery &query_insert
                 }
                 //Hide playlists that are system playlists
                 if (key == "Master" || key == "Movies" || key == "TV Shows" || key == "Music" ||
-                   key == "Books" || key == "Purchased") {
+                key == "Books" || key == "Purchased") {
                     isSystemPlaylist = true;
                     continue;
                 }
@@ -563,7 +558,7 @@ void ITunesFeature::parsePlaylist(QXmlStreamReader &xml, QSqlQuery &query_insert
                     bool success = query_insert_to_playlists.exec();
                     if (!success) {
                         qDebug() << "SQL Error in ITunesTableModel.cpp: line" << __LINE__
-                                 << " " << query_insert_to_playlists.lastError();
+                                << " " << query_insert_to_playlists.lastError();
                         return;
                     }
                     //append the playlist to the child model
@@ -571,9 +566,7 @@ void ITunesFeature::parsePlaylist(QXmlStreamReader &xml, QSqlQuery &query_insert
                     root->appendChild(item);
 
                 }
-                /*
-                 * When processing playlist entries, playlist name and id have already been processed and persisted
-                 */
+                // When processing playlist entries, playlist name and id have already been processed and persisted
                 if (key == "Track ID") {
                     track_reference = -1;
 
@@ -587,7 +580,7 @@ void ITunesFeature::parsePlaylist(QXmlStreamReader &xml, QSqlQuery &query_insert
                     //Insert tracks if we are not in a pre-build playlist
                     if (!isSystemPlaylist && !query_insert_to_playlist_tracks.exec()) {
                         qDebug() << "SQL Error in ITunesFeature.cpp: line" << __LINE__ << " "
-                                 << query_insert_to_playlist_tracks.lastError();
+                                << query_insert_to_playlist_tracks.lastError();
                         qDebug() << "trackid" << track_reference;
                         qDebug() << "playlistname; " << playlistname;
                         qDebug() << "-----------------";
@@ -611,10 +604,10 @@ void ITunesFeature::clearTable(QString table_name) {
 
     if (!success) {
         qDebug() << "Could not delete remove old entries from table "
-                 << table_name << " : " << query.lastError();
+                << table_name << " : " << query.lastError();
     } else {
         qDebug() << "iTunes table entries of '"
-                 << table_name <<"' have been cleared.";
+                << table_name <<"' have been cleared.";
     }
 }
 
@@ -634,7 +627,7 @@ void ITunesFeature::onTrackCollectionLoaded(){
             NULL,
             tr("Error Loading iTunes Library"),
             tr("There was an error loading your iTunes library. Some of "
-               "your iTunes tracks or playlists may not have loaded."));
+            "your iTunes tracks or playlists may not have loaded."));
     }
     // calls a slot in the sidebarmodel such that 'isLoading' is removed from the feature title.
     m_title = tr("iTunes");
