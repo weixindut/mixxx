@@ -36,8 +36,8 @@ PlaylistFeature::PlaylistFeature(QObject* parent,
     m_playlistTableModel.select();
     connect(this, SIGNAL(configChanged(QString,QString)),
             m_pPlaylistTableModel, SLOT(slotConfigChanged(QString,QString)));
-    connect(parent, SIGNAL(availableDirsChanged(QList<int>,QString)),
-            m_pPlaylistTableModel, SLOT(slotAvailableDirsChanged(QSList<int>,QString)));
+    connect(parent, SIGNAL(availableDirsChanged(QList<int>)),
+            m_pPlaylistTableModel, SLOT(slotAvailableDirsChanged(QList<int>)));
     //construct child model
     TreeItem *rootItem = new TreeItem();
     m_childModel.setRootItem(rootItem);

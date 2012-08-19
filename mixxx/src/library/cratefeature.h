@@ -53,6 +53,7 @@ class CrateFeature : public LibraryFeature {
     void slotImportPlaylist();
     void slotExportPlaylist();
     void slotCrateTableChanged(int playlistId);
+    void slotAvailableDirsChanged(QList<int>);
     void htmlLinkClicked(const QUrl & link);
 
   private:

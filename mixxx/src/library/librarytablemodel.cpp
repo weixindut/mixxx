@@ -17,8 +17,8 @@ LibraryTableModel::LibraryTableModel(QObject* parent,
                                      QString settingsNamespace)
         : BaseSqlTableModel(parent, pTrackCollection, pConfig,
                             availableDirIds, settingsNamespace){
-    connect(parent, SIGNAL(availableDirsChanged(QList<int>,QString)),
-            this, SLOT(slotAvailableDirsChanged(QList<int>,QString)));
+    // connect(parent, SIGNAL(availableDirsChanged(QList<int>,QString)),
+            // this, SLOT(slotAvailableDirsChanged(QList<int>,QString)));
     setTableModel();
 }
 
@@ -57,7 +57,7 @@ void LibraryTableModel::setTableModel(int id){
             "SELECT " + columns.join(", ") +
             " FROM library INNER JOIN track_locations "
             "ON library.location = track_locations.id "
-            "WHERE (" + libraryFilter + ") AND track_locations.maindir_id in ("+ids.join(",")+",0)" ;
+            "WHERE (" + libraryFilter + ") AND track_locations.maindir_id in (0,"+ids.join(",")+")" ;
     query.prepare(queryString);
     if (!query.exec()) {
         LOG_FAILED_QUERY(query);

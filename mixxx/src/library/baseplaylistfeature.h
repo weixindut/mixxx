@@ -52,6 +52,7 @@ class BasePlaylistFeature : public LibraryFeature {
     void slotTogglePlaylistLock();
     void slotImportPlaylist();
     void slotExportPlaylist();
+    void slotAvailableDirsChanged(QList<int>);
 
   protected:
     virtual QModelIndex constructChildModel(int selected_id) = 0;

@@ -12,16 +12,13 @@ class PrepareLibraryTableModel : public LibraryTableModel
                              QList<int> availableDirIds);
     virtual ~PrepareLibraryTableModel();
 
-    virtual void search(const QString& searchText);
-    virtual bool isColumnInternal(int column);
+    void search(const QString& searchText,
+                const QString& extraFilter = QString());
+    bool isColumnInternal(int column);
 
   public slots:
     void showRecentSongs();
     void showAllSongs();
-  private slots:
-    void slotSearch(const QString& searchText);
-  signals:
-    void doSearch(const QString& searchText);
   private:
     bool m_bShowRecentSongs;
 };

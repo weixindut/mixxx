@@ -36,6 +36,8 @@ CrateFeature::CrateFeature(QObject* parent,
             this, SLOT(slotCreateCrate()));
     connect(this, SIGNAL(availableDirsChanged(QList<int>)),
             &m_crateTableModel, SLOT(slotAvailableDirsChanged(QList<int>)));
+    connect(this, SIGNAL(availableDirsChanged(QList<int>)),
+            this, SLOT(slotAvailableDirsChanged(QList<int>)));
 
     m_pDeleteCrateAction = new QAction(tr("Remove"),this);
     connect(m_pDeleteCrateAction, SIGNAL(triggered()),
@@ -521,4 +523,8 @@ QString CrateFeature::getRootViewHtml() const {
     );
     html.append("</td></tr></table>");
     return html;
+}
+
+void CrateFeature::slotAvailableDirsChanged(QList<int> availableDirIds){
+    m_availableDirIds=availableDirIds;
 }

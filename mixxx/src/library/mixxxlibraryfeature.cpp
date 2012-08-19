@@ -89,7 +89,7 @@ MixxxLibraryFeature::MixxxLibraryFeature(QObject* parent,
     connect(this,SIGNAL(configChanged(QString,QString)),
             m_pLibraryTableModel, SLOT(slotConfigChanged(QString, QString)));
     connect(this, SIGNAL(availableDirsChanged(QList<int>)),
-            m_pLibraryTableModel, SLOT(slotAvailableDirsChanged(QList<int>, QString)));
+            m_pLibraryTableModel, SLOT(slotAvailableDirsChanged(QList<int> )));
     m_pHiddenTableModel = new HiddenTableModel(this, pTrackCollection, availableDirIds);
     connect(this, SIGNAL(availableDirsChanged(QList<int>)),
             m_pHiddenTableModel, SLOT(slotAvailableDirsChanged(QList<int>)));

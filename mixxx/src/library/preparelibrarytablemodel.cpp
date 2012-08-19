@@ -14,9 +14,6 @@ PrepareLibraryTableModel::PrepareLibraryTableModel(QObject* parent,
     m_bShowRecentSongs = true;
     setSearch("", m_bShowRecentSongs ? RECENT_FILTER : QString());
     select();
-
-    connect(this, SIGNAL(doSearch(const QString&)),
-            this, SLOT(slotSearch(const QString&)));
 }
 
 
@@ -27,13 +24,7 @@ bool PrepareLibraryTableModel::isColumnInternal(int column) {
     return LibraryTableModel::isColumnInternal(column);
 }
 
-void PrepareLibraryTableModel::search(const QString& searchText) {
-    // qDebug() << "PrepareLibraryTableModel::search()" << searchText
-    //          << QThread::currentThread();
-    emit(doSearch(searchText));
-}
-
-void PrepareLibraryTableModel::slotSearch(const QString& searchText) {
+void PrepareLibraryTableModel::search(const QString& searchText, const QString& extraFilter) {
     BaseSqlTableModel::search(searchText,
                               m_bShowRecentSongs ? RECENT_FILTER : QString());
 }

@@ -253,6 +253,8 @@ MixxxLibraryFeature* Library::getpMixxxLibraryFeature(){
 }
 
 void Library::slotDirsChanged(QString op, QString dir){
+    qDebug() << "kain88 slotDirsChanged";
+    qDebug() << op << '\t' << dir;
     if (op=="added") {
         m_directoryDAO.addDirectory(dir);
         m_availableDirs << dir;

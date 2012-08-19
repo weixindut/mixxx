@@ -28,6 +28,8 @@ BasePlaylistFeature::BasePlaylistFeature(
 
     connect(this, SIGNAL(availableDirsChanged(QList<int>)),
             m_pPlaylistTableModel, SLOT(slotAvailableDirsChanged(QList<int>)));
+    connect(this, SIGNAL(availableDirsChanged(QList<int>)),
+            this, SLOT(slotAvailableDirsChanged(QList<int>)));
 
     m_pCreatePlaylistAction = new QAction(tr("New Playlist"),this);
     connect(m_pCreatePlaylistAction, SIGNAL(triggered()),
@@ -410,3 +412,7 @@ void BasePlaylistFeature::clearChildModel() {
     m_childModel.removeRows(0,m_playlistTableModel.rowCount());
 }
 
+void BasePlaylistFeature::slotAvailableDirsChanged(QList<int> availableDirIds){
+    qDebug() << "kain88 yeah the signal form the library is received";
+    m_availableDirIds = availableDirIds;
+}

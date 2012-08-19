@@ -46,7 +46,7 @@ DlgAutoDJ::DlgAutoDJ(QWidget* parent, ConfigObject<ConfigValue>* pConfig,
     m_pAutoDJTableModel = new PlaylistTableModel(this, pTrackCollection,
                                                 "mixxx.db.model.autodj",
                                                  m_pConfig, availableDirIds);
-    connect(this, SIGNAL(availableDirsChanged(QSList<int>)),
+    connect(this, SIGNAL(availableDirsChanged(QList<int>)),
             m_pAutoDJTableModel, SLOT(slotAvailableDirsChanged(QList<int>)));
     connect(this, SIGNAL(configChanged(QString,QString)),
             m_pAutoDJTableModel, SLOT(slotConfigChanged(QString,QString)));

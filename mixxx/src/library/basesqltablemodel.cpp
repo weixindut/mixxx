@@ -801,6 +801,7 @@ void BaseSqlTableModel::slotConfigChanged(QString identifier, QString key){
 }
 
 void BaseSqlTableModel::slotAvailableDirsChanged(QList<int> availableDirIds){
+    qDebug() <<"kain88 slotAvailableDirsChanged = "<< availableDirIds;
     m_availableDirIds = availableDirIds;
     setTableModel();
     select();
