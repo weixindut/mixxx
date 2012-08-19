@@ -350,7 +350,7 @@ void BaseSqlTableModel::setSearch(const QString& searchText, const QString extra
     m_bDirty = true;
 }
 
-void BaseSqlTableModel::search(const QString& searchText, const QString extraFilter) {
+void BaseSqlTableModel::search(const QString& searchText, const QString& extraFilter) {
     if (sDebug) {
         qDebug() << this << "search" << searchText;
     }

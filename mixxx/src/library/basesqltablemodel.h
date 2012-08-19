@@ -40,7 +40,7 @@ class BaseSqlTableModel : public QAbstractTableModel, public TrackModel {
 
     // Other public methods
     int getTrackId(const QModelIndex& index) const;
-    void search(const QString& searchText, const QString extraFilter=QString());
+    void search(const QString& searchText, const QString& extraFilter=QString());
     void setSearch(const QString& searchText, const QString extraFilter=QString());
     const QString currentSearch() const;
     void setSort(int column, Qt::SortOrder order);
