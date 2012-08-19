@@ -15,7 +15,7 @@ class DlgTagFetcher : public QDialog, public Ui::DlgTagFetcher {
 
   public:
     DlgTagFetcher(QWidget *parent, ConfigObject<ConfigValue>* pConfig);
-    ~DlgTagFetcher();
+    virtual ~DlgTagFetcher();
 
     void init(const TrackPointer track);
 

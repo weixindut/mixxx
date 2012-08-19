@@ -4,9 +4,9 @@
 #include <QRegExp>
 #include <QTime>
 
-#include "automount.h"
+#include "mountwatcher.h"
 
-Automount::Automount(QObject* parent)
+MountWatcher::MountWatcher(QObject* parent)
         : QObject(parent),
 #if defined(__LINUX__)
         m_timer(this) {
@@ -23,11 +23,11 @@ Automount::Automount(QObject* parent)
     m_devices = attachedDevices();
 }
 
-Automount::~Automount(){
+MountWatcher::~MountWatcher(){
     
 }
 
-void Automount::slotReadMtab(){
+void MountWatcher::slotReadMtab(){
     // QTime time;
     // time.start();
 
@@ -44,7 +44,7 @@ void Automount::slotReadMtab(){
     // qDebug("checking for changes took: %d ms" , time.elapsed());
 }
 
-void Automount::slotDirectoryChanged(const QString& path) {
+void MountWatcher::slotDirectoryChanged(const QString& path) {
     // this is only called on mac Os
     Q_UNUSED(path);
     QStringList devices = attachedDevices();
@@ -58,7 +58,7 @@ void Automount::slotDirectoryChanged(const QString& path) {
     }
 }
 
-QStringList Automount::attachedDevices(){
+QStringList MountWatcher::attachedDevices(){
 #if defined(__APPLE__)
     // this code is expensive, but it gets only executed at the start and when
     // qt signals mixxx that the content of /Volumes has changed
@@ -113,7 +113,7 @@ QStringList Automount::attachedDevices(){
     return devices;
 }
 
-void Automount::removedDevice(QStringList devices){
+void MountWatcher::removedDevice(QStringList devices){
     QStringList diff;
     foreach (QString device, m_devices) {
         if (!devices.removeOne(device)) {
@@ -129,7 +129,7 @@ void Automount::removedDevice(QStringList devices){
     }
 }
 
-void Automount::addedDevice(QStringList devices){
+void MountWatcher::addedDevice(QStringList devices){
     QStringList diff;
     foreach (QString device, devices) {
         if (!m_devices.removeOne(device)) {

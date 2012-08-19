@@ -6,8 +6,6 @@
 #include "dlgtrackinfo.h"
 #include "library/dao/cue.h"
 #include "trackinfoobject.h"
-#include "musicbrainz/tagfetcher.h"
-#include "dlgtagfetcher.h"
 
 DlgTrackInfo::DlgTrackInfo(QWidget* parent,
                            TagFetcher& TagFetcher,

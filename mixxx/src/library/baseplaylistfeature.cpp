@@ -303,7 +303,6 @@ void BasePlaylistFeature::slotExportPlaylist() {
 
     // Create a new table model since the main one might have an active search.
     // This PTM will only use tracks that are not deleted from the FS
-    //TODO(kain88) argh this m_availableDirIds does not get notified of changes
     QScopedPointer<PlaylistTableModel> pPlaylistTableModel(
         new PlaylistTableModel(this, m_pTrackCollection,
                                "mixxx.db.model.playlist_export",
@@ -413,6 +412,5 @@ void BasePlaylistFeature::clearChildModel() {
 }
 
 void BasePlaylistFeature::slotAvailableDirsChanged(QList<int> availableDirIds){
-    qDebug() << "kain88 yeah the signal form the library is received";
     m_availableDirIds = availableDirIds;
 }

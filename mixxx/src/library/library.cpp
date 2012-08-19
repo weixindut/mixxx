@@ -42,7 +42,7 @@ Library::Library(QObject* parent, ConfigObject<ConfigValue>* pConfig, bool first
       m_pRecordingManager(pRecordingManager),
       m_ptrackModel(NULL),
       m_directoryDAO(m_pTrackCollection->getDirectoryDAO()),
-      m_automount(parent){
+      m_mountwatcher(parent){
     // check if all directories are accessable 
     QStringList dirs = m_directoryDAO.getDirs();
     qDebug() << "kain88";
@@ -59,9 +59,9 @@ Library::Library(QObject* parent, ConfigObject<ConfigValue>* pConfig, bool first
 
     QList<int> availableDirIds = m_directoryDAO.getDirIds(m_availableDirs);
 
-    connect(&m_automount, SIGNAL(foundNewStorage(QStringList)),
+    connect(&m_mountwatcher, SIGNAL(foundNewStorage(QStringList)),
             this, SLOT(slotFoundNewStorage(QStringList)));
-    connect(&m_automount, SIGNAL(removedStorage(QStringList)),
+    connect(&m_mountwatcher, SIGNAL(removedStorage(QStringList)),
             this, SLOT(slotRemovedStorage(QStringList)));
 
     // TODO(rryan) -- turn this construction / adding of features into a static

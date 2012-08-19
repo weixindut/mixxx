@@ -1,6 +1,6 @@
 /***************************************************************************
-                        dlgprefplaylist.cpp  -  description
-                            -------------------
+                          dlgprefplaylist.cpp  -  description
+                             -------------------
     begin                : Thu Apr 17 2003
     copyright            : (C) 2003 by Tue & Ken Haste Andersen
     email                : haste@diku.dk
@@ -25,9 +25,9 @@
 
 DlgPrefPlaylist::DlgPrefPlaylist(QWidget * parent, ConfigObject<ConfigValue> * config)
             : QWidget(parent), 
-                m_model(),
-                m_dirsModified(false),
-                m_pconfig(config) {
+              m_model(),
+              m_dirsModified(false),
+              m_pconfig(config) {
     setupUi(this);
     slotUpdate();
     checkbox_ID3_sync->setVisible(false);

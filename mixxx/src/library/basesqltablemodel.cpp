@@ -724,7 +724,6 @@ QVariant BaseSqlTableModel::getBaseValue(
         return columns[column];
     }
 
-
     // Otherwise, return the information from the track record cache for the
     // given track ID
     if (m_trackSource) {

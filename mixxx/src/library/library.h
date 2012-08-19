@@ -17,7 +17,7 @@
 #include "mixxxlibraryfeature.h"
 #include "preparefeature.h"
 #include "library/dao/directorydao.h"
-#include "library/automount.h"
+#include "library/mountwatcher.h"
 
 class TrackModel;
 class TrackCollection;
@@ -103,7 +103,7 @@ private:
     TrackModel* m_ptrackModel;
     DirectoryDAO m_directoryDAO;
 
-    Automount m_automount;
+    MountWatcher m_mountwatcher;
     QStringList m_availableDirs;
     QStringList m_unavailableDirs;
 };
