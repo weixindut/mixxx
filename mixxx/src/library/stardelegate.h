@@ -38,7 +38,7 @@ class StarDelegate : public QStyledItemDelegate {
     Q_OBJECT
 
 public:
-    StarDelegate(QObject *pParent = 0);
+    StarDelegate(QList<int> availableDirIds, QObject *pParent = 0);
     /** reimplemented from QItemDelegate and is called whenever the view needs to repaint an item **/
     void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
     /** returns an item's preferred size **/
@@ -50,6 +50,9 @@ public:
     /** called when editing is finished, to commit data from the editor to the model: **/
     void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const;  
 
+  public slots:
+    void slotAvailableDirsChanged(QList<int>);
+
   private slots:
     void commitAndCloseEditor();
     void cellEntered(const QModelIndex &index);
@@ -59,6 +62,7 @@ private:
     QPersistentModelIndex m_currentEditedCellIndex;
     bool m_isOneCellInEditMode;
     TrackModel* m_pTrackModel;
+    QList<int> m_availableDirIds;
 };
 
 #endif

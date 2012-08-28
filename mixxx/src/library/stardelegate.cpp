@@ -26,9 +26,10 @@
 #include "library/trackmodel.h"
 #include "library/dao/trackdao.h"
 
-StarDelegate::StarDelegate(QObject *pParent)
+StarDelegate::StarDelegate(QList<int> availableDirIds, QObject *pParent)
         : QStyledItemDelegate(pParent),
-          m_isOneCellInEditMode(false) {
+          m_isOneCellInEditMode(false),
+          m_availableDirIds(availableDirIds) {
     m_pTableView = qobject_cast<QTableView *>(pParent);
      m_pTrackModel = dynamic_cast<TrackModel*>(m_pTableView->model());
     connect(pParent, SIGNAL(entered(QModelIndex)),
@@ -55,8 +56,10 @@ void StarDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, 
     // Populate the correct colors based on the styling
     QStyleOptionViewItem newOption = option;
     initStyleOption(&newOption, index);
-    bool found=index.sibling(index.row(),
-               m_pTrackModel->fieldIndex(TRACKLOCATIONSTABLE_FSDELETED)).data().toInt();
+    bool fsDeleted=index.sibling(index.row(),
+            m_pTrackModel->fieldIndex(TRACKLOCATIONSTABLE_FSDELETED)).data().toInt();
+    bool mainDirNotFound = !m_availableDirIds.contains(index.sibling(index.row(),
+            m_pTrackModel->fieldIndex(TRACKLOCATIONSTABLE_MAINDIRID)).data().toInt());
     // Set the palette appropriately based on whether the row is selected or
     // not. We also have to check if it is inactive or not and use the
     // appropriate ColorGroup.
@@ -69,8 +72,10 @@ void StarDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, 
         painter->setBrush(newOption.palette.color(
             colorGroup, QPalette::HighlightedText));
     } else {
-        if (found) {
+        if (fsDeleted) {
             painter->fillRect(newOption.rect, QColor(Qt::red));
+        } else if (mainDirNotFound) {
+            painter->fillRect(newOption.rect, QColor(Qt::blue));
         } else {
             painter->fillRect(newOption.rect, newOption.palette.base());
         }
@@ -162,3 +167,6 @@ void StarDelegate::cellEntered(const QModelIndex &index) {
     }
 }
 
+void StarDelegate::slotAvailableDirsChanged(QList<int> availableDirIds){
+    m_availableDirIds = availableDirIds;
+}

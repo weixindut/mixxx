@@ -40,7 +40,8 @@ MixxxLibraryFeature::MixxxLibraryFeature(QObject* parent,
             << "track_locations.location"
             << "track_locations.fs_deleted"
             << "library." + LIBRARYTABLE_COMMENT
-            << "library." + LIBRARYTABLE_MIXXXDELETED;
+            << "library." + LIBRARYTABLE_MIXXXDELETED
+            << "track_locations.maindir_id";
 
     QSqlQuery query(pTrackCollection->getDatabase());
     QString tableName = "library_cache_view";

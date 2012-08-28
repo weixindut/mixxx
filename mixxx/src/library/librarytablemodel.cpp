@@ -46,18 +46,13 @@ void LibraryTableModel::setTableModel(int id){
     } else {
         libraryFilter = "mixxx_deleted=0 AND fs_deleted=0";
     }
-    QStringList ids;
-    foreach (int id, m_availableDirIds) {
-        ids << QString::number(id);
-    }
-    tableName.append(ids.join(""));
 
     QSqlQuery query(m_pTrackCollection->getDatabase());
     QString queryString = "CREATE TEMPORARY VIEW IF NOT EXISTS "+tableName+" AS "
             "SELECT " + columns.join(", ") +
             " FROM library INNER JOIN track_locations "
             "ON library.location = track_locations.id "
-            "WHERE (" + libraryFilter + ") AND track_locations.maindir_id in (0,"+ids.join(",")+")" ;
+            "WHERE (" + libraryFilter + ")";
     query.prepare(queryString);
     if (!query.exec()) {
         LOG_FAILED_QUERY(query);
@@ -99,7 +94,9 @@ bool LibraryTableModel::isColumnInternal(int column) {
         (column == fieldIndex(LIBRARYTABLE_PLAYED)) ||
         (column == fieldIndex(LIBRARYTABLE_BPM_LOCK)) ||
         (column == fieldIndex(LIBRARYTABLE_CHANNELS)) ||
-        (column == fieldIndex(TRACKLOCATIONSTABLE_FSDELETED))) {
+        (column == fieldIndex(LIBRARYTABLE_CHANNELS)) ||
+        (column == fieldIndex(TRACKLOCATIONSTABLE_FSDELETED)) ||
+        (column == fieldIndex(TRACKLOCATIONSTABLE_MAINDIRID))) {
         return true;
     }
     return false;

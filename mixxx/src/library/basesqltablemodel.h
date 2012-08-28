@@ -63,6 +63,9 @@ class BaseSqlTableModel : public QAbstractTableModel, public TrackModel {
                                 int role=Qt::DisplayRole) const;
     QMimeData* mimeData(const QModelIndexList &indexes) const;
 
+  signals:
+    void availableDirsChanged(QList<int>);
+
   protected://functions
     // Returns the row of trackId in this result set. If trackId is not present,
     // returns -1.

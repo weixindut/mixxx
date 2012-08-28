@@ -22,7 +22,6 @@ CrateTableModel::~CrateTableModel() {
 
 void CrateTableModel::setTableModel(int crateId) {
     //qDebug() << "CrateTableModel::setCrate()" << crateId;
-    
     if (crateId == m_iCrateId) {
         qDebug() << "Already focused on crate " << crateId;
         return;
@@ -30,7 +29,6 @@ void CrateTableModel::setTableModel(int crateId) {
         // calls from parent class use -1 as id then just set the current crate
         crateId = m_iCrateId;
     }
-    
     m_iCrateId = crateId;
 
     QString tableName = QString("crate_%1_").arg(m_iCrateId);
@@ -49,11 +47,6 @@ void CrateTableModel::setTableModel(int crateId) {
     } else {
         filter = "library.mixxx_deleted=0 AND track_locations.fs_deleted=0";
     }
-    QStringList ids;
-    foreach(int id, m_availableDirIds){
-        ids << QString::number(id);
-    }
-    tableName.append(ids.join(""));
     // We drop files that have been explicitly deleted from mixxx
     // (mixxx_deleted=0) from the view. There was a bug in <= 1.9.0 where
     // removed files were not removed from crates, so some users will have
@@ -71,7 +64,6 @@ void CrateTableModel::setTableModel(int crateId) {
                  CRATETRACKSTABLE_CRATEID,
                  QString::number(crateId),
                  filter);
-    queryString.append(" AND track_locations.maindir_id in ("+ids.join(",")+",0)");
     query.prepare(queryString);
     if (!query.exec()) {
         LOG_FAILED_QUERY(query);
@@ -128,7 +120,8 @@ bool CrateTableModel::isColumnInternal(int column) {
         column == fieldIndex(LIBRARYTABLE_PLAYED) ||
         column == fieldIndex(LIBRARYTABLE_MIXXXDELETED) ||
         column == fieldIndex(LIBRARYTABLE_BPM_LOCK) ||
-        column == fieldIndex(TRACKLOCATIONSTABLE_FSDELETED)) {
+        column == fieldIndex(TRACKLOCATIONSTABLE_FSDELETED) ||
+        column == fieldIndex(TRACKLOCATIONSTABLE_MAINDIRID)) {
         return true;
     }
     return false;
