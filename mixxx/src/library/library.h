@@ -10,6 +10,7 @@
 #include <QList>
 #include <QObject>
 #include <QAbstractItemModel>
+#include <QFutureWatcher>
 
 #include "configobject.h"
 #include "trackinfoobject.h"
@@ -59,7 +60,7 @@ public:
 
     //static Library* buildDefaultLibrary();
 
-public slots:
+  public slots:
     void slotShowTrackModel(QAbstractItemModel* model);
     void slotSwitchToView(const QString& view);
     void slotLoadTrack(TrackPointer pTrack);
@@ -72,8 +73,8 @@ public slots:
     void slotFoundNewStorage(QStringList);
     void slotRemovedStorage(QStringList);
     void slotLoadTrackFailed(TrackPointer pTrack);
-    
-signals:
+
+  signals:
     void showTrackModel(QAbstractItemModel* model);
     void switchToView(const QString& view);
     void loadTrack(TrackPointer pTrack);
@@ -84,8 +85,13 @@ signals:
     void availableDirsChanged(QList<int>);
     void loadTrackFailed(TrackPointer);
 
-private:
+  private slots:
+    void slotFoundNewStorage(int);
+    void slotTestNewStorage(QStringList);
+
+  private:
     void purgeTracks(const int dirId);
+    static QString mpChanged(const QString);
 
     ConfigObject<ConfigValue>* m_pConfig;
     SidebarModel* m_pSidebarModel;
@@ -106,6 +112,7 @@ private:
     MountWatcher m_mountwatcher;
     QStringList m_availableDirs;
     QStringList m_unavailableDirs;
+    QFutureWatcher<QString>* m_pDirWatcher;
 };
 
 #endif /* LIBRARY_H */

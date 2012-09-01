@@ -1,3 +1,4 @@
+// Thanks to Clementine
 #include <QCoreApplication>
 #include <QNetworkReply>
 #include <QXmlStreamReader>

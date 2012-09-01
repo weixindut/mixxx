@@ -1,3 +1,4 @@
+// Thanks to Clementine
 #ifndef MUSICBRAINZCLIENT_H
 #define MUSICBRAINZCLIENT_H
 

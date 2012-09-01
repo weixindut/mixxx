@@ -2,6 +2,8 @@
 // Created 8/23/2009 by RJ Ryan (rryan@mit.edu)
 
 #include <QItemSelectionModel>
+#include <QFuture>
+#include <QtConcurrentMap>
 
 #include "library/library.h"
 #include "library/libraryfeature.h"
@@ -60,7 +62,7 @@ Library::Library(QObject* parent, ConfigObject<ConfigValue>* pConfig, bool first
     QList<int> availableDirIds = m_directoryDAO.getDirIds(m_availableDirs);
 
     connect(&m_mountwatcher, SIGNAL(foundNewStorage(QStringList)),
-            this, SLOT(slotFoundNewStorage(QStringList)));
+            this, SLOT(slotTestNewStorage(QStringList)));
     connect(&m_mountwatcher, SIGNAL(removedStorage(QStringList)),
             this, SLOT(slotRemovedStorage(QStringList)));
 
@@ -302,6 +304,35 @@ void Library::purgeTracks(const int dirId) {
     m_pTrackCollection->getTrackDAO().purgeTracks(trackIds); 
 }
 
+void Library::slotTestNewStorage(QStringList newStorage) {
+    //TODO(kain88) before i do this I should cancel any old running threads
+    QFuture<QString> future = QtConcurrent::mapped(newStorage, mpChanged);
+    m_pDirWatcher = new QFutureWatcher<QString>(this);
+    m_pDirWatcher->setFuture(future);
+    connect(m_pDirWatcher, SIGNAL(resultReadyAt(int)),
+            SLOT(slotFoundNewStorage(int)));
+    // update unavailabe dir list
+    foreach (QString dir, newStorage) {
+        m_unavailableDirs.removeOne(dir);
+    }
+}
+
+//TODO(kain88) this is a dummy function now
+QString Library::mpChanged(const QString storage){
+    return storage;
+}
+
+void Library::slotFoundNewStorage(int index){
+    QFutureWatcher<QString>* watcher = reinterpret_cast<QFutureWatcher<QString>*>(sender());
+    if (!watcher) {
+        return;
+    }
+
+    QString dir = watcher->resultAt(index);
+    m_availableDirs << dir;
+    emit availableDirsChanged(m_directoryDAO.getDirIds(m_availableDirs));
+}
+
 void Library::slotFoundNewStorage(QStringList newStorage){
     qDebug() << "called new storage";
     foreach (QString dir, m_unavailableDirs) {
@@ -310,7 +341,6 @@ void Library::slotFoundNewStorage(QStringList newStorage){
             m_unavailableDirs.removeOne(dir);
         }
     }
-    emit availableDirsChanged(m_directoryDAO.getDirIds(m_availableDirs));
 }
 
 void Library::slotRemovedStorage(QStringList removedStorage){

@@ -1,5 +1,5 @@
+// Thanks to Clementine
 #include <QFuture>
-#include <QFutureWatcher>
 #include <QUrl>
 #include <QtConcurrentMap>
 
@@ -21,7 +21,6 @@ TagFetcher::TagFetcher(QObject* parent)
 }
 
 QString TagFetcher::GetFingerprint(const TrackPointer tio) {
-    // false means that we generate fingerprints for the acoustID web service
     return chromaprinter(NULL).getFingerPrint(tio,false);
 }
 
@@ -36,7 +35,7 @@ void TagFetcher::StartFetch(const TrackPointer track) {
     m_pFingerprintWatcher = new QFutureWatcher<QString>(this);
     m_pFingerprintWatcher->setFuture(future);
     connect(m_pFingerprintWatcher, SIGNAL(resultReadyAt(int)),
-                                    SLOT(FingerprintFound(int)));
+            SLOT(FingerprintFound(int)));
 
     foreach (const TrackPointer ptrack, m_tracks) {
         emit fetchProgress(tr("Fingerprinting track"));

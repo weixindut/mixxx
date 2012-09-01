@@ -1,3 +1,4 @@
+// Thanks to Clementine
 #ifndef ACOUSTIDCLIENT_H
 #define ACOUSTIDCLIENT_H
 

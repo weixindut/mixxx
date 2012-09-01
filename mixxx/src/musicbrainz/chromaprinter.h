@@ -1,3 +1,4 @@
+// Thanks to Clementine
 #ifndef CHROMAPRINTER_H
 #define CHROMAPRINTER_H
 
