@@ -20,7 +20,6 @@ class BasePlaylistFeature : public LibraryFeature {
     BasePlaylistFeature(QObject* parent,
                         ConfigObject<ConfigValue>* pConfig,
                         TrackCollection* pTrackCollection,
-                        QList<int> availableDirIds,
                         QString rootViewName);
     virtual ~BasePlaylistFeature();
 
@@ -52,7 +51,6 @@ class BasePlaylistFeature : public LibraryFeature {
     void slotTogglePlaylistLock();
     void slotImportPlaylist();
     void slotExportPlaylist();
-    void slotAvailableDirsChanged(QList<int>);
 
   protected:
     virtual QModelIndex constructChildModel(int selected_id) = 0;
@@ -75,7 +73,6 @@ class BasePlaylistFeature : public LibraryFeature {
     QSqlTableModel m_playlistTableModel;
     QModelIndex m_lastRightClickedIndex;
     TreeItemModel m_childModel;
-    QList<int> m_availableDirIds;
 
   private:
     virtual QString getRootViewHtml() const = 0;

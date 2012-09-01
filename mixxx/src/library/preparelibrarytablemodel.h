@@ -8,8 +8,8 @@ class PrepareLibraryTableModel : public LibraryTableModel
 {
     Q_OBJECT
   public:
-    PrepareLibraryTableModel(QObject* parent, TrackCollection* pTrackCollection,
-                             QList<int> availableDirIds);
+    PrepareLibraryTableModel(QObject* parent,
+                             TrackCollection* pTrackCollection);
     virtual ~PrepareLibraryTableModel();
 
     void search(const QString& searchText,

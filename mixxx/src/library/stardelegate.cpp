@@ -26,12 +26,11 @@
 #include "library/trackmodel.h"
 #include "library/dao/trackdao.h"
 
-StarDelegate::StarDelegate(QList<int> availableDirIds, QObject *pParent)
+StarDelegate::StarDelegate(QObject *pParent)
         : QStyledItemDelegate(pParent),
-          m_isOneCellInEditMode(false),
-          m_availableDirIds(availableDirIds) {
+          m_isOneCellInEditMode(false) {
     m_pTableView = qobject_cast<QTableView *>(pParent);
-     m_pTrackModel = dynamic_cast<TrackModel*>(m_pTableView->model());
+    m_pTrackModel = dynamic_cast<TrackModel*>(m_pTableView->model());
     connect(pParent, SIGNAL(entered(QModelIndex)),
             this, SLOT(cellEntered(QModelIndex)));
 }
@@ -58,8 +57,6 @@ void StarDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, 
     initStyleOption(&newOption, index);
     bool fsDeleted=index.sibling(index.row(),
             m_pTrackModel->fieldIndex(TRACKLOCATIONSTABLE_FSDELETED)).data().toInt();
-    bool mainDirNotFound = !m_availableDirIds.contains(index.sibling(index.row(),
-            m_pTrackModel->fieldIndex(TRACKLOCATIONSTABLE_MAINDIRID)).data().toInt());
     // Set the palette appropriately based on whether the row is selected or
     // not. We also have to check if it is inactive or not and use the
     // appropriate ColorGroup.
@@ -74,8 +71,6 @@ void StarDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, 
     } else {
         if (fsDeleted) {
             painter->fillRect(newOption.rect, QColor(Qt::red));
-        } else if (mainDirNotFound) {
-            painter->fillRect(newOption.rect, QColor(Qt::blue));
         } else {
             painter->fillRect(newOption.rect, newOption.palette.base());
         }
@@ -165,8 +160,4 @@ void StarDelegate::cellEntered(const QModelIndex &index) {
         m_pTableView->closePersistentEditor(m_currentEditedCellIndex);
         m_currentEditedCellIndex = QModelIndex();
     }
-}
-
-void StarDelegate::slotAvailableDirsChanged(QList<int> availableDirIds){
-    m_availableDirIds = availableDirIds;
 }

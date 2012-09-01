@@ -6,8 +6,7 @@
 class HiddenTableModel : public BaseSqlTableModel {
     Q_OBJECT
   public:
-    HiddenTableModel(QObject* parent, TrackCollection* pTrackCollection,
-                     QList<int> availableDirIds);
+    HiddenTableModel(QObject* parent, TrackCollection* pTrackCollection);
     virtual ~HiddenTableModel();
     void setTableModel(int id = -1);
     bool isColumnInternal(int column);

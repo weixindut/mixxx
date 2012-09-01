@@ -3,7 +3,7 @@
 
 RhythmboxTrackModel::RhythmboxTrackModel(QObject* parent,
                                    TrackCollection* pTrackCollection)
-        : BaseSqlTableModel(parent, pTrackCollection,NULL,QList<int>(),
+        : BaseSqlTableModel(parent, pTrackCollection,NULL,
                             "mixxx.db.model.rhythmbox") {
     QStringList columns;
     columns << "id";

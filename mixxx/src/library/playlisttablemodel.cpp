@@ -5,10 +5,8 @@ PlaylistTableModel::PlaylistTableModel(QObject* parent,
                                     TrackCollection* pTrackCollection,
                                     QString settingsNamespace,
                                     ConfigObject<ConfigValue>* pConfig,
-                                    QList<int> availableDirIds,
                                     bool showAll)
-        : BaseSqlTableModel(parent, pTrackCollection, pConfig,
-                            availableDirIds, settingsNamespace),
+        : BaseSqlTableModel(parent, pTrackCollection, pConfig, settingsNamespace),
                             m_playlistDao(m_pTrackCollection->getPlaylistDAO()),
                             m_iPlaylistId(-1),
                             m_showAll(showAll) {

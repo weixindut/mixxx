@@ -3,7 +3,7 @@
 
 ITunesTrackModel::ITunesTrackModel(QObject* parent,
                                    TrackCollection* pTrackCollection)
-        : BaseSqlTableModel(parent, pTrackCollection, NULL, QList<int>(),
+        : BaseSqlTableModel(parent, pTrackCollection, NULL,
                             "mixxx.db.model.itunes"){
     QStringList columns;
     columns << "id";

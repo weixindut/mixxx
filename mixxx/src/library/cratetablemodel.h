@@ -11,8 +11,7 @@ class CrateTableModel : public BaseSqlTableModel {
     Q_OBJECT
   public:
     CrateTableModel(QObject* parent, TrackCollection* pTrackCollection,
-                    ConfigObject<ConfigValue>* pConfig,
-                    QList<int> availableDirIds);
+                    ConfigObject<ConfigValue>* pConfig);
     virtual ~CrateTableModel();
 
     void setTableModel(int crateId=-1);

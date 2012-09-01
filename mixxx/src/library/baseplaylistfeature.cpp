@@ -14,7 +14,6 @@
 BasePlaylistFeature::BasePlaylistFeature(
     QObject* parent, ConfigObject<ConfigValue>* pConfig,
     TrackCollection* pTrackCollection,
-    QList<int> availableDirIds,
     QString rootViewName)
         : LibraryFeature(parent),
           m_pConfig(pConfig),
@@ -23,13 +22,7 @@ BasePlaylistFeature::BasePlaylistFeature(
           m_trackDao(pTrackCollection->getTrackDAO()),
           m_pPlaylistTableModel(NULL),
           m_playlistTableModel(this, pTrackCollection->getDatabase()),
-          m_availableDirIds(availableDirIds),
           m_rootViewName(rootViewName) {
-
-    connect(this, SIGNAL(availableDirsChanged(QList<int>)),
-            m_pPlaylistTableModel, SLOT(slotAvailableDirsChanged(QList<int>)));
-    connect(this, SIGNAL(availableDirsChanged(QList<int>)),
-            this, SLOT(slotAvailableDirsChanged(QList<int>)));
 
     m_pCreatePlaylistAction = new QAction(tr("New Playlist"),this);
     connect(m_pCreatePlaylistAction, SIGNAL(triggered()),
@@ -305,8 +298,7 @@ void BasePlaylistFeature::slotExportPlaylist() {
     // This PTM will only use tracks that are not deleted from the FS
     QScopedPointer<PlaylistTableModel> pPlaylistTableModel(
         new PlaylistTableModel(this, m_pTrackCollection,
-                               "mixxx.db.model.playlist_export",
-                                m_pConfig, m_availableDirIds));
+                               "mixxx.db.model.playlist_export", m_pConfig));
 
     pPlaylistTableModel->setTableModel(m_pPlaylistTableModel->getPlaylist());
     pPlaylistTableModel->setSort(pPlaylistTableModel->fieldIndex(PLAYLISTTRACKSTABLE_POSITION), Qt::AscendingOrder);
@@ -409,8 +401,4 @@ void BasePlaylistFeature::htmlLinkClicked(const QUrl & link) {
   */
 void BasePlaylistFeature::clearChildModel() {
     m_childModel.removeRows(0,m_playlistTableModel.rowCount());
-}
-
-void BasePlaylistFeature::slotAvailableDirsChanged(QList<int> availableDirIds){
-    m_availableDirIds = availableDirIds;
 }

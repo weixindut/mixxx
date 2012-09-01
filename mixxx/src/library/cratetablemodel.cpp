@@ -8,11 +8,9 @@
 
 CrateTableModel::CrateTableModel(QObject* pParent, 
                                  TrackCollection* pTrackCollection,
-                                 ConfigObject<ConfigValue>* pConfig,
-                                 QList<int> availableDirIds)
+                                 ConfigObject<ConfigValue>* pConfig)
         : BaseSqlTableModel(pParent, pTrackCollection,
-                            pConfig, availableDirIds,
-                            "mixxx.db.model.crate"),
+                            pConfig, "mixxx.db.model.crate"),
           m_iCrateId(-1),
           m_crateDAO(pTrackCollection->getCrateDAO()) {
 }

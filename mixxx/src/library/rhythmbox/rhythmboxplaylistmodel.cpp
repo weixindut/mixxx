@@ -2,7 +2,7 @@
 
 RhythmboxPlaylistModel::RhythmboxPlaylistModel(QObject* parent,
                                          TrackCollection* pTrackCollection)
-        : BaseSqlTableModel(parent, pTrackCollection, NULL, QList<int>(),
+        : BaseSqlTableModel(parent, pTrackCollection, NULL,
                             "mixxx.db.model.rhythmbox_playlist") {
 }
 

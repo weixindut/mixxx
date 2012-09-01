@@ -15,14 +15,11 @@
 
 SetlogFeature::SetlogFeature(QObject* parent,
                              ConfigObject<ConfigValue>* pConfig,
-                             TrackCollection* pTrackCollection,
-                             QList<int> availableDirIds)
-        : BasePlaylistFeature(parent, pConfig, pTrackCollection,availableDirIds,
-                              "SETLOGHOME") {
+                             TrackCollection* pTrackCollection)
+        : BasePlaylistFeature(parent, pConfig, pTrackCollection, "SETLOGHOME") {
     m_pPlaylistTableModel = new PlaylistTableModel(this, pTrackCollection,
                                                    "mixxx.db.model.setlog",
-                                                   pConfig, availableDirIds,
-                                                   true);
+                                                   pConfig, true);
     m_pJoinWithPreviousAction = new QAction(tr("Join with previous"), this);
     connect(m_pJoinWithPreviousAction, SIGNAL(triggered()),
             this, SLOT(slotJoinWithPrevious()));

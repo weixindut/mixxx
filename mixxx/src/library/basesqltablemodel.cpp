@@ -16,13 +16,11 @@ const bool sDebug = false;
 BaseSqlTableModel::BaseSqlTableModel(QObject* pParent,
                                      TrackCollection* pTrackCollection,
                                      ConfigObject<ConfigValue>* pConfig,
-                                     QList<int> availableDirIds,
                                      QString settingsNamespace)
         :  QAbstractTableModel(pParent),
            TrackModel(pTrackCollection->getDatabase(), settingsNamespace),
            m_pTrackCollection(pTrackCollection),
            m_trackDAO(m_pTrackCollection->getTrackDAO()),
-           m_availableDirIds(availableDirIds),
            m_pConfig(pConfig),
            m_currentSearch(""),
            m_database(pTrackCollection->getDatabase()) {
@@ -440,11 +438,6 @@ QVariant BaseSqlTableModel::data(const QModelIndex& index, int role) const {
                 QString warning(tr("No such file at : "));
                 value = QVariant(QString(warning+index.sibling(index.row(),
                                  fieldIndex(LIBRARYTABLE_LOCATION)).data().toString()));
-            } else if (!m_availableDirIds.contains(index.sibling(index.row(),
-                       fieldIndex(TRACKLOCATIONSTABLE_MAINDIRID)).data().toInt())) {
-                QString warning(tr("Media with this path not connected : "));
-                value = QVariant(QString(warning+index.sibling(index.row(),
-                                 fieldIndex(LIBRARYTABLE_LOCATION)).data().toString()));
             }
             break;
         case Qt::DisplayRole:
@@ -497,9 +490,6 @@ QVariant BaseSqlTableModel::data(const QModelIndex& index, int role) const {
                 //TODO kain88 choose a better looking color, this will also
                 // have to be changed in stardelegate
                 value = QVariant(QColor(Qt::red));
-            } else if (!m_availableDirIds.contains(index.sibling(index.row(),
-                       fieldIndex(TRACKLOCATIONSTABLE_MAINDIRID)).data().toInt())) {
-                value = QVariant(QColor(Qt::blue));
             }
             break;
         default:
@@ -781,9 +771,7 @@ QMimeData* BaseSqlTableModel::mimeData(const QModelIndexList &indexes) const {
 
 QAbstractItemDelegate* BaseSqlTableModel::delegateForColumn(const int i, QObject* pParent) {
     if (i == fieldIndex(LIBRARYTABLE_RATING)) {
-        QAbstractItemDelegate* delegate = new StarDelegate(m_availableDirIds,pParent);
-        connect(this, SIGNAL(availableDirsChanged(QList<int>)),
-                delegate, SLOT(slotAvailableDirsChanged(QList<int>)));
+        QAbstractItemDelegate* delegate = new StarDelegate(pParent);
         return delegate;
     }
     return NULL;
@@ -809,13 +797,6 @@ void BaseSqlTableModel::slotConfigChanged(QString identifier, QString key){
         setTableModel();
         select();
     }
-}
-
-void BaseSqlTableModel::slotAvailableDirsChanged(QList<int> availableDirIds){
-    qDebug() <<"kain88 slotAvailableDirsChanged = "<< availableDirIds;
-    m_availableDirIds = availableDirIds;
-    select();
-    emit availableDirsChanged(availableDirIds);
 }
 
 void BaseSqlTableModel::setTableModel(int id) {

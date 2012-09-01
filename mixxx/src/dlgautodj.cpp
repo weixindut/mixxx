@@ -17,7 +17,7 @@ const int kTransitionPreferenceDefault = 10;
 
 DlgAutoDJ::DlgAutoDJ(QWidget* parent, ConfigObject<ConfigValue>* pConfig,
                      TrackCollection* pTrackCollection,
-                     MixxxKeyboard* pKeyboard,QList<int> availableDirIds)
+                     MixxxKeyboard* pKeyboard)
         : QWidget(parent),
           Ui::DlgAutoDJ(),
           m_pConfig(pConfig),
@@ -45,9 +45,7 @@ DlgAutoDJ::DlgAutoDJ(QWidget* parent, ConfigObject<ConfigValue>* pConfig,
 
     m_pAutoDJTableModel = new PlaylistTableModel(this, pTrackCollection,
                                                 "mixxx.db.model.autodj",
-                                                 m_pConfig, availableDirIds);
-    connect(this, SIGNAL(availableDirsChanged(QList<int>)),
-            m_pAutoDJTableModel, SLOT(slotAvailableDirsChanged(QList<int>)));
+                                                 m_pConfig);
     connect(this, SIGNAL(configChanged(QString,QString)),
             m_pAutoDJTableModel, SLOT(slotConfigChanged(QString,QString)));
     int playlistId = m_playlistDao.getPlaylistIdFromName(AUTODJ_TABLE);

@@ -6,7 +6,6 @@
 
 #include <QStringListModel>
 
-#include "library/dao/directorydao.h"
 #include "library/libraryfeature.h"
 #include "configobject.h"
 
@@ -20,8 +19,7 @@ class MixxxLibraryFeature : public LibraryFeature {
     public:
     MixxxLibraryFeature(QObject* parent,
                         TrackCollection* pTrackCollection,
-                        ConfigObject<ConfigValue>* pConfig,
-                        QList<int> availableDirIds);
+                        ConfigObject<ConfigValue>* pConfig);
     virtual ~MixxxLibraryFeature();
 
     QVariant title();
@@ -50,7 +48,6 @@ class MixxxLibraryFeature : public LibraryFeature {
     LibraryTableModel* m_pLibraryTableModel;
     HiddenTableModel* m_pHiddenTableModel;
     TreeItemModel m_childModel;
-    DirectoryDAO& m_directoryDAO;
 };
 
 #endif /* MIXXXLIBRARYFEATURE_H */

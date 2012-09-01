@@ -23,7 +23,6 @@ class BaseSqlTableModel : public QAbstractTableModel, public TrackModel {
     BaseSqlTableModel(QObject* pParent,
                       TrackCollection* pTrackCollection,
                       ConfigObject<ConfigValue>* pConfig,
-                      QList<int> availableDirIds,
                       QString settingsNamespace);
     virtual ~BaseSqlTableModel();
 
@@ -63,9 +62,6 @@ class BaseSqlTableModel : public QAbstractTableModel, public TrackModel {
                                 int role=Qt::DisplayRole) const;
     QMimeData* mimeData(const QModelIndexList &indexes) const;
 
-  signals:
-    void availableDirsChanged(QList<int>);
-
   protected://functions
     // Returns the row of trackId in this result set. If trackId is not present,
     // returns -1.
@@ -83,12 +79,10 @@ class BaseSqlTableModel : public QAbstractTableModel, public TrackModel {
     //variables
     TrackCollection* m_pTrackCollection;
     TrackDAO& m_trackDAO;
-    QList<int> m_availableDirIds;
     ConfigObject<ConfigValue>* m_pConfig;
     QSqlDatabase m_database;
 
   protected slots:
-    void slotAvailableDirsChanged(QList<int>);
     void slotConfigChanged(QString,QString);
 
   private slots:

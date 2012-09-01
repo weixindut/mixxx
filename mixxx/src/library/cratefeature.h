@@ -18,8 +18,7 @@ class CrateFeature : public LibraryFeature {
   public:
     CrateFeature(QObject* parent, 
                  TrackCollection* pTrackCollection, 
-                 ConfigObject<ConfigValue>* pConfig,
-                 QList<int> availableDirIds);
+                 ConfigObject<ConfigValue>* pConfig);
     virtual ~CrateFeature();
 
     QVariant title();
@@ -53,7 +52,6 @@ class CrateFeature : public LibraryFeature {
     void slotImportPlaylist();
     void slotExportPlaylist();
     void slotCrateTableChanged(int playlistId);
-    void slotAvailableDirsChanged(QList<int>);
     void htmlLinkClicked(const QUrl & link);
 
   private:
@@ -74,7 +72,6 @@ class CrateFeature : public LibraryFeature {
     QModelIndex m_lastRightClickedIndex;
     TreeItemModel m_childModel;
     ConfigObject<ConfigValue>* m_pConfig;
-    QList<int> m_availableDirIds;
 };
 
 #endif /* CRATEFEATURE_H */

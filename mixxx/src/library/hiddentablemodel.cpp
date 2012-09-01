@@ -3,11 +3,9 @@
 #include "library/hiddentablemodel.h"
 
 HiddenTableModel::HiddenTableModel(QObject* parent,
-                                     TrackCollection* pTrackCollection,
-                                     QList<int> availableDirIds)
+                                     TrackCollection* pTrackCollection)
         : BaseSqlTableModel(parent, pTrackCollection,
-                            NULL, availableDirIds,
-                            "mixxx.db.model.missing") {
+                            NULL,"mixxx.db.model.missing") {
     setTableModel();
 }
 
@@ -21,21 +19,14 @@ void HiddenTableModel::setTableModel(int id){
 
     QStringList columns;
     columns << "library." + LIBRARYTABLE_ID;
-
     QString filter("mixxx_deleted=1");
-
-    QStringList ids;
-    foreach (int id, m_availableDirIds) {
-        ids << QString::number(id);
-    }
-    tableName.append(ids.join(""));
     query.prepare("CREATE TEMPORARY VIEW IF NOT EXISTS " + tableName + " AS "
                   "SELECT "
                   + columns.join(",") +
                   " FROM library "
                   "INNER JOIN track_locations "
                   "ON library.location=track_locations.id "
-                  "WHERE " + filter +" AND track_locations.maindir_id in ("+ids.join(",")+",0)");
+                  "WHERE " + filter);
     if (!query.exec()) {
         qDebug() << query.executedQuery() << query.lastError();
     }

@@ -43,33 +43,10 @@ Library::Library(QObject* parent, ConfigObject<ConfigValue>* pConfig, bool first
       m_pLibraryControl(new LibraryControl(this)),
       m_pRecordingManager(pRecordingManager),
       m_ptrackModel(NULL),
-      m_directoryDAO(m_pTrackCollection->getDirectoryDAO()),
-      m_mountwatcher(parent){
-    // check if all directories are accessable 
-    QStringList dirs = m_directoryDAO.getDirs();
-    qDebug() << "kain88";
-    qDebug() << "List of dirs to check" <<dirs;
-    foreach( QString dir, dirs) {
-        if (QDir(dir).exists()) {
-            m_availableDirs << dir;
-            qDebug() << "dir found:"<<dir;
-        } else {
-            m_unavailableDirs << dir;
-            qDebug() << "dir not found" << dir;
-        }
-    }
-
-    QList<int> availableDirIds = m_directoryDAO.getDirIds(m_availableDirs);
-
-    connect(&m_mountwatcher, SIGNAL(foundNewStorage(QStringList)),
-            this, SLOT(slotTestNewStorage(QStringList)));
-    connect(&m_mountwatcher, SIGNAL(removedStorage(QStringList)),
-            this, SLOT(slotRemovedStorage(QStringList)));
-
+      m_directoryDAO(m_pTrackCollection->getDirectoryDAO()) {
     // TODO(rryan) -- turn this construction / adding of features into a static
     // method or something -- CreateDefaultLibrary
-    m_pMixxxLibraryFeature = new MixxxLibraryFeature(this, m_pTrackCollection,pConfig,
-                            availableDirIds);
+    m_pMixxxLibraryFeature = new MixxxLibraryFeature(this, m_pTrackCollection,pConfig);
     addFeature(m_pMixxxLibraryFeature,true);
 
     if (PromoTracksFeature::isSupported(m_pConfig)) {
@@ -81,17 +58,16 @@ Library::Library(QObject* parent, ConfigObject<ConfigValue>* pConfig, bool first
         m_pPromoTracksFeature = NULL;
     }
 
-    addFeature(new AutoDJFeature(this, pConfig, m_pTrackCollection,availableDirIds),true);
-    m_pPlaylistFeature = new PlaylistFeature(this, m_pTrackCollection, pConfig, availableDirIds);
+    addFeature(new AutoDJFeature(this, pConfig, m_pTrackCollection),true);
+    m_pPlaylistFeature = new PlaylistFeature(this, m_pTrackCollection, pConfig);
     addFeature(m_pPlaylistFeature,true);
-    m_pCrateFeature = new CrateFeature(this, m_pTrackCollection, pConfig, availableDirIds);
+    m_pCrateFeature = new CrateFeature(this, m_pTrackCollection, pConfig);
     addFeature(m_pCrateFeature,true);
     addFeature(new BrowseFeature(this, pConfig, m_pTrackCollection, m_pRecordingManager));
     addFeature(new RecordingFeature(this, pConfig, m_pTrackCollection, m_pRecordingManager));
     // the history should show ALL songs 
-    addFeature(new SetlogFeature(this, pConfig, m_pTrackCollection,
-                                    m_directoryDAO.getDirIds(dirs)));
-    m_pPrepareFeature = new PrepareFeature(this, pConfig, m_pTrackCollection,availableDirIds);
+    addFeature(new SetlogFeature(this, pConfig, m_pTrackCollection));
+    m_pPrepareFeature = new PrepareFeature(this, pConfig, m_pTrackCollection);
     addFeature(m_pPrepareFeature);
     //iTunes and Rhythmbox should be last until we no longer have an obnoxious
     //messagebox popup when you select them. (This forces you to reach for your
@@ -199,8 +175,6 @@ void Library::addFeature(LibraryFeature* feature, bool config) {
         connect(this, SIGNAL(configChanged(QString,QString)),
                 feature, SIGNAL(configChanged(QString,QString)));
     }
-    connect(this, SIGNAL(availableDirsChanged(QList<int>)),
-            feature, SIGNAL(availableDirsChanged(QList<int>)));
 }
 
 void Library::slotShowTrackModel(QAbstractItemModel* model) {
@@ -259,30 +233,20 @@ void Library::slotDirsChanged(QString op, QString dir){
     qDebug() << op << '\t' << dir;
     if (op=="added") {
         m_directoryDAO.addDirectory(dir);
-        m_availableDirs << dir;
-        emit availableDirsChanged(m_directoryDAO.getDirIds(m_availableDirs));
     } else if (op=="removed") {
         purgeTracks(m_directoryDAO.getDirId(dir));
         m_directoryDAO.purgeDirectory(dir);
-        m_availableDirs.removeOne(dir);
-        emit availableDirsChanged(m_directoryDAO.getDirIds(m_availableDirs));
     } else if (op=="relocate") {
         // see dlgprefplaylist for this
         QStringList dirs = dir.split("!(~)!");
         QString newFolder = dirs[0];
         QString oldFolder = dirs[1];
         m_directoryDAO.relocateDirectory(oldFolder,newFolder);
-        m_availableDirs.removeOne(oldFolder);
-        emit availableDirsChanged(m_directoryDAO.getDirIds(m_availableDirs));
-        m_availableDirs << newFolder;
-        emit availableDirsChanged(m_directoryDAO.getDirIds(m_availableDirs));
     } else if (op=="update") {
         // this will be signaled from the library scanner if the db needs to be 
         // updated
         m_directoryDAO.addDirectory(dir);
         m_directoryDAO.updateTrackLocations(dir);
-        m_availableDirs << dir;
-        emit availableDirsChanged(m_directoryDAO.getDirIds(m_availableDirs));
     }
 }
 
@@ -302,56 +266,6 @@ void Library::purgeTracks(const int dirId) {
     }
     qDebug() << "starting to purge Tracks " << trackIds;
     m_pTrackCollection->getTrackDAO().purgeTracks(trackIds); 
-}
-
-void Library::slotTestNewStorage(QStringList newStorage) {
-    //TODO(kain88) before i do this I should cancel any old running threads
-    QFuture<QString> future = QtConcurrent::mapped(newStorage, mpChanged);
-    m_pDirWatcher = new QFutureWatcher<QString>(this);
-    m_pDirWatcher->setFuture(future);
-    connect(m_pDirWatcher, SIGNAL(resultReadyAt(int)),
-            SLOT(slotFoundNewStorage(int)));
-    // update unavailabe dir list
-    foreach (QString dir, newStorage) {
-        m_unavailableDirs.removeOne(dir);
-    }
-}
-
-//TODO(kain88) this is a dummy function now
-QString Library::mpChanged(const QString storage){
-    return storage;
-}
-
-void Library::slotFoundNewStorage(int index){
-    QFutureWatcher<QString>* watcher = reinterpret_cast<QFutureWatcher<QString>*>(sender());
-    if (!watcher) {
-        return;
-    }
-
-    QString dir = watcher->resultAt(index);
-    m_availableDirs << dir;
-    emit availableDirsChanged(m_directoryDAO.getDirIds(m_availableDirs));
-}
-
-void Library::slotFoundNewStorage(QStringList newStorage){
-    qDebug() << "called new storage";
-    foreach (QString dir, m_unavailableDirs) {
-        if (dir.contains(QRegExp(newStorage.join("|")))) {
-            m_availableDirs << dir;
-            m_unavailableDirs.removeOne(dir);
-        }
-    }
-}
-
-void Library::slotRemovedStorage(QStringList removedStorage){
-    qDebug() << "called removed storage";
-    foreach (QString dir, m_availableDirs) {
-        if (dir.contains(QRegExp(removedStorage.join("|")))) {
-            m_unavailableDirs << dir;
-            m_availableDirs.removeOne(dir);
-        }
-    }
-    emit availableDirsChanged(m_directoryDAO.getDirIds(m_availableDirs));
 }
 
 void Library::slotLoadTrackFailed(TrackPointer pTrack){

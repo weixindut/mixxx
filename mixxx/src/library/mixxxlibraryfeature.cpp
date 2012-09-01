@@ -12,12 +12,10 @@
 
 MixxxLibraryFeature::MixxxLibraryFeature(QObject* parent,
                                          TrackCollection* pTrackCollection,
-                                         ConfigObject<ConfigValue>* pConfig,
-                                         QList<int> availableDirIds)
+                                         ConfigObject<ConfigValue>* pConfig)
         : LibraryFeature(parent),
           m_pTrackCollection(pTrackCollection),
-          kHiddenTitle(tr("Hidden Tracks")),
-          m_directoryDAO(pTrackCollection->getDirectoryDAO()) {
+          kHiddenTitle(tr("Hidden Tracks")) {
     QStringList columns;
     columns << "library." + LIBRARYTABLE_ID
             << "library." + LIBRARYTABLE_PLAYED
@@ -40,8 +38,7 @@ MixxxLibraryFeature::MixxxLibraryFeature(QObject* parent,
             << "track_locations.location"
             << "track_locations.fs_deleted"
             << "library." + LIBRARYTABLE_COMMENT
-            << "library." + LIBRARYTABLE_MIXXXDELETED
-            << "track_locations.maindir_id";
+            << "library." + LIBRARYTABLE_MIXXXDELETED;
 
     QSqlQuery query(pTrackCollection->getDatabase());
     QString tableName = "library_cache_view";
@@ -85,17 +82,10 @@ MixxxLibraryFeature::MixxxLibraryFeature(QObject* parent,
     pTrackCollection->addTrackSource(QString("default"), m_pBaseTrackCache);
 
     // These rely on the 'default' track source being present.
-    m_pLibraryTableModel = new LibraryTableModel(this, pTrackCollection,pConfig,
-                            availableDirIds);
+    m_pLibraryTableModel = new LibraryTableModel(this, pTrackCollection,pConfig);
     connect(this,SIGNAL(configChanged(QString,QString)),
             m_pLibraryTableModel, SLOT(slotConfigChanged(QString, QString)));
-    connect(this, SIGNAL(availableDirsChanged(QList<int>)),
-            m_pLibraryTableModel, SLOT(slotAvailableDirsChanged(QList<int> )));
-    m_pHiddenTableModel = new HiddenTableModel(this, pTrackCollection, availableDirIds);
-    connect(this, SIGNAL(availableDirsChanged(QList<int>)),
-            m_pHiddenTableModel, SLOT(slotAvailableDirsChanged(QList<int>)));
-
-
+    m_pHiddenTableModel = new HiddenTableModel(this, pTrackCollection);
 
     TreeItem* pRootItem = new TreeItem();
     TreeItem* phiddenChildItem = new TreeItem(kHiddenTitle, kHiddenTitle,

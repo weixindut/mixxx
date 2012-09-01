@@ -21,8 +21,7 @@ class AutoDJFeature : public LibraryFeature {
   public:
     AutoDJFeature(QObject* parent,
                   ConfigObject<ConfigValue>* pConfig,
-                  TrackCollection* pTrackCollection,
-                  QList<int> availableDirIds);
+                  TrackCollection* pTrackCollection);
     virtual ~AutoDJFeature();
 
     QVariant title();
@@ -56,7 +55,6 @@ class AutoDJFeature : public LibraryFeature {
     const static QString m_sAutoDJViewName;
     TreeItemModel m_childModel;
     DlgAutoDJ* m_pAutoDJView;
-    QList<int> m_availableDirIds;
 };
 
 

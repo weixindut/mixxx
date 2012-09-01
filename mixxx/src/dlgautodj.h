@@ -21,8 +21,7 @@ class DlgAutoDJ : public QWidget, public Ui::DlgAutoDJ, public virtual LibraryVi
     Q_OBJECT
   public:
     DlgAutoDJ(QWidget *parent, ConfigObject<ConfigValue>* pConfig,
-              TrackCollection* pTrackCollection, MixxxKeyboard* pKeyboard,
-              QList<int> availableDirIds);
+              TrackCollection* pTrackCollection, MixxxKeyboard* pKeyboard);
     virtual ~DlgAutoDJ();
 
     virtual void setup(QDomNode node);
@@ -52,7 +51,6 @@ class DlgAutoDJ : public QWidget, public Ui::DlgAutoDJ, public virtual LibraryVi
   signals:
     void loadTrack(TrackPointer tio);
     void loadTrackToPlayer(TrackPointer tio, QString group);
-    void availableDirsChanged(QList<int>);
     void configChanged(QString,QString);
 
   private:

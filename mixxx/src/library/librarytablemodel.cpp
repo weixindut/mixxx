@@ -13,12 +13,8 @@ const QString LibraryTableModel::DEFAULT_LIBRARYFILTER =
 LibraryTableModel::LibraryTableModel(QObject* parent,
                                      TrackCollection* pTrackCollection,
                                      ConfigObject<ConfigValue>* pConfig,
-                                     QList<int> availableDirIds,
                                      QString settingsNamespace)
-        : BaseSqlTableModel(parent, pTrackCollection, pConfig,
-                            availableDirIds, settingsNamespace){
-    // connect(parent, SIGNAL(availableDirsChanged(QList<int>,QString)),
-            // this, SLOT(slotAvailableDirsChanged(QList<int>,QString)));
+        : BaseSqlTableModel(parent, pTrackCollection, pConfig, settingsNamespace){
     setTableModel();
 }
 

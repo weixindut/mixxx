@@ -47,9 +47,7 @@ PromoTracksFeature::PromoTracksFeature(QObject* parent,
           m_pTrackCollection(pTrackCollection),
           m_pFeaturedArtistsView(NULL),
           m_pBundledSongsView(NULL),
-          //TODO (kain88) an empty list is not good here I think, ask the others about this
-          // feature
-          m_downloadsTableModel(this, pTrackCollection,config,QList<int>()),
+          m_downloadsTableModel(this, pTrackCollection,config),
           m_bFirstRun(firstRun) {
 
     m_sPromoRemoteHTMLLocation = QString("http://promo.mixxx.org/%1/index.html").arg(MIXXX_PROMO_VERSION); //m_pConfig->getConfigPath() + "/promo/promotracks.html";

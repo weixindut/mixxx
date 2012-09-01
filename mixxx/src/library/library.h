@@ -10,7 +10,6 @@
 #include <QList>
 #include <QObject>
 #include <QAbstractItemModel>
-#include <QFutureWatcher>
 
 #include "configobject.h"
 #include "trackinfoobject.h"
@@ -18,7 +17,6 @@
 #include "mixxxlibraryfeature.h"
 #include "preparefeature.h"
 #include "library/dao/directorydao.h"
-#include "library/mountwatcher.h"
 
 class TrackModel;
 class TrackCollection;
@@ -70,8 +68,6 @@ public:
     void slotCreatePlaylist();
     void slotCreateCrate();
     void slotDirsChanged(QString,QString);
-    void slotFoundNewStorage(QStringList);
-    void slotRemovedStorage(QStringList);
     void slotLoadTrackFailed(TrackPointer pTrack);
 
   signals:
@@ -82,12 +78,7 @@ public:
     void restoreSearch(const QString&);
     void configChanged(QString, QString);
     void dirsChanged(QString,QString);
-    void availableDirsChanged(QList<int>);
     void loadTrackFailed(TrackPointer);
-
-  private slots:
-    void slotFoundNewStorage(int);
-    void slotTestNewStorage(QStringList);
 
   private:
     void purgeTracks(const int dirId);
@@ -108,11 +99,6 @@ public:
     RecordingManager* m_pRecordingManager;
     TrackModel* m_ptrackModel;
     DirectoryDAO m_directoryDAO;
-
-    MountWatcher m_mountwatcher;
-    QStringList m_availableDirs;
-    QStringList m_unavailableDirs;
-    QFutureWatcher<QString>* m_pDirWatcher;
 };
 
 #endif /* LIBRARY_H */

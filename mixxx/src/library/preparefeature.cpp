@@ -17,13 +17,11 @@ const QString PrepareFeature::m_sPrepareViewName = QString("Prepare");
 
 PrepareFeature::PrepareFeature(QObject* parent,
                                ConfigObject<ConfigValue>* pConfig,
-                               TrackCollection* pTrackCollection,
-                               QList<int> availableDirIds)
+                               TrackCollection* pTrackCollection)
         : LibraryFeature(parent),
           m_pConfig(pConfig),
           m_pTrackCollection(pTrackCollection),
-          m_pAnalyserQueue(NULL),
-          m_availableDirIds(availableDirIds) {
+          m_pAnalyserQueue(NULL) {
 }
 
 PrepareFeature::~PrepareFeature() {
@@ -45,8 +43,7 @@ void PrepareFeature::bindWidget(WLibrarySidebar* sidebarWidget,
                                 MixxxKeyboard* keyboard) {
     m_pPrepareView = new DlgPrepare(libraryWidget,
                                     m_pConfig,
-                                    m_pTrackCollection,
-                                    m_availableDirIds);
+                                    m_pTrackCollection);
     connect(m_pPrepareView, SIGNAL(loadTrack(TrackPointer)),
             this, SIGNAL(loadTrack(TrackPointer)));
     connect(m_pPrepareView, SIGNAL(loadTrackToPlayer(TrackPointer, QString)),
@@ -55,8 +52,6 @@ void PrepareFeature::bindWidget(WLibrarySidebar* sidebarWidget,
             this, SLOT(analyzeTracks(QList<int>)));
     connect(m_pPrepareView, SIGNAL(stopAnalysis()),
             this, SLOT(stopAnalysis()));
-    connect(this, SIGNAL(availableDirsChanged(QList<int> , QString)),
-            m_pPrepareView, SIGNAL(availableDirsChanged(QList<int>,QString)));
 
     connect(this, SIGNAL(analysisActive(bool)),
             m_pPrepareView, SLOT(analysisActive(bool)));
