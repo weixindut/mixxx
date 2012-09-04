@@ -1303,6 +1303,7 @@ void MixxxApp::slotHelpAbout() {
 "Ilkka Tuohela<br>"
 "Tom Gascoigne<br>"
 "Max Linke<br>"
+"Neale Pickett<br>"
 
 "</p>"
 "<p align=\"center\"><b>%3</b></p>"
