@@ -4,7 +4,7 @@
     begin                : Thu Apr 17 2003
     copyright            : (C) 2003 by Tue & Ken Haste Andersen
     email                : haste@diku.dk
-***************************************************************************/
+ ***************************************************************************/
 
 /***************************************************************************
  *                                                                         *
@@ -26,8 +26,8 @@
 class QWidget;
 
 /**
-*@author Tue & Ken Haste Andersen
-*/
+  *@author Tue & Ken Haste Andersen
+  */
 
 class DlgPrefPlaylist : public QWidget, public Ui::DlgPrefPlaylistDlg  {
     Q_OBJECT

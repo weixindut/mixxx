@@ -84,15 +84,25 @@ bool DlgPrefPlaylist::initializeModel(){
         qDebug() << "damn there are no directories to display";
         return false;
     }
-    // clear out anything that has been in the model bevore
+    // save which index was selected
+    const int selected = list->currentIndex().row();
     m_model.clear();
     while(query.next()){
-        QStandardItem* pitem = new QStandardItem(query.value(
-                                    query.record().indexOf("directory")
-                                    ).toString());
+        QStandardItem* pitem = new QStandardItem(
+                               query.value(query.record().indexOf("directory"))
+                               .toString());
         m_model.appendRow(pitem);
     }
     list->setModel(&m_model);
+    // first select the first index then change it to selected if it still exists
+    list->setCurrentIndex(list->model()->index(0, 0));
+    for (int i=0 ; i<list->model()->rowCount() ; ++i) {
+        const QModelIndex index = list->model()->index(i, 0);
+        if (index.row() == selected) {
+            list->setCurrentIndex(index);
+            break;
+        }
+    }
     return true;
 }
 
