@@ -1,14 +1,14 @@
 #ifndef GLWAVEFORMRENDERERSIGNALSHADER_H
 #define GLWAVEFORMRENDERERSIGNALSHADER_H
 
-#include "waveformrenderersignalbase.h"
-
 #include <QGLFramebufferObject>
 #include <QGLShaderProgram>
 #include <QtOpenGL>
 
+#include "waveformrenderersignalbase.h"
+
 class GLSLWaveformRendererSignal : public WaveformRendererSignalBase {
-public:
+  public:
     explicit GLSLWaveformRendererSignal(WaveformWidgetRenderer* waveformWidgetRenderer);
     virtual ~GLSLWaveformRendererSignal();
 
@@ -22,9 +22,9 @@ public:
     bool loadShaders();
     bool loadTexture();
 
-private:
+  private:
     void createGeometry();
-    void createFrameBuffer();
+    void createFrameBuffers();
 
     GLint m_unitQuadListId;
     GLuint m_textureId;
@@ -32,12 +32,14 @@ private:
     int m_loadedWaveform;
 
     //Frame buffer for two pass rendering
+    bool m_frameBuffersValid;
     QGLFramebufferObject* m_signalMaxbuffer;
     QGLFramebufferObject* m_framebuffer;
 
     int m_signalFrameBufferRatio;
 
     //shaders
+    bool m_shadersValid;
     QGLShaderProgram* m_signalMaxShaderProgram;
     QGLShaderProgram* m_frameShaderProgram;
 };

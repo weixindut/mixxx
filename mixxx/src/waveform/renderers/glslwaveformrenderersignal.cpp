@@ -1,16 +1,16 @@
-#include "glslwaveformrenderersignal.h"
-#include "waveformwidgetrenderer.h"
+#include <QGLFramebufferObject>
+
+#include "waveform/renderers/glslwaveformrenderersignal.h"
+#include "waveform/renderers/waveformwidgetrenderer.h"
 
 #include "waveform/waveform.h"
 #include "waveform/waveformwidgetfactory.h"
 
 #include "mathstuff.h"
 
-#include <QGLFramebufferObject>
-
-GLSLWaveformRendererSignal::GLSLWaveformRendererSignal(WaveformWidgetRenderer* waveformWidgetRenderer) :
-    WaveformRendererSignalBase(waveformWidgetRenderer) {
-
+GLSLWaveformRendererSignal::GLSLWaveformRendererSignal(WaveformWidgetRenderer* waveformWidgetRenderer)
+        : WaveformRendererSignalBase(waveformWidgetRenderer) {
+    m_shadersValid = false;
     m_signalMaxShaderProgram = 0;
     m_frameShaderProgram = 0;
 
@@ -19,6 +19,7 @@ GLSLWaveformRendererSignal::GLSLWaveformRendererSignal(WaveformWidgetRenderer* w
 
     m_loadedWaveform = 0;
 
+    m_frameBuffersValid = false;
     m_signalMaxbuffer = 0;
     m_framebuffer = 0;
 
@@ -27,71 +28,74 @@ GLSLWaveformRendererSignal::GLSLWaveformRendererSignal(WaveformWidgetRenderer* w
 
 GLSLWaveformRendererSignal::~GLSLWaveformRendererSignal() {
 
-    if( m_textureId)
+    if (m_textureId)
         glDeleteTextures(1,&m_textureId);
 
-    if( m_signalMaxShaderProgram) {
+    if (m_signalMaxShaderProgram) {
         m_signalMaxShaderProgram->removeAllShaders();
         delete m_signalMaxShaderProgram;
     }
 
-    if( m_signalMaxbuffer)
+    if (m_signalMaxbuffer)
         delete m_signalMaxbuffer;
 
-    if( m_frameShaderProgram) {
+    if (m_frameShaderProgram) {
         m_frameShaderProgram->removeAllShaders();
         delete m_frameShaderProgram;
     }
 
-    if( m_framebuffer)
+    if (m_framebuffer)
         delete m_framebuffer;
 }
 
-bool GLSLWaveformRendererSignal::loadShaders()
-{
+bool GLSLWaveformRendererSignal::loadShaders() {
     qDebug() << "GLWaveformRendererSignalShader::loadShaders";
+    m_shadersValid = false;
 
-    if( m_signalMaxShaderProgram->isLinked())
+    if (m_signalMaxShaderProgram->isLinked()) {
         m_signalMaxShaderProgram->release();
+    }
 
     m_signalMaxShaderProgram->removeAllShaders();
 
-    m_signalMaxShaderProgram->addShaderFromSourceFile( QGLShader::Vertex, "./src/waveform/shaders/passthrough.vert");
-    m_signalMaxShaderProgram->addShaderFromSourceFile( QGLShader::Fragment, "./src/waveform/shaders/computemaxsignal.frag");
+    m_signalMaxShaderProgram->addShaderFromSourceFile(
+        QGLShader::Vertex, ":/shaders/passthrough.vert");
+    m_signalMaxShaderProgram->addShaderFromSourceFile(
+        QGLShader::Fragment, ":/shaders/computemaxsignal.frag");
 
-    if( !m_signalMaxShaderProgram->link())
-    {
+    if (!m_signalMaxShaderProgram->link()) {
         qDebug() << "GLWaveformRendererSignalShader::loadShaders - " << m_signalMaxShaderProgram->log();
         return false;
     }
 
-    if( !m_signalMaxShaderProgram->bind())
-    {
+    if (!m_signalMaxShaderProgram->bind()) {
         qDebug() << "GLWaveformRendererSignalShader::loadShaders - shadrers binding failed";
         return false;
     }
 
 
-    if( m_frameShaderProgram->isLinked())
+    if (m_frameShaderProgram->isLinked()) {
         m_frameShaderProgram->release();
+    }
 
     m_frameShaderProgram->removeAllShaders();
 
-    m_frameShaderProgram->addShaderFromSourceFile( QGLShader::Vertex, "./src/waveform/shaders/passthrough.vert");
-    m_frameShaderProgram->addShaderFromSourceFile( QGLShader::Fragment, "./src/waveform/shaders/filteredsignal.frag");
+    m_frameShaderProgram->addShaderFromSourceFile(
+        QGLShader::Vertex, ":/shaders/passthrough.vert");
+    m_frameShaderProgram->addShaderFromSourceFile(
+        QGLShader::Fragment, ":/shaders/filteredsignal.frag");
 
-    if( !m_frameShaderProgram->link())
-    {
+    if (!m_frameShaderProgram->link()) {
         qDebug() << "GLWaveformRendererSignalShader::loadShaders - " << m_frameShaderProgram->log();
         return false;
     }
 
-    if( !m_frameShaderProgram->bind())
-    {
-        qDebug() << "GLWaveformRendererSignalShader::loadShaders - shadrers binding failed";
+    if (!m_frameShaderProgram->bind()) {
+        qDebug() << "GLWaveformRendererSignalShader::loadShaders - shaders binding failed";
         return false;
     }
 
+    m_shadersValid = true;
     return true;
 }
 
@@ -117,14 +121,14 @@ bool GLSLWaveformRendererSignal::loadTexture() {
         glGenTextures(1,&m_textureId);
 
         int error = glGetError();
-        if( error)
+        if (error)
             qDebug() << "GLSLWaveformRendererSignal::loadTexture - m_textureId" << m_textureId << "error" << error;
     }
 
     glBindTexture(GL_TEXTURE_2D, m_textureId);
 
     int error = glGetError();
-    if( error)
+    if (error)
         qDebug() << "GLSLWaveformRendererSignal::loadTexture - bind error" << error;
 
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -136,7 +140,7 @@ bool GLSLWaveformRendererSignal::loadTexture() {
 
         glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,textureWidth,textureHeigth,0,GL_RGBA,GL_UNSIGNED_BYTE, data);
         int error = glGetError();
-        if( error)
+        if (error)
             qDebug() << "GLSLWaveformRendererSignal::loadTexture - glTexImage2D error" << error;
     } else {
         glDeleteTextures(1,&m_textureId);
@@ -150,7 +154,7 @@ bool GLSLWaveformRendererSignal::loadTexture() {
 
 void GLSLWaveformRendererSignal::createGeometry() {
 
-    if( m_unitQuadListId != -1)
+    if (m_unitQuadListId != -1)
         return;
 
     glMatrixMode(GL_PROJECTION);
@@ -181,24 +185,32 @@ void GLSLWaveformRendererSignal::createGeometry() {
     glEndList();
 }
 
-void GLSLWaveformRendererSignal::createFrameBuffer()
+void GLSLWaveformRendererSignal::createFrameBuffers()
 {
-    if( m_signalMaxbuffer)
-        delete m_signalMaxbuffer;
+    m_frameBuffersValid = false;
 
     int bufferWidth = nearestSuperiorPowerOfTwo(m_waveformRenderer->getWidth()*3);
     int bufferHeight = nearestSuperiorPowerOfTwo(m_waveformRenderer->getHeight());
 
+    if (m_signalMaxbuffer)
+        delete m_signalMaxbuffer;
+
     m_signalMaxbuffer = new QGLFramebufferObject(bufferWidth/(m_signalFrameBufferRatio*2),2);
 
-    if( m_framebuffer)
+    if (!m_signalMaxbuffer->isValid())
+        qWarning() << "GLSLWaveformRendererSignal::createFrameBuffer - signal frame buffer not valid";
+
+    if (m_framebuffer)
         delete m_framebuffer;
 
     //should work with any version of OpenGl
     m_framebuffer = new QGLFramebufferObject(bufferWidth,bufferHeight);
 
-    if( !m_signalMaxbuffer || !m_framebuffer->isValid())
-        qDebug() << "GLSLWaveformRendererSignal::createFrameBuffer - PBO not valid";
+
+    if (!m_framebuffer->isValid())
+        qWarning() << "GLSLWaveformRendererSignal::createFrameBuffer - frame buffer not valid";
+
+    m_frameBuffersValid = m_framebuffer->isValid() && m_framebuffer->isValid();
 
     //qDebug() << m_waveformRenderer->getWidth();
     //qDebug() << m_waveformRenderer->getWidth()*3;
@@ -206,6 +218,7 @@ void GLSLWaveformRendererSignal::createFrameBuffer()
 }
 
 void GLSLWaveformRendererSignal::onInit(){
+    m_loadedWaveform = 0;
 
     if(!m_signalMaxShaderProgram)
         m_signalMaxShaderProgram = new QGLShaderProgram();
@@ -213,11 +226,7 @@ void GLSLWaveformRendererSignal::onInit(){
     if(!m_frameShaderProgram)
         m_frameShaderProgram = new QGLShaderProgram();
 
-    if( !loadShaders())
-        return;
-
-    m_loadedWaveform = 0;
-
+    loadShaders();
     createGeometry();
     loadTexture();
 }
@@ -232,11 +241,11 @@ void GLSLWaveformRendererSignal::onSetTrack(){
 }
 
 void GLSLWaveformRendererSignal::onResize(){
-    createFrameBuffer();
+    createFrameBuffers();
 }
 
 void GLSLWaveformRendererSignal::draw(QPainter* painter, QPaintEvent* /*event*/) {
-    if (!m_framebuffer || !m_framebuffer->isValid()) {
+    if (!m_frameBuffersValid || !m_shadersValid) {
         return;
     }
 
@@ -266,19 +275,19 @@ void GLSLWaveformRendererSignal::draw(QPainter* painter, QPaintEvent* /*event*/)
     //NOTE: (vRince) completion can change during loadTexture
     //do not remove currenCompletion temp variable !
     const int currentCompletion = waveform->getCompletion();
-    if( m_loadedWaveform < currentCompletion)
+    if (m_loadedWaveform < currentCompletion)
     {
         loadTexture();
         m_loadedWaveform = currentCompletion;
     }
 
     glMatrixMode(GL_PROJECTION);
-    glPushMatrix(); 
+    glPushMatrix();
     glLoadIdentity();
     glOrtho(-1.0, 1.0, -1.0, 1.0, -10.0, 10.0);
 
     glMatrixMode(GL_MODELVIEW);
-    glPushMatrix(); 
+    glPushMatrix();
     glLoadIdentity();
     glTranslatef(.0f,.0f,.0f);
 
@@ -323,7 +332,7 @@ void GLSLWaveformRendererSignal::draw(QPainter* painter, QPaintEvent* /*event*/)
     //paint into frame buffer
     {
         glLoadIdentity();
-        //glScalef( (float)m_signalMaxbuffer->width()/(float)m_framebuffer->width(), 1.0, 1.0);
+        //glScalef((float)m_signalMaxbuffer->width()/(float)m_framebuffer->width(), 1.0, 1.0);
 
         m_frameShaderProgram->bind();
 
@@ -362,7 +371,7 @@ void GLSLWaveformRendererSignal::draw(QPainter* painter, QPaintEvent* /*event*/)
     double visualGain = factory->getVisualGain(WaveformWidgetFactory::All);
     visualGain *= m_waveformRenderer->getGain();
 
-    glTranslatef( 0.0, 0.0, 0.0);
+    glTranslatef(0.0, 0.0, 0.0);
     glScalef(scale, visualGain, 1.0);
 
     /*
