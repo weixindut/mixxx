@@ -23,9 +23,6 @@ WaveformRenderMarkRange::WaveformRenderMarkRange(WaveformWidgetRenderer* wavefor
 WaveformRenderMarkRange::~WaveformRenderMarkRange() {
 }
 
-void WaveformRenderMarkRange::init() {
-}
-
 void WaveformRenderMarkRange::setup(const QDomNode &node) {
     m_markRanges.clear();
     m_markRanges.reserve(1);
@@ -48,7 +45,7 @@ void WaveformRenderMarkRange::draw(QPainter *painter, QPaintEvent * /*event*/) {
     if (isDirty())
         generatePixmaps();
 
-    for (int i = 0; i < m_markRanges.size(); i++) {
+    for (unsigned int i = 0; i < m_markRanges.size(); i++) {
         WaveformMarkRange& markRange = m_markRanges[i];
 
         if (!markRange.isValid())
@@ -56,8 +53,9 @@ void WaveformRenderMarkRange::draw(QPainter *painter, QPaintEvent * /*event*/) {
 
         int startSample = markRange.m_markStartPointControl->get();
         int endSample = markRange.m_markEndPointControl->get();
-        if (startSample < 0 || endSample < 0)
+        if (startSample == endSample)
             continue;
+
 
         m_waveformRenderer->regulateVisualSample(startSample);
         double startPosition = m_waveformRenderer->transformSampleIndexInRendererWorld(startSample);
@@ -87,7 +85,8 @@ void WaveformRenderMarkRange::draw(QPainter *painter, QPaintEvent * /*event*/) {
 }
 
 void WaveformRenderMarkRange::generatePixmaps() {
-    for (int i = 0; i < m_markRanges.size(); i++)
+    for (unsigned int i = 0; i < m_markRanges.size(); i++) {
         m_markRanges[i].generatePixmap(m_waveformRenderer->getWidth(), m_waveformRenderer->getHeight());
+    }
     setDirty(false);
 }

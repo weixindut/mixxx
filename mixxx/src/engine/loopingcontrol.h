@@ -66,7 +66,9 @@ class LoopingControl : public EngineControl {
     // beatslicing effect.
     void slotBeatLoop(double loopSize, bool keepStartPoint=false);
     void slotBeatLoopActivate(BeatLoopingControl* pBeatLoopControl);
+    void slotBeatLoopActivateRoll(BeatLoopingControl* pBeatLoopControl);
     void slotBeatLoopDeactivate(BeatLoopingControl* pBeatLoopControl);
+    void slotBeatLoopDeactivateRoll(BeatLoopingControl* pBeatLoopControl);
 
     void slotLoopScale(double);
     void slotLoopDouble(double);
@@ -85,6 +87,7 @@ class LoopingControl : public EngineControl {
     CallbackControl* m_pCOLoopScale;
     CallbackControl* m_pLoopHalveButton;
     CallbackControl* m_pLoopDoubleButton;
+    CallbackControl* m_pSlipEnabled;
 
     bool m_bLoopingEnabled;
     int m_iLoopEndSample;
@@ -128,11 +131,14 @@ class BeatLoopingControl : public QObject {
   public slots:
     void slotLegacy(double value);
     void slotActivate(double value);
+    void slotActivateRoll(double value);
     void slotToggle(double value);
 
   signals:
     void activateBeatLoop(BeatLoopingControl*);
     void deactivateBeatLoop(BeatLoopingControl*);
+    void activateBeatLoopRoll(BeatLoopingControl*);
+    void deactivateBeatLoopRoll(BeatLoopingControl*);
 
   private:
     // Used simply to generate the beatloop_%SIZE and beatseek_%SIZE CO
@@ -142,6 +148,7 @@ class BeatLoopingControl : public QObject {
     bool m_bActive;
     CallbackControl* m_pLegacy;
     CallbackControl* m_pActivate;
+    CallbackControl* m_pActivateRoll;
     CallbackControl* m_pToggle;
     CallbackControl* m_pEnabled;
 };

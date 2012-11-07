@@ -55,6 +55,7 @@ class EngineMaster : public EngineObject, public AudioSource {
     // Add an EngineChannel to the mixing engine. This is not thread safe --
     // only call it before the engine has started mixing.
     void addChannel(EngineChannel* pChannel);
+    EngineChannel* getChannel(QString group);
     static inline double gainForOrientation(EngineChannel::ChannelOrientation orientation,
                                             double leftGain,
                                             double centerGain,
@@ -145,6 +146,7 @@ class EngineMaster : public EngineObject, public AudioSource {
     CallbackControl* m_pMasterSampleRate;
     CallbackControl* m_pMasterLatency;
     CallbackControl* m_pMasterRate;
+    CallbackControl* m_pMasterUnderflowCount;
     EngineClipping *clipping, *head_clipping;
 
 #ifdef __LADSPA__
@@ -159,6 +161,7 @@ class EngineMaster : public EngineObject, public AudioSource {
     CallbackControl* xFaderMode;
     CallbackControl* xFaderCurve;
     CallbackControl* xFaderCalibration;
+    CallbackControl* xFaderReverse;
 
     ConstantGainCalculator m_headphoneGain;
     OrientationVolumeGainCalculator m_masterGain;

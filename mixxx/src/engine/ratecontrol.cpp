@@ -33,6 +33,8 @@ enum RateControl::RATERAMP_MODE RateControl::m_eRateRampMode = RateControl::RATE
 
 RateControl::RateControl(const char* _group, EngineState* pEngineState)
         : EngineControl(_group, pEngineState->getConfig()),
+          m_bVinylControlEnabled(false),
+          m_bVinylControlScratching(false),
           m_ePbCurrent(0),
           m_ePbPressed(0),
           m_bTempStarted(false),
@@ -40,8 +42,7 @@ RateControl::RateControl(const char* _group, EngineState* pEngineState)
           m_dRateTemp(0.0),
           m_eRampBackMode(RATERAMP_RAMPBACK_NONE),
           m_dRateTempRampbackChange(0.0),
-          m_dOldRate(0.0f),
-          m_pConfig(pEngineState->getConfig()) {
+          m_dOldRate(0.0f) {
     m_pScratchController = new PositionScratchController(_group, pEngineState);
 
     CallbackControlManager* pCallbackControlManager =
@@ -160,11 +161,11 @@ RateControl::RateControl(const char* _group, EngineState* pEngineState)
     // Update Internal Settings
     // Set Pitchbend Mode
     m_eRateRampMode = (RateControl::RATERAMP_MODE)
-        m_pConfig->getValueString(ConfigKey("[Controls]","RateRamp")).toInt();
+            getConfig()->getValueString(ConfigKey("[Controls]","RateRamp")).toInt();
 
     // Set the Sensitivity
     m_iRateRampSensitivity =
-        m_pConfig->getValueString(ConfigKey("[Controls]","RateRampSensitivity")).toInt();
+            getConfig()->getValueString(ConfigKey("[Controls]","RateRampSensitivity")).toInt();
 
 #ifdef __VINYLCONTROL__
     CallbackControl* pVCEnabled = pCallbackControlManager->getControl(
@@ -617,9 +618,8 @@ void RateControl::slotControlVinyl(double toggle) {
     m_bVinylControlEnabled = static_cast<bool>(toggle);
 }
 
-void RateControl::slotControlVinylScratching(double toggle)
-{
-    m_bVinylControlScratching = (bool)toggle;
+void RateControl::slotControlVinylScratching(double toggle) {
+    m_bVinylControlScratching = static_cast<bool>(toggle);
 }
 
 void RateControl::notifySeek(double playPos) {

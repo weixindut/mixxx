@@ -154,7 +154,9 @@ void CueControl::createControls(EngineState* pEngineState) {
 }
 
 void CueControl::attachCue(Cue* pCue, int hotCue) {
-    Q_ASSERT(hotCue >= 0 && hotCue < m_iNumHotCues);
+    if (hotCue < 0 || hotCue >= m_iNumHotCues) {
+        return;
+    }
     HotcueControl* pControl = m_hotcueControl[hotCue];
     if (pControl->getCue() != NULL) {
         detachCue(pControl->getHotcueNumber());
@@ -165,7 +167,9 @@ void CueControl::attachCue(Cue* pCue, int hotCue) {
 }
 
 void CueControl::detachCue(int hotCue) {
-    Q_ASSERT(hotCue >= 0 && hotCue < m_iNumHotCues);
+    if (hotCue < 0 || hotCue >= m_iNumHotCues) {
+        return;
+    }
     HotcueControl* pControl = m_hotcueControl[hotCue];
     Cue* pCue = pControl->getCue();
     if (!pCue)

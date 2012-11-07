@@ -115,6 +115,7 @@ class ReadAheadManager {
     QLinkedList<ReadLogEntry> m_readAheadLog;
     int m_iCurrentPosition;
     CachingReader* m_pReader;
+    CSAMPLE *m_pCrossFadeBuffer;
 };
 
 #endif // READAHEADMANGER_H

@@ -11,6 +11,7 @@
 class CallbackControl;
 class EngineState;
 class CallbackTrackWatcher;
+class EngineBuffer;
 
 class BpmControl : public EngineControl {
     Q_OBJECT
@@ -38,8 +39,12 @@ class BpmControl : public EngineControl {
     void slotBeatsTranslate(double);
 
   private:
-    bool syncTempo();
-    bool syncPhase();
+    EngineBuffer* pickSyncTarget();
+    bool syncTempo(EngineBuffer* pOtherEngineBuffer);
+    bool syncPhase(EngineBuffer* pOtherEngineBuffer);
+
+    // ControlObjects that come from PlayerManager
+    CallbackControl* m_pNumDecks;
 
     // CallbackControls that come from EngineBuffer
     CallbackControl* m_pPlayButton;

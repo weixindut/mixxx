@@ -64,6 +64,7 @@ class MixxxApp : public QMainWindow {
 
     void resizeEvent(QResizeEvent *e) { qDebug() << "resize" << e->size();}
 
+    void setToolTips(int tt);
     void rebootMixxxView();
 
   public slots:
@@ -86,8 +87,6 @@ class MixxxApp : public QMainWindow {
     void slotOptionsRecord(bool toggle);
     /** toogle keyboard on-off */
     void slotOptionsKeyboard(bool toggle);
-    /** toogle full screen mode */
-    void slotOptionsFullScreen(bool toggle);
     /** Preference dialog */
     void slotOptionsPreferences();
     /** shows an about dlg*/
@@ -108,8 +107,19 @@ class MixxxApp : public QMainWindow {
     void slotOptionsMenuShow();
     /** toggles Livebroadcasting **/
     void slotOptionsShoutcast(bool value);
+    /** toogle on-screen widget visibility */
+    void slotViewShowSamplers(bool);
+    void slotViewShowVinylControl(bool);
+    void slotViewShowMicrophone(bool);
+    /** toogle full screen mode */
+    void slotViewFullScreen(bool toggle);
 
     void slotToCenterOfPrimaryScreen();
+
+    void onNewSkinLoaded();
+
+  signals:
+    void newSkinLoaded();
 
   protected:
     /** Event filter to block certain events (eg. tooltips if tooltips are disabled) */
@@ -175,11 +185,15 @@ class MixxxApp : public QMainWindow {
 #endif
     QAction *m_pOptionsRecord;
     QAction *m_pOptionsKeyboard;
-    QAction *m_pOptionsFullScreen;
+
     QAction *m_pOptionsPreferences;
 #ifdef __SHOUTCAST__
     QAction *m_pOptionsShoutcast;
 #endif
+    QAction *m_pViewShowSamplers;
+    QAction *m_pViewVinylControl;
+    QAction *m_pViewShowMicrophone;
+    QAction *m_pViewFullScreen;
     QAction *m_pHelpAboutApp;
     QAction *m_pHelpSupport;
     QAction *m_pHelpFeedback;
@@ -199,6 +213,8 @@ class MixxxApp : public QMainWindow {
 
     ConfigObject<ConfigValueKbd>* m_pKbdConfig;
     ConfigObject<ConfigValueKbd>* m_pKbdConfigEmpty;
+
+    int m_tooltips; //0=ON, 1=ON (only in Library), 2=OFF
 };
 
 //A structure to store the parsed command-line arguments

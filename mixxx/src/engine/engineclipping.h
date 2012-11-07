@@ -33,6 +33,7 @@ class EngineClipping : public EngineObject {
 
   private:
     CallbackControl *m_ctrlClipping;
+    int m_duration;
 };
 
 #endif

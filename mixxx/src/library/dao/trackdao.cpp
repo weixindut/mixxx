@@ -704,6 +704,7 @@ TrackPointer TrackDAO::getTrackFromDB(int id) const {
             QString bpm = query.value(query.record().indexOf("bpm")).toString();
             QString replaygain = query.value(query.record().indexOf("replaygain")).toString();
             int timesplayed = query.value(query.record().indexOf("timesplayed")).toInt();
+            QDateTime datetime_added = query.value(query.record().indexOf("datetime_added")).toDateTime();
             int played = query.value(query.record().indexOf("played")).toInt();
             int channels = query.value(query.record().indexOf("channels")).toInt();
             //int filesize = query.value(query.record().indexOf("filesize")).toInt();
@@ -749,6 +750,7 @@ TrackPointer TrackDAO::getTrackFromDB(int id) const {
             pTrack->setBpmLock(has_bpm_lock);
 
             pTrack->setTimesPlayed(timesplayed);
+            pTrack->setDateAdded(datetime_added);
             pTrack->setPlayed(played);
             pTrack->setChannels(channels);
             pTrack->setType(filetype);
@@ -1157,7 +1159,9 @@ bool TrackDAO::isTrackFormatSupported(TrackInfoObject* pTrack) const {
     return false;
 }
 
-void TrackDAO::verifyTracksOutside(const QString& libraryPath) {
+void TrackDAO::verifyTracksOutside(const QString& libraryPath, volatile bool* pCancel) {
+    // This function is called from the LibraryScanner Thread
+    ScopedTransaction transaction(m_database);
     QSqlQuery query(m_database);
     QSqlQuery query2(m_database);
     QString trackLocation;
@@ -1185,6 +1189,12 @@ void TrackDAO::verifyTracksOutside(const QString& libraryPath) {
         if (!query2.exec()) {
             LOG_FAILED_QUERY(query2);
         }
+        if (*pCancel) {
+            break;
+        }
+        emit(progressVerifyTracksOutside(trackLocation));
     }
+    transaction.commit();
+    qDebug() << "verifyTracksOutside finished";
 }
 

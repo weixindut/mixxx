@@ -20,7 +20,8 @@
 #include "engine/enginestate.h"
 #include "sampleutil.h"
 
-EngineClipping::EngineClipping(const char* group, EngineState* pEngineState) {
+EngineClipping::EngineClipping(const char* group, EngineState* pEngineState)
+        : m_duration(0) {
     CallbackControlManager* pCallbackControlManager =
             pEngineState->getControlManager();
     m_ctrlClipping = pCallbackControlManager->addControl(
@@ -40,5 +41,20 @@ void EngineClipping::process(const CSAMPLE * pIn, const CSAMPLE * pOut,
     // SampleUtil clamps the buffer and if pIn and pOut are aliased will not copy.
     bool clipped = SampleUtil::copyClampBuffer(kfMaxAmp, -kfMaxAmp,
                                                pOutput, pIn, iBufferSize);
-    m_ctrlClipping->set(clipped ? 1 : 0);
+
+    if (clipped) {
+        if (m_ctrlClipping->get() != 1.) {
+            m_ctrlClipping->set(1.);
+        }
+        // TODO(XXX) should use time instead of # of callbacks
+        m_duration = 20;
+    }
+
+    if (m_duration == 0) {
+        if (m_ctrlClipping->get() == 1.) {
+            m_ctrlClipping->set(0.);
+        }
+    } else {
+        m_duration--;
+    }
 }

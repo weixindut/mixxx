@@ -44,6 +44,7 @@ class EngineBufferScale;
 class EngineBufferScaleLinear;
 class EngineBufferScaleST;
 class EngineWorkerScheduler;
+class EngineMaster;
 
 struct Hint;
 
@@ -121,7 +122,7 @@ public:
     /** Returns current bpm value (not thread-safe) */
     double getBpm();
     /** Sets pointer to other engine buffer/channel */
-    void setOtherEngineBuffer(EngineBuffer *);
+    void setEngineMaster(EngineMaster*);
 
     /** Reset buffer playpos and set file playpos. */
     void setNewPlaypos(double);
@@ -144,6 +145,7 @@ public:
     void slotControlEnd(double);
     void slotControlSeek(double);
     void slotControlSeekAbs(double);
+    void slotControlSlip(double);
 
     // Request that the EngineBuffer load a track. Since the process is
     // asynchronous, EngineBuffer will emit a trackLoaded signal when the load
@@ -175,6 +177,8 @@ public:
 
     void ejectTrack();
 
+    double fractionalPlayposFromAbsolute(double absolutePlaypos);
+
     TwoWayMessagePipe<PlayerMessage, EnginePlayerMessage> m_messagePipe;
 
     /** Holds the name of the control group */
@@ -196,9 +200,6 @@ public:
         ahead */
     ReadAheadManager* m_pReadAheadManager;
 
-    /** Pointer to other EngineBuffer */
-    EngineBuffer* m_pOtherEngineBuffer;
-
     // The reader used to read audio files
     CachingReader* m_pReader;
 
@@ -217,12 +218,22 @@ public:
     int m_iSamplesCalculated;
     int m_iUiSlowTick;
 
+    // The location where the track would have been had slip not been engaged
+    double m_dSlipPosition;
+    // Saved value of rate for slip mode
+    double m_dSlipRate;
+    // Slip Status
+    bool m_bSlipEnabled;
+
     CallbackControl* m_pTrackSamples;
     CallbackControl* m_pTrackSampleRate;
 
     CallbackControl* playButton;
     CallbackControl* fwdButton;
     CallbackControl* backButton;
+
+    CallbackControl* m_pSlipButton;
+    CallbackControl* m_pSlipPosition;
 
     CallbackControl* rateEngine;
     CallbackControl* playposSlider;
@@ -263,6 +274,9 @@ public:
 
     CSAMPLE* m_pDitherBuffer;
     unsigned int m_iDitherBufferReadIndex;
+    CSAMPLE* m_pCrossFadeBuffer;
+    int m_iCrossFadeSamples;
+    int m_iLastBufferSize;
 };
 
 #endif

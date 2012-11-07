@@ -30,8 +30,8 @@ class ITunesFeature : public BaseExternalLibraryFeature {
     QVariant title();
     QIcon getIcon();
 
-    bool dropAccept(QUrl url);
-    bool dropAcceptChild(const QModelIndex& index, QUrl url);
+    bool dropAccept(QList<QUrl> urls);
+    bool dropAcceptChild(const QModelIndex& index, QList<QUrl> urls);
     bool dragMoveAccept(QUrl url);
     bool dragMoveAcceptChild(const QModelIndex& index, QUrl url);
 
@@ -50,6 +50,7 @@ class ITunesFeature : public BaseExternalLibraryFeature {
     static QString getiTunesMusicPath();
     //returns the invisible rootItem for the sidebar model
     TreeItem* importLibrary();
+    void guessMusicLibraryMountpoint(QXmlStreamReader &xml);
     void parseTracks(QXmlStreamReader &xml);
     void parseTrack(QXmlStreamReader &xml, QSqlQuery &query);
     TreeItem* parsePlaylists(QXmlStreamReader &xml);

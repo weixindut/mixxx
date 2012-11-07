@@ -21,7 +21,8 @@ Controller::Controller()
           m_bLearning(false) {
     // Get --controllerDebug command line option
     QStringList commandLineArgs = QApplication::arguments();
-    m_bDebug = commandLineArgs.contains("--controllerDebug", Qt::CaseInsensitive);
+    m_bDebug = commandLineArgs.contains("--controllerDebug", Qt::CaseInsensitive) ||
+            commandLineArgs.contains("--midiDebug", Qt::CaseInsensitive);
 }
 
 Controller::~Controller() {
@@ -32,10 +33,6 @@ Controller::~Controller() {
 QString Controller::defaultPreset() {
     return USER_PRESETS_PATH.append("controllers/")
             .append(m_sDeviceName.replace(" ", "_") + presetExtension());
-}
-
-QString Controller::presetExtension() {
-    return CONTROLLER_PRESET_EXTENSION;
 }
 
 void Controller::startEngine()
@@ -50,8 +47,7 @@ void Controller::startEngine()
     m_pEngine = new ControllerEngine(this);
 }
 
-void Controller::stopEngine()
-{
+void Controller::stopEngine() {
     if (debugging()) {
         qDebug() << "  Shutting down engine";
     }

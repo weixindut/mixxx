@@ -75,8 +75,6 @@ void CachingReader::initialize() {
 
     m_pSample = new SAMPLE[kSamplesPerChunk];
 
-    Q_ASSERT(kSamplesPerChunk * sizeof(CSAMPLE) == kChunkLength);
-
     int total_chunks = memory_to_use / kChunkLength;
 
     //qDebug() << "CachingReader using" << memory_to_use << "bytes.";
@@ -108,7 +106,10 @@ void CachingReader::initialize() {
 
 // static
 Chunk* CachingReader::removeFromLRUList(Chunk* chunk, Chunk* head) {
-    Q_ASSERT(chunk);
+    if (chunk == NULL) {
+        qDebug() << "ERROR: NULL chunk argument to removeFromLRUList";
+        return NULL;
+    }
 
     // Remove chunk from the doubly-linked list.
     Chunk* next = chunk->next_lru;
@@ -133,7 +134,10 @@ Chunk* CachingReader::removeFromLRUList(Chunk* chunk, Chunk* head) {
 
 // static
 Chunk* CachingReader::insertIntoLRUList(Chunk* chunk, Chunk* head) {
-    Q_ASSERT(chunk);
+    if (chunk == NULL) {
+        qDebug() << "ERROR: NULL chunk argument to insertIntoLRUList";
+        return NULL;
+    }
 
     // Chunk is the new head of the list, so connect the head as the next from
     // chunk.
@@ -156,7 +160,9 @@ void CachingReader::freeChunk(Chunk* pChunk) {
 
     // We'll tolerate not being in allocatedChunks because sometime you free a
     // chunk right after you allocated it.
-    Q_ASSERT(removed <= 1);
+    if (removed > 1) {
+        qDebug() << "ERROR: freeChunk free'd a chunk that was multiply-allocated.";
+    }
 
     // If this is the LRU chunk then set its previous LRU chunk to the LRU
     if (m_lruChunk == pChunk) {
@@ -200,11 +206,13 @@ Chunk* CachingReader::allocateChunk() {
 Chunk* CachingReader::allocateChunkExpireLRU() {
     Chunk* chunk = allocateChunk();
     if (chunk == NULL) {
-        Q_ASSERT(m_lruChunk);
+        if (m_lruChunk == NULL) {
+            qDebug() << "ERROR: No LRU chunk to free in allocateChunkExpireLRU.";
+            return NULL;
+        }
         //qDebug() << "Expiring LRU" << m_lruChunk << m_lruChunk->chunk_number;
         freeChunk(m_lruChunk);
         chunk = allocateChunk();
-        Q_ASSERT(chunk);
     }
     //qDebug() << "allocateChunkExpireLRU" << chunk;
     return chunk;
@@ -218,8 +226,9 @@ Chunk* CachingReader::lookupChunk(int chunk_number) {
         chunk = m_allocatedChunks.value(chunk_number);
 
         // Make sure we're all in agreement here.
-        Q_ASSERT(chunk_number == chunk->chunk_number);
-
+        if (chunk_number != chunk->chunk_number) {
+            qDebug() << "ERROR: Inconsistent chunk has chunk_number that doesn't match allocated-chunks key.";
+        }
 
         // If this is the LRU chunk then set the previous LRU to the new LRU
         if (chunk == m_lruChunk && chunk->prev_lru != NULL) {
@@ -314,7 +323,10 @@ void CachingReader::process() {
                              m_iTrackNumSamplesCallbackSafe));
         } else if (status.status == CHUNK_READ_SUCCESS) {
             Chunk* pChunk = status.chunk;
-            Q_ASSERT(pChunk != NULL);
+            if (pChunk == NULL) {
+                qDebug() << "ERROR: status.chunk is NULL in CHUNK_READ_SUCCESS ReaderStatusUpdate. Ignoring update.";
+                continue;
+            }
             Chunk* pChunk2 = m_chunksBeingRead.take(pChunk->chunk_number);
             if (pChunk2 != pChunk) {
                 qDebug() << "Mismatch in requested chunk to read!";
@@ -341,7 +353,10 @@ void CachingReader::process() {
             }
         } else if (status.status == CHUNK_READ_EOF) {
             Chunk* pChunk = status.chunk;
-            Q_ASSERT(pChunk != NULL);
+            if (pChunk == NULL) {
+                qDebug() << "ERROR: status.chunk is NULL in CHUNK_READ_EOF ReaderStatusUpdate. Ignoring update.";
+                continue;
+            }
             Chunk* pChunk2 = m_chunksBeingRead.take(pChunk->chunk_number);
             if (pChunk2 != pChunk) {
                 qDebug() << "Mismatch in requested chunk to read!";
@@ -350,7 +365,10 @@ void CachingReader::process() {
         } else if (status.status == CHUNK_READ_INVALID) {
             qDebug() << "WARNING: READER THREAD RECEIVED INVALID CHUNK READ";
             Chunk* pChunk = status.chunk;
-            Q_ASSERT(pChunk != NULL);
+            if (pChunk == NULL) {
+                qDebug() << "ERROR: status.chunk is NULL in CHUNK_READ_INVALID ReaderStatusUpdate. Ignoring update.";
+                continue;
+            }
             Chunk* pChunk2 = m_chunksBeingRead.take(pChunk->chunk_number);
             if (pChunk2 != pChunk) {
                 qDebug() << "Mismatch in requested chunk to read!";
@@ -361,13 +379,14 @@ void CachingReader::process() {
 }
 
 int CachingReader::read(int sample, int num_samples, CSAMPLE* buffer) {
-    int zerosWritten = 0;
-    // Check for bogus sample numbers
-    //Q_ASSERT(sample >= 0);
-    QString temp = QString("Sample = %1").arg(sample);
-    QByteArray tempBA = QString(temp).toUtf8();
-    Q_ASSERT_X(sample % 2 == 0,"CachingReader::read",tempBA);
-    Q_ASSERT(num_samples >= 0);
+    // Check for bad inputs
+    if (sample % 2 != 0 || num_samples < 0 || !buffer) {
+        QString temp = QString("Sample = %1").arg(sample);
+        QByteArray tempBA = QString(temp).toUtf8();
+        qDebug() << "CachingReader::read() invalid arguments sample:" << sample
+                 << "num_samples:" << num_samples << "buffer:" << buffer;
+        return 0;
+    }
 
     // If asked to read 0 samples, don't do anything. (this is a perfectly
     // reasonable request that happens sometimes. If no track is loaded, don't
@@ -384,6 +403,7 @@ int CachingReader::read(int sample, int num_samples, CSAMPLE* buffer) {
     // it makes preroll completely transparent to the rest of the code
 
     //if we're in preroll...
+    int zerosWritten = 0;
     if (sample < 0) {
         if (sample + num_samples <= 0) {
             //everything is zeros, easy
@@ -411,7 +431,11 @@ int CachingReader::read(int sample, int num_samples, CSAMPLE* buffer) {
     int current_sample = sample;
 
     // Sanity checks
-    Q_ASSERT(start_chunk <= end_chunk);
+    if (start_chunk > end_chunk) {
+        qDebug() << "CachingReader::read() bad chunk range to read ["
+                 << start_chunk << end_chunk << "]";
+        return 0;
+    }
 
     for (int chunk_num = start_chunk; chunk_num <= end_chunk; chunk_num++) {
         Chunk* current = lookupChunk(chunk_num);
@@ -432,26 +456,35 @@ int CachingReader::read(int sample, int num_samples, CSAMPLE* buffer) {
         int chunk_remaining_samples = current->length - chunk_offset;
 
         // More sanity checks
-        Q_ASSERT(current_sample >= chunk_start_sample);
-        Q_ASSERT(current_sample % 2 == 0);
-
-        if (start_chunk != chunk_num) {
-            Q_ASSERT(chunk_start_sample == current_sample);
+        if (current_sample < chunk_start_sample || current_sample % 2 != 0) {
+            qDebug() << "CachingReader::read() bad chunk parameters"
+                     << "chunk_start_sample" << chunk_start_sample
+                     << "current_sample" << current_sample;
+            break;
         }
 
-        Q_ASSERT(samples_remaining >= 0);
+        // If we're past the start_chunk then current_sample should be
+        // chunk_start_sample.
+        if (start_chunk != chunk_num && chunk_start_sample != current_sample) {
+            qDebug() << "CachingReader::read() bad chunk parameters"
+                     << "chunk_num" << chunk_num
+                     << "start_chunk" << start_chunk
+                     << "chunk_start_sample" << chunk_start_sample
+                     << "current_sample" << current_sample;
+            break;
+        }
+
+        if (samples_remaining < 0) {
+            qDebug() << "CachingReader::read() bad samples remaining"
+                     << samples_remaining;
+            break;
+        }
+
         // It is completely possible that chunk_remaining_samples is less than
         // zero. If the caller is trying to read from beyond the end of the
         // file, then this can happen. We should tolerate it.
-
         int samples_to_read = math_max(0, math_min(samples_remaining,
                                                    chunk_remaining_samples));
-
-        // samples_to_read should be non-negative and even
-        Q_ASSERT(samples_to_read >= 0);
-        Q_ASSERT(samples_to_read % 2 == 0);
-
-        CSAMPLE *data = current->data + chunk_offset;
 
         // If we did not decide to read any samples from this chunk then that
         // means we have exhausted all the samples in the song.
@@ -459,8 +492,16 @@ int CachingReader::read(int sample, int num_samples, CSAMPLE* buffer) {
             break;
         }
 
+        // samples_to_read should be non-negative and even
+        if (samples_to_read < 0 || samples_to_read % 2 != 0) {
+            qDebug() << "CachingReader::read() samples_to_read invalid"
+                     << samples_to_read;
+            break;
+        }
+
         // TODO(rryan) do a test and see if using memcpy is faster than gcc
         // optimizing the for loop
+        CSAMPLE *data = current->data + chunk_offset;
         memcpy(buffer, data, sizeof(*buffer) * samples_to_read);
         // for (int i=0; i < samples_to_read; i++) {
         //     buffer[i] = data[i];
@@ -480,7 +521,9 @@ int CachingReader::read(int sample, int num_samples, CSAMPLE* buffer) {
     }
     samples_remaining = 0;
 
-    Q_ASSERT(samples_remaining == 0);
+    if (samples_remaining != 0) {
+        qDebug() << "CachingReader::read() did read all requested samples.";
+    }
     return zerosWritten + num_samples - samples_remaining;
 }
 
@@ -517,7 +560,10 @@ void CachingReader::hintAndMaybeWake(QList<Hint>& hintList) {
                 hint.sample = 0;
             }
         }
-        Q_ASSERT(hint.length >= 0);
+        if (hint.length < 0) {
+            qDebug() << "ERROR: Negative hint length. Ignoring.";
+            continue;
+        }
         int start_sample = math_max(0, math_min(
             m_iTrackNumSamplesCallbackSafe, hint.sample));
         int start_chunk = chunkForSample(start_sample);
@@ -542,8 +588,10 @@ void CachingReader::hintAndMaybeWake(QList<Hint>& hintList) {
         if (!m_chunksBeingRead.contains(chunk) && lookupChunk(chunk) == NULL) {
             shouldWake = true;
             Chunk* pChunk = allocateChunkExpireLRU();
-            Q_ASSERT(pChunk != NULL);
-
+            if (pChunk == NULL) {
+                qDebug() << "ERROR: Couldn't allocate spare Chunk to make ChunkReadRequest.";
+                continue;
+            }
             m_chunksBeingRead.insert(chunk, pChunk);
             ChunkReadRequest request;
             pChunk->chunk_number = chunk;

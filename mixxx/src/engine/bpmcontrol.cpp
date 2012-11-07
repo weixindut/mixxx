@@ -2,6 +2,7 @@
 // Created 7/5/2009 by RJ Ryan (rryan@mit.edu)
 
 #include <QtDebug>
+#include <QStringList>
 
 #include "controlobject.h"
 #include "controlpushbutton.h"
@@ -9,6 +10,8 @@
 #include "engine/enginebuffer.h"
 #include "engine/enginestate.h"
 #include "engine/bpmcontrol.h"
+#include "engine/enginechannel.h"
+#include "engine/enginemaster.h"
 
 const int minBpm = 30;
 const int maxInterval = (int)(1000.*(60./(CSAMPLE)minBpm));
@@ -25,8 +28,10 @@ BpmControl::BpmControl(const char* _group,
             Qt::DirectConnection);
 
     CallbackControlManager* pControlManager = pEngineState->getControlManager();
+    m_pNumDecks = pControlManager->getControl(ConfigKey("[Master]", "num_decks"));
     m_pPlayButton = pControlManager->getControl(ConfigKey(_group, "play"));
     m_pRateSlider = pControlManager->getControl(ConfigKey(_group, "rate"));
+
     connect(m_pRateSlider, SIGNAL(valueChanged(double)),
             this, SLOT(slotRateChanged(double)),
             Qt::DirectConnection);
@@ -157,13 +162,15 @@ void BpmControl::slotTapFilter(double averageLength, int numSamples) {
 void BpmControl::slotControlBeatSyncPhase(double v) {
     if (!v)
         return;
-    syncPhase();
+    EngineBuffer* pOtherEngineBuffer = pickSyncTarget();
+    syncPhase(pOtherEngineBuffer);
 }
 
 void BpmControl::slotControlBeatSyncTempo(double v) {
     if (!v)
         return;
-    syncTempo();
+    EngineBuffer* pOtherEngineBuffer = pickSyncTarget();
+    syncTempo(pOtherEngineBuffer);
 }
 
 void BpmControl::slotControlBeatSync(double v) {
@@ -172,16 +179,16 @@ void BpmControl::slotControlBeatSync(double v) {
 
     // If the player is playing, and adjusting its tempo succeeded, adjust its
     // phase so that it plays in sync.
-    if (syncTempo() && m_pPlayButton->get() > 0) {
-        syncPhase();
+    EngineBuffer* pOtherEngineBuffer = pickSyncTarget();
+    if (syncTempo(pOtherEngineBuffer) && m_pPlayButton->get() > 0) {
+        syncPhase(pOtherEngineBuffer);
     }
 }
 
-bool BpmControl::syncTempo() {
-    EngineBuffer* pOtherEngineBuffer = getOtherEngineBuffer();
-
-    if(!pOtherEngineBuffer)
+bool BpmControl::syncTempo(EngineBuffer* pOtherEngineBuffer) {
+    if (!pOtherEngineBuffer) {
         return false;
+    }
 
     double fThisBpm  = m_pEngineBpm->get();
     //double fThisRate = m_pRateDir->get() * m_pRateSlider->get() * m_pRateRange->get();
@@ -265,8 +272,48 @@ bool BpmControl::syncTempo() {
     return false;
 }
 
-bool BpmControl::syncPhase() {
-    EngineBuffer* pOtherEngineBuffer = getOtherEngineBuffer();
+EngineBuffer* BpmControl::pickSyncTarget() {
+    EngineMaster* pMaster = getEngineMaster();
+    if (!pMaster) {
+        return NULL;
+    }
+    QString group = getGroup();
+    QStringList deckGroups;
+    EngineBuffer* pFirstNonplayingDeck = NULL;
+
+    for (int i = 0; i < m_pNumDecks->get(); ++i) {
+        // TODO(XXX) format from PlayerManager
+        QString deckGroup = QString("[Channel%1]").arg(i+1);
+        if (deckGroup == group) {
+            continue;
+        }
+        EngineChannel* pChannel = pMaster->getChannel(deckGroup);
+        // Only consider channels that have a track loaded and are in the master
+        // mix.
+        if (pChannel && pChannel->isActive() && pChannel->isMaster()) {
+            EngineBuffer* pBuffer = pChannel->getEngineBuffer();
+            if (pBuffer && pBuffer->getBpm() > 0) {
+                // If the deck is playing then go with it immediately.
+                if (fabs(pBuffer->getRate()) > 0) {
+                    return pBuffer;
+                }
+                // Otherwise hold out for a deck that might be playing but
+                // remember the first deck that matched our criteria.
+                if (pFirstNonplayingDeck == NULL) {
+                    pFirstNonplayingDeck = pBuffer;
+                }
+            }
+        }
+    }
+    // No playing decks have a BPM. Go with the first deck that was stopped but
+    // had a BPM.
+    return pFirstNonplayingDeck;
+}
+
+bool BpmControl::syncPhase(EngineBuffer* pOtherEngineBuffer) {
+    if (!pOtherEngineBuffer) {
+        return false;
+    }
     TrackPointer otherTrack = pOtherEngineBuffer->getLoadedTrack();
     BeatsPointer otherBeats = otherTrack ? otherTrack->getBeats() : BeatsPointer();
 

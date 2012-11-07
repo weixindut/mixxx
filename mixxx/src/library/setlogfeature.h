@@ -12,6 +12,7 @@
 #include "controlobjectthreadmain.h"
 
 class TrackCollection;
+class TreeItem;
 
 class SetlogFeature : public BasePlaylistFeature {
     Q_OBJECT
@@ -23,7 +24,7 @@ public:
     QVariant title();
     QIcon getIcon();
 
-    bool dropAcceptChild(const QModelIndex& index, QUrl url);
+    bool dropAcceptChild(const QModelIndex& index, QList<QUrl> urls);
     bool dragMoveAcceptChild(const QModelIndex& index, QUrl url);
 
     virtual void bindWidget(WLibrarySidebar* sidebarWidget,
@@ -36,7 +37,8 @@ public:
     void slotJoinWithPrevious();
 
   protected:
-    QModelIndex constructChildModel(int selected_id);
+    void buildPlaylistList();
+    void decorateChild(TreeItem *pChild, int playlist_id);
 
   private slots:
     void slotPlayingDeckChanged(int deck);

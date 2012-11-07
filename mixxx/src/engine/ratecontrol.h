@@ -80,9 +80,6 @@ class RateControl : public EngineControl {
     void resetRateTemp(void);
     /** Get the 'Raw' Temp Rate */
     double getTempRate(void);
-    /** Is vinyl control enabled? **/
-    bool m_bVinylControlEnabled;
-    bool m_bVinylControlScratching;
 
     /** Values used when temp and perm rate buttons are pressed */
     static double m_dTemp, m_dTempSmall, m_dPerm, m_dPermSmall;
@@ -141,13 +138,17 @@ class RateControl : public EngineControl {
         RATERAMP_RAMPBACK_PERIOD
     };
 
+    /** Is vinyl control enabled? **/
+    bool m_bVinylControlEnabled;
+    bool m_bVinylControlScratching;
+
     // The current rate ramping direction. Only holds the last button pressed.
     int m_ePbCurrent;
     //  The rate ramping buttons which are currently being pressed.
     int m_ePbPressed;
 
     /** This is true if we've already started to ramp the rate */
-    int m_bTempStarted;
+    bool m_bTempStarted;
     /** Set to the rate change used for rate temp */
     double m_dTempRateChange;
     /** Set the Temporary Rate Change Mode */
@@ -167,10 +168,6 @@ class RateControl : public EngineControl {
       * pressed, because there is a fixed limit on the range of the pitch
       * slider */
     double m_dOldRate;
-
-
-    /** Handle for configuration */
-    ConfigObject<ConfigValue>* m_pConfig;
 };
 
 #endif /* RATECONTROL_H */

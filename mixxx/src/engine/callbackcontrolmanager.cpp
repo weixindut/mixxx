@@ -39,6 +39,7 @@ CallbackControl::~CallbackControl() {
 
 void CallbackControl::set(double value) {
     // TODO(XXX) set time.
+    // TODO(rryan) should we ignore nops?
     m_value.value = value;
     emit(valueChangedFromEngine(m_value.value));
     emit(valueChangedFromEngine(m_value.value, m_value.time));
