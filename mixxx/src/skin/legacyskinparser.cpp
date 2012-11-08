@@ -209,17 +209,6 @@ QWidget* LegacySkinParser::parseSkin(QString skinPath, QWidget* pParent) {
     if (m_pParent) {
         qDebug() << "ERROR: Somehow a parent already exists -- you are probably re-using a LegacySkinParser which is not advisable!";
     }
-    /*
-     * Long explaination because this took too long to figure:
-     * Parent all the mixxx widgets (subclasses of wwidget) to
-     * some anonymous QWidget (this was MixxxView in <=1.8, MixxxView
-     * was a subclass of QWidget), and then feed its parent to the background
-     * tag parser. The background tag parser does stuff to the anon widget, as
-     * everything else does, but then it colors the parent widget with some
-     * color that shows itself in fullscreen. Having all these mixxx widgets
-     * with their own means they're easy to move to boot -- bkgood
-     */
-    m_pParent = new QWidget; // this'll get deleted with pParent
     QDomElement skinDocument = openSkin(skinPath);
 
     if (skinDocument.isNull()) {
@@ -266,19 +255,36 @@ QWidget* LegacySkinParser::parseSkin(QString skinPath, QWidget* pParent) {
     // I'm disregarding this return value because I want to return the
     // created parent so MixxxApp can use it for nefarious purposes (
     // fullscreen mostly) --bkgood
-    parseNode(skinDocument, pParent);
-    m_pParent->setParent(pParent);
-    return m_pParent;
+    return parseNode(skinDocument, pParent);
+    //m_pParent->setParent(pParent);
 }
 
 QWidget* LegacySkinParser::parseNode(QDomElement node, QWidget *pGrandparent) {
     QString nodeName = node.nodeName();
-    //qDebug() << "parseNode" << node.nodeName();
+    qDebug() << "parseNode" << node.nodeName() << pGrandparent;
 
     // TODO(rryan) replace with a map to function pointers?
 
     // Root of the document
     if (nodeName == "skin") {
+        /*
+         * Long explaination because this took too long to figure:
+         * Parent all the mixxx widgets (subclasses of wwidget) to
+         * some anonymous QWidget (this was MixxxView in <=1.8, MixxxView
+         * was a subclass of QWidget), and then feed its parent to the background
+         * tag parser. The background tag parser does stuff to the anon widget, as
+         * everything else does, but then it colors the parent widget with some
+         * color that shows itself in fullscreen. Having all these mixxx widgets
+         * with their own means they're easy to move to boot -- bkgood
+         */
+        m_pParent = new QWidget(); // this'll get deleted with pParent
+        //m_pParent->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+        m_pParent->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
+        QLayout* pParentLayout = new QVBoxLayout(m_pParent);
+        pParentLayout->setSpacing(0);
+        pParentLayout->setContentsMargins(0, 0, 0, 0);
+        m_pParent->setLayout(pParentLayout);
+
         // Descend chilren, should only happen for the root node
         QDomNodeList children = node.childNodes();
 
@@ -286,10 +292,14 @@ QWidget* LegacySkinParser::parseNode(QDomElement node, QWidget *pGrandparent) {
             QDomNode node = children.at(i);
 
             if (node.isElement()) {
-                parseNode(node.toElement(), pGrandparent);
+                QWidget* pChild = parseNode(node.toElement(), m_pParent);
+                if (pChild != NULL) {
+                    pParentLayout->addWidget(pChild);
+                }
             }
         }
-        return pGrandparent;
+        //m_pParent->setLayout(pParentLayout);
+        return m_pParent;
     } else if (nodeName == "Background") {
         return parseBackground(node, pGrandparent);
     } else if (nodeName == "SliderComposed") {
@@ -359,13 +369,20 @@ QWidget* LegacySkinParser::parseWidgetGroup(QDomElement node) {
             pLayout->setAlignment(Qt::AlignCenter);
         }
     }
+    QString backgroundPath = XmlParse::selectNodeQString(node, "Background");
+    if (backgroundPath.length() > 0) {
+        QPixmap* backgroundPixmap = WPixmapStore::getPixmapNoCache(WWidget::getPath(backgroundPath));
+        QLabel* pBackground = new QLabel(pGroup);
+        pBackground->setPixmap(*backgroundPixmap);
+        // getPixmapNoCache allocates a new pixmap and QLabel clones it so we need
+        // to free this one.
+        delete backgroundPixmap;
+    }
 
     QDomNode childrenNode = XmlParse::selectNode(node, "Children");
-
-    QWidget* pOldParent = m_pParent;
-    m_pParent = pGroup;
-
     if (!childrenNode.isNull()) {
+        QWidget* pOldParent = m_pParent;
+        m_pParent = pGroup;
         // Descend chilren
         QDomNodeList children = childrenNode.childNodes();
 
@@ -383,8 +400,8 @@ QWidget* LegacySkinParser::parseWidgetGroup(QDomElement node) {
                 }
             }
         }
+        m_pParent = pOldParent;
     }
-    m_pParent = pOldParent;
 
     if (pLayout) {
         pGroup->setLayout(pLayout);
@@ -723,11 +740,11 @@ QWidget* LegacySkinParser::parseTableView(QDomElement node) {
 
     // set maximum width to prevent growing to qSplitter->sizeHint()
     // Note: sizeHint() may be greater in skins for tiny screens
-    int width = pTabWidget->minimumWidth();
-    if (width == 0) {
-        width = m_pParent->minimumWidth();
-    }
-    pTabWidget->setMaximumWidth(width);
+    // int width = pTabWidget->minimumWidth();
+    // if (width == 0) {
+    //     width = m_pParent->minimumWidth();
+    // }
+    // pTabWidget->setMaximumWidth(width);
 
     QWidget* pLibraryPage = new QWidget(pTabWidget);
 
@@ -958,6 +975,12 @@ void LegacySkinParser::setupSize(QDomNode node, QWidget* pWidget) {
             //qDebug() << "horizontal ignored";
             sizePolicy.setHorizontalPolicy(QSizePolicy::Ignored);
             xs = xs.left(xs.size()-1);
+        } else if (xs.endsWith("min")) {
+            sizePolicy.setHorizontalPolicy(QSizePolicy::Minimum);
+            xs = xs.left(xs.size()-3);
+        } else if (xs.endsWith("max")) {
+            sizePolicy.setHorizontalPolicy(QSizePolicy::Maximum);
+            xs = xs.left(xs.size()-3);
         } else {
             sizePolicy.setHorizontalPolicy(QSizePolicy::Fixed);
         }
@@ -981,6 +1004,12 @@ void LegacySkinParser::setupSize(QDomNode node, QWidget* pWidget) {
             //qDebug() << "vertical ignored";
             sizePolicy.setVerticalPolicy(QSizePolicy::Ignored);
             ys = ys.left(ys.size()-1);
+        } else if (ys.endsWith("min")) {
+            sizePolicy.setVerticalPolicy(QSizePolicy::Minimum);
+            ys = ys.left(ys.size()-3);
+        } else if (ys.endsWith("max")) {
+            sizePolicy.setVerticalPolicy(QSizePolicy::Maximum);
+            ys = ys.left(ys.size()-3);
         } else {
             sizePolicy.setVerticalPolicy(QSizePolicy::Fixed);
         }

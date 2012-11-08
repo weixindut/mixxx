@@ -416,28 +416,26 @@ MixxxApp::MixxxApp(QApplication *pApp, const CmdlineArgs& args)
     initMenuBar();
 
     // Use frame as container for view, needed for fullscreen display
-    m_pView = new QFrame();
+    m_pView = NULL; //new QFrame();
 
     m_pWidgetParent = NULL;
     // Loads the skin as a child of m_pView
     // assignment intentional in next line
     if (!(m_pWidgetParent = m_pSkinLoader->loadDefaultSkin(
-        m_pView, m_pKeyboard, m_pPlayerManager, m_pControllerManager, m_pLibrary, m_pVCManager))) {
+        this, m_pKeyboard, m_pPlayerManager, m_pControllerManager, m_pLibrary, m_pVCManager))) {
         qCritical("default skin cannot be loaded see <b>mixxx</b> trace for more information.");
 
         //TODO (XXX) add dialog to warn user and launch skin choice page
-        resize(640,480);
+
     } else {
         // this has to be after the OpenGL widgets are created or depending on a
         // million different variables the first waveform may be horribly
         // corrupted. See bug 521509 -- bkgood ?? -- vrince
-        setCentralWidget(m_pView);
+        setCentralWidget(m_pWidgetParent);
+        //resize(m_pWidgetParent->size());
 
-        // keep gui centered (esp for fullscreen)
-        m_pView->setLayout( new QHBoxLayout(m_pView));
-        m_pView->layout()->setContentsMargins(0,0,0,0);
-        m_pView->layout()->addWidget(m_pWidgetParent);
-        resize(m_pView->size());
+        qDebug() << "Main window size is:" << size();
+        qDebug() << "Setting central widget. Widget size is:" << m_pWidgetParent->size();
     }
 
     //move the app in the center of the primary screen
@@ -522,7 +520,7 @@ MixxxApp::~MixxxApp()
 
     // View depends on MixxxKeyboard, PlayerManager, Library
     qDebug() << "delete view " << qTime.elapsed();
-    delete m_pView;
+    delete m_pWidgetParent;
 
     // SkinLoader depends on Config
     qDebug() << "delete SkinLoader " << qTime.elapsed();
@@ -1489,7 +1487,7 @@ void MixxxApp::setToolTips(int tt) {
 
 void MixxxApp::rebootMixxxView() {
 
-    if (!m_pWidgetParent || !m_pView)
+    if (!m_pWidgetParent)
         return;
 
     qDebug() << "Now in rebootMixxxView...";
@@ -1497,7 +1495,7 @@ void MixxxApp::rebootMixxxView() {
     QPoint initPosition = pos();
     QSize initSize = size();
 
-    m_pView->hide();
+    m_pWidgetParent->hide();
 
     WaveformWidgetFactory::instance()->stop();
     WaveformWidgetFactory::instance()->destroyWidgets();
@@ -1510,13 +1508,11 @@ void MixxxApp::rebootMixxxView() {
     slotViewFullScreen(false);
 
     //delete the view cause swaping central widget do not remove the old one !
-    if (m_pView) {
-        delete m_pView;
-    }
-    m_pView = new QFrame();
+    delete m_pWidgetParent;
+    m_pWidgetParent = NULL;
 
     // assignment in next line intentional
-    if (!(m_pWidgetParent = m_pSkinLoader->loadDefaultSkin(m_pView,
+    if (!(m_pWidgetParent = m_pSkinLoader->loadDefaultSkin(this,
                                                            m_pKeyboard,
                                                            m_pPlayerManager,
                                                            m_pControllerManager,
@@ -1530,17 +1526,8 @@ void MixxxApp::rebootMixxxView() {
     else {
         // don't move this before loadDefaultSkin above. bug 521509 --bkgood
         // NOTE: (vrince) I don't know this comment is relevant now ...
-        setCentralWidget(m_pView);
-
-        // keep gui centered (esp for fullscreen)
-        m_pView->setLayout( new QHBoxLayout(m_pView));
-        m_pView->layout()->setContentsMargins(0,0,0,0);
-        m_pView->layout()->addWidget(m_pWidgetParent);
-
-         //qDebug() << "view size" << m_pView->size();
-
-        //TODO: (vrince) size is good but resize do not append !!
-        resize(m_pView->size());
+        setCentralWidget(m_pWidgetParent);
+        //resize(m_pWidgetParent->size());
     }
 
     if( wasFullScreen) {
