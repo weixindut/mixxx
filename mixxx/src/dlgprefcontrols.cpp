@@ -75,32 +75,36 @@ DlgPrefControls::DlgPrefControls(QWidget * parent, MixxxApp * mixxx,
             ControlObject::getControl(ConfigKey(group, "cue_mode"))));
     }
 
-    // Position display configuration
-    m_pControlPositionDisplay = new ControlObject(ConfigKey("[Controls]", "ShowDurationRemaining"));
-    connect(m_pControlPositionDisplay, SIGNAL(valueChanged(double)),
-            this, SLOT(slotSetPositionDisplay(double)));
-    ComboBoxPosition->addItem(tr("Position"));
-    ComboBoxPosition->addItem(tr("Remaining"));
-    if (m_pConfig->getValueString(ConfigKey("[Controls]","PositionDisplay")).length() == 0)
-        m_pConfig->set(ConfigKey("[Controls]","PositionDisplay"),ConfigValue(0));
+
+    // Track time display configuration
+    m_pControlTrackTimeDisplay = new ControlObject(ConfigKey("[Controls]", "ShowDurationRemaining"));
+    connect(m_pControlTrackTimeDisplay, SIGNAL(valueChanged(double)),
+            this, SLOT(slotSetTrackTimeDisplay(double)));
+
+    // If not present in the config, set the default value
+    if (!m_pConfig->exists(ConfigKey("[Controls]","PositionDisplay")))
+        m_pConfig->set(ConfigKey("[Controls]","PositionDisplay"),ConfigValue(1));
+    
     if (m_pConfig->getValueString(ConfigKey("[Controls]","PositionDisplay")).toInt() == 1)
     {
-        ComboBoxPosition->setCurrentIndex(1);
-        m_pControlPositionDisplay->set(1.0f);
+        radioButtonRemaining->setChecked(true);
+        m_pControlTrackTimeDisplay->set(1.0f);
     }
     else
     {
-        ComboBoxPosition->setCurrentIndex(0);
-        m_pControlPositionDisplay->set(0.0f);
+        radioButtonElapsed->setChecked(true);
+        m_pControlTrackTimeDisplay->set(0.0f);
     }
-    connect(ComboBoxPosition,   SIGNAL(activated(int)), this, SLOT(slotSetPositionDisplay(int)));
+    connect(buttonGroupTrackTime, SIGNAL(buttonClicked(QAbstractButton*)),
+            this, SLOT(slotSetTrackTimeDisplay(QAbstractButton *)));
+
 
     // Set default direction as stored in config file
     if (m_pConfig->getValueString(ConfigKey("[Controls]","RateDir")).length() == 0)
         m_pConfig->set(ConfigKey("[Controls]","RateDir"),ConfigValue(0));
 
-    slotSetRateDir(m_pConfig->getValueString(ConfigKey("[Controls]","RateDir")).toInt());
-    connect(ComboBoxRateDir,   SIGNAL(activated(int)), this, SLOT(slotSetRateDir(int)));
+    slotSetRateDir(m_pConfig->getValueString(ConfigKey("[Controls]","RateDir")).toInt()==1);
+    connect(checkBoxInvertPitchSlider, SIGNAL(toggled(bool)), this, SLOT(slotSetRateDir(bool)));
 
     // Set default range as stored in config file
     if (m_pConfig->getValueString(ConfigKey("[Controls]","RateRange")).length() == 0)
@@ -133,17 +137,24 @@ DlgPrefControls::DlgPrefControls(QWidget * parent, MixxxApp * mixxx,
     spinBoxPermRateLeft->setValue(m_pConfig->getValueString(ConfigKey("[Controls]","RatePermLeft")).toDouble());
     spinBoxPermRateRight->setValue(m_pConfig->getValueString(ConfigKey("[Controls]","RatePermRight")).toDouble());
 
-    SliderRateRampSensitivity->setEnabled(true);
-    SpinBoxRateRampSensitivity->setEnabled(true);
-
+    if (m_pConfig->getValueString(ConfigKey("[Controls]","RateRamp")).toInt() == 1) {
+        labelRateRampSensitivity->setEnabled(TRUE);
+        SliderRateRampSensitivity->setEnabled(TRUE);
+        SpinBoxRateRampSensitivity->setEnabled(TRUE);
+    }
+    else {
+        labelRateRampSensitivity->setEnabled(FALSE);
+        SliderRateRampSensitivity->setEnabled(FALSE);
+        SpinBoxRateRampSensitivity->setEnabled(FALSE);
+    }
 
     //
     // Override Playing Track on Track Load
     //
-    ComboBoxAllowTrackLoadToPlayingDeck->addItem(tr("Don't load tracks into a playing deck"));
-    ComboBoxAllowTrackLoadToPlayingDeck->addItem(tr("Load tracks into a playing deck"));
-    ComboBoxAllowTrackLoadToPlayingDeck->setCurrentIndex(m_pConfig->getValueString(ConfigKey("[Controls]", "AllowTrackLoadToPlayingDeck")).toInt());
-    connect(ComboBoxAllowTrackLoadToPlayingDeck, SIGNAL(activated(int)), this, SLOT(slotSetAllowTrackLoadToPlayingDeck(int)));
+    checkBoxDontLoadToPlayingDecks->setChecked(
+        m_pConfig->getValueString(ConfigKey("[Controls]", "AllowTrackLoadToPlayingDeck")).toInt()==0);
+    connect(checkBoxDontLoadToPlayingDecks, SIGNAL(toggled(bool)),
+            this, SLOT(slotSetAllowTrackLoadToPlayingDeck(bool)));
 
     //
     // Locale setting
@@ -191,20 +202,21 @@ DlgPrefControls::DlgPrefControls(QWidget * parent, MixxxApp * mixxx,
     }
     int cueDefaultValue = cueDefault.toInt();
 
-    // Update combo box
-    ComboBoxCueDefault->addItem(tr("CDJ Mode"));
-    ComboBoxCueDefault->addItem(tr("Simple"));
-    ComboBoxCueDefault->setCurrentIndex(cueDefaultValue);
+    buttonGroupCueBehavior->setId(radioButtonCueCdj, 0);
+    buttonGroupCueBehavior->setId(radioButtonCueSimple, 1);
+    if (cueDefaultValue == 0)
+        radioButtonCueCdj->setChecked(true);
+    else if (cueDefaultValue == 1)
+        radioButtonCueSimple->setChecked(true);
 
     slotSetCueDefault(cueDefaultValue);
-    connect(ComboBoxCueDefault,   SIGNAL(activated(int)), this, SLOT(slotSetCueDefault(int)));
+    connect(buttonGroupCueBehavior, SIGNAL(buttonClicked(int)), this, SLOT(slotSetCueDefault(int)));
 
     //Cue recall
-    ComboBoxCueRecall->addItem(tr("On"));
-    ComboBoxCueRecall->addItem(tr("Off"));
-    ComboBoxCueRecall->setCurrentIndex(m_pConfig->getValueString(ConfigKey("[Controls]", "CueRecall")).toInt());
     //NOTE: for CueRecall, 0 means ON....
-    connect(ComboBoxCueRecall, SIGNAL(activated(int)), this, SLOT(slotSetCueRecall(int)));
+    connect(checkBoxJumpToCueOnLoad, SIGNAL(toggled(bool)),
+            this, SLOT(slotSetCueRecall(bool)));
+    checkBoxJumpToCueOnLoad->setChecked(m_pConfig->getValueString(ConfigKey("[Controls]", "CueRecall")).toInt()==0);
 
     //
     // Skin configurations
@@ -247,26 +259,37 @@ DlgPrefControls::DlgPrefControls(QWidget * parent, MixxxApp * mixxx,
     //
     // Tooltip configuration
     //
-    // Set default value in config file, if not present
-    if (m_pConfig->getValueString(ConfigKey("[Controls]","Tooltips")).length() == 0)
+    // Set default value in config file if not present
+    if (!m_pConfig->exists(ConfigKey("[Controls]","Tooltips")))
         m_pConfig->set(ConfigKey("[Controls]","Tooltips"), ConfigValue(0));
 
-    ComboBoxTooltips->addItem(tr("On"));
-    ComboBoxTooltips->addItem(tr("On (only in Library)"));
-    ComboBoxTooltips->addItem(tr("Off"));
+    // Initialize checkboxes to match config
+    //0=ON, 1=ON (only in Library), 2=OFF
+    switch (m_pConfig->getValueString(ConfigKey("[Controls]","Tooltips")).toInt()) {
+        case 0:
+            checkBoxTooltipsEnabled->setChecked(true);
+            checkBoxTooltipsOnlyLibrary->setChecked(false);
+            break;
+        case 1:
+            checkBoxTooltipsEnabled->setChecked(true);
+            checkBoxTooltipsOnlyLibrary->setChecked(true);
+            break;
+        case 2:
+            checkBoxTooltipsEnabled->setChecked(false);
+            break;
+    }
 
-    // Update combo box
-    ComboBoxTooltips->setCurrentIndex((m_pConfig->getValueString(ConfigKey("[Controls]","Tooltips")).toInt()));
-
-    connect(ComboBoxTooltips, SIGNAL(currentIndexChanged(int)), this, SLOT(slotSetTooltips(int)));
+    slotSetTooltips();  // Update disabled status of "only library" checkbox
+    connect(buttonGroupTooltips, SIGNAL(buttonClicked(QAbstractButton*)),
+            this, SLOT(slotSetTooltips()));
 
     //
     // Ramping Temporary Rate Change configuration
     //
 
     // Set Ramp Rate On or Off
-    connect(groupBoxRateRamp, SIGNAL(toggled(bool)), this, SLOT(slotSetRateRamp(bool)));
-    groupBoxRateRamp->setChecked((bool)
+    connect(checkBoxRateRamp, SIGNAL(toggled(bool)), this, SLOT(slotSetRateRamp(bool)));
+    checkBoxRateRamp->setChecked((bool)
                                  m_pConfig->getValueString(ConfigKey("[Controls]","RateRamp")).toInt()
                                  );
 
@@ -325,7 +348,7 @@ void DlgPrefControls::slotUpdate()
 {
     ComboBoxRateRange->clear();
     ComboBoxRateRange->addItem(tr("6%"));
-    ComboBoxRateRange->addItem(tr("8% (Technics SL-1210)"));
+    ComboBoxRateRange->addItem(tr("8%"));
     ComboBoxRateRange->addItem(tr("10%"));
     ComboBoxRateRange->addItem(tr("20%"));
     ComboBoxRateRange->addItem(tr("30%"));
@@ -347,14 +370,10 @@ void DlgPrefControls::slotUpdate()
 
     ComboBoxRateRange->setCurrentIndex((int)idx);
 
-    ComboBoxRateDir->clear();
-    ComboBoxRateDir->addItem(tr("Up increases speed"));
-    ComboBoxRateDir->addItem(tr("Down increases speed (Technics SL-1210)"));
-
     if (deck1RateDir == 1)
-        ComboBoxRateDir->setCurrentIndex(0);
+        checkBoxInvertPitchSlider->setChecked(false);
     else
-        ComboBoxRateDir->setCurrentIndex(1);
+        checkBoxInvertPitchSlider->setChecked(true);
 }
 
 void DlgPrefControls::slotSetLocale(int pos) {
@@ -382,10 +401,10 @@ void DlgPrefControls::slotSetRateRange(int pos)
     }
 }
 
-void DlgPrefControls::slotSetRateDir(int index)
+void DlgPrefControls::slotSetRateDir(bool invert)
 {
     float dir = 1.;
-    if (index == 1)
+    if (invert)
         dir = -1.;
 
     // Set rate direction for every group
@@ -394,31 +413,43 @@ void DlgPrefControls::slotSetRateDir(int index)
     }
 }
 
-void DlgPrefControls::slotSetAllowTrackLoadToPlayingDeck(int)
+void DlgPrefControls::slotSetAllowTrackLoadToPlayingDeck(bool b)
 {
-    m_pConfig->set(ConfigKey("[Controls]","AllowTrackLoadToPlayingDeck"), ConfigValue(ComboBoxAllowTrackLoadToPlayingDeck->currentIndex()));
+    m_pConfig->set(ConfigKey("[Controls]","AllowTrackLoadToPlayingDeck"),
+                   ConfigValue(b?0:1));
 }
 
-void DlgPrefControls::slotSetCueDefault(int)
+void DlgPrefControls::slotSetCueDefault(int index)
 {
-    int cueIndex = ComboBoxCueDefault->currentIndex();
-    m_pConfig->set(ConfigKey("[Controls]","CueDefault"), ConfigValue(cueIndex));
+    m_pConfig->set(ConfigKey("[Controls]","CueDefault"), ConfigValue(index));
 
     // Set cue behavior for every group
     foreach (ControlObjectThreadMain* pControl, m_cueControls) {
-        pControl->slotSet(cueIndex);
+        pControl->slotSet(index);
     }
 }
 
-void DlgPrefControls::slotSetCueRecall(int)
+void DlgPrefControls::slotSetCueRecall(bool b)
 {
-    m_pConfig->set(ConfigKey("[Controls]","CueRecall"), ConfigValue(ComboBoxCueRecall->currentIndex()));
+    m_pConfig->set(ConfigKey("[Controls]","CueRecall"), ConfigValue(b?0:1));
 }
 
-void DlgPrefControls::slotSetTooltips(int)
+void DlgPrefControls::slotSetTooltips()
 {
-    m_pConfig->set(ConfigKey("[Controls]","Tooltips"), ConfigValue((ComboBoxTooltips->currentIndex())));
-    m_mixxx->setToolTips(ComboBoxTooltips->currentIndex());
+    //0=ON, 1=ON (only in Library), 2=OFF
+    int valueToSet = 0;
+    if (!checkBoxTooltipsEnabled->isChecked()) {
+        checkBoxTooltipsOnlyLibrary->setDisabled(true);
+        valueToSet = 2;
+    }
+    else {
+        checkBoxTooltipsOnlyLibrary->setDisabled(false);
+        if (checkBoxTooltipsOnlyLibrary->isChecked()) {
+            valueToSet = 1;
+        }
+    }
+    m_pConfig->set(ConfigKey("[Controls]","Tooltips"), ConfigValue(valueToSet));
+    m_mixxx->setToolTips(valueToSet);
 }
 
 void DlgPrefControls::notifyRebootNecessary() {
@@ -443,21 +474,27 @@ void DlgPrefControls::slotSetSkin(int)
     slotUpdateSchemes();
 }
 
-void DlgPrefControls::slotSetPositionDisplay(int)
+void DlgPrefControls::slotSetTrackTimeDisplay(QAbstractButton* b)
 {
-    int positionDisplay = ComboBoxPosition->currentIndex();
-    m_pConfig->set(ConfigKey("[Controls]","PositionDisplay"), ConfigValue(positionDisplay));
-    m_pControlPositionDisplay->set(positionDisplay);
+    int timeDisplay = 0;
+    if (b == radioButtonRemaining) {
+        timeDisplay = 1;
+        m_pConfig->set(ConfigKey("[Controls]","PositionDisplay"), ConfigValue(1));
+    }
+    else {
+        m_pConfig->set(ConfigKey("[Controls]","PositionDisplay"), ConfigValue(0));
+    }
+    m_pControlTrackTimeDisplay->set(timeDisplay);
 }
 
-void DlgPrefControls::slotSetPositionDisplay(double v) {
+void DlgPrefControls::slotSetTrackTimeDisplay(double v) {
     if (v > 0) {
-        // remaining
-        ComboBoxPosition->setCurrentIndex(1);
+        // Remaining
+        radioButtonRemaining->setChecked(true);
         m_pConfig->set(ConfigKey("[Controls]","PositionDisplay"), ConfigValue(1));
     } else {
-        // position
-        ComboBoxPosition->setCurrentIndex(0);
+        // Elapsed
+        radioButtonElapsed->setChecked(true);
         m_pConfig->set(ConfigKey("[Controls]","PositionDisplay"), ConfigValue(0));
     }
 }
@@ -504,20 +541,21 @@ void DlgPrefControls::slotSetRateRampSensitivity(int sense)
 void DlgPrefControls::slotSetRateRamp(bool mode)
 {
     m_pConfig->set(ConfigKey("[Controls]", "RateRamp"),
-                   ConfigValue(groupBoxRateRamp->isChecked()));
+                   ConfigValue(checkBoxRateRamp->isChecked()));
     RateControl::setRateRamp(mode);
 
-    /*
     if ( mode )
     {
+        labelRateRampSensitivity->setEnabled(TRUE);
         SliderRateRampSensitivity->setEnabled(TRUE);
         SpinBoxRateRampSensitivity->setEnabled(TRUE);
     }
     else
     {
+        labelRateRampSensitivity->setEnabled(FALSE);
         SliderRateRampSensitivity->setEnabled(FALSE);
         SpinBoxRateRampSensitivity->setEnabled(FALSE);
-    }*/
+    }
 }
 
 void DlgPrefControls::slotApply()
