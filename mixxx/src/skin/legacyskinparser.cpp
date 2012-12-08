@@ -52,6 +52,8 @@
 #include "widget/wpixmapstore.h"
 #include "widget/wwidgetstack.h"
 
+#include "widget/glwidget.h"
+
 using mixxx::skin::SkinManifest;
 
 QList<const char*> LegacySkinParser::s_channelStrs;
@@ -367,6 +369,8 @@ QWidget* LegacySkinParser::parseNode(QDomElement node, QWidget *pGrandparent) {
         return parseLibrarySidebar(node);
     } else if (nodeName == "Library") {
         return parseLibrary(node);
+    } else if (nodeName == "NewVisual") {
+        return parseNewVisual(node);
     } else {
         qDebug() << "Invalid node name in skin:" << nodeName;
     }
@@ -959,6 +963,13 @@ QWidget* LegacySkinParser::parseLibrarySidebar(QDomElement node) {
     m_pLibrary->bindSidebarWidget(pLibrarySidebar);
     setupWidget(node, pLibrarySidebar);
     return pLibrarySidebar;
+}
+
+QWidget* LegacySkinParser::parseNewVisual(QDomElement node) {
+    QWidget* visual = new GLWidget(m_pParent);
+    setupWidget(node, visual);
+    WaveformWidgetFactory::instance()->addTimerListener(visual);
+    return visual;
 }
 
 QWidget* LegacySkinParser::parseTableView(QDomElement node) {

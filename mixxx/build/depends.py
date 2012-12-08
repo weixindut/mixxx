@@ -523,6 +523,7 @@ class MixxxCore(Feature):
                    "widget/hexspinbox.cpp",
                    "widget/wtrackproperty.cpp",
                    "widget/wtime.cpp",
+                   "widget/glwidget.cpp",
 
                    "mathstuff.cpp",
 
