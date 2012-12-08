@@ -69,6 +69,7 @@ WaveformWidgetFactory::WaveformWidgetFactory() :
         // Setting 1 causes QGLContext::swapBuffer to sleep until the next VSync
         glFormat.setSwapInterval(1);
         glFormat.setRgba(true);
+        glFormat.setSampleBuffers(true);
         QGLFormat::setDefaultFormat(glFormat);
 
         QGLFormat::OpenGLVersionFlags version = QGLFormat::openGLVersionFlags();

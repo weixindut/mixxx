@@ -1,5 +1,6 @@
 #include "glwidget.h"
 
+#include <cmath>
 #include <QPainter>
 #include <qgl.h>
 #include <QPaintEvent>
@@ -28,19 +29,27 @@ class LinesGL : public Renderer {
         glPushMatrix();
         glLoadIdentity();
 
+        glEnable(GL_MULTISAMPLE);
+
         glScalef(1.f,1.0,1.f);
         glColor3f(1.0, 1.0, 1.0);
-        glLineWidth(0.1);
-        glEnable(GL_LINE_SMOOTH);
-
+        glLineWidth(1.0);
+        //glEnable(GL_LINE_SMOOTH);
+        //glHint(GL_LINE_SMOOTH, GL_NICEST);
         glBegin(GL_LINES); {
             double beatPosition = m_offset;
             while (beatPosition <= width) {
-                glVertex2f(beatPosition, 255.0);
-                glVertex2f(beatPosition, -255.0);
-                beatPosition += 20;
+                // Both of these are no good.
+                //double x = int(beatPosition + 0.5);
+                //double x = floorf(beatPosition);
+                double x = beatPosition;
+                glVertex2f(x, 255.0);
+                glVertex2f(x, -255.0);
+                beatPosition += 19.314421930;
+                //beatPosition += 20;
             }
-            m_offset += 1.0;
+            m_offset += 1.01034;
+            //m_offset += 1;
             glEnd();
         }
 
