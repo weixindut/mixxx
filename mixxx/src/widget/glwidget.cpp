@@ -102,6 +102,7 @@ class LinesQt : public Renderer {
 
 GLWidget::GLWidget(QWidget *parent)
         : QGLWidget(parent) {
+    setAttribute(Qt::WA_PaintOutsidePaintEvent);
     setAttribute(Qt::WA_NoSystemBackground);
     setAttribute(Qt::WA_OpaquePaintEvent);
 
@@ -110,7 +111,14 @@ GLWidget::GLWidget(QWidget *parent)
     //m_renderers.push_back(new LinesQt());
 }
 
+void GLWidget::resizeEvent(QResizeEvent* pResizeEvent) {
+}
+
 void GLWidget::paintEvent(QPaintEvent* pPaintEvent) {
+
+}
+
+void GLWidget::render() {
     if (QGLContext::currentContext() != context()) {
         makeCurrent();
     }

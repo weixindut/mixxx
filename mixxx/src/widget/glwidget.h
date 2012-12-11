@@ -16,7 +16,11 @@ class GLWidget : public QGLWidget, public Renderer
   public:
     explicit GLWidget(QWidget *parent = 0);
     virtual void paintEvent(QPaintEvent* pEvent);
+    virtual void resizeEvent(QResizeEvent* pEvent);
     virtual void draw(QWidget* widget, QPainter* painter);
+
+  public slots:
+    void render();
 
   private:
     QList<Renderer*> m_renderers;
