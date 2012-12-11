@@ -79,6 +79,7 @@ WaveformWidgetFactory::WaveformWidgetFactory() :
         glFormat.setSwapInterval(0);
 #endif
         glFormat.setRgba(true);
+        glFormat.setSampleBuffers(true);
         QGLFormat::setDefaultFormat(glFormat);
 
         QGLFormat::OpenGLVersionFlags version = QGLFormat::openGLVersionFlags();
