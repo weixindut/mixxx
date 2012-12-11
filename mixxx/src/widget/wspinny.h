@@ -26,6 +26,7 @@ class WSpinny : public QGLWidget {
     void updateVinylControlSpeed(double rpm);
     void updateVinylControlEnabled(double enabled);
     void invalidateVinylControl();
+    void render();
 
   signals:
     void trackDropped(QString filename, QString group);
@@ -33,6 +34,7 @@ class WSpinny : public QGLWidget {
   protected:
     //QWidget:
     void paintEvent(QPaintEvent*);
+    void resizeEvent(QResizeEvent*);
     void mouseMoveEvent(QMouseEvent * e);
     void mousePressEvent(QMouseEvent * e);
     void mouseReleaseEvent(QMouseEvent * e);

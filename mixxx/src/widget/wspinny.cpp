@@ -38,6 +38,10 @@ WSpinny::WSpinny(QWidget* parent, VinylControlManager* pVCMan)
           m_iFullRotations(0),
           m_dPrevTheta(0.),
           m_bClampFailedWarning(false) {
+    setAttribute(Qt::WA_PaintOutsidePaintEvent);
+    setAttribute(Qt::WA_NoSystemBackground);
+    setAttribute(Qt::WA_OpaquePaintEvent);
+
 #ifdef __VINYLCONTROL__
     m_pVCManager = pVCMan;
     m_pVinylControl = NULL;
@@ -157,7 +161,18 @@ void WSpinny::setup(QDomNode node, QString group)
 void WSpinny::paintEvent(QPaintEvent *e)
 {
     Q_UNUSED(e); //ditch unused param warning
+    // done in thread.
+}
 
+void WSpinny::resizeEvent(QResizeEvent *e) {
+    // thread
+
+}
+
+void WSpinny::render() {
+    if (QGLContext::currentContext() != context()) {
+        makeCurrent();
+    }
     QPainter p(this);
     p.setRenderHint(QPainter::SmoothPixmapTransform);
 
