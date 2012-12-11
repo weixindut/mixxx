@@ -1,6 +1,7 @@
 #ifndef WAVEFORMWIDGETFACTORY_H
 #define WAVEFORMWIDGETFACTORY_H
 
+#include <QMutex>
 #include <singleton.h>
 #include "configobject.h"
 
@@ -15,7 +16,8 @@ class WWaveformViewer;
 class WaveformWidgetAbstract;
 class ControlObjectThreadMain;
 class QTimer;
-class QTime;
+class PerformanceTimer;
+class RenderThread;
 
 class WaveformWidgetAbstractHandle {
   public:
@@ -108,7 +110,7 @@ class WaveformWidgetFactory : public QObject, public Singleton<WaveformWidgetFac
 
     friend class Singleton<WaveformWidgetFactory>;
 
-  private slots:
+  public slots:
     void refresh();
 
   private:
@@ -140,9 +142,13 @@ class WaveformWidgetFactory : public QObject, public Singleton<WaveformWidgetFac
     bool m_openGLShaderAvailable;
 
     //Debug
-    QTime* m_time;
-    int m_lastFrameTime;
+    PerformanceTimer* m_time;
+    quint64 m_lastFrameTime;
     double m_actualFrameRate;
+
+    RenderThread* m_thread;
+    bool m_bUseThread;
+    mutable QMutex m_mutex;
 };
 
 #endif // WAVEFORMWIDGETFACTORY_H

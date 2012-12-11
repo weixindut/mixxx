@@ -1,10 +1,12 @@
 #include <QStringList>
-#include <QTime>
 #include <QTimer>
 #include <QWidget>
 #include <QtDebug>
 #include <QtOpenGL/QGLFormat>
 #include <QtOpenGL/QGLShaderProgram>
+#include <QMutexLocker>
+#include <QThread>
+#include <QAtomicInt>
 
 #include "waveform/waveformwidgetfactory.h"
 
@@ -20,6 +22,43 @@
 #include "waveform/widgets/waveformwidgetabstract.h"
 #include "widget/wwaveformviewer.h"
 #include "util/timer.h"
+#include "util/performancetimer.h"
+
+class RenderThread : public QThread {
+  public:
+    RenderThread(WaveformWidgetFactory* pFactory)
+        : m_pFactory(pFactory),
+          m_exit(0),
+          m_fps(40) {
+    }
+    void stop() {
+        m_exit = 1;
+        wait();
+    }
+    void setFps(int fps) {
+        m_fps = fps;
+    }
+  protected:
+    virtual void run() {
+        PerformanceTimer timer;
+        timer.start();
+
+        while (m_exit == 0) {
+            timer.restart();
+            m_pFactory->refresh();
+
+            double render_us = static_cast<double>(timer.elapsed()) / 1e3;
+            // Subtract from our sleep budget time we spent rendering.
+            double sleep_us = 1000000.0 / m_fps - render_us;
+            sleep_us = math_max(0, sleep_us);
+            QThread::usleep(sleep_us);
+        }
+    }
+  private:
+    WaveformWidgetFactory* m_pFactory;
+    QAtomicInt m_exit;
+    QAtomicInt m_fps;
+};
 
 ///////////////////////////////////////////
 
@@ -50,10 +89,12 @@ WaveformWidgetFactory::WaveformWidgetFactory() :
         m_overviewNormalized(false),
         m_openGLAvailable(false),
         m_openGLShaderAvailable(false),
-        m_time(new QTime()),
+        m_time(new PerformanceTimer()),
         m_lastFrameTime(0),
-        m_actualFrameRate(0) {
-
+        m_actualFrameRate(0),
+        m_thread(new RenderThread(this)),
+        m_bUseThread(true),
+        m_mutex(QMutex::Recursive) {
     m_visualGain[All] = 1.5;
     m_visualGain[Low] = 1.0;
     m_visualGain[Mid] = 1.0;
@@ -80,6 +121,7 @@ WaveformWidgetFactory::WaveformWidgetFactory() :
 #endif
         glFormat.setRgba(true);
         glFormat.setSampleBuffers(true);
+        glFormat.setStencil(false);
         QGLFormat::setDefaultFormat(glFormat);
 
         QGLFormat::OpenGLVersionFlags version = QGLFormat::openGLVersionFlags();
@@ -131,6 +173,7 @@ WaveformWidgetFactory::WaveformWidgetFactory() :
 }
 
 WaveformWidgetFactory::~WaveformWidgetFactory() {
+    m_thread->stop();
     delete m_time;
 }
 
@@ -192,13 +235,27 @@ bool WaveformWidgetFactory::setConfig(ConfigObject<ConfigValue> *config){
 
 void WaveformWidgetFactory::start() {
     //qDebug() << "WaveformWidgetFactory::start";
-    killTimer(m_mainTimerId);
-    m_mainTimerId = startTimer(1000.0/double(m_frameRate));
+    if (m_bUseThread) {
+        m_thread->setFps(m_frameRate);
+        if (!m_thread->isRunning()) {
+            m_thread->start();
+        }
+    } else {
+        killTimer(m_mainTimerId);
+        m_mainTimerId = startTimer(1000.0/double(m_frameRate));
+        m_time->start();
+    }
 }
 
 void WaveformWidgetFactory::stop() {
-    killTimer(m_mainTimerId);
-    m_mainTimerId = -1;
+    if (m_bUseThread) {
+        if (m_thread->isRunning()) {
+            m_thread->stop();
+        }
+    } else {
+        killTimer(m_mainTimerId);
+        m_mainTimerId = -1;
+    }
 }
 
 void WaveformWidgetFactory::timerEvent(QTimerEvent *timerEvent) {
@@ -208,6 +265,7 @@ void WaveformWidgetFactory::timerEvent(QTimerEvent *timerEvent) {
 }
 
 void WaveformWidgetFactory::destroyWidgets() {
+    QMutexLocker locker(&m_mutex);
     for (unsigned int i = 0; i < m_waveformWidgetHolders.size(); i++) {
         WaveformWidgetAbstract* pWidget = m_waveformWidgetHolders[i].m_waveformWidget;;
         m_waveformWidgetHolders[i].m_waveformWidget = NULL;
@@ -219,11 +277,12 @@ void WaveformWidgetFactory::destroyWidgets() {
 void WaveformWidgetFactory::addTimerListener(QWidget* pWidget) {
     // Do not hold the pointer to of timer listeners since they may be deleted
     connect(this, SIGNAL(waveformUpdateTick()),
-            pWidget, SLOT(repaint()),
+            pWidget, SLOT(render()),
             Qt::DirectConnection);
 }
 
 bool WaveformWidgetFactory::setWaveformWidget(WWaveformViewer* viewer, const QDomElement& node) {
+    QMutexLocker locker(&m_mutex);
     int index = findIndexOf(viewer);
     if (index != -1) {
         qDebug() << "WaveformWidgetFactory::setWaveformWidget - "\
@@ -260,6 +319,7 @@ void WaveformWidgetFactory::setFrameRate(int frameRate) {
 }
 
 bool WaveformWidgetFactory::setWidgetType(WaveformWidgetType::Type type) {
+    QMutexLocker locker(&m_mutex);
     if (type == m_type)
         return true;
 
@@ -285,6 +345,7 @@ bool WaveformWidgetFactory::setWidgetType(WaveformWidgetType::Type type) {
 }
 
 bool WaveformWidgetFactory::setWidgetTypeFromHandle(int handleIndex) {
+    QMutexLocker locker(&m_mutex);
     if (handleIndex < 0 && handleIndex > (int)m_waveformWidgetHandles.size()) {
         qDebug() << "WaveformWidgetFactory::setWidgetType - invalid handle --> use of 'EmptyWaveform'";
         // fallback empty type
@@ -388,28 +449,46 @@ void WaveformWidgetFactory::notifyZoomChange(WWaveformViewer* viewer) {
 }
 
 void WaveformWidgetFactory::refresh() {
+    QMutexLocker locker(&m_mutex);
     if (m_skipRender)
         return;
 
     ScopedTimer t(QString("WaveformWidgetFactory::refresh() %1waveforms")
                   .arg(m_waveformWidgetHolders.size()));
 
-    for (unsigned int i = 0; i < m_waveformWidgetHolders.size(); i++)
-        m_waveformWidgetHolders[i].m_waveformWidget->preRender();
+    {
+        ScopedTimer t(QString("WaveformWidgetFactory::refresh() preRender %1waveforms")
+                  .arg(m_waveformWidgetHolders.size()));
+        for (unsigned int i = 0; i < m_waveformWidgetHolders.size(); i++)
+            m_waveformWidgetHolders[i].m_waveformWidget->preRender();
 
-    for (unsigned int i = 0; i < m_waveformWidgetHolders.size(); i++)
-        m_waveformWidgetHolders[i].m_waveformWidget->render();
+    }
 
-    for (unsigned int i = 0; i < m_waveformWidgetHolders.size(); i++)
-        m_waveformWidgetHolders[i].m_waveformWidget->postRender();
+    {
+        ScopedTimer t(QString("WaveformWidgetFactory::refresh() render %1waveforms")
+                  .arg(m_waveformWidgetHolders.size()));
+        for (unsigned int i = 0; i < m_waveformWidgetHolders.size(); i++)
+            m_waveformWidgetHolders[i].m_waveformWidget->render();
+    }
 
-    // Notify all other waveform-like widgets (e.g. WSpinny's) that they should
-    // update.
-    emit(waveformUpdateTick());
+    {
+        ScopedTimer t(QString("WaveformWidgetFactory::refresh() postRender %1waveforms")
+                  .arg(m_waveformWidgetHolders.size()));
+        for (unsigned int i = 0; i < m_waveformWidgetHolders.size(); i++)
+            m_waveformWidgetHolders[i].m_waveformWidget->postRender();
+    }
+
+    {
+        ScopedTimer t(QString("WaveformWidgetFactory::refresh() updateTick  %1waveforms")
+                  .arg(m_waveformWidgetHolders.size()));
+        // Notify all other waveform-like widgets (e.g. WSpinny's) that they should
+        // update.
+        emit(waveformUpdateTick());
+    }
 
     m_lastFrameTime = m_time->restart();
-    if (m_lastFrameTime && m_lastFrameTime <= 1000) {
-        m_actualFrameRate = 1000.0/(double)(m_lastFrameTime);
+    if (m_lastFrameTime && m_lastFrameTime <= 1e9) {
+        m_actualFrameRate = 1e9 / static_cast<double>(m_lastFrameTime);
     }
 }
 
@@ -542,6 +621,7 @@ WaveformWidgetAbstract* WaveformWidgetFactory::createWaveformWidget(
 }
 
 int WaveformWidgetFactory::findIndexOf(WWaveformViewer* viewer) const {
+    QMutexLocker locker(&m_mutex);
     for (int i = 0; i < (int)m_waveformWidgetHolders.size(); i++)
         if (m_waveformWidgetHolders[i].m_waveformViewer == viewer)
             return i;
