@@ -220,6 +220,8 @@ int main(int argc, char * argv[])
     //  so if you change it here, change it also in:
     //      * ErrorDialogHandler::errorDialog()
     QThread::currentThread()->setObjectName("Main");
+    // Make Xlib and GLX thread safe under X11
+    QApplication::setAttribute(Qt::AA_X11InitThreads);
     QApplication a(argc, argv);
 
     //Enumerate and load SoundSource plugins
