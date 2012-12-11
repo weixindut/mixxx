@@ -2,18 +2,17 @@
 #include "waveform/renderers/waveformwidgetrenderer.h"
 
 #include <QtDebug>
-#include <QWidget>
 
 // Default constructor is only use by the factory to evaluate dynamically
 // WaveformWidget
-WaveformWidgetAbstract::WaveformWidgetAbstract() :
-    WaveformWidgetRenderer() {
-    m_widget = NULL;
+WaveformWidgetAbstract::WaveformWidgetAbstract()
+        : WaveformWidgetRenderer(),
+          m_widget(NULL) {
 }
 
-WaveformWidgetAbstract::WaveformWidgetAbstract( const char* group) :
-    WaveformWidgetRenderer(group) {
-    m_widget = NULL;
+WaveformWidgetAbstract::WaveformWidgetAbstract( const char* group)
+        : WaveformWidgetRenderer(group),
+          m_widget(NULL) {
 }
 
 WaveformWidgetAbstract::~WaveformWidgetAbstract() {
@@ -36,12 +35,12 @@ void WaveformWidgetAbstract::preRender() {
 }
 
 void WaveformWidgetAbstract::render() {
-    if (m_widget) {
-        if (!m_widget->isVisible()) {
-            m_widget->show();
-        }
-        m_widget->repaint();
-    }
+    //if (m_widget) {
+    // if (!m_widget->isVisible()) {
+    //     m_widget->show();
+    // }
+    // m_widget->repaint();
+    //}
 }
 
 void WaveformWidgetAbstract::resize( int width, int height) {

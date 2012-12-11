@@ -2,11 +2,9 @@
 #define WAVEFORMWIDGETABSTRACT_H
 
 #include <QWidget>
-#include <QString>
 
 #include "waveform/renderers/waveformwidgetrenderer.h"
 #include "waveformwidgettype.h"
-#include "trackinfoobject.h"
 
 // NOTE(vRince) This class represent objects the waveformwidgetfactory can
 // holds, IMPORTANT all WaveformWidgetAbstract MUST inherist QWidget too !!  we

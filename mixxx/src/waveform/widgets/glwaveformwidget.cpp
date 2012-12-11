@@ -19,15 +19,16 @@ GLWaveformWidget::GLWaveformWidget( const char* group, QWidget* parent)
           WaveformWidgetAbstract(group) {
 
     addRenderer<WaveformRenderBackground>();
-    addRenderer<WaveformRendererEndOfTrack>();
-    addRenderer<WaveformRendererPreroll>();
-    addRenderer<WaveformRenderMarkRange>();
+    //addRenderer<WaveformRendererEndOfTrack>();
+    //addRenderer<WaveformRendererPreroll>();
+    //addRenderer<WaveformRenderMarkRange>();
     addRenderer<GLWaveformRendererFilteredSignal>();
-    addRenderer<WaveformRenderMark>();
+    //addRenderer<WaveformRenderMark>();
     addRenderer<WaveformRenderBeat>();
 
     setAttribute(Qt::WA_NoSystemBackground);
     setAttribute(Qt::WA_OpaquePaintEvent);
+    setAttribute(Qt::WA_PaintOutsidePaintEvent);
 
     setAutoBufferSwap(false);
 
@@ -47,14 +48,21 @@ void GLWaveformWidget::castToQWidget() {
     m_widget = static_cast<QWidget*>(static_cast<QGLWidget*>(this));
 }
 
-void GLWaveformWidget::paintEvent( QPaintEvent* event) {
+void GLWaveformWidget::paintEvent(QPaintEvent* event) {
+}
+
+void GLWaveformWidget::resizeEvent(QResizeEvent* event) {
+
+}
+
+void GLWaveformWidget::render() {
     if (QGLContext::currentContext() != context()) {
         makeCurrent();
     }
     QPainter painter(this);
-    draw(&painter, event);
+    draw(&painter, NULL);
 }
 
 void GLWaveformWidget::postRender() {
-    QGLWidget::swapBuffers();
+    swapBuffers();
 }

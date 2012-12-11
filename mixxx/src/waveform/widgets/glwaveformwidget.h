@@ -20,6 +20,8 @@ class GLWaveformWidget : public QGLWidget, public WaveformWidgetAbstract {
   protected:
     virtual void castToQWidget();
     virtual void paintEvent(QPaintEvent* event);
+    virtual void resizeEvent(QResizeEvent* event);
+    virtual void render();
     virtual void postRender();
 
   private:
