@@ -74,8 +74,8 @@ void PlaylistTableModel::setTableModel(int playlistId) {
              m_pTrackCollection->getTrackSource("default"));
     initHeaderData();
     setSearch("");
-    setDefaultSort(fieldIndex("position"), Qt::AscendingOrder);
-    setSort(defaultSortColumn(),defaultSortOrder());
+    setDefaultSort(fieldIndex(PLAYLISTTRACKSTABLE_POSITION), Qt::AscendingOrder);
+    setSort(defaultSortColumn(), defaultSortOrder());
 }
 
 int PlaylistTableModel::addTracks(const QModelIndex& index, QList<QString> locations) {
