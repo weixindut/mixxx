@@ -64,6 +64,7 @@ class MixxxApp : public QMainWindow {
 
     void resizeEvent(QResizeEvent *e) { qDebug() << "resize" << e->size();}
 
+    void setToolTips(int tt);
     void rebootMixxxView();
 
   public slots:
@@ -109,9 +110,15 @@ class MixxxApp : public QMainWindow {
     // toggles Livebroadcasting 
     void slotOptionsShoutcast(bool value);
 
+    void slotOptionsShowSamplers(bool);
+    void slotOptionsShowVinylControl(bool);
+    void slotOptionsShowMicrophone(bool);
+
     void slotToCenterOfPrimaryScreen();
+    void onNewSkinLoaded();
 
   signals:
+    void newSkinLoaded();
     void dirsChanged(QString,QString);
 
   protected:
@@ -184,6 +191,9 @@ class MixxxApp : public QMainWindow {
 #ifdef __SHOUTCAST__
     QAction *m_pOptionsShoutcast;
 #endif
+    QAction *m_pOptionsShowSamplers;
+    QAction *m_pOptionsShowVinylControl;
+    QAction *m_pOptionsShowMicrophone;
     QAction *m_pHelpAboutApp;
     QAction *m_pHelpSupport;
     QAction *m_pHelpFeedback;
@@ -203,6 +213,8 @@ class MixxxApp : public QMainWindow {
 
     ConfigObject<ConfigValueKbd>* m_pKbdConfig;
     ConfigObject<ConfigValueKbd>* m_pKbdConfigEmpty;
+
+    int m_tooltips; //0=ON, 1=ON (only in Library), 2=OFF
 };
 
 //A structure to store the parsed command-line arguments
