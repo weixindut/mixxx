@@ -8,9 +8,12 @@
 
 #include "library/libraryfeature.h"
 #include "configobject.h"
+#include "library/dao/trackdao.h"
+#include "treeitemmodel.h"
 
 class BaseTrackCache;
 class LibraryTableModel;
+class MissingTableModel;
 class HiddenTableModel;
 class TrackCollection;
 
@@ -43,11 +46,14 @@ class MixxxLibraryFeature : public LibraryFeature {
 
   private:
     TrackCollection* m_pTrackCollection;
+    const QString kMissingTitle;
     const QString kHiddenTitle;
     QSharedPointer<BaseTrackCache> m_pBaseTrackCache;
     LibraryTableModel* m_pLibraryTableModel;
+    MissingTableModel* m_pMissingTableModel;
     HiddenTableModel* m_pHiddenTableModel;
     TreeItemModel m_childModel;
+    TrackDAO& m_trackDao;
 };
 
 #endif /* MIXXXLIBRARYFEATURE_H */

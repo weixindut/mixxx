@@ -62,6 +62,11 @@ class BaseSqlTableModel : public QAbstractTableModel, public TrackModel {
                                 int role=Qt::DisplayRole) const;
     QMimeData* mimeData(const QModelIndexList &indexes) const;
 
+    // Returns true if the BaseSqlTableModel has been initialized. Calling data
+    // access methods on a BaseSqlTableModel which is not initialized is likely
+    // to cause instability / crashes.
+    bool initialized() const { return m_bInitialized; }
+
   protected://functions
     // Returns the row of trackId in this result set. If trackId is not present,
     // returns -1.
