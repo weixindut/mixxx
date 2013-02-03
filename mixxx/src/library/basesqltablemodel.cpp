@@ -7,9 +7,11 @@
 
 #include "library/basesqltablemodel.h"
 
-#include "library/starrating.h"
 #include "library/stardelegate.h"
+#include "library/starrating.h"
+#include "library/previewbuttondelegate.h"
 #include "mixxxutils.cpp"
+#include "playermanager.h"
 
 const bool sDebug = false;
 
@@ -76,6 +78,14 @@ void BaseSqlTableModel::initHeaderData() {
                   Qt::Horizontal, tr("Key"));
     setHeaderData(fieldIndex(LIBRARYTABLE_BPM_LOCK),
                   Qt::Horizontal, tr("BPM Lock"));
+
+    // Preview deck widgets masquerade under this column.
+    setHeaderData(fieldIndex(LIBRARYTABLE_ID),
+                  Qt::Horizontal, tr(""));
+    setHeaderData(fieldIndex(PLAYLISTTRACKSTABLE_TRACKID),
+                  Qt::Horizontal, tr(""));
+    setHeaderData(fieldIndex(CRATETRACKSTABLE_TRACKID),
+                  Qt::Horizontal, tr(""));
 }
 
 QSqlDatabase BaseSqlTableModel::database() const {
@@ -398,7 +408,7 @@ int BaseSqlTableModel::columnCount(const QModelIndex& parent) const {
 
     // Subtract one from trackSource::columnCount to ignore the id column
     int count = m_tableColumns.size() +
-            (m_trackSource ? m_trackSource->columnCount() - 1: 0);
+                (m_trackSource ? m_trackSource->columnCount() - 1: 0);
     return count;
 }
 
@@ -771,8 +781,12 @@ QMimeData* BaseSqlTableModel::mimeData(const QModelIndexList &indexes) const {
 
 QAbstractItemDelegate* BaseSqlTableModel::delegateForColumn(const int i, QObject* pParent) {
     if (i == fieldIndex(LIBRARYTABLE_RATING)) {
-        QAbstractItemDelegate* delegate = new StarDelegate(pParent);
-        return delegate;
+        return new StarDelegate(pParent);
+    } else if (PlayerManager::numPreviewDecks() > 0 &&
+               (i == fieldIndex(LIBRARYTABLE_ID) ||
+                i == fieldIndex(PLAYLISTTRACKSTABLE_TRACKID) ||
+                i == fieldIndex(CRATETRACKSTABLE_TRACKID))) {
+        return new PreviewButtonDelegate(pParent, i);
     }
     return NULL;
 }

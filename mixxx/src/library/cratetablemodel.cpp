@@ -5,6 +5,9 @@
 
 #include "library/cratetablemodel.h"
 #include "library/queryutil.h"
+#include "library/trackcollection.h"
+#include "mixxxutils.cpp"
+#include "playermanager.h"
 
 CrateTableModel::CrateTableModel(QObject* pParent, 
                                  TrackCollection* pTrackCollection,
@@ -114,7 +117,10 @@ void CrateTableModel::removeTracks(const QModelIndexList& indices) {
 }
 
 bool CrateTableModel::isColumnInternal(int column) {
-    if (column == fieldIndex(CRATETRACKSTABLE_TRACKID) ||
+    if (
+        // Used for preview deck widgets.
+        (PlayerManager::numPreviewDecks() == 0 &&
+         column == fieldIndex(CRATETRACKSTABLE_TRACKID)) ||
         column == fieldIndex(LIBRARYTABLE_PLAYED) ||
         column == fieldIndex(LIBRARYTABLE_MIXXXDELETED) ||
         column == fieldIndex(LIBRARYTABLE_BPM_LOCK) ||
@@ -139,6 +145,7 @@ TrackModel::CapabilitiesFlags CrateTableModel::getCapabilities() const {
             | TRACKMODELCAPS_RELOADMETADATA
             | TRACKMODELCAPS_LOADTODECK
             | TRACKMODELCAPS_LOADTOSAMPLER
+            | TRACKMODELCAPS_LOADTOPREVIEWDECK
             | TRACKMODELCAPS_REMOVE
             | TRACKMODELCAPS_RELOCATE
             | TRACKMODELCAPS_BPMLOCK

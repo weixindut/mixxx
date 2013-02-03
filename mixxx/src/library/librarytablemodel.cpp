@@ -3,9 +3,8 @@
 #include "library/queryutil.h"
 #include "controlobjectthread.h"
 #include "controlobject.h"
-
-
 #include "mixxxutils.cpp"
+#include "playermanager.h"
 
 const QString LibraryTableModel::DEFAULT_LIBRARYFILTER =
         "mixxx_deleted=0 AND fs_deleted=0"; 
@@ -79,7 +78,10 @@ int LibraryTableModel::addTracks(const QModelIndex& index, QList<QString> locati
 }
 
 bool LibraryTableModel::isColumnInternal(int column) {
-    if ((column == fieldIndex(LIBRARYTABLE_ID)) ||
+    if (
+        // Used for preview deck widgets.
+        (PlayerManager::numPreviewDecks() == 0 &&
+         column == fieldIndex(LIBRARYTABLE_ID)) ||
         (column == fieldIndex(LIBRARYTABLE_URL)) ||
         (column == fieldIndex(LIBRARYTABLE_CUEPOINT)) ||
         (column == fieldIndex(LIBRARYTABLE_REPLAYGAIN)) ||
@@ -113,6 +115,7 @@ TrackModel::CapabilitiesFlags LibraryTableModel::getCapabilities() const {
             | TRACKMODELCAPS_RELOADMETADATA
             | TRACKMODELCAPS_LOADTODECK
             | TRACKMODELCAPS_LOADTOSAMPLER
+            | TRACKMODELCAPS_LOADTOPREVIEWDECK
             | TRACKMODELCAPS_HIDE
             | TRACKMODELCAPS_BPMLOCK
             | TRACKMODELCAPS_CLEAR_BEATS

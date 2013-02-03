@@ -421,7 +421,6 @@ MixxxApp::MixxxApp(QApplication *pApp, const CmdlineArgs& args) {
             m_pPlayerManager->slotLoadToDeck(args.getMusicFiles().at(i), i+1);
         }
     }
-
     //Automatically load specially marked promotional tracks on first run
     if (bFirstRun || bUpgraded) {
         QList<TrackPointer> tracksToAutoLoad =
