@@ -74,15 +74,18 @@ Library::Library(QObject* parent, ConfigObject<ConfigValue>* pConfig, bool first
     //mouse or keyboard if you're using MIDI control and you scroll through them...)
     if (RhythmboxFeature::isSupported() &&
         pConfig->getValueString(ConfigKey("[Library]","ShowRhythmboxLibrary"),"1").toInt()) {
-        addFeature(new RhythmboxFeature(this, m_pTrackCollection));
+        addFeature(new RhythmboxFeature(this, m_pTrackCollection,pConfig));
     }
     if (ITunesFeature::isSupported() &&
         pConfig->getValueString(ConfigKey("[Library]","ShowITunesLibrary"),"1").toInt()) {
-        addFeature(new ITunesFeature(this, m_pTrackCollection));
+        addFeature(new ITunesFeature(this, m_pTrackCollection, pConfig));
     }
     if (TraktorFeature::isSupported() &&
         pConfig->getValueString(ConfigKey("[Library]","ShowTraktorLibrary"),"1").toInt()) {
-        addFeature(new TraktorFeature(this, m_pTrackCollection));
+        addFeature(new TraktorFeature(this, m_pTrackCollection,pConfig
+        
+        
+        ));
     }
 
     //Show the promo tracks view on first run, otherwise show the library

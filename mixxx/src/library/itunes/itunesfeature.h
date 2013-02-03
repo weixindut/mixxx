@@ -14,16 +14,16 @@
 #include "library/trackcollection.h"
 #include "library/treeitemmodel.h"
 #include "library/treeitem.h"
+#include "configobject.h"
 
-//class ITunesPlaylistModel;
-class ITunesTrackModel;
-class ITunesPlaylistModel;
-
+class BaseExternalTrackModel;
+class BaseExternalPlaylistModel;
 
 class ITunesFeature : public BaseExternalLibraryFeature {
     Q_OBJECT
  public:
-    ITunesFeature(QObject* parent, TrackCollection* pTrackCollection);
+    ITunesFeature(QObject* parent, TrackCollection* pTrackCollection
+                  ,ConfigObject<ConfigValue>* pConfig);
     virtual ~ITunesFeature();
     static bool isSupported();
 
@@ -58,8 +58,8 @@ class ITunesFeature : public BaseExternalLibraryFeature {
     void clearTable(QString table_name);
     bool readNextStartElement(QXmlStreamReader& xml);
 
-    ITunesTrackModel* m_pITunesTrackModel;
-    ITunesPlaylistModel* m_pITunesPlaylistModel;
+    BaseExternalTrackModel* m_pITunesTrackModel;
+    BaseExternalPlaylistModel* m_pITunesPlaylistModel;
     TreeItemModel m_childModel;
     QStringList m_playlists;
     TrackCollection* m_pTrackCollection;
@@ -68,6 +68,8 @@ class ITunesFeature : public BaseExternalLibraryFeature {
     bool m_cancelImport;
     bool m_isActivated;
     QString m_dbfile;
+
+    ConfigObject<ConfigValue>* m_pConfig;
 
     QFutureWatcher<TreeItem*> m_future_watcher;
     QFuture<TreeItem*> m_future;

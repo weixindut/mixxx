@@ -13,14 +13,17 @@
 
 #include "library/baseexternallibraryfeature.h"
 #include "library/treeitemmodel.h"
-#include "library/rhythmbox/rhythmboxtrackmodel.h"
-#include "library/rhythmbox/rhythmboxplaylistmodel.h"
 #include "library/trackcollection.h"
+#include "configobject.h"
+
+class BaseExternalTrackModel;
+class BaseExternalPlaylistModel;
 
 class RhythmboxFeature : public BaseExternalLibraryFeature {
     Q_OBJECT
  public:
-    RhythmboxFeature(QObject* parent, TrackCollection*);
+    RhythmboxFeature(QObject* parent, TrackCollection* pTrackCollection,
+                     ConfigObject<ConfigValue> *pConfig);
     virtual ~RhythmboxFeature();
     static bool isSupported();
 
@@ -48,8 +51,9 @@ class RhythmboxFeature : public BaseExternalLibraryFeature {
   private:
     virtual BaseSqlTableModel* getPlaylistModelForPlaylist(QString playlist);
 
-    RhythmboxTrackModel* m_pRhythmboxTrackModel;
-    RhythmboxPlaylistModel* m_pRhythmboxPlaylistModel;
+    BaseExternalTrackModel* m_pRhythmboxTrackModel;
+    BaseExternalPlaylistModel* m_pRhythmboxPlaylistModel;
+
     TrackCollection* m_pTrackCollection;
     //new DB object because of threads
     QSqlDatabase m_database;
@@ -59,6 +63,7 @@ class RhythmboxFeature : public BaseExternalLibraryFeature {
     QFutureWatcher<TreeItem*> m_track_watcher;
     QFuture<TreeItem*> m_track_future;
     TreeItemModel m_childModel;
+    ConfigObject<ConfigValue> *m_pConfig;
     bool m_cancelImport;
 
     /**Removes all rows from a given table **/

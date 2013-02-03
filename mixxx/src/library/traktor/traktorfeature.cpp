@@ -15,10 +15,47 @@
 #include "library/trackcollection.h"
 #include "library/treeitem.h"
 
-TraktorFeature::TraktorFeature(QObject* parent, TrackCollection* pTrackCollection)
+TraktorTrackModel::TraktorTrackModel(QObject* parent,
+                                     TrackCollection* pTrackCollection,
+                                     ConfigObject<ConfigValue> *pConfig)
+        : BaseExternalTrackModel(parent, pTrackCollection,
+                                 "mixxx.db.model.traktor_tablemodel",
+                                 "traktor_library",
+                                 "traktor",pConfig) {
+}
+
+bool TraktorTrackModel::isColumnHiddenByDefault(int column) {
+    if (column == fieldIndex(LIBRARYTABLE_KEY) ||
+        column == fieldIndex(LIBRARYTABLE_BITRATE)) {
+        return true;
+    }
+    return false;
+}
+
+TraktorPlaylistModel::TraktorPlaylistModel(QObject* parent,
+                                           TrackCollection* pTrackCollection,
+                                           ConfigObject<ConfigValue> *pConfig)
+        : BaseExternalPlaylistModel(parent, pTrackCollection,
+                                    "mixxx.db.model.traktor.playlistmodel",
+                                    "traktor_playlists",
+                                    "traktor_playlist_tracks",
+                                    "traktor", pConfig) {
+}
+
+bool TraktorPlaylistModel::isColumnHiddenByDefault(int column) {
+    if (column == fieldIndex(LIBRARYTABLE_KEY) ||
+        column == fieldIndex(LIBRARYTABLE_BITRATE)) {
+        return true;
+    }
+    return false;
+}
+
+TraktorFeature::TraktorFeature(QObject* parent, TrackCollection* pTrackCollection,
+                               ConfigObject<ConfigValue> *pConfig)
         : BaseExternalLibraryFeature(parent, pTrackCollection),
           m_pTrackCollection(pTrackCollection),
-          m_cancelImport(false) {
+          m_cancelImport(false),
+          m_pConfig(pConfig) {
     QString tableName = "traktor_library";
     QString idColumn = "id";
     QStringList columns;
@@ -41,8 +78,9 @@ TraktorFeature::TraktorFeature(QObject* parent, TrackCollection* pTrackCollectio
                            columns, false)));
 
     m_isActivated = false;
-    m_pTraktorTableModel = new TraktorTableModel(this, m_pTrackCollection);
-    m_pTraktorPlaylistModel = new TraktorPlaylistModel(this, m_pTrackCollection);
+    m_pTraktorTableModel = new TraktorTrackModel(this, m_pTrackCollection,pConfig);
+    m_pTraktorPlaylistModel = new TraktorPlaylistModel(this, m_pTrackCollection,pConfig);
+
     m_title = tr("Traktor");
 
     m_database = QSqlDatabase::cloneDatabase( pTrackCollection->getDatabase(), "TRAKTOR_SCANNER");
@@ -63,7 +101,8 @@ TraktorFeature::~TraktorFeature() {
 }
 
 BaseSqlTableModel* TraktorFeature::getPlaylistModelForPlaylist(QString playlist) {
-    TraktorPlaylistModel* pModel = new TraktorPlaylistModel(this, m_pTrackCollection);
+    TraktorPlaylistModel* pModel = new TraktorPlaylistModel(this, m_pTrackCollection
+                                                            ,m_pConfig);
     pModel->setPlaylist(playlist);
     return pModel;
 }
