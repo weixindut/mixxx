@@ -55,6 +55,7 @@ void LibraryTableModel::setTableModel(int id){
 
     QStringList tableColumns;
     tableColumns << LIBRARYTABLE_ID;
+    tableColumns << "preview";
     setTable(tableName, LIBRARYTABLE_ID, tableColumns,
              m_pTrackCollection->getTrackSource("default"));
 
@@ -78,10 +79,7 @@ int LibraryTableModel::addTracks(const QModelIndex& index, QList<QString> locati
 }
 
 bool LibraryTableModel::isColumnInternal(int column) {
-    if (
-        // Used for preview deck widgets.
-        (PlayerManager::numPreviewDecks() == 0 &&
-         column == fieldIndex(LIBRARYTABLE_ID)) ||
+    if ((column == fieldIndex(LIBRARYTABLE_ID)) ||
         (column == fieldIndex(LIBRARYTABLE_URL)) ||
         (column == fieldIndex(LIBRARYTABLE_CUEPOINT)) ||
         (column == fieldIndex(LIBRARYTABLE_REPLAYGAIN)) ||
@@ -92,11 +90,12 @@ bool LibraryTableModel::isColumnInternal(int column) {
         (column == fieldIndex(LIBRARYTABLE_PLAYED)) ||
         (column == fieldIndex(LIBRARYTABLE_BPM_LOCK)) ||
         (column == fieldIndex(LIBRARYTABLE_CHANNELS)) ||
-        (column == fieldIndex(LIBRARYTABLE_CHANNELS)) ||
         (column == fieldIndex(TRACKLOCATIONSTABLE_FSDELETED)) ||
-        (column == fieldIndex(TRACKLOCATIONSTABLE_MAINDIRID))) {
+        (column == fieldIndex(TRACKLOCATIONSTABLE_MAINDIRID)) ||
+        (PlayerManager::numPreviewDecks() == 0 && column == fieldIndex("preview"))) {
         return true;
     }
+
     return false;
 }
 

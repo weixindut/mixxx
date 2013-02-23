@@ -37,9 +37,10 @@ void PlaylistTableModel::setTableModel(int playlistId) {
     QStringList columns;
     QStringList tableColumns;
     QString filter;
-        columns << "PlaylistTracks."+PLAYLISTTRACKSTABLE_TRACKID
+        columns << "PlaylistTracks."+PLAYLISTTRACKSTABLE_TRACKID + " as " + LIBRARYTABLE_ID
                 << "PlaylistTracks."+PLAYLISTTRACKSTABLE_POSITION
-                << "PlaylistTracks."+PLAYLISTTRACKSTABLE_DATETIMEADDED;
+                << "PlaylistTracks."+PLAYLISTTRACKSTABLE_DATETIMEADDED
+                << "'' as preview";
         tableColumns << PLAYLISTTRACKSTABLE_TRACKID
                     << PLAYLISTTRACKSTABLE_POSITION
                     << PLAYLISTTRACKSTABLE_DATETIMEADDED;
@@ -72,6 +73,8 @@ void PlaylistTableModel::setTableModel(int playlistId) {
         LOG_FAILED_QUERY(query);
     }
 
+    columns[0] = LIBRARYTABLE_ID;
+    columns[3] = "preview";
     setTable(playlistTableName, tableColumns[0], tableColumns,
              m_pTrackCollection->getTrackSource("default"));
     initHeaderData();
@@ -292,15 +295,14 @@ void PlaylistTableModel::shuffleTracks(const QModelIndex& shuffleStartIndex) {
 }
 
 bool PlaylistTableModel::isColumnInternal(int column) {
-    if (
-        // Used for preview deck widgets.
-        (PlayerManager::numPreviewDecks() == 0 &&
-         column == fieldIndex(PLAYLISTTRACKSTABLE_TRACKID)) ||
+    if (column == fieldIndex(LIBRARYTABLE_ID) ||
+        column == fieldIndex(PLAYLISTTRACKSTABLE_TRACKID) ||
         column == fieldIndex(LIBRARYTABLE_PLAYED) ||
         column == fieldIndex(LIBRARYTABLE_MIXXXDELETED) ||
         column == fieldIndex(LIBRARYTABLE_BPM_LOCK) ||
         column == fieldIndex(TRACKLOCATIONSTABLE_FSDELETED) ||
-        column == fieldIndex(TRACKLOCATIONSTABLE_MAINDIRID)) {
+        column == fieldIndex(TRACKLOCATIONSTABLE_MAINDIRID) ||
+        (PlayerManager::numPreviewDecks() == 0 && column == fieldIndex("preview"))) {
         return true;
     }
     return false;

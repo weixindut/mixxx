@@ -48,6 +48,9 @@ void CrateTableModel::setTableModel(int crateId) {
     } else {
         filter = "library.mixxx_deleted=0 AND track_locations.fs_deleted=0";
     }
+    columns << CRATETRACKSTABLE_TRACKID + " as " + LIBRARYTABLE_ID
+            << "'' as preview";
+
     // We drop files that have been explicitly deleted from mixxx
     // (mixxx_deleted=0) from the view. There was a bug in <= 1.9.0 where
     // removed files were not removed from crates, so some users will have
@@ -70,7 +73,9 @@ void CrateTableModel::setTableModel(int crateId) {
         LOG_FAILED_QUERY(query);
     }
 
-    setTable(tableName, tableColumns[0], tableColumns,
+    columns[0] = LIBRARYTABLE_ID;
+    columns[1] = "preview";
+    setTable(tableName, columns[0], columns,
              m_pTrackCollection->getTrackSource("default"));
     // BaseSqlTableModel sets up the header names
     initHeaderData();
@@ -117,19 +122,19 @@ void CrateTableModel::removeTracks(const QModelIndexList& indices) {
 }
 
 bool CrateTableModel::isColumnInternal(int column) {
-    if (
-        // Used for preview deck widgets.
-        (PlayerManager::numPreviewDecks() == 0 &&
-         column == fieldIndex(CRATETRACKSTABLE_TRACKID)) ||
+    if (column == fieldIndex(LIBRARYTABLE_ID) ||
+        column == fieldIndex(CRATETRACKSTABLE_TRACKID) ||
         column == fieldIndex(LIBRARYTABLE_PLAYED) ||
         column == fieldIndex(LIBRARYTABLE_MIXXXDELETED) ||
         column == fieldIndex(LIBRARYTABLE_BPM_LOCK) ||
         column == fieldIndex(TRACKLOCATIONSTABLE_FSDELETED) ||
-        column == fieldIndex(TRACKLOCATIONSTABLE_MAINDIRID)) {
+        column == fieldIndex(TRACKLOCATIONSTABLE_MAINDIRID) ||
+        (PlayerManager::numPreviewDecks() == 0 && column == fieldIndex("preview"))) {
         return true;
     }
     return false;
 }
+
 bool CrateTableModel::isColumnHiddenByDefault(int column) {
     if (column == fieldIndex(LIBRARYTABLE_KEY))
         return true;

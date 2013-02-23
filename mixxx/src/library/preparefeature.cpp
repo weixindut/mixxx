@@ -9,7 +9,6 @@
 #include "library/trackcollection.h"
 #include "dlgprepare.h"
 #include "widget/wlibrary.h"
-#include "widget/wlibrarysidebar.h"
 #include "mixxxkeyboard.h"
 #include "analyserqueue.h"
 
@@ -38,10 +37,8 @@ QIcon PrepareFeature::getIcon() {
     return QIcon(":/images/library/ic_library_prepare.png");
 }
 
-void PrepareFeature::bindWidget(WLibrarySidebar* sidebarWidget,
-                                WLibrary* libraryWidget,
+void PrepareFeature::bindWidget(WLibrary* libraryWidget,
                                 MixxxKeyboard* keyboard) {
-    Q_UNUSED(sidebarWidget);
     m_pPrepareView = new DlgPrepare(libraryWidget,
                                     m_pConfig,
                                     m_pTrackCollection);
@@ -56,11 +53,7 @@ void PrepareFeature::bindWidget(WLibrarySidebar* sidebarWidget,
 
     connect(this, SIGNAL(analysisActive(bool)),
             m_pPrepareView, SLOT(analysisActive(bool)));
-    connect(this, SIGNAL(trackAnalysisProgress(TrackPointer, int)),
-            m_pPrepareView, SLOT(trackAnalysisProgress(TrackPointer, int)));
-    connect(this, SIGNAL(trackAnalysisFinished(TrackPointer, int)),
-            m_pPrepareView, SLOT(trackAnalysisFinished(TrackPointer, int)));
-
+ 
     m_pPrepareView->installEventFilter(keyboard);
 
     // Let the DlgPrepare know whether or not analysis is active.
@@ -84,7 +77,9 @@ void PrepareFeature::refreshLibraryModels()
 void PrepareFeature::activate() {
     //qDebug() << "PrepareFeature::activate()";
     emit(switchToView(m_sPrepareViewName));
-    emit(restoreSearch(m_pPrepareView->currentSearch()));
+    if (m_pPrepareView) {
+        emit(restoreSearch(m_pPrepareView->currentSearch()));
+    }
 }
 
 void PrepareFeature::activateChild(const QModelIndex& index) {
@@ -139,10 +134,11 @@ void PrepareFeature::analyzeTracks(QList<int> trackIds) {
 
         m_pAnalyserQueue = AnalyserQueue::createPrepareViewAnalyserQueue(m_pConfig);
 
-        connect(m_pAnalyserQueue, SIGNAL(trackProgress(TrackPointer, int)),
-                this, SLOT(slotTrackAnalysisProgress(TrackPointer, int)));
-        connect(m_pAnalyserQueue, SIGNAL(trackFinished(TrackPointer, int)),
-                this, SLOT(slotTrackAnalysisFinished(TrackPointer, int)));
+        connect(m_pAnalyserQueue, SIGNAL(trackProgress(int)),
+                m_pPrepareView, SLOT(trackAnalysisProgress(int)));
+        connect(m_pAnalyserQueue, SIGNAL(trackFinished(int)),
+                m_pPrepareView, SLOT(trackAnalysisFinished(int)));
+
         connect(m_pAnalyserQueue, SIGNAL(queueEmpty()),
                 this, SLOT(cleanupAnalyser()));
         emit(analysisActive(true));
@@ -155,16 +151,6 @@ void PrepareFeature::analyzeTracks(QList<int> trackIds) {
             m_pAnalyserQueue->queueAnalyseTrack(pTrack);
         }
     }
-}
-
-void PrepareFeature::slotTrackAnalysisProgress(TrackPointer pTrack, int progress) {
-    //qDebug() << this << "trackAnalysisProgress" << pTrack->getInfo() << progress;
-    emit(trackAnalysisProgress(pTrack, progress));
-}
-
-void PrepareFeature::slotTrackAnalysisFinished(TrackPointer pTrack, int size) {
-    //qDebug() << this << "trackAnalysisFinished" << pTrack->getInfo();
-    emit(trackAnalysisFinished(pTrack, size));
 }
 
 void PrepareFeature::stopAnalysis() {

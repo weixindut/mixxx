@@ -307,8 +307,7 @@ void LibraryScanner::run()
     emit(scanFinished());
 }
 
-void LibraryScanner::scan()
-{
+void LibraryScanner::scan() {
     m_pProgress = new LibraryScannerDlg();
     m_pProgress->setAttribute(Qt::WA_DeleteOnClose);
 

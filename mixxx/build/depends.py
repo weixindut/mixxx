@@ -502,6 +502,7 @@ class MixxxCore(Feature):
 
                    "sharedglcontext.cpp",
                    "widget/wwidget.cpp",
+                   "widget/wwidgetstack.cpp",
                    "widget/wlabel.cpp",
                    "widget/wtracktext.cpp",
                    "widget/wnumber.cpp",
@@ -609,7 +610,6 @@ class MixxxCore(Feature):
                    "library/stardelegate.cpp",
                    "library/stareditor.cpp",
                    "library/previewbuttondelegate.cpp",
-                   "library/previewdeckbuttonhandler.cpp",
                    "audiotagger.cpp",
 
                    "library/treeitemmodel.cpp",
@@ -701,6 +701,10 @@ class MixxxCore(Feature):
 
                    "util/pa_ringbuffer.c",
                    "util/sleepableqthread.cpp",
+                   "util/statsmanager.cpp",
+                   "util/stat.cpp",
+                   "util/timer.cpp",
+                   "util/performancetimer.cpp",
 
                    # Add the QRC file which compiles in some extra resources
                    # (prefs icons, etc.)

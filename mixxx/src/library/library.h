@@ -40,10 +40,11 @@ public:
             bool firstRun, RecordingManager* pRecordingManager);
     virtual ~Library();
 
-    void bindWidget(WLibrarySidebar* sidebarWidget,
-                    WLibrary* libraryWidget,
+    void bindWidget(WLibrary* libraryWidget,
                     MixxxKeyboard* pKeyboard);
-    void addFeature(LibraryFeature* feature, bool config=false);
+    void bindSidebarWidget(WLibrarySidebar* sidebarWidget);
+
+    void addFeature(LibraryFeature* feature, bool config);
     QList<TrackPointer> getTracksToAutoLoad();
     MixxxLibraryFeature* getpMixxxLibraryFeature();
     QStringList getDirs();
@@ -63,12 +64,14 @@ public:
     void slotSwitchToView(const QString& view);
     void slotLoadTrack(TrackPointer pTrack);
     void slotLoadTrackToPlayer(TrackPointer pTrack, QString group);
+    void slotLoadLocationToPlayer(QString location, QString group);
     void slotRestoreSearch(const QString& text);
     void slotRefreshLibraryModels();
     void slotCreatePlaylist();
     void slotCreateCrate();
     void slotDirsChanged(QString,QString);
     void slotLoadTrackFailed(TrackPointer pTrack);
+    void onSkinLoadFinished();
 
   signals:
     void showTrackModel(QAbstractItemModel* model);
@@ -79,6 +82,9 @@ public:
     void configChanged(QString, QString);
     void dirsChanged(QString,QString);
     void loadTrackFailed(TrackPointer);
+    void search(const QString& text);
+    void searchCleared();
+    void searchStarting();
 
   private:
     void purgeTracks(const int dirId);

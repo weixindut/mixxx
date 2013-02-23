@@ -44,6 +44,7 @@ class LibraryScanner : public QThread {
     virtual ~LibraryScanner();
 
     void run();
+    void scan(QString libraryPath, QWidget *parent);
     void scan();
     
   public slots:

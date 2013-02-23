@@ -17,6 +17,7 @@
 #include "mathstuff.h"
 #include "track/beatgrid.h"
 #include "waveform/renderers/waveformwidgetrenderer.h"
+#include "analyserqueue.h"
 
 BaseTrackPlayer::BaseTrackPlayer(QObject* pParent,
                                  ConfigObject<ConfigValue> *pConfig,
@@ -58,9 +59,7 @@ BaseTrackPlayer::BaseTrackPlayer(QObject* pParent,
     pEngineBuffer->addControl(pClockControl);
 
     CueControl* pCueControl = new CueControl(pSafeGroupName, pConfig);
-    connect(this, SIGNAL(unloadingTrack(TrackPointer)),
-            pCueControl, SLOT(unloadTrack(TrackPointer)));
-    pEngineBuffer->addCueControl(pCueControl);
+    pEngineBuffer->addControl(pCueControl);
 
     // Connect our signals and slots with the EngineBuffer's signals and
     // slots. This will let us know when the reader is done loading a track, and
@@ -187,9 +186,7 @@ void BaseTrackPlayer::slotLoadTrack(TrackPointer track, bool bStartFromEndPos) {
 void BaseTrackPlayer::slotLoadFailed(TrackPointer track, QString reason) {
     if (track != NULL) {
         qDebug() << "Failed to load track" << track->getLocation() << reason;
-        if (reason.contains("could not be found")) {
-            emit(loadTrackFailed(track));
-        }
+        emit(loadTrackFailed(track));
     } else {
         qDebug() << "Failed to load track (NULL track object)" << reason;
     }

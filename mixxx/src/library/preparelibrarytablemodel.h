@@ -12,9 +12,7 @@ class PrepareLibraryTableModel : public LibraryTableModel
                              TrackCollection* pTrackCollection);
     virtual ~PrepareLibraryTableModel();
 
-    void search(const QString& searchText,
-                const QString& extraFilter = QString());
-    bool isColumnInternal(int column);
+    virtual void search(const QString& searchText);
 
   public slots:
     void showRecentSongs();

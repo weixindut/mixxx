@@ -30,8 +30,7 @@ class CrateFeature : public LibraryFeature {
     bool dragMoveAccept(QUrl url);
     bool dragMoveAcceptChild(const QModelIndex& index, QUrl url);
 
-    void bindWidget(WLibrarySidebar* sidebarWidget,
-                    WLibrary* libraryWidget,
+    void bindWidget(WLibrary* libraryWidget,
                     MixxxKeyboard* keyboard);
 
     TreeItemModel* getChildModel();

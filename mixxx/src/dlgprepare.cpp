@@ -128,13 +128,11 @@ void DlgPrepare::moveSelection(int delta) {
     m_pPrepareLibraryTableView->moveSelection(delta);
 }
 
-void DlgPrepare::tableSelectionChanged(const QItemSelection& selected, const QItemSelection& deselected)
-{
+void DlgPrepare::tableSelectionChanged(const QItemSelection& selected, const QItemSelection& deselected) {
+    Q_UNUSED(selected);
     Q_UNUSED(deselected);
-    if (selected == QItemSelection()) //Empty selection
-        pushButtonAnalyze->setEnabled(false);
-    else
-        pushButtonAnalyze->setEnabled(true);
+    bool tracksSelected = m_pPrepareLibraryTableView->selectionModel()->hasSelection();
+    pushButtonAnalyze->setEnabled(tracksSelected);
 }
 
 void DlgPrepare::selectAll() {
@@ -177,8 +175,7 @@ void DlgPrepare::analysisActive(bool bActive) {
 }
 
 // slot
-void DlgPrepare::trackAnalysisFinished(TrackPointer pTrack, int size) {
-    Q_UNUSED(pTrack);
+void DlgPrepare::trackAnalysisFinished(int size) {
     qDebug() << "Analysis finished" << size << "tracks left";
     if (size > 0) {
         m_currentTrack = m_tracksInQueue - size + 1;
@@ -186,8 +183,7 @@ void DlgPrepare::trackAnalysisFinished(TrackPointer pTrack, int size) {
 }
 
 // slot
-void DlgPrepare::trackAnalysisProgress(TrackPointer tio, int progress) {
-    Q_UNUSED(tio);
+void DlgPrepare::trackAnalysisProgress(int progress) {
     if (m_bAnalysisActive) {
         QString text = tr("Analyzing %1/%2 %3%").arg(
                 QString::number(m_currentTrack),
@@ -199,11 +195,6 @@ void DlgPrepare::trackAnalysisProgress(TrackPointer tio, int progress) {
 
 void DlgPrepare::showRecentSongs()
 {
-    int datetimeColumn = m_pPrepareLibraryTableModel->fieldIndex(LIBRARYTABLE_DATETIMEADDED);
-    // Don't tell the TableView to sortByColumn() because this generates excess
-    // select()'s. Use setSort() on the model, and it will take effect when
-    // showRecentSongs() select()'s.
-    m_pPrepareLibraryTableModel->setSort(datetimeColumn, Qt::DescendingOrder);
     m_pPrepareLibraryTableModel->showRecentSongs();
 }
 

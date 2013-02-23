@@ -11,22 +11,28 @@ PrepareLibraryTableModel::PrepareLibraryTableModel(QObject* parent,
         : LibraryTableModel(parent, pTrackCollection, NULL,
                             "mixxx.db.model.prepare") {
     m_bShowRecentSongs = true;
-    setSearch("", m_bShowRecentSongs ? RECENT_FILTER : QString());
-    select();
+    setSearch("", RECENT_FILTER);
+
+    connect(this, SIGNAL(doSearch(const QString&)),
+            this, SLOT(slotSearch(const QString&)));
 }
 
 
 PrepareLibraryTableModel::~PrepareLibraryTableModel() {
 }
 
-bool PrepareLibraryTableModel::isColumnInternal(int column) {
-    return LibraryTableModel::isColumnInternal(column);
+void PrepareLibraryTableModel::search(const QString& searchText) {
+    // qDebug() << "PrepareLibraryTableModel::search()" << searchText
+    //          << QThread::currentThread();
+    emit(search(searchText));
 }
 
-void PrepareLibraryTableModel::search(const QString& searchText, const QString& extraFilter) {
+/*
+void PrepareLibraryTableModel::slotSearch(const QString& searchText) {
     BaseSqlTableModel::search(searchText,
                               m_bShowRecentSongs ? RECENT_FILTER : QString());
 }
+*/
 
 void PrepareLibraryTableModel::showRecentSongs() {
    m_bShowRecentSongs = true;
