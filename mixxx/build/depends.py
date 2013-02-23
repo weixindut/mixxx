@@ -170,6 +170,9 @@ class Qt(Dependence):
         build.env.Append(CPPDEFINES = ['QT_SHARED',
                                        'QT_TABLET_SUPPORT'])
 
+        # Promo tracks is the only thing that uses webkit currently.
+        use_qtwebkit = int(util.get_flags(build.env, 'promo', 0)) > 0
+
         # TODO(XXX) what is with the slightly differing modules used for each
         # platform here? Document the differences and make them all
         # programmatically driven from one list instead of hard-coded multiple
@@ -177,10 +180,12 @@ class Qt(Dependence):
 
         qt_modules = [
             'QtCore', 'QtGui', 'QtOpenGL', 'QtXml', 'QtSvg',
-            'QtSql', 'QtScript', 'QtXmlPatterns', 'QtWebKit',
-            'QtNetwork'
+            'QtSql', 'QtScript', 'QtXmlPatterns', 'QtNetwork'
             #'QtUiTools', #'QtDesigner',
         ]
+
+        if use_qtwebkit:
+            qt_modules.append('QtWebKit')
 
         # Enable Qt include paths
         if build.platform_is_linux:
@@ -206,10 +211,10 @@ class Qt(Dependence):
             build.env.Append(LIBS = 'QtGui')
             build.env.Append(LIBS = 'QtOpenGL')
             build.env.Append(LIBS = 'QtXml')
-            build.env.Append(LIBS = 'QtWebKit')
             build.env.Append(LIBS = 'QtNetwork')
-
             build.env.Append(LIBS = 'QtScript')
+            if use_qtwebkit:
+                build.env.Append(LIBS = 'QtWebKit')
         elif build.platform_is_windows:
             build.env.Append(LIBPATH=['$QTDIR/lib'])
             # Since we use WebKit, that's only available dynamically
@@ -217,11 +222,12 @@ class Qt(Dependence):
                        'QtGui4',
                        'QtOpenGL4',
                        'QtXml4',
-                       'QtWebKit4',
                        'QtNetwork4',
                        'QtXmlPatterns4',
                        'QtSql4',
                        'QtScript4',]
+            if use_qtwebkit:
+                qt_libs.append('QtWebKit4')
 
             # Use the debug versions of the libs if we are building in debug mode.
             if build.msvcdebug:
@@ -251,15 +257,17 @@ class Qt(Dependence):
 
         # Set Qt include paths for non-OSX
         if not build.platform_is_osx:
-            build.env.Append(CPPPATH=['$QTDIR/include/QtCore',
-                                      '$QTDIR/include/QtGui',
-                                      '$QTDIR/include/QtOpenGL',
-                                      '$QTDIR/include/QtXml',
-                                      '$QTDIR/include/QtWebKit',
-                                      '$QTDIR/include/QtNetwork',
-                                      '$QTDIR/include/QtSql',
-                                      '$QTDIR/include/QtScript',
-                                      '$QTDIR/include/Qt'])
+            include_paths = ['$QTDIR/include/QtCore',
+                             '$QTDIR/include/QtGui',
+                             '$QTDIR/include/QtOpenGL',
+                             '$QTDIR/include/QtXml',
+                             '$QTDIR/include/QtNetwork',
+                             '$QTDIR/include/QtSql',
+                             '$QTDIR/include/QtScript',
+                             '$QTDIR/include/Qt']
+            if use_qtwebkit:
+                include_paths.append('$QTDIR/include/QtWebKit')
+            build.env.Append(CPPPATH=include_paths)
 
         # Set the rpath for linux/bsd/osx.
         # This is not supported on OS X before the 10.5 SDK.
@@ -346,17 +354,19 @@ class SoundTouch(Dependence):
                  '#lib/%s/sse_optimized.cpp' % self.SOUNDTOUCH_PATH,])
         return sources
 
-    def configure(self, build, conf):
+    def configure(self, build, conf, env=None):
+        if env is None:
+            env = build.env
         if build.platform_is_windows:
             # Regardless of the bitwidth, ST checks for WIN32
-            build.env.Append(CPPDEFINES = 'WIN32')
-        build.env.Append(CPPPATH=['#lib/%s' % self.SOUNDTOUCH_PATH])
+            env.Append(CPPDEFINES = 'WIN32')
+        env.Append(CPPPATH=['#lib/%s' % self.SOUNDTOUCH_PATH])
 
         # Check if the compiler has SSE extention enabled
         # Allways the case on x64 (core instructions)
-        optimize = int(util.get_flags(build.env, 'optimize', 1))
+        optimize = int(util.get_flags(env, 'optimize', 1))
         if self.sse_enabled(build):
-            build.env.Append(CPPDEFINES='SOUNDTOUCH_ALLOW_X86_OPTIMIZATIONS')
+            env.Append(CPPDEFINES='SOUNDTOUCH_ALLOW_X86_OPTIMIZATIONS')
 
 class TagLib(Dependence):
     def configure(self, build, conf):
@@ -410,6 +420,7 @@ class MixxxCore(Feature):
                    "controlobject.cpp",
                    "controlnull.cpp",
                    "controlpotmeter.cpp",
+                   "controllinpotmeter.cpp",
                    "controlpushbutton.cpp",
                    "controlttrotary.cpp",
                    "controlbeat.cpp",
@@ -434,6 +445,8 @@ class MixxxCore(Feature):
                    "dlgtrackinfo.cpp",
                    "dlgprepare.cpp",
                    "dlgautodj.cpp",
+                   "dlghidden.cpp",
+                   "dlgmissing.cpp",
 
                    "engine/engineworker.cpp",
                    "engine/engineworkerscheduler.cpp",
@@ -502,6 +515,7 @@ class MixxxCore(Feature):
 
                    "sharedglcontext.cpp",
                    "widget/wwidget.cpp",
+                   "widget/wwidgetgroup.cpp",
                    "widget/wwidgetstack.cpp",
                    "widget/wlabel.cpp",
                    "widget/wtracktext.cpp",
@@ -521,6 +535,7 @@ class MixxxCore(Feature):
                    "widget/wabstractcontrol.cpp",
                    "widget/wsearchlineedit.cpp",
                    "widget/wpixmapstore.cpp",
+                   "widget/wimagestore.cpp",
                    "widget/hexspinbox.cpp",
                    "widget/wtrackproperty.cpp",
                    "widget/wtime.cpp",
@@ -552,6 +567,7 @@ class MixxxCore(Feature):
                    "library/searchqueryparser.cpp",
                    "library/preparelibrarytablemodel.cpp",
                    "library/hiddentablemodel.cpp",
+                   "library/missingtablemodel.cpp",
                    "library/proxytrackmodel.cpp",
 
                    "library/playlisttablemodel.cpp",
@@ -602,9 +618,6 @@ class MixxxCore(Feature):
 
                    "library/librarycontrol.cpp",
                    "library/schemamanager.cpp",
-                   "library/promotracksfeature.cpp",
-                   "library/featuredartistswebview.cpp",
-                   "library/bundledsongswebview.cpp",
                    "library/songdownloader.cpp",
                    "library/starrating.cpp",
                    "library/stardelegate.cpp",
@@ -640,6 +653,7 @@ class MixxxCore(Feature):
                    "waveform/renderers/waveformrendererpreroll.cpp",
 
                    "waveform/renderers/waveformrendererfilteredsignal.cpp",
+                   "waveform/renderers/waveformrendererhsv.cpp",
                    "waveform/renderers/qtwaveformrendererfilteredsignal.cpp",
                    "waveform/renderers/qtwaveformrenderersimplesignal.cpp",
                    "waveform/renderers/glwaveformrendererfilteredsignal.cpp",
@@ -656,6 +670,7 @@ class MixxxCore(Feature):
                    "waveform/widgets/waveformwidgetabstract.cpp",
                    "waveform/widgets/emptywaveformwidget.cpp",
                    "waveform/widgets/softwarewaveformwidget.cpp",
+                   "waveform/widgets/hsvwaveformwidget.cpp",
                    "waveform/widgets/qtwaveformwidget.cpp",
                    "waveform/widgets/qtsimplewaveformwidget.cpp",
                    "waveform/widgets/glwaveformwidget.cpp",
@@ -753,6 +768,8 @@ class MixxxCore(Feature):
         build.env.Uic4('dlgautodj.ui')
         build.env.Uic4('dlgprefsounditem.ui')
         build.env.Uic4('dlgrecording.ui')
+        build.env.Uic4('dlghidden.ui')
+        build.env.Uic4('dlgmissing.ui')
 
         if build.platform_is_windows:
             # Add Windows resource file with icons and such

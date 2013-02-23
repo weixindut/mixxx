@@ -161,40 +161,10 @@ void DlgAutoDJ::onShow() {
     m_pAutoDJTableModel->select();
 }
 
-void DlgAutoDJ::setup(QDomNode node) {
-    QPalette pal = palette();
-
-    // Row colors
-    if (!WWidget::selectNode(node, "BgColorRowEven").isNull() &&
-        !WWidget::selectNode(node, "BgColorRowUneven").isNull()) {
-        QColor r1;
-        r1.setNamedColor(WWidget::selectNodeQString(node, "BgColorRowEven"));
-        r1 = WSkinColor::getCorrectColor(r1);
-        QColor r2;
-        r2.setNamedColor(WWidget::selectNodeQString(node, "BgColorRowUneven"));
-        r2 = WSkinColor::getCorrectColor(r2);
-
-        // For now make text the inverse of the background so it's readable In
-        // the future this should be configurable from the skin with this as the
-        // fallback option
-        QColor text(255 - r1.red(), 255 - r1.green(), 255 - r1.blue());
-        QColor fgColor;
-        fgColor.setNamedColor(WWidget::selectNodeQString(node, "FgColor"));
-        fgColor = WSkinColor::getCorrectColor(fgColor);
-
-        pal.setColor(QPalette::Base, r1);
-        pal.setColor(QPalette::AlternateBase, r2);
-        pal.setColor(QPalette::Text, text);
-        pal.setColor(QPalette::WindowText, fgColor);
-    }
-
-    setPalette(pal);
-
-    pushButtonAutoDJ->setPalette(pal);
-
-    // Since we're getting this passed into us already created, shouldn't need
-    // to set the palette.
-    //m_pTrackTableView->setPalette(pal);
+void DlgAutoDJ::onSearch(const QString& text) {
+    // Do not allow filtering the Auto DJ playlist, because
+    // Auto DJ will work from the filtered table
+    Q_UNUSED(text);
 }
 
 double DlgAutoDJ::getCrossfader() const {
@@ -211,24 +181,12 @@ void DlgAutoDJ::setCrossfader(double value) {
     m_pCOCrossfader->slotSet(value);
 }
 
-void DlgAutoDJ::onSearchStarting() {
-}
-
-void DlgAutoDJ::onSearchCleared() {
-}
-
-void DlgAutoDJ::onSearch(const QString& text) {
-    Q_UNUSED(text);
-    // Do not allow filtering the Auto DJ playlist, because
-    // Auto DJ will work from the filtered table
-}
-
 void DlgAutoDJ::loadSelectedTrack() {
     m_pTrackTableView->loadSelectedTrack();
 }
 
-void DlgAutoDJ::loadSelectedTrackToGroup(QString group) {
-    m_pTrackTableView->loadSelectedTrackToGroup(group);
+void DlgAutoDJ::loadSelectedTrackToGroup(QString group, bool play) {
+    m_pTrackTableView->loadSelectedTrackToGroup(group, play);
 }
 
 void DlgAutoDJ::moveSelection(int delta) {
@@ -626,6 +584,10 @@ bool DlgAutoDJ::removePlayingTrackFromQueue(QString group) {
     // remove the top track
     m_pAutoDJTableModel->removeTrack(m_pAutoDJTableModel->index(0, 0));
 
+    // Re-queue if configured
+    if (m_pConfig->getValueString(ConfigKey(CONFIG_KEY, "Requeue")).toInt()) {
+        m_pAutoDJTableModel->appendTrack(loadedId);
+    }
     return true;
 }
 

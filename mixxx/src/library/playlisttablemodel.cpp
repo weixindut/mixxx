@@ -112,6 +112,17 @@ int PlaylistTableModel::addTracks(const QModelIndex& index, QList<QString> locat
     return tracksAdded;
 }
 
+bool PlaylistTableModel::appendTrack(int trackId) {
+    if (trackId < 0) {
+        return false;
+    }
+
+    m_playlistDao.appendTrackToPlaylist(trackId, m_iPlaylistId);
+
+    select(); //Repopulate the data model.
+    return true;
+}
+
 void PlaylistTableModel::removeTrack(const QModelIndex& index) {
     if (m_playlistDao.isPlaylistLocked(m_iPlaylistId)) {
         return;

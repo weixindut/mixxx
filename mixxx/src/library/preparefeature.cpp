@@ -16,11 +16,11 @@ const QString PrepareFeature::m_sPrepareViewName = QString("Prepare");
 
 PrepareFeature::PrepareFeature(QObject* parent,
                                ConfigObject<ConfigValue>* pConfig,
-                               TrackCollection* pTrackCollection)
-        : LibraryFeature(parent),
-          m_pConfig(pConfig),
-          m_pTrackCollection(pTrackCollection),
-          m_pAnalyserQueue(NULL) {
+                               TrackCollection* pTrackCollection) :
+        LibraryFeature(parent),
+        m_pConfig(pConfig),
+        m_pTrackCollection(pTrackCollection),
+        m_pAnalyserQueue(NULL) {
 }
 
 PrepareFeature::~PrepareFeature() {
@@ -53,7 +53,7 @@ void PrepareFeature::bindWidget(WLibrary* libraryWidget,
 
     connect(this, SIGNAL(analysisActive(bool)),
             m_pPrepareView, SLOT(analysisActive(bool)));
- 
+
     m_pPrepareView->installEventFilter(keyboard);
 
     // Let the DlgPrepare know whether or not analysis is active.
@@ -67,8 +67,7 @@ TreeItemModel* PrepareFeature::getChildModel() {
     return &m_childModel;
 }
 
-void PrepareFeature::refreshLibraryModels()
-{
+void PrepareFeature::refreshLibraryModels() {
     if (m_pPrepareView) {
         m_pPrepareView->onShow();
     }
@@ -82,48 +81,6 @@ void PrepareFeature::activate() {
     }
 }
 
-void PrepareFeature::activateChild(const QModelIndex& index) {
-    Q_UNUSED(index);
-}
-
-void PrepareFeature::onRightClick(const QPoint& globalPos) {
-    Q_UNUSED(globalPos);
-}
-
-void PrepareFeature::onRightClickChild(const QPoint& globalPos,
-                                            QModelIndex index) {
-    Q_UNUSED(globalPos);
-    Q_UNUSED(index);
-}
-
-bool PrepareFeature::dropAccept(QList<QUrl> urls) {
-    Q_UNUSED(urls);
-    return false;
-}
-
-bool PrepareFeature::dropAcceptChild(const QModelIndex& index, QList<QUrl> urls){
-    Q_UNUSED(index);
-    Q_UNUSED(urls);
-    return false;
-}
-
-bool PrepareFeature::dragMoveAccept(QUrl url) {
-    Q_UNUSED(url);
-    return false;
-}
-
-bool PrepareFeature::dragMoveAcceptChild(const QModelIndex& index,
-                                              QUrl url) {
-    Q_UNUSED(index);
-    Q_UNUSED(url);
-    return false;
-}
-
-void PrepareFeature::onLazyChildExpandation(const QModelIndex &index){
-    //Nothing to do because the childmodel is not of lazy nature.
-    Q_UNUSED(index);
-}
-
 void PrepareFeature::analyzeTracks(QList<int> trackIds) {
     if (m_pAnalyserQueue == NULL) {
         // Save the old BPM detection prefs setting (on or off)
@@ -132,7 +89,7 @@ void PrepareFeature::analyzeTracks(QList<int> trackIds) {
         m_pConfig->set(ConfigKey("[BPM]","BPMDetectionEnabled"), ConfigValue(1));
         // Note: this sucks... we should refactor the prefs/analyser to fix this hacky bit ^^^^.
 
-        m_pAnalyserQueue = AnalyserQueue::createPrepareViewAnalyserQueue(m_pConfig);
+        m_pAnalyserQueue = AnalyserQueue::createPrepareViewAnalyserQueue(m_pConfig, m_pTrackCollection);
 
         connect(m_pAnalyserQueue, SIGNAL(trackProgress(int)),
                 m_pPrepareView, SLOT(trackAnalysisProgress(int)));

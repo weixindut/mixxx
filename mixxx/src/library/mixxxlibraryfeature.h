@@ -10,11 +10,13 @@
 #include "configobject.h"
 #include "library/dao/trackdao.h"
 #include "treeitemmodel.h"
+#include "configobject.h"
+#include "dlghidden.h"
+#include "dlgmissing.h"
+
 
 class BaseTrackCache;
 class LibraryTableModel;
-class MissingTableModel;
-class HiddenTableModel;
 class TrackCollection;
 
 class MixxxLibraryFeature : public LibraryFeature {
@@ -27,11 +29,11 @@ class MixxxLibraryFeature : public LibraryFeature {
 
     QVariant title();
     QIcon getIcon();
-    bool dropAccept(QList<QUrl> urls);
-    bool dropAcceptChild(const QModelIndex& index, QList<QUrl> urls);
+    bool dropAccept(QList<QUrl> urls, QWidget *pSource);
     bool dragMoveAccept(QUrl url);
-    bool dragMoveAcceptChild(const QModelIndex& index, QUrl url);
     TreeItemModel* getChildModel();
+    void bindWidget(WLibrary* pLibrary,
+                    MixxxKeyboard* pKeyboard);
 
   signals:
     void configChanged(QString, QString);
@@ -39,9 +41,6 @@ class MixxxLibraryFeature : public LibraryFeature {
   public slots:
     void activate();
     void activateChild(const QModelIndex& index);
-    void onRightClick(const QPoint& globalPos);
-    void onRightClickChild(const QPoint& globalPos, QModelIndex index);
-    void onLazyChildExpandation(const QModelIndex& index);
     void refreshLibraryModels();
 
   private:
@@ -50,10 +49,11 @@ class MixxxLibraryFeature : public LibraryFeature {
     const QString kHiddenTitle;
     QSharedPointer<BaseTrackCache> m_pBaseTrackCache;
     LibraryTableModel* m_pLibraryTableModel;
-    MissingTableModel* m_pMissingTableModel;
-    HiddenTableModel* m_pHiddenTableModel;
+    DlgMissing* m_pMissingView;
+    DlgHidden* m_pHiddenView;
     TreeItemModel m_childModel;
     TrackDAO& m_trackDao;
+    ConfigObject<ConfigValue>* m_pConfig;
 };
 
 #endif /* MIXXXLIBRARYFEATURE_H */

@@ -60,7 +60,11 @@ class BaseSqlTableModel : public QAbstractTableModel, public TrackModel {
                                const QVariant &value, int role=Qt::EditRole);
     QVariant headerData(int section, Qt::Orientation orientation,
                                 int role=Qt::DisplayRole) const;
-    QMimeData* mimeData(const QModelIndexList &indexes) const;
+    virtual QMimeData* mimeData(const QModelIndexList &indexes) const;
+
+    ////////////////////////////////////////////////////////////////////////////
+    // Other public methods
+    ////////////////////////////////////////////////////////////////////////////
 
     // Returns true if the BaseSqlTableModel has been initialized. Calling data
     // access methods on a BaseSqlTableModel which is not initialized is likely

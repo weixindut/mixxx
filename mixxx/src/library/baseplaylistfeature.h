@@ -34,9 +34,6 @@ class BasePlaylistFeature : public LibraryFeature {
   public slots:
     virtual void activate();
     virtual void activateChild(const QModelIndex& index);
-    virtual bool dropAccept(QList<QUrl> urls);
-    virtual bool dragMoveAccept(QUrl url);
-    virtual void onLazyChildExpandation(const QModelIndex& index);
     virtual void htmlLinkClicked(const QUrl & link);
 
     virtual void slotPlaylistTableChanged(int playlistId) = 0;
@@ -44,6 +41,7 @@ class BasePlaylistFeature : public LibraryFeature {
 
   protected slots:
     void slotDeletePlaylist();
+    void slotDuplicatePlaylist();
     void slotAddToAutoDJ();
     void slotAddToAutoDJTop();
     void slotRenamePlaylist();
@@ -71,6 +69,7 @@ class BasePlaylistFeature : public LibraryFeature {
     QAction *m_pLockPlaylistAction;
     QAction *m_pImportPlaylistAction;
     QAction *m_pExportPlaylistAction;
+    QAction *m_pDuplicatePlaylistAction;
     QList<QPair<int, QString> > m_playlistList;
     QModelIndex m_lastRightClickedIndex;
     TreeItemModel m_childModel;

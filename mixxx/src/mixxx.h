@@ -43,6 +43,7 @@ class SoundManager;
 
 #include "configobject.h"
 #include "util/cmdlineargs.h"
+#include "util/timer.h"
 
 /**
   * This Class is the base class for Mixxx. It sets up the main
@@ -119,6 +120,7 @@ class MixxxApp : public QMainWindow {
 
     void slotToCenterOfPrimaryScreen();
     void onNewSkinLoaded();
+    void slotSyncControlSystem();
 
   signals:
     void newSkinLoaded();
@@ -223,9 +225,12 @@ class MixxxApp : public QMainWindow {
     ConfigObject<ConfigValueKbd>* m_pKbdConfig;
     ConfigObject<ConfigValueKbd>* m_pKbdConfigEmpty;
 
-    int m_tooltips; //0=ON, 1=ON (only in Library), 2=OFF
+    int m_tooltips; //0=OFF, 1=ON, 2=ON (only in Library)
+    // Timer that tracks how long Mixxx has been running.
+    Timer m_runtime_timer;
 
     const CmdlineArgs& m_cmdLineArgs;
 };
 
 #endif
+

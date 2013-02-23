@@ -25,6 +25,7 @@
 #include "controlpushbutton.h"
 #include "configobject.h"
 #include "controlpotmeter.h"
+#include "controllinpotmeter.h"
 #include "engine/enginebufferscalest.h"
 #include "engine/enginebufferscalelinear.h"
 #include "engine/enginebufferscaledummy.h"
@@ -78,6 +79,7 @@ EngineBuffer::EngineBuffer(const char * _group, ConfigObject<ConfigValue> * _con
     m_bScalerChanged(false),
     m_bLastBufferPaused(true),
     m_iTrackLoading(0),
+    m_bPlayAfterLoading(false),
     m_fRampValue(0.0),
     m_iRampState(ENGINE_RAMP_NONE),
     m_pDitherBuffer(new CSAMPLE[MAX_BUFFER_LEN]),
@@ -163,7 +165,7 @@ EngineBuffer::EngineBuffer(const char * _group, ConfigObject<ConfigValue> * _con
 
     // Slider to show and change song position
     //these bizarre choices map conveniently to the 0-127 range of midi
-    m_playposSlider = new ControlPotmeter(
+    m_playposSlider = new ControlLinPotmeter(
         ConfigKey(m_group, "playposition"), kMinPlayposRange, kMaxPlayposRange);
     connect(m_playposSlider, SIGNAL(valueChanged(double)),
             this, SLOT(slotControlSeek(double)),
@@ -384,7 +386,7 @@ void EngineBuffer::slotTrackLoading() {
     m_pause.unlock();
 
     m_playButton->set(0.0); //Stop playback
-    m_pTrackSamples->set(0); // stop renderer
+    m_pTrackSamples->set(0); // Stop renderer
 }
 
 // WARNING: Always called from the EngineWorker thread pool
@@ -405,11 +407,16 @@ void EngineBuffer::slotTrackLoaded(TrackPointer pTrack,
     // Start buffer processing after all EngineContols are up to date
     // with the current track e.g track is seeked to Cue
     m_iTrackLoading = 0;
+    if (m_bPlayAfterLoading) {
+        m_bPlayAfterLoading = false;
+        m_playButton->set(1);
+    }
 }
 
 // WARNING: Always called from the EngineWorker thread pool
 void EngineBuffer::slotTrackLoadFailed(TrackPointer pTrack,
                                        QString reason) {
+    m_bPlayAfterLoading = false;
     m_playButton->set(0.0f);
     ejectTrack();
     emit(trackLoadFailed(pTrack, reason));
@@ -565,8 +572,9 @@ void EngineBuffer::process(const CSAMPLE *, const CSAMPLE * pOut, const int iBuf
         float sr = m_pSampleRate->get();
 
         double baserate = 0.0f;
-        if (sr > 0)
+        if (sr > 0) {
             baserate = ((double)m_file_srate_old / sr);
+        }
 
         bool paused = m_playButton->get() != 0.0f ? false : true;
 
@@ -910,9 +918,10 @@ void EngineBuffer::hintReader(const double dRate) {
 }
 
 // WARNING: This method runs in the GUI thread
-void EngineBuffer::slotLoadTrack(TrackPointer pTrack) {
+void EngineBuffer::slotLoadTrack(TrackPointer pTrack, bool play) {
     // Signal to the reader to load the track. The reader will respond with
     // trackLoading and then either with trackLoaded or trackLoadFailed signals.
+    m_bPlayAfterLoading = play;
     m_pReader->newTrack(pTrack);
     m_pReader->wake();
 }

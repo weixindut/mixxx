@@ -10,15 +10,19 @@
 #include "library/trackcollection.h"
 #include "treeitem.h"
 #include "soundsourceproxy.h"
+#include "widget/wlibrary.h"
 
 MixxxLibraryFeature::MixxxLibraryFeature(QObject* parent,
                                          TrackCollection* pTrackCollection,
                                          ConfigObject<ConfigValue>* pConfig)
         : LibraryFeature(parent),
-          m_pTrackCollection(pTrackCollection),
           kMissingTitle(tr("Missing Tracks")),
           kHiddenTitle(tr("Hidden Tracks")),
-          m_trackDao(pTrackCollection->getTrackDAO()) {
+          m_pMissingView(NULL),
+          m_pHiddenView(NULL),
+          m_trackDao(pTrackCollection->getTrackDAO()),
+          m_pConfig(pConfig),
+          m_pTrackCollection(pTrackCollection) {
     QStringList columns;
     columns << "library." + LIBRARYTABLE_ID
             << "library." + LIBRARYTABLE_PLAYED
@@ -89,11 +93,13 @@ MixxxLibraryFeature::MixxxLibraryFeature(QObject* parent,
     m_pLibraryTableModel = new LibraryTableModel(this, pTrackCollection,pConfig);
     connect(this,SIGNAL(configChanged(QString,QString)),
             m_pLibraryTableModel, SLOT(slotConfigChanged(QString, QString)));
-    m_pHiddenTableModel = new HiddenTableModel(this, pTrackCollection);
 
     TreeItem* pRootItem = new TreeItem();
+    TreeItem* pmissingChildItem = new TreeItem(kMissingTitle, kMissingTitle,
+                                       this, pRootItem);
     TreeItem* phiddenChildItem = new TreeItem(kHiddenTitle, kHiddenTitle,
                                        this, pRootItem);
+    pRootItem->appendChild(pmissingChildItem);
     pRootItem->appendChild(phiddenChildItem);
 
     m_childModel.setRootItem(pRootItem);
@@ -101,7 +107,18 @@ MixxxLibraryFeature::MixxxLibraryFeature(QObject* parent,
 
 MixxxLibraryFeature::~MixxxLibraryFeature() {
     delete m_pLibraryTableModel;
-    delete m_pHiddenTableModel;
+}
+
+void MixxxLibraryFeature::bindWidget(WLibrary* pLibrary,
+                    MixxxKeyboard* pKeyboard) {
+    m_pHiddenView = new DlgHidden(pLibrary,
+                                  m_pConfig, m_pTrackCollection,
+                                  pKeyboard);
+    pLibrary->registerView(kHiddenTitle, m_pHiddenView);
+    m_pMissingView = new DlgMissing(pLibrary,
+                                  m_pConfig, m_pTrackCollection,
+                                  pKeyboard);
+    pLibrary->registerView(kMissingTitle, m_pMissingView);
 }
 
 QVariant MixxxLibraryFeature::title() {
@@ -121,8 +138,11 @@ void MixxxLibraryFeature::refreshLibraryModels()
     if (m_pLibraryTableModel) {
         m_pLibraryTableModel->select();
     }
-    if (m_pHiddenTableModel) {
-        m_pHiddenTableModel->select();
+    if (m_pMissingView) {
+        m_pMissingView->onShow();
+    }
+    if (m_pHiddenView) {
+        m_pHiddenView->onShow();
     }
 }
 
@@ -133,57 +153,30 @@ void MixxxLibraryFeature::activate() {
 
 void MixxxLibraryFeature::activateChild(const QModelIndex& index) {
     QString itemName = index.data().toString();
+    emit(switchToView(itemName));
+}
 
-    if (itemName == kHiddenTitle) {
-        emit(showTrackModel(m_pHiddenTableModel));
+bool MixxxLibraryFeature::dropAccept(QList<QUrl> urls, QWidget *pSource) {
+    if (pSource) {
+        return false;
+    } else {
+        QList<QFileInfo> files;
+        foreach (QUrl url, urls) {
+            // XXX: Possible WTF alert - Previously we thought we needed toString() here
+            // but what you actually want in any case when converting a QUrl to a file
+            // system path is QUrl::toLocalFile(). This is the second time we have
+            // flip-flopped on this, but I think toLocalFile() should work in any
+            // case. toString() absolutely does not work when you pass the result to a
+            files.append(url.toLocalFile());
+        }
+    
+        // Adds track, does not insert duplicates, handles unremoving logic.
+        QList<int> trackIds = m_trackDao.addTracks(files, true);
+        return trackIds.size() > 0;
     }
-}
-
-void MixxxLibraryFeature::onRightClick(const QPoint& globalPos) {
-    Q_UNUSED(globalPos);
-}
-
-void MixxxLibraryFeature::onRightClickChild(const QPoint& globalPos,
-                                            QModelIndex index) {
-    Q_UNUSED(globalPos);
-    Q_UNUSED(index);
-}
-
-bool MixxxLibraryFeature::dropAccept(QList<QUrl> urls) {
-    QList<QFileInfo> files;
-    foreach (QUrl url, urls) {
-        // XXX: Possible WTF alert - Previously we thought we needed toString() here
-        // but what you actually want in any case when converting a QUrl to a file
-        // system path is QUrl::toLocalFile(). This is the second time we have
-        // flip-flopped on this, but I think toLocalFile() should work in any
-        // case. toString() absolutely does not work when you pass the result to a
-        files.append(url.toLocalFile());
-    }
-
-    // Adds track, does not insert duplicates, handles unremoving logic.
-    QList<int> trackIds = m_trackDao.addTracks(files, true);
-    return trackIds.size() > 0;
-}
-
-bool MixxxLibraryFeature::dropAcceptChild(const QModelIndex& index, QList<QUrl> urls) {
-    Q_UNUSED(index);
-    Q_UNUSED(urls);
-    return false;
 }
 
 bool MixxxLibraryFeature::dragMoveAccept(QUrl url) {
     QFileInfo file(url.toLocalFile());
     return SoundSourceProxy::isFilenameSupported(file.fileName());
-}
-
-bool MixxxLibraryFeature::dragMoveAcceptChild(const QModelIndex& index,
-                                              QUrl url) {
-    Q_UNUSED(url);
-    Q_UNUSED(index);
-    return false;
-}
-
-void MixxxLibraryFeature::onLazyChildExpandation(const QModelIndex &index){
-    Q_UNUSED(index);
-    // Nothing to do because the childmodel is not of lazy nature.
 }

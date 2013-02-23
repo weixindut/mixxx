@@ -27,6 +27,7 @@ class WLibrarySidebar;
 class WLibrary;
 class WSearchLineEdit;
 class PromoTracksFeature;
+class MixxxLibraryFeature;
 class PlaylistFeature;
 class CrateFeature;
 class LibraryControl;
@@ -63,7 +64,7 @@ public:
     void slotShowTrackModel(QAbstractItemModel* model);
     void slotSwitchToView(const QString& view);
     void slotLoadTrack(TrackPointer pTrack);
-    void slotLoadTrackToPlayer(TrackPointer pTrack, QString group);
+    void slotLoadTrackToPlayer(TrackPointer pTrack, QString group, bool play);
     void slotLoadLocationToPlayer(QString location, QString group);
     void slotRestoreSearch(const QString& text);
     void slotRefreshLibraryModels();
@@ -77,7 +78,7 @@ public:
     void showTrackModel(QAbstractItemModel* model);
     void switchToView(const QString& view);
     void loadTrack(TrackPointer pTrack);
-    void loadTrackToPlayer(TrackPointer pTrack, QString group);
+    void loadTrackToPlayer(TrackPointer pTrack, QString group, bool play = false);
     void restoreSearch(const QString&);
     void configChanged(QString, QString);
     void dirsChanged(QString,QString);
@@ -99,7 +100,10 @@ public:
     MixxxLibraryFeature* m_pMixxxLibraryFeature;
     PlaylistFeature* m_pPlaylistFeature;
     CrateFeature* m_pCrateFeature;
+#ifdef __PROMO__
+    class PromoTracksFeature;
     PromoTracksFeature* m_pPromoTracksFeature;
+#endif
     PrepareFeature* m_pPrepareFeature;
     LibraryControl* m_pLibraryControl;
     RecordingManager* m_pRecordingManager;

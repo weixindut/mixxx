@@ -39,6 +39,7 @@ TreeItemModel::~TreeItemModel() {
 
 //Our Treeview Model supports exactly a single column
 int TreeItemModel::columnCount(const QModelIndex &parent) const {
+    Q_UNUSED(parent)
     return 1;
 }
 
@@ -66,6 +67,9 @@ Qt::ItemFlags TreeItemModel::flags(const QModelIndex &index) const {
 }
 
 QVariant TreeItemModel::headerData(int section, Qt::Orientation orientation, int role) const {
+    Q_UNUSED(section);
+    Q_UNUSED(orientation);
+    Q_UNUSED(role);
     return QVariant();
 }
 

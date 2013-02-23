@@ -53,6 +53,7 @@
 #include "widget/wspinny.h"
 #include "sharedglcontext.h"
 #include "util/statsmanager.h"
+#include "util/timer.h"
 
 #ifdef __VINYLCONTROL__
 #include "vinylcontrol/vinylcontrol.h"
@@ -90,7 +91,10 @@ bool loadTranslations(const QLocale& systemLocale, QString userLocale,
 }
 
 MixxxApp::MixxxApp(QApplication *pApp, const CmdlineArgs& args)
-        : m_cmdLineArgs(args) {
+        : m_runtime_timer("MixxxApp::runtime"),
+          m_cmdLineArgs(args) {
+    ScopedTimer t("MixxxApp::MixxxApp");
+    m_runtime_timer.start();
 
     QString buildBranch, buildRevision, buildFlags;
 #ifdef BUILD_BRANCH
@@ -144,7 +148,7 @@ MixxxApp::MixxxApp(QApplication *pApp, const CmdlineArgs& args)
     //Reset pointer to players
     m_pSoundManager = NULL;
     m_pPrefDlg = NULL;
-    m_pControllerManager = 0;
+    m_pControllerManager = NULL;
     m_pRecordingManager = NULL;
 
     // Check to see if this is the first time this version of Mixxx is run
@@ -358,6 +362,10 @@ MixxxApp::MixxxApp(QApplication *pApp, const CmdlineArgs& args)
     m_pPlayerManager->addSampler();
     m_pPlayerManager->addPreviewDeck();
 
+#ifdef __VINYLCONTROL__
+    m_pVCManager->init();
+#endif
+
     m_pLibrary = new Library(this, m_pConfig,
                              bFirstRun || bUpgraded,
                              m_pRecordingManager);
@@ -384,13 +392,12 @@ MixxxApp::MixxxApp(QApplication *pApp, const CmdlineArgs& args)
         m_pConfig->set(ConfigKey("[BPM]", "AnalyzeEntireSong"),ConfigValue(1));
     }
 
-    //ControlObject::getControl(ConfigKey("[Channel1]","TrackEndMode"))->queueFromThread(m_pConfig->getValueString(ConfigKey("[Controls]","TrackEndModeCh1")).toDouble());
-    //ControlObject::getControl(ConfigKey("[Channel2]","TrackEndMode"))->queueFromThread(m_pConfig->getValueString(ConfigKey("[Controls]","TrackEndModeCh2")).toDouble());
-
     // Initialize controller sub-system,
     //  but do not set up controllers until the end of the application startup
     qDebug() << "Creating ControllerManager";
     m_pControllerManager = new ControllerManager(m_pConfig);
+    connect(m_pControllerManager, SIGNAL(syncControlSystem()),
+            this, SLOT(slotSyncControlSystem()));
 
     WaveformWidgetFactory::create();
     WaveformWidgetFactory::instance()->setConfig(m_pConfig);
@@ -448,6 +455,8 @@ MixxxApp::MixxxApp(QApplication *pApp, const CmdlineArgs& args)
             m_pPlayerManager->slotLoadToDeck(args.getMusicFiles().at(i), i+1);
         }
     }
+
+#ifdef __PROMO__
     //Automatically load specially marked promotional tracks on first run
     if (bFirstRun || bUpgraded) {
         QList<TrackPointer> tracksToAutoLoad =
@@ -457,6 +466,7 @@ MixxxApp::MixxxApp(QApplication *pApp, const CmdlineArgs& args)
             m_pPlayerManager->slotLoadToDeck(tracksToAutoLoad.at(i)->getLocation(), i+1);
         }
     }
+#endif
 
     initActions();
     initMenuBar();
@@ -480,16 +490,15 @@ MixxxApp::MixxxApp(QApplication *pApp, const CmdlineArgs& args)
         //TODO (XXX) add dialog to warn user and launch skin choice page
         resize(640,480);
     } else {
-        // this has to be after the OpenGL widgets are created or depending on a
-        // million different variables the first waveform may be horribly
-        // corrupted. See bug 521509 -- bkgood ?? -- vrince
-        setCentralWidget(m_pView);
-
         // keep gui centered (esp for fullscreen)
         m_pView->setLayout( new QHBoxLayout(m_pView));
         m_pView->layout()->setContentsMargins(0,0,0,0);
         m_pView->layout()->addWidget(m_pWidgetParent);
-        resize(m_pView->size());
+
+        // this has to be after the OpenGL widgets are created or depending on a
+        // million different variables the first waveform may be horribly
+        // corrupted. See bug 521509 -- bkgood ?? -- vrince
+        setCentralWidget(m_pView);
     }
 
     //move the app in the center of the primary screen
@@ -555,17 +564,16 @@ MixxxApp::MixxxApp(QApplication *pApp, const CmdlineArgs& args)
 
 MixxxApp::~MixxxApp()
 {
+    // TODO(rryan): Get rid of QTime here.
     QTime qTime;
     qTime.start();
+    Timer t("MixxxApp::~MixxxApp");
+    t.start();
 
     qDebug() << "Destroying MixxxApp";
 
     qDebug() << "save config " << qTime.elapsed();
     m_pConfig->Save();
-
-    // Save state of End of track controls in config database
-    //m_pConfig->set(ConfigKey("[Controls]","TrackEndModeCh1"), ConfigValue((int)ControlObject::getControl(ConfigKey("[Channel1]","TrackEndMode"))->get()));
-    //m_pConfig->set(ConfigKey("[Controls]","TrackEndModeCh2"), ConfigValue((int)ControlObject::getControl(ConfigKey("[Channel2]","TrackEndMode"))->get()));
 
     // SoundManager depend on Engine and Config
     qDebug() << "delete soundmanager " << qTime.elapsed();
@@ -649,9 +657,13 @@ MixxxApp::~MixxxApp()
    qDebug() << "~MixxxApp: All leaking controls deleted.";
 
    delete m_pKeyboard;
+   delete m_pKbdConfig;
    delete m_pKbdConfigEmpty;
 
    WaveformWidgetFactory::destroy();
+   t.elapsed(true);
+   // Report the total time we have been running.
+   m_runtime_timer.elapsed(true);
    StatsManager::destroy();
 }
 
@@ -1021,34 +1033,34 @@ void MixxxApp::initActions()
 #endif
 
     QString mayNotBeSupported = tr("May not be supported on all skins.");
-    QString showSamplersTitle = tr("Show Sample Deck Widgets");
+    QString showSamplersTitle = tr("Show Samplers");
     QString showSamplersText = tr("Show the sample deck section of the Mixxx interface.") +
             " " + mayNotBeSupported;
     m_pViewShowSamplers = new QAction(showSamplersTitle, this);
     m_pViewShowSamplers->setCheckable(true);
-    m_pViewShowSamplers->setShortcut(tr("Ctrl+S"));
+    m_pViewShowSamplers->setShortcut(tr("Ctrl+1", "Menubar|View|Show Samplers"));
     m_pViewShowSamplers->setStatusTip(showSamplersText);
     m_pViewShowSamplers->setWhatsThis(buildWhatsThis(showSamplersTitle, showSamplersText));
     connect(m_pViewShowSamplers, SIGNAL(toggled(bool)),
             this, SLOT(slotViewShowSamplers(bool)));
 
-    QString showVinylControlTitle = tr("Show Vinyl Control Widgets");
+    QString showVinylControlTitle = tr("Show Vinyl Control Section");
     QString showVinylControlText = tr("Show the vinyl control section of the Mixxx interface.") +
             " " + mayNotBeSupported;
     m_pViewVinylControl = new QAction(showVinylControlTitle, this);
     m_pViewVinylControl->setCheckable(true);
-    m_pViewVinylControl->setShortcut(tr("Ctrl+V"));
+    m_pViewVinylControl->setShortcut(tr("Ctrl+3", "Menubar|View|Show Vinyl Control Section"));
     m_pViewVinylControl->setStatusTip(showVinylControlText);
     m_pViewVinylControl->setWhatsThis(buildWhatsThis(showVinylControlTitle, showVinylControlText));
     connect(m_pViewVinylControl, SIGNAL(toggled(bool)),
             this, SLOT(slotViewShowVinylControl(bool)));
 
-    QString showMicrophoneTitle = tr("Show Microphone Widgets");
+    QString showMicrophoneTitle = tr("Show Microphone Section");
     QString showMicrophoneText = tr("Show the microphone section of the Mixxx interface.") +
             " " + mayNotBeSupported;
     m_pViewShowMicrophone = new QAction(showMicrophoneTitle, this);
     m_pViewShowMicrophone->setCheckable(true);
-    m_pViewShowMicrophone->setShortcut(tr("Ctrl+M"));
+    m_pViewShowMicrophone->setShortcut(tr("Ctrl+2", "Menubar|View|Show Microphone Section"));
     m_pViewShowMicrophone->setStatusTip(showMicrophoneText);
     m_pViewShowMicrophone->setWhatsThis(buildWhatsThis(showMicrophoneTitle, showMicrophoneText));
     connect(m_pViewShowMicrophone, SIGNAL(toggled(bool)),
@@ -1059,7 +1071,7 @@ void MixxxApp::initActions()
     " " + mayNotBeSupported;
     m_pViewShowPreviewDeck = new QAction(showPreviewDeckTitle, this);
     m_pViewShowPreviewDeck->setCheckable(true);
-    m_pViewShowPreviewDeck->setShortcut(tr("Ctrl+P" , "Menu|View|Show Preview Deck"));
+    m_pViewShowPreviewDeck->setShortcut(tr("Ctrl+4", "Menubar|View|Show Preview Deck"));
     m_pViewShowPreviewDeck->setStatusTip(showPreviewDeckText);
     m_pViewShowPreviewDeck->setWhatsThis(buildWhatsThis(showPreviewDeckTitle, showPreviewDeckText));
     connect(m_pViewShowPreviewDeck, SIGNAL(toggled(bool)),
@@ -1122,6 +1134,7 @@ void MixxxApp::initMenuBar()
 #ifdef __SHOUTCAST__
     m_pOptionsMenu->addAction(m_pOptionsShoutcast);
 #endif
+    m_pOptionsMenu->addSeparator();
     m_pOptionsMenu->addAction(m_pOptionsKeyboard);
     m_pOptionsMenu->addSeparator();
     m_pOptionsMenu->addAction(m_pOptionsPreferences);
@@ -1391,10 +1404,8 @@ void MixxxApp::slotHelpAbout() {
 
     QString credits = QString("<p align=\"center\"><b>%1</b></p>"
 "<p align=\"center\">"
-"Adam Davison<br>"
 "Albert Santoni<br>"
 "RJ Ryan<br>"
-"Garth Dahlstrom<br>"
 "Sean Pappalardo<br>"
 "Phillip Whelan<br>"
 "Tobias Rafreider<br>"
@@ -1404,6 +1415,8 @@ void MixxxApp::slotHelpAbout() {
 "Vittorio Colao<br>"
 "Daniel Sch&uuml;rmann<br>"
 "Thomas Vincent<br>"
+"Ilkka Tuohela<br>"
+"Max Linke<br>"
 
 "</p>"
 "<p align=\"center\"><b>%2</b></p>"
@@ -1458,12 +1471,13 @@ void MixxxApp::slotHelpAbout() {
 "Pascal Bleser<br>"
 "Florian Mahlknecht<br>"
 "Ben Clark<br>"
-"Ilkka Tuohela<br>"
 "Tom Gascoigne<br>"
-"Max Linke<br>"
 "Neale Pickett<br>"
 "Aaron Mavrinac<br>"
 "Markus H&auml;rer<br>"
+"Andrey Smelov<br>"
+"Scott Stewart<br>"
+"Nimatek<br>"
 
 "</p>"
 "<p align=\"center\"><b>%3</b></p>"
@@ -1500,8 +1514,8 @@ void MixxxApp::slotHelpAbout() {
 "Tom Care<br>"
 "Pawel Bartkiewicz<br>"
 "Nick Guenther<br>"
-"Bruno Buccolo<br>"
-"Ryan Baker<br>"
+"Adam Davison<br>"
+"Garth Dahlstrom<br>"
 "</p>"
 
 "<p align=\"center\"><b>%5</b></p>"
@@ -1538,6 +1552,8 @@ void MixxxApp::slotHelpAbout() {
 "Michael Pujos<br>"
 "Claudio Bantaloukas<br>"
 "Pavol Rusnak<br>"
+"Bruno Buccolo<br>"
+"Ryan Baker<br>"
     "</p>").arg(s_devTeam,s_contributions,s_specialThanks,s_pastDevs,s_pastContribs);
 
     about->textBrowser->setHtml(credits);
@@ -1634,26 +1650,24 @@ void MixxxApp::rebootMixxxView() {
                               tr("The selected skin cannot be loaded."));
     }
     else {
-        // don't move this before loadDefaultSkin above. bug 521509 --bkgood
-        // NOTE: (vrince) I don't know this comment is relevant now ...
-        setCentralWidget(m_pView);
-
         // keep gui centered (esp for fullscreen)
         m_pView->setLayout( new QHBoxLayout(m_pView));
         m_pView->layout()->setContentsMargins(0,0,0,0);
         m_pView->layout()->addWidget(m_pWidgetParent);
 
-         //qDebug() << "view size" << m_pView->size();
-
-        //TODO: (vrince) size is good but resize do not append !!
-        resize(m_pView->size());
+        // don't move this before loadDefaultSkin above. bug 521509 --bkgood
+        // NOTE: (vrince) I don't know this comment is relevant now ...
+        setCentralWidget(m_pView);
+        update();
+        adjustSize();
+        //qDebug() << "view size" << m_pView->size() << size();
     }
 
     if( wasFullScreen) {
         slotViewFullScreen(true);
     } else {
-        move(initPosition.x() + (initSize.width() - width()) / 2,
-             initPosition.y() + (initSize.height() - height()) / 2);
+        move(initPosition.x() + (initSize.width() - m_pView->width()) / 2,
+             initPosition.y() + (initSize.height() - m_pView->height()) / 2);
     }
 
     WaveformWidgetFactory::instance()->start();
@@ -1677,14 +1691,14 @@ bool MixxxApp::eventFilter(QObject *obj, QEvent *event)
 {
     if (event->type() == QEvent::ToolTip) {
         // return true for no tool tips
-        if (m_tooltips == 1) {
+        if (m_tooltips == 2) {
             // ON (only in Library)
             WWidget* pWidget = dynamic_cast<WWidget*>(obj);
             WWaveformViewer* pWfViewer = dynamic_cast<WWaveformViewer*>(obj);
             WSpinny* pSpinny = dynamic_cast<WSpinny*>(obj);
             QLabel* pLabel = dynamic_cast<QLabel*>(obj);
             return (pWidget || pWfViewer || pSpinny || pLabel);
-        } else if (m_tooltips == 0) {
+        } else if (m_tooltips == 1) {
             // ON
             return false;
         } else {
@@ -1839,4 +1853,9 @@ bool MixxxApp::confirmExit() {
         }
     }
     return true;
+}
+
+void MixxxApp::slotSyncControlSystem() {
+    ScopedTimer t("MixxxApp::slotSyncControlSystem");
+    ControlObject::sync();
 }

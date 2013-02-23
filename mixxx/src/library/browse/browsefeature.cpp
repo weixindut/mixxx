@@ -168,28 +168,6 @@ TreeItemModel* BrowseFeature::getChildModel() {
     return &m_childModel;
 }
 
-bool BrowseFeature::dropAccept(QList<QUrl> urls) {
-    Q_UNUSED(urls);
-    return false;
-}
-
-bool BrowseFeature::dropAcceptChild(const QModelIndex& index, QList<QUrl> urls){
-    Q_UNUSED(index);
-    Q_UNUSED(urls);
-    return false;
-}
-
-bool BrowseFeature::dragMoveAccept(QUrl url) {
-    Q_UNUSED(url);
-    return false;
-}
-
-bool BrowseFeature::dragMoveAcceptChild(const QModelIndex& index, QUrl url) {
-    Q_UNUSED(index);
-    Q_UNUSED(url);
-    return false;
-}
-
 void BrowseFeature::bindWidget(WLibrary* libraryWidget,
                                MixxxKeyboard* keyboard) {
     Q_UNUSED(keyboard);
@@ -211,10 +189,6 @@ void BrowseFeature::activateChild(const QModelIndex& index) {
              << item->dataPath();
     m_browseModel.setPath(item->dataPath().toString());
     emit(showTrackModel(&m_proxyModel));
-}
-
-void BrowseFeature::onRightClick(const QPoint& globalPos) {
-    Q_UNUSED(globalPos);
 }
 
 void BrowseFeature::onRightClickChild(const QPoint& globalPos, QModelIndex index) {
@@ -251,10 +225,8 @@ void BrowseFeature::onRightClickChild(const QPoint& globalPos, QModelIndex index
      onLazyChildExpandation(index);
 }
 
-/*
- * This is called whenever you double click or use the triangle symbol to expand
- * the subtree. The method will read the subfolders.
- */
+// This is called whenever you double click or use the triangle symbol to expand
+// the subtree. The method will read the subfolders.
 void BrowseFeature::onLazyChildExpandation(const QModelIndex &index){
     TreeItem *item = static_cast<TreeItem*>(index.internalPointer());
     if (!item) {
@@ -324,7 +296,8 @@ void BrowseFeature::onLazyChildExpandation(const QModelIndex &index){
 
 QString BrowseFeature::getRootViewHtml() const {
     QString browseTitle = tr("Browse");
-    QString browseSummary = tr("Browse lets you navigate, view, and load tracks from folders on your hard disk and external devices.");
+    QString browseSummary = tr("Browse lets you navigate, view, and load tracks"
+                        " from folders on your hard disk and external devices.");
 
     QString html;
     html.append(QString("<h2>%1</h2>").arg(browseTitle));

@@ -56,8 +56,6 @@ SoundManager::SoundManager(ConfigObject<ConfigValue> *pConfig,
         ControlObject::getControl(ConfigKey("[Master]", "samplerate")));
     m_pControlObjectSoundStatus = new ControlObject(ConfigKey("[SoundManager]", "status"));
     m_pControlObjectSoundStatus->set(SOUNDMANAGER_DISCONNECTED);
-    m_pControlObjectVinylControlMode = new ControlObjectThreadMain(
-        new ControlObject(ConfigKey("[VinylControl]", "mode")));
     m_pControlObjectVinylControlMode1 = new ControlObjectThreadMain(
         ControlObject::getControl(ConfigKey("[Channel1]", "vinylcontrol_mode")));
     m_pControlObjectVinylControlMode2 = new ControlObjectThreadMain(
@@ -102,7 +100,6 @@ SoundManager::~SoundManager() {
     delete m_pControlObjectLatency;
     delete m_pControlObjectSampleRate;
     delete m_pControlObjectSoundStatus;
-    delete m_pControlObjectVinylControlMode;
     delete m_pControlObjectVinylControlMode1;
     delete m_pControlObjectVinylControlMode2;
     delete m_pControlObjectVinylControlGain;
@@ -432,15 +429,14 @@ void SoundManager::checkConfig() {
         m_config.loadDefaults(this, SoundManagerConfig::API | SoundManagerConfig::DEVICES);
     }
     if (!m_config.checkSampleRate(*this)) {
-        m_config.setSampleRate(SoundManagerConfig::kDefaultSampleRate);
+        m_config.setSampleRate(SoundManagerConfig::kFallbackSampleRate);
         m_config.loadDefaults(this, SoundManagerConfig::OTHER);
     }
     // latency checks itself for validity on SMConfig::setLatency()
 }
 
-
 QHash<AudioOutput, const CSAMPLE*> SoundManager::requestBuffer(
-    QList<AudioOutput> outputs, unsigned long iFramesPerBuffer,
+    const QList<AudioOutput>& outputs, unsigned long iFramesPerBuffer,
     SoundDevice* device, double streamTime /* = 0 */) {
     Q_UNUSED(streamTime);
     Q_UNUSED(outputs); // unused, we just give the caller the full hash -bkgood
@@ -492,7 +488,7 @@ QHash<AudioOutput, const CSAMPLE*> SoundManager::requestBuffer(
     return m_outputBuffers;
 }
 
-void SoundManager::pushBuffer(QList<AudioInput> inputs, short * inputBuffer,
+void SoundManager::pushBuffer(const QList<AudioInput>& inputs, short * inputBuffer,
                               unsigned long iFramesPerBuffer, unsigned int iFrameSize) {
     //This function is called a *lot* and is a big source of CPU usage.
     //It needs to be very fast.

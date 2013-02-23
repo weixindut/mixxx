@@ -42,14 +42,13 @@ void AutoDJFeature::bindWidget(WLibrary* libraryWidget,
                                   m_pConfig,
                                   m_pTrackCollection,
                                   keyboard);
-    m_pAutoDJView->installEventFilter(keyboard);
     libraryWidget->registerView(m_sAutoDJViewName, m_pAutoDJView);
     connect(m_pAutoDJView, SIGNAL(loadTrack(TrackPointer)),
             this, SIGNAL(loadTrack(TrackPointer)));
-    connect(m_pAutoDJView, SIGNAL(loadTrackToPlayer(TrackPointer, QString)),
-            this, SIGNAL(loadTrackToPlayer(TrackPointer, QString)));
     connect(this, SIGNAL(configChanged(QString,QString)),
             m_pAutoDJView, SIGNAL(configChanged(QString,QString)));
+    connect(m_pAutoDJView, SIGNAL(loadTrackToPlayer(TrackPointer, QString, bool)),
+            this, SIGNAL(loadTrackToPlayer(TrackPointer, QString, bool)));
 }
 
 TreeItemModel* AutoDJFeature::getChildModel() {
@@ -62,17 +61,7 @@ void AutoDJFeature::activate() {
     emit(restoreSearch(QString())); //Null String disables search box
 }
 
-void AutoDJFeature::activateChild(const QModelIndex& /*index*/) {
-}
-
-void AutoDJFeature::onRightClick(const QPoint& /*globalPos*/) {
-}
-
-void AutoDJFeature::onRightClickChild(const QPoint& /*globalPos*/,
-                                      QModelIndex /*index*/) {
-}
-
-bool AutoDJFeature::dropAccept(QList<QUrl> urls) {
+bool AutoDJFeature::dropAccept(QList<QUrl> urls, QWidget *pSource) {
     //TODO: Filter by supported formats regex and reject anything that doesn't match.
     TrackDAO &trackDao = m_pTrackCollection->getTrackDAO();
 
@@ -87,7 +76,12 @@ bool AutoDJFeature::dropAccept(QList<QUrl> urls) {
             files.append(file);
         }
     }
-    QList<int> trackIds = trackDao.addTracks(files, true);
+    QList<int> trackIds;
+    if (pSource) {
+        trackIds = m_pTrackCollection->getTrackDAO().getTrackIds(files);
+    } else {
+        trackIds = trackDao.addTracks(files, true);
+    }
 
     int playlistId = m_playlistDao.getPlaylistIdFromName(AUTODJ_TABLE);
     // remove tracks that could not be added
@@ -100,19 +94,7 @@ bool AutoDJFeature::dropAccept(QList<QUrl> urls) {
     return true;
 }
 
-bool AutoDJFeature::dropAcceptChild(const QModelIndex& /*index*/, QList<QUrl> /*url*/) {
-    return false;
-}
-
 bool AutoDJFeature::dragMoveAccept(QUrl url) {
     QFileInfo file(url.toLocalFile());
     return SoundSourceProxy::isFilenameSupported(file.fileName());
-}
-
-bool AutoDJFeature::dragMoveAcceptChild(const QModelIndex& /*index*/,
-                                        QUrl /*url*/) {
-    return false;
-}
-void AutoDJFeature::onLazyChildExpandation(const QModelIndex& /*index*/){
-    //Nothing to do because the childmodel is not of lazy nature.
 }

@@ -193,34 +193,14 @@ void ITunesFeature::onRightClick(const QPoint& globalPos) {
     }
 }
 
-bool ITunesFeature::dropAccept(QList<QUrl> urls) {
-    Q_UNUSED(urls);
-    return false;
-}
-
-bool ITunesFeature::dropAcceptChild(const QModelIndex& index, QList<QUrl> urls) {
-    Q_UNUSED(index);
-    Q_UNUSED(urls);
-    return false;
-}
-
-bool ITunesFeature::dragMoveAccept(QUrl url) {
-    Q_UNUSED(url);
-    return false;
-}
-
-bool ITunesFeature::dragMoveAcceptChild(const QModelIndex& index, QUrl url) {
-    Q_UNUSED(index);
-    Q_UNUSED(url);
-    return false;
-}
-
 QString ITunesFeature::getiTunesMusicPath() {
     QString musicFolder;
 #if defined(__APPLE__)
-    musicFolder = QDesktopServices::storageLocation(QDesktopServices::MusicLocation) + "/iTunes/iTunes Music Library.xml";
+    musicFolder = QDesktopServices::storageLocation(QDesktopServices::MusicLocation)
+                  + "/iTunes/iTunes Music Library.xml";
 #elif defined(__WINDOWS__)
-    musicFolder = QDesktopServices::storageLocation(QDesktopServices::MusicLocation) + "\\iTunes\\iTunes Music Library.xml";
+    musicFolder = QDesktopServices::storageLocation(QDesktopServices::MusicLocation)
+                  + "\\iTunes\\iTunes Music Library.xml";
 #else
     musicFolder = "";
 #endif
@@ -311,10 +291,8 @@ void ITunesFeature::guessMusicLibraryMountpoint(QXmlStreamReader &xml) {
              << m_dbItunesRoot << "->" << m_mixxxItunesRoot;
 }
 
-/*
- * This method is executed in a separate thread
- * via QtConcurrent::run
- */
+// This method is executed in a separate thread
+// via QtConcurrent::run
 TreeItem* ITunesFeature::importLibrary() {
     //Give thread a low priority
     QThread* thisThread = QThread::currentThread();
@@ -343,7 +321,7 @@ TreeItem* ITunesFeature::importLibrary() {
     QFile itunes_file(m_dbfile);
     if (!itunes_file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         qDebug() << "Cannot open iTunes music collection";
-        return false;
+        return NULL;
     }
     QXmlStreamReader xml(&itunes_file);
     TreeItem* playlist_root = NULL;
@@ -374,10 +352,9 @@ TreeItem* ITunesFeature::importLibrary() {
         // do error handling
         qDebug() << "Cannot process iTunes music collection";
         qDebug() << "XML ERROR: " << xml.errorString();
-        if(playlist_root)
+        if (playlist_root)
             delete playlist_root;
         playlist_root = NULL;
-        return false;
     }
     return playlist_root;
 }
@@ -529,9 +506,8 @@ void ITunesFeature::parseTrack(QXmlStreamReader &xml, QSqlQuery &query) {
             break;
         }
     }
-    /* If we reach the end of <dict>
-    * Save parsed track to database
-    */
+    // If we reach the end of <dict>
+    // Save parsed track to database
     query.bindValue(":id", id);
     query.bindValue(":artist", artist);
     query.bindValue(":title", title);
@@ -657,7 +633,8 @@ void ITunesFeature::parsePlaylist(QXmlStreamReader &xml, QSqlQuery &query_insert
                     root->appendChild(item);
 
                 }
-                // When processing playlist entries, playlist name and id have already been processed and persisted
+                // When processing playlist entries, playlist name and id have
+                // already been processed and persisted
                 if (key == "Track ID") {
                     track_reference = -1;
 
@@ -702,7 +679,7 @@ void ITunesFeature::clearTable(QString table_name) {
     }
 }
 
-void ITunesFeature::onTrackCollectionLoaded(){
+void ITunesFeature::onTrackCollectionLoaded() {
     TreeItem* root = m_future.result();
     if (root) {
         m_childModel.setRootItem(root);
@@ -724,10 +701,5 @@ void ITunesFeature::onTrackCollectionLoaded(){
     m_title = tr("iTunes");
     emit(featureLoadingFinished(this));
     activate();
-}
-
-void ITunesFeature::onLazyChildExpandation(const QModelIndex &index){
-    //Nothing to do because the childmodel is not of lazy nature.
-    Q_UNUSED(index);
 }
 

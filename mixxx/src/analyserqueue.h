@@ -12,25 +12,29 @@
 #include "trackinfoobject.h"
 
 class SoundSourceProxy;
+class TrackCollection;
 
 class AnalyserQueue : public QThread {
     Q_OBJECT
 
   public:
-    AnalyserQueue();
+    AnalyserQueue(TrackCollection* pTrackCollection);
     virtual ~AnalyserQueue();
     void stop();
+    void queueAnalyseTrack(TrackPointer tio);
 
-    static AnalyserQueue* createDefaultAnalyserQueue(ConfigObject<ConfigValue> *_config);
-    static AnalyserQueue* createPrepareViewAnalyserQueue(ConfigObject<ConfigValue> *_config);
-    static AnalyserQueue* createAnalyserQueue(QList<Analyser*> analysers);
+    static AnalyserQueue* createDefaultAnalyserQueue(
+            ConfigObject<ConfigValue>* _config, TrackCollection* pTrackCollection);
+    static AnalyserQueue* createPrepareViewAnalyserQueue(
+            ConfigObject<ConfigValue>* _config, TrackCollection* pTrackCollection);
 
   public slots:
-    void queueAnalyseTrack(TrackPointer tio);
+    void slotAnalyseTrack(TrackPointer tio);
     void slotUpdateProgress();
 
   signals:
     void trackProgress(int progress);
+    void trackDone(TrackPointer track);
     void trackFinished(int size);
     // Signals from AnalyserQueue Thread:
     void queueEmpty();
@@ -52,9 +56,9 @@ class AnalyserQueue : public QThread {
 
     QList<Analyser*> m_aq;
 
-    bool isLoadedTrackWaiting();
+    bool isLoadedTrackWaiting(TrackPointer tio);
     TrackPointer dequeueNextBlocking();
-    bool doAnalysis(TrackPointer tio, SoundSourceProxy *pSoundSource);
+    bool doAnalysis(TrackPointer tio, SoundSourceProxy* pSoundSource);
     void emitUpdateProgress(TrackPointer tio, int progress);
 
     bool m_exit;

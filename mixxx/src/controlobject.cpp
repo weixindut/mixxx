@@ -17,11 +17,13 @@
 
 #include <QtDebug>
 #include <QHash>
+#include <QSet>
 #include <QMutexLocker>
 
 #include "controlobject.h"
 #include "controlevent.h"
 #include "util/stat.h"
+#include "util/timer.h"
 
 // Static member variable definition
 QHash<ConfigKey,ControlObject*> ControlObject::m_sqCOHash;
@@ -166,7 +168,10 @@ bool ControlObject::updateProxies(ControlObjectThread * pProxyNoUpdate)
     bool bUpdateSuccess = true;
     // qDebug() << "updateProxies: Group" << m_key.group << "/ Item" << m_key.item;
     m_qProxyListMutex.lock();
-    QListIterator<ControlObjectThread*> it(m_qProxyList);
+    QList<ControlObjectThread*> proxyList = m_qProxyList;
+    m_qProxyListMutex.unlock();
+
+    QListIterator<ControlObjectThread*> it(proxyList);
     while (it.hasNext())
     {
         obj = it.next();
@@ -176,7 +181,6 @@ bool ControlObject::updateProxies(ControlObjectThread * pProxyNoUpdate)
             bUpdateSuccess = bUpdateSuccess && obj->setExtern(m_dValue);
         }
     }
-    m_qProxyListMutex.unlock();
     return bUpdateSuccess;
 }
 
@@ -308,8 +312,14 @@ double ControlObject::getValueToWidget(double v)
 }
 
 void ControlObject::sync() {
-    // Update control objects with values recieved from threads
+    // Update control objects with values recieved from threads. We tryLock
+    // because ControlObject::sync() is re-entrant (even though we just run
+    // sync() in the main loop). A slot invoked by sync() can create a modal
+    // dialog which effectively blocks sync() but continues spinning the Qt
+    // event loop. When sync() runs again, it is re-entrant if the modal dialog
+    // is still up.
     if (m_sqQueueMutexThread.tryLock()) {
+
         // We have to make a copy of the queue otherwise we can get deadlocks
         // since responding to a queued event via setValueFromThread can trigger
         // a slot which in turn could cause a lock of m_sqQueueMutexThread.
@@ -330,7 +340,11 @@ void ControlObject::sync() {
         }
     }
 
-    // Update control objects with values recieved from MIDI
+    // Update control objects with values recieved from MIDI. We tryLock because
+    // ControlObject::sync() is re-entrant (even though we just run sync() in
+    // the main loop). A slot invoked by sync() can create a modal dialog which
+    // effectively blocks sync() but continues spinning the Qt event loop. When
+    // sync() runs again, it is re-entrant if the modal dialog is still up.
     if (m_sqQueueMutexMidi.tryLock()) {
         // We have to make a copy of the queue otherwise we can get deadlocks
         // since responding to a queued event via setValueFromMidi can trigger a
@@ -356,22 +370,32 @@ void ControlObject::sync() {
     // the corresponding ControlObjects. These updates should only occour if no
     // changes has been in the object from widgets, midi or application threads.
     if (m_sqQueueMutexChanges.tryLock()) {
-        QQueue<ControlObject*> qQueueChanges = m_sqQueueChanges;
+        ScopedTimer t("ControlObject::sync qQueueChanges");
+        QSet<ControlObject*> setChanges = QSet<ControlObject*>::fromList(m_sqQueueChanges);
+        Stat::track("ControlObject::sync qQueueChanges dupes", Stat::UNSPECIFIED,
+                    Stat::COUNT | Stat::SUM | Stat::AVERAGE | Stat::MIN | Stat::MAX,
+                    m_sqQueueChanges.size() - setChanges.size());
         m_sqQueueChanges.clear();
         m_sqQueueMutexChanges.unlock();
 
         QList<ControlObject*> failedUpdates;
-        while (!qQueueChanges.isEmpty()) {
-            ControlObject* obj = qQueueChanges.dequeue();
-
+        for (QSet<ControlObject*>::iterator it = setChanges.begin();
+             it != setChanges.end(); ++it) {
+            ControlObject* obj = *it;
             // If update is not successful, enqueue again
             if (!obj->updateProxies()) {
                 failedUpdates.push_back(obj);
+                Stat::track("ControlObject::sync qQueueChanges failed CO update",
+                            Stat::UNSPECIFIED, Stat::COUNT | Stat::SUM | Stat::AVERAGE, 1.0);
+
             }
         }
 
-        if (failedUpdates.size() > 0) {
-            m_sqQueueMutexChanges.lock();
+        // If we cannot lock the change mutex then we will just drop these
+        // updates on the floor. We can't lock() since sync() is re-entrant
+        // (potentially across multiple threads, though that should change going
+        // forward).
+        if (failedUpdates.size() > 0 && m_sqQueueMutexChanges.tryLock()) {
             m_sqQueueChanges.append(failedUpdates);
             m_sqQueueMutexChanges.unlock();
         }
