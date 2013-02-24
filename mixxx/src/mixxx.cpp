@@ -283,48 +283,6 @@ MixxxApp::MixxxApp(QApplication *pApp, const CmdlineArgs& args)
         QDir().mkpath(QDir::homePath().append("/").append(SETTINGS_PATH));
     }
 
-    m_pLibrary = new Library(this, m_pConfig,
-                             bFirstRun || bUpgraded,
-                             m_pRecordingManager);
-    connect(this, SIGNAL(dirsChanged(QString,QString)),
-            m_pLibrary, SLOT(slotDirsChanged(QString,QString)));
-
-    // Check if we update from an old db without relative library paths
-    // getValueString will return "" if no value was set
-    bool oldLibrary = m_pConfig->getValueString(ConfigKey("[Library]","newVersion"))=="";
-    qDebug() << "kain88 status of library version" << oldLibrary;
-    if (oldLibrary) {
-        QString dir = m_pConfig->getValueString(ConfigKey("[Playlist]","Directory"));
-        // adds the current library path to the directories table and updates
-        // track_locations for all tracks
-        if (dir!="") {
-            emit(dirsChanged("update",dir));
-            m_pConfig->set(ConfigKey("[Library]","newVersion"),ConfigValue((int)true));
-            m_pConfig->Save();
-        }
-    }
-
-    // Get Music dir
-    bool hasChanged_MusicDir = false;
-
-    QStringList dirs = m_pLibrary->getDirs();
-    if (dirs.size() < 1) {
-        // TODO(XXX) this needs to be smarter, we can't distinguish between an empty
-        // path return value (not sure if this is normally possible, but it is
-        // possible with the Windows 7 "Music" library, which is what
-        // QDesktopServices::storageLocation(QDesktopServices::MusicLocation)
-        // resolves to) and a user hitting 'cancel'. If we get a blank return
-        // but the user didn't hit cancel, we need to know this and let the
-        // user take some course of action -- bkgood
-        QString fd = QFileDialog::getExistingDirectory(
-            this, tr("Choose music library directory"),
-            QDesktopServices::storageLocation(QDesktopServices::MusicLocation));
-        if (fd != "") {
-            //adds Folder to database
-            emit(dirsChanged("added",fd));
-            hasChanged_MusicDir = true;
-        }
-    }
     // Do not write meta data back to ID3 when meta data has changed
     // Because multiple TrackDao objects can exists for a particular track
     // writing meta data may ruine your MP3 file if done simultaneously.
@@ -370,6 +328,45 @@ MixxxApp::MixxxApp(QApplication *pApp, const CmdlineArgs& args)
                              bFirstRun || bUpgraded,
                              m_pRecordingManager);
     m_pPlayerManager->bindToLibrary(m_pLibrary);
+    connect(this, SIGNAL(dirsChanged(QString,QString)),
+            m_pLibrary, SLOT(slotDirsChanged(QString,QString)));
+
+    // Check if we update from an old db without relative library paths
+    // getValueString will return "" if no value was set
+    bool oldLibrary = m_pConfig->getValueString(ConfigKey("[Library]","newVersion"))=="";
+    qDebug() << "kain88 status of library version" << oldLibrary;
+    if (oldLibrary) {
+        QString dir = m_pConfig->getValueString(ConfigKey("[Playlist]","Directory"));
+        // adds the current library path to the directories table and updates
+        // track_locations for all tracks
+        if (dir!="") {
+            emit(dirsChanged("update",dir));
+            m_pConfig->set(ConfigKey("[Library]","newVersion"),ConfigValue((int)true));
+            m_pConfig->Save();
+        }
+    }
+
+    // Get Music dir
+    bool hasChanged_MusicDir = false;
+
+    QStringList dirs = m_pLibrary->getDirs();
+    if (dirs.size() < 1) {
+        // TODO(XXX) this needs to be smarter, we can't distinguish between an empty
+        // path return value (not sure if this is normally possible, but it is
+        // possible with the Windows 7 "Music" library, which is what
+        // QDesktopServices::storageLocation(QDesktopServices::MusicLocation)
+        // resolves to) and a user hitting 'cancel'. If we get a blank return
+        // but the user didn't hit cancel, we need to know this and let the
+        // user take some course of action -- bkgood
+        QString fd = QFileDialog::getExistingDirectory(
+            this, tr("Choose music library directory"),
+            QDesktopServices::storageLocation(QDesktopServices::MusicLocation));
+        if (fd != "") {
+            //adds Folder to database
+            emit(dirsChanged("added",fd));
+            hasChanged_MusicDir = true;
+        }
+    }
 
     // Call inits to invoke all other construction parts
 

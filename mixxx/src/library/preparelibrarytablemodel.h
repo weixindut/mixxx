@@ -12,8 +12,6 @@ class PrepareLibraryTableModel : public LibraryTableModel
                              TrackCollection* pTrackCollection);
     virtual ~PrepareLibraryTableModel();
 
-    virtual void search(const QString& searchText);
-
   public slots:
     void showRecentSongs();
     void showAllSongs();
