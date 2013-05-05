@@ -482,7 +482,7 @@ void CrateFeature::slotImportPlaylist()
     m_crateTableModel.addTracks(QModelIndex(), entries);
 
     //delete the parser object
-    if(playlist_parser)
+    if (playlist_parser)
         delete playlist_parser;
 }
 

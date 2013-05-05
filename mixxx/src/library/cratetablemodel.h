@@ -25,6 +25,8 @@ class CrateTableModel : public BaseSqlTableModel {
     void removeTracks(const QModelIndexList& indices);
     // Returns the number of unsuccessful track additions
     int addTracks(const QModelIndex& index, QList <QString> locations);
+    void moveTrack(const QModelIndex& sourceIndex,
+                   const QModelIndex& destIndex);
     TrackModel::CapabilitiesFlags getCapabilities() const;
 
   private:

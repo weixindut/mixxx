@@ -83,7 +83,35 @@ void CrateTableModel::setTableModel(int crateId) {
     setDefaultSort(fieldIndex("artist"), Qt::AscendingOrder);
 }
 
-int CrateTableModel::addTracks(const QModelIndex& index, QList<QString> locations) {
+bool CrateTableModel::addTrack(const QModelIndex& index, QString location) {
+    Q_UNUSED(index);
+    // If a track is dropped but it isn't in the library, then add it because
+    // the user probably dropped a file from outside Mixxx into this playlist.
+    QFileInfo fileInfo(location);
+
+    TrackDAO& trackDao = m_pTrackCollection->getTrackDAO();
+
+    // Adds track, does not insert duplicates, handles unremoving logic.
+    int iTrackId = trackDao.addTrack(fileInfo, true);
+
+    bool success = false;
+    if (iTrackId >= 0) {
+        success = m_pTrackCollection->getCrateDAO().addTrackToCrate(iTrackId, m_iCrateId);
+    }
+
+    if (success) {
+        // TODO(rryan) just add the track dont select
+        select();
+        return true;
+    } else {
+        qDebug() << "CrateTableModel::addTrack could not add track"
+                 << fileInfo.absoluteFilePath() << "to crate" << m_iCrateId;
+        return false;
+    }
+}
+
+int CrateTableModel::addTracks(const QModelIndex& index,
+                               const QList<QString> &locations) {
     Q_UNUSED(index);
     // If a track is dropped but it isn't in the library, then add it because
     // the user probably dropped a file from outside Mixxx into this crate.

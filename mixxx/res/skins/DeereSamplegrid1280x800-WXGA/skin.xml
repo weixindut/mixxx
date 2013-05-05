@@ -53,7 +53,7 @@
 	<manifest>
 	<title>DeereSamplegrid-1280x800-WXGA</title>
 	<author>jus</author>
-	<version>1.11.0.15</version>
+	<version>1.11.0.16</version>
 	<description>A 2-deck split-waveform skin with a basic 2x8 sample-grid.</description>
 	<language>en</language>
 	<license>Creative Commons Attribution, Share-Alike 3.0 Unported</license>
@@ -3875,6 +3875,9 @@
 				QPushButton#LibraryPreviewButton:!checked{ image: url(skin:/style/style_library_preview_play.png); }
 				QPushButton#LibraryPreviewButton:checked{ image: url(skin:/style/style_library_preview_pause.png); }
 
+                QPushButton#LibraryBPMButton {background: transparent; border: 0;}
+                QPushButton#LibraryBPMButton::checked {image: url(:/images/library/ic_library_checked.png);}
+                QPushButton#LibraryBPMButton::!checked {image: url(:/images/library/ic_library_unchecked.png);}
 				QHeaderView { font: 11px/13px Lucida Grande, Lucida Sans Unicode, Arial, Verdana, sans-serif; }
 
 				<!--Styling a QSpinbox is complex and it took ages to figure out how to remove the surrounding frame and make the background transparent without affecting the subcontrols (up/down-buttons).
@@ -5622,7 +5625,6 @@
 						<SignalLowColor></SignalLowColor>
 						<SignalColor>#0099FF</SignalColor>
 						<BeatColor>#ffffff</BeatColor>
-						<BeatHighlightColor></BeatHighlightColor>
 						<MarkerColor>#00FF00</MarkerColor>
 						<PlayPosColor>#00FF00</PlayPosColor>
 						<EndOfTrackColor>#EA0000</EndOfTrackColor>
@@ -6723,7 +6725,6 @@
 						<SignalLowColor></SignalLowColor>
 						<SignalColor>#E17800</SignalColor>
 						<BeatColor>#ffffff</BeatColor>
-						<BeatHighlightColor></BeatHighlightColor>
 						<MarkerColor>#00FF00</MarkerColor>
 						<PlayPosColor>#00FF00</PlayPosColor>
 						<EndOfTrackColor>#EA0000</EndOfTrackColor>

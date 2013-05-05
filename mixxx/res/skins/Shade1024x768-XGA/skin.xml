@@ -53,7 +53,7 @@
 	<manifest>
 	<title>Shade1024x768-XGA</title>
 	<author>jus</author>
-	<version>1.11.0.13</version>
+	<version>1.11.0.15</version>
 	<description>A 2-deck split-waveform skin with 4 samplers.</description>
 	<language>en</language>
 	<license>Creative Commons Attribution, Share-Alike 3.0 Unported</license>
@@ -2208,6 +2208,9 @@
 				QPushButton#LibraryPreviewButton { width: 23px; height: 12px; background: transparent; border: 0; }
 				QPushButton#LibraryPreviewButton:!checked{ image: url(skin:/style/style_library_preview_play.png); }
 				QPushButton#LibraryPreviewButton:checked{ image: url(skin:/style/style_library_preview_pause.png); }
+                QPushButton#LibraryBPMButton {background: transparent; border: 0;}
+                QPushButton#LibraryBPMButton::checked {image: url(:/images/library/ic_library_checked.png);}
+                QPushButton#LibraryBPMButton::!checked {image: url(:/images/library/ic_library_unchecked.png);}
 
 				QHeaderView { font: 11px/13px Lucida Grande, Lucida Sans Unicode, Arial, Verdana, sans-serif; }
 
@@ -2376,7 +2379,6 @@
 														<Group>[PreviewDeck1]</Group>
 														<Size>me,30f</Size>
 														<BgColor>#8D98A3</BgColor>
-														<BgColor>#FFFFFF</BgColor>
 														<SignalHighColor>#FFE300</SignalHighColor>
 														<SignalMidColor>#0099FF</SignalMidColor>
 														<SignalLowColor>#FF0035</SignalLowColor>
@@ -3355,7 +3357,7 @@
 					<!-- Collapsing Waveform, Vinylcontrol & spinning Vinyl widget-->
 					<WidgetGroup>
 						<Pos>2,43</Pos>
-						<Size>318,118</Size>
+						<Size>316,117</Size>
 						<Layout>horizontal</Layout>
 						<Style>QGroupBox { border: 0px solid yellow; } QWidget { margin: 0; padding: 0; }</Style>
 						<Children>
@@ -3387,7 +3389,6 @@
 								<SignalLowColor></SignalLowColor>
 								<SignalColor>#191F24</SignalColor>
 								<BeatColor>#FFFFFF</BeatColor>
-								<BeatHighlightColor></BeatHighlightColor>
 								<PlayPosColor>#00FF00</PlayPosColor>
 								<EndOfTrackColor>#EA0000</EndOfTrackColor>
 								<AxesColor>#00FF00</AxesColor>
@@ -3435,14 +3436,14 @@
 
 							<!-- Spinning Vinyl & Vinylcontrol -->
 							<WidgetGroup>
-								<Style>QGroupBox { border: 0px solid yellow; border-left: 1px solid #626F87; } QWidget { margin: 0; padding: 0; }</Style>
+								<Style>QGroupBox { border: 0px solid yellow; } QWidget { margin: 0; padding: 0; }</Style>
 								<Layout>vertical</Layout>
 								<Children>
 									<!-- Spinning Vinyl sub-widget -->
 									<WidgetGroup>
 										<!--<Pos>296,0</Pos>-->
 										<Style>QGroupBox { border: 0px solid green; } QWidget { margin: 0; padding: 0;} </Style>
-										<Size>88,82</Size>
+										<Size>86,82</Size>
 										<Children>
 											<!--
 											**********************************************
@@ -3468,7 +3469,7 @@
 									<!-- Vinylcontrol sub-widget -->
 									<WidgetGroup>
 										<Pos>0,0</Pos>
-										<Size>88,35</Size>
+										<Size>86,35</Size>
 										<Style>QGroupBox { border: 0px solid green;} QWidget { margin: 0; padding: 0; }</Style>
 										<!--<Layout>horizontal</Layout>-->
 										<Children>
@@ -3531,7 +3532,7 @@
 													<Pressed>btn_vinylcontrol_mode_const1.png</Pressed>
 													<Unpressed>btn_vinylcontrol_mode_const1.png</Unpressed>
 												</State>
-												<Pos>-1,2</Pos>
+												<Pos>0,2</Pos>
 												<Connection>
 													<ConfigKey>[Channel1],vinylcontrol_mode</ConfigKey>
 												</Connection>
@@ -4699,7 +4700,7 @@
 					<!-- Collapsing Waveform, Vinylcontrol & spinning Vinyl widget-->
 					<WidgetGroup>
 						<Pos>2,43</Pos>
-						<Size>318,118</Size>
+						<Size>316,117</Size>
 						<Layout>horizontal</Layout>
 						<Style>QGroupBox { border: 0px solid yellow; } QWidget { margin: 0; padding: 0; }</Style>
 						<Children>
@@ -4731,7 +4732,6 @@
 								<SignalLowColor></SignalLowColor>
 								<SignalColor>#191F24</SignalColor>
 								<BeatColor>#FFFFFF</BeatColor>
-								<BeatHighlightColor></BeatHighlightColor>
 								<PlayPosColor>#00FF00</PlayPosColor>
 								<EndOfTrackColor>#EA0000</EndOfTrackColor>
 								<AxesColor>#00FF00</AxesColor>
@@ -4779,14 +4779,14 @@
 
 							<!-- Spinning Vinyl & Vinylcontrol -->
 							<WidgetGroup>
-								<Style>QGroupBox { border: 0px solid yellow; border-left: 1px solid #626F87; } QWidget { margin: 0; padding: 0; }</Style>
+								<Style>QGroupBox { border: 0px solid yellow; } QWidget { margin: 0; padding: 0; }</Style>
 								<Layout>vertical</Layout>
 								<Children>
 									<!-- Spinning Vinyl sub-widget -->
 									<WidgetGroup>
 										<!--<Pos>296,0</Pos>-->
 										<Style>QGroupBox { border: 0px solid green; } QWidget { margin: 0; padding: 0;} </Style>
-										<Size>88,82</Size>
+										<Size>86,82</Size>
 										<Children>
 											<!--
 											**********************************************
@@ -4812,7 +4812,7 @@
 									<!-- Vinylcontrol sub-widget -->
 									<WidgetGroup>
 										<Pos>0,0</Pos>
-										<Size>88,35</Size>
+										<Size>86,35</Size>
 										<Style>QGroupBox { border: 0px solid green;} QWidget { margin: 0; padding: 0; }</Style>
 										<!--<Layout>horizontal</Layout>-->
 										<Children>
@@ -4875,7 +4875,7 @@
 													<Pressed>btn_vinylcontrol_mode_const2.png</Pressed>
 													<Unpressed>btn_vinylcontrol_mode_const2.png</Unpressed>
 												</State>
-												<Pos>-1,2</Pos>
+												<Pos>0,2</Pos>
 												<Connection>
 													<ConfigKey>[Channel2],vinylcontrol_mode</ConfigKey>
 												</Connection>
