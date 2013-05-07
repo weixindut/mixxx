@@ -193,3 +193,10 @@ TrackModel::CapabilitiesFlags CrateTableModel::getCapabilities() const {
 
     return caps;
 }
+
+void CrateTableModel::moveTrack(const QModelIndex& sourceIndex,
+                                const QModelIndex& destIndex) {
+    Q_UNUSED(sourceIndex);
+    Q_UNUSED(destIndex);
+    return;
+}

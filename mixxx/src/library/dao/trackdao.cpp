@@ -598,7 +598,8 @@ QList<int> TrackDAO::addTracks(const QList<QFileInfo> &fileInfoList,
     while (query.next()) {
         QString filePath = query.value(query.record().indexOf("location")).toString();
         TrackInfoObject* pTrack = new TrackInfoObject(QFileInfo(filePath));
-        addTracksAdd(pTrack, unremove);
+        //TODO kain88 fix dirID
+        addTracksAdd(pTrack, unremove,0);
         int trackID = pTrack->getId();
         if (trackID >= 0) {
             trackIDs.append(trackID);
