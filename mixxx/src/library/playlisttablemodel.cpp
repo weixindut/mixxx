@@ -47,7 +47,7 @@ void PlaylistTableModel::setTableModel(int playlistId) {
     bool showMissing = m_pConfig->getValueString(ConfigKey("[Library]","ShowMissingSongs"),"1").toInt();
     if (showMissing) {
         filter = "library.mixxx_deleted=0";
-        playlistTableName.append("missing_");
+        playlistTableName.append("_missing");
     } else {
         filter = "library.mixxx_deleted=0 AND track_locations.fs_deleted=0";
     }

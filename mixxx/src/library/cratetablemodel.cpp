@@ -39,17 +39,16 @@ void CrateTableModel::setTableModel(int crateId) {
     QStringList columns;
     QStringList tableColumns;
     QString filter;
-    columns << "crate_tracks."+CRATETRACKSTABLE_TRACKID;
+    columns << "crate_tracks."+CRATETRACKSTABLE_TRACKID + " as " + LIBRARYTABLE_ID
+            << "'' as preview";
     tableColumns << CRATETRACKSTABLE_TRACKID;
     bool showMissing = m_pConfig->getValueString(ConfigKey("[Library]","ShowMissingSongs"),"1").toInt();
     if(showMissing){
         filter = "library.mixxx_deleted=0";
-        tableName.append("missing_");
+        tableName.append("_missing");
     } else {
         filter = "library.mixxx_deleted=0 AND track_locations.fs_deleted=0";
     }
-    columns << CRATETRACKSTABLE_TRACKID + " as " + LIBRARYTABLE_ID
-            << "'' as preview";
 
     // We drop files that have been explicitly deleted from mixxx
     // (mixxx_deleted=0) from the view. There was a bug in <= 1.9.0 where

@@ -23,7 +23,7 @@ LibraryTableModel::~LibraryTableModel() {
 void LibraryTableModel::setTableModel(int id){
     Q_UNUSED(id);
     QStringList columns;
-    columns << "library."+LIBRARYTABLE_ID;
+    columns << "library."+LIBRARYTABLE_ID << "'' as preview";
 
     //prepareLibrary give a NULL to the constructor so check for it
     bool showMissing;
@@ -55,7 +55,7 @@ void LibraryTableModel::setTableModel(int id){
 
     QStringList tableColumns;
     tableColumns << LIBRARYTABLE_ID;
-    //tableColumns << "preview";
+    tableColumns << "preview";
     setTable(tableName, LIBRARYTABLE_ID, tableColumns,
              m_pTrackCollection->getTrackSource("default"));
 
