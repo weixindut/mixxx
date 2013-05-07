@@ -33,11 +33,11 @@ void LibraryTableModel::setTableModel(int id){
     } else {
         showMissing = false;
     }
-    QString tableName = "library_view_";
+    QString tableName = "library_view";
     QString libraryFilter;
     if (showMissing) {
         libraryFilter = "mixxx_deleted=0";
-        tableName.append("_issing_");
+        tableName.append("_missing");
     } else {
         libraryFilter = "mixxx_deleted=0 AND fs_deleted=0";
     }
@@ -55,7 +55,7 @@ void LibraryTableModel::setTableModel(int id){
 
     QStringList tableColumns;
     tableColumns << LIBRARYTABLE_ID;
-    tableColumns << "preview";
+    //tableColumns << "preview";
     setTable(tableName, LIBRARYTABLE_ID, tableColumns,
              m_pTrackCollection->getTrackSource("default"));
 
