@@ -387,7 +387,7 @@ class TagLib(Dependence):
 
 class Chromaprint(Dependence):
     def configure(self, build, conf):
-        if not conf.CheckLib('chromaprint'):
+        if not conf.CheckLib('libchromaprint, chromaprint'):
             raise Exception("Could not find libchromaprint or its development headers.")
 
         build.env.Append(CPPPATH='/usr/include/')
