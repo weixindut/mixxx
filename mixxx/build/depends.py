@@ -389,7 +389,7 @@ class Chromaprint(Dependence):
     def configure(self, build, conf):
         if not conf.CheckLib(['chromaprint', 'libchromaprint', 'chromaprint_p', 'libchromaprint_p']):
             raise Exception("Could not find libchromaprint or its development headers.")
-        if build.platform_is_windows:
+        if build.platform_is_windows and build.static_dependencies:
             build.env.Append(CPPDEFINES = 'CHROMAPRINT_NODLL')
 
 class ProtoBuf(Dependence):
