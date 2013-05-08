@@ -392,6 +392,10 @@ class Chromaprint(Dependence):
         if build.platform_is_windows and build.static_dependencies:
             build.env.Append(CPPDEFINES = 'CHROMAPRINT_NODLL')
 
+            # On Windows, we link chromaprint with FFTW3.
+            if not conf.CheckLib(['fftw', 'libfftw', 'fftw3', 'libfftw3']):
+                raise Exception("Could not find fftw3 or its development headers.")
+
 class ProtoBuf(Dependence):
     def configure(self, build, conf):
         libs = ['libprotobuf-lite', 'protobuf-lite', 'libprotobuf', 'protobuf']
