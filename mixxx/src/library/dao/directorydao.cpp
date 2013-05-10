@@ -51,31 +51,32 @@ bool DirectoryDAO::purgeDirectory(QString dir){
 bool DirectoryDAO::relocateDirectory(QString oldFolder, QString newFolder){
     ScopedTransaction transaction(m_database);
     QSqlQuery query(m_database);
+
     // update directory in directories table
     query.prepare("UPDATE "%DIRECTORYDAO_TABLE%" SET "%DIRECTORYDAO_DIR%"="
-                  "\""%newFolder%"\" WHERE "%DIRECTORYDAO_DIR%"=\""%oldFolder%"\"");
+                  "\":newFolder\" WHERE "%DIRECTORYDAO_DIR%"=\":oldFolder\"");
+    query.bindValue(":newFolder", newFolder);
+    query.bindValue(":oldFolder", oldFolder);
     if (!query.exec()) {
         LOG_FAILED_QUERY(query) << "coud not relocate directory";
         return false;
     }
+
     // update location and directory in track_locations table
     query.prepare("UPDATE track_locations SET location="
-                  "REPLACE(location,\""%oldFolder%"\",\""%newFolder%"\")"
+                  "REPLACE(location,\":oldFolder\",\":newFolder\")"
                   ", directory="
-                  "REPLACE(directory,\""%oldFolder%"\",\""%newFolder%"\") "
-                  "WHERE "%DIRECTORYDAO_DIR%"=\""%oldFolder%"\"");
+                  "REPLACE(directory,\":oldFolder\",\":newFolder\") "
+                  "WHERE "%DIRECTORYDAO_DIR%"=\":oldFolder\"");
+    query.bindValue(":newFolder", newFolder);
+    query.bindValue(":oldFolder", oldFolder);
     if (!query.exec()) {
         LOG_FAILED_QUERY(query) << "coud not relocate path of tracks";
         return false;
     }
+
     // updating the dir_id column is not necessary because it does not change
 
-    // set all tracks to need verification
-    query.prepare("UPDATE track_locations SET needs_verification=1");
-    if (!query.exec()) {
-        LOG_FAILED_QUERY(query) << "coud not relocate path of tracks";
-        return false;
-    }
     transaction.commit();
     return true;
 }
@@ -96,7 +97,8 @@ QStringList DirectoryDAO::getDirs(){
 QList<int> DirectoryDAO::getDirIds(QStringList& dirs){
     QSqlQuery query(m_database);
     query.prepare("SELECT " % DIRECTORYDAO_ID % " FROM " % DIRECTORYDAO_TABLE %
-                  " WHERE " % DIRECTORYDAO_DIR %" in (\"" % dirs.join("\",\"") % "\")");
+                  " WHERE " % DIRECTORYDAO_DIR %" in (\":dirs\")");
+    query.bindValue(":dirs", dirs.join("\",\"") );
     if (!query.exec()) {
         LOG_FAILED_QUERY(query) << "couldn't find directory:"<<dirs;
     }
@@ -105,18 +107,15 @@ QList<int> DirectoryDAO::getDirIds(QStringList& dirs){
         ids.append(query.value(query.record().indexOf(DIRECTORYDAO_ID)).toInt());
     }
 
-    if (dirs.size() != ids.size()) {
-        qDebug() << "There is an sql error there are duplicated dirs in the library";
-        qDebug() << query.lastQuery();
-    }
-    qDebug() << ids;
     return ids;
 }
 
+//TODO(kain88) check if this is not obsolete because of getDirIds
 int DirectoryDAO::getDirId(const QString dir){
     QSqlQuery query(m_database);
     query.prepare("SELECT " % DIRECTORYDAO_ID % " FROM " % DIRECTORYDAO_TABLE %
-                  " WHERE " % DIRECTORYDAO_DIR %" in (\"" % dir % "\")");
+                  " WHERE " % DIRECTORYDAO_DIR %" in (\":dir\")");
+    query.bindValue(":dir",dir);
     if (!query.exec()) {
         LOG_FAILED_QUERY(query) << "couldn't find directory:"<<dir;
     }
@@ -127,11 +126,14 @@ int DirectoryDAO::getDirId(const QString dir){
     return id;
 }
 
+// Only call this when an update happens from an old library version!!!
+// TODO move this into update code
 bool DirectoryDAO::updateTrackLocations(QString dir){
     QString dirId = QString::number(getDirId(dir));
     ScopedTransaction transaction(m_database);
     QSqlQuery query(m_database);
-    query.prepare("UPDATE track_locations SET maindir_id = "%dirId);
+    query.prepare("UPDATE track_locations SET maindir_id = :dirId");
+    query.bindValue(":dirId", dirId);
     if (!query.exec()) {
         LOG_FAILED_QUERY(query) << " could not update TrackLocations";
         return false;

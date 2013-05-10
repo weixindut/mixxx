@@ -26,7 +26,6 @@ class DirectoryDAO : public DAO {
 
   private:
     QSqlDatabase m_database;
-
 };
 
 #endif //DIRECTORYDAO_H

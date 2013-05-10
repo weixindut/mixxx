@@ -91,9 +91,12 @@ void HiddenTableModel::deleteTracks(const QModelIndexList& indices) {
         int trackId = getTrackId(index);
         trackIds.append(trackId);
     }
-    m_trackDAO.deleteTracksFromFS(trackIds);
-    // TODO(rryan) : do not select, instead route event to BTC and notify from
-    // there.
+    QStringList failed = m_trackDAO.deleteTracksFromFS(trackIds);
+    if (!failed.isEmpty()) {
+        QMessageBox::warning(NULL, tr("Mixxx"),
+                     tr("The following track (%1) could not be removed"
+                         "because the files are still in use").arg(failed.join(",")));
+    }
     select(); //Repopulate the data model.
 }
 

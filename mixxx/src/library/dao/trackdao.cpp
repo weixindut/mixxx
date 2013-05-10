@@ -745,21 +745,22 @@ void TrackDAO::purgeTracks(QList<int> ids) {
     emit(tracksRemoved(tracksRemovedSet));
 }
 
-void TrackDAO::deleteTracksFromFS(QList<int> ids){
+//TODO(kain88) check if this works as desired
+QStringList TrackDAO::deleteTracksFromFS(QList<int> ids){
      if (ids.empty()) {
-        return;
+        return QStringList();
     }
 
     QStringList idList;
     foreach (int id, ids) {
         idList << QString::number(id);
     }
-    QString idListJoined = idList.join(",");
 
     QSqlQuery query(m_database);
-    query.prepare(QString("SELECT track_locations.location, track_locations.directory FROM "
-                          "track_locations INNER JOIN library ON library.location = "
-                          "track_locations.id WHERE library.id in (%1)").arg(idListJoined));
+    query.prepare("SELECT track_locations.location, track_locations.directory FROM "
+                  "track_locations INNER JOIN library ON library.location = "
+                  "track_locations.id WHERE library.id in (:idList)");
+    query.bindValue("idList", idList.join(","));
     if (!query.exec()) {
         LOG_FAILED_QUERY(query);
     }
@@ -771,16 +772,29 @@ void TrackDAO::deleteTracksFromFS(QList<int> ids){
                         query.record().indexOf("location")).toString());
     }
 
+    QStringList failed;
     foreach (QString loc, locationList) {
         if (!QFile::remove(loc)) {
-            QMessageBox::warning(NULL, tr("Mixxx"),
-                                 tr("The Track could not be deleted from the Filesystem"
-                                    "because the file is still in use"));
+            failed.append(loc);
         }
+    }
+
+    query.prepare("SELECT libary.id FROM library INNER JOIN track_locations ON "
+                  "library.location = track_locations.id WHERE "
+                  "track_locations.location in (:locList)");
+    query.bindValue(":locList", failed.join(","));
+
+    if (!query.exec()) {
+        LOG_FAILED_QUERY(query);
+    }
+    
+    while (query.next()) {
+        ids.removeAll(query.value(query.record().indexOf("if")).toInt());
     }
     // clean all DB entries AFTER the file is removed, otherwise the remove 
     // function fails.
     purgeTracks(ids);
+    return failed;
 }
 
 // deleter of the TrackInfoObject, for delete a Track from Library use hide or purge

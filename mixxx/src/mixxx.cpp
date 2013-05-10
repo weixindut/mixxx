@@ -31,7 +31,6 @@
 #include "defs_version.h"
 #include "dlgabout.h"
 #include "dlgpreferences.h"
-#include "engine/enginedeck.h"
 #include "engine/enginemaster.h"
 #include "engine/enginemicrophone.h"
 #include "library/library.h"
@@ -319,20 +318,8 @@ MixxxApp::MixxxApp(QApplication *pApp, const CmdlineArgs& args)
     // Create the player manager.
     m_pPlayerManager = new PlayerManager(m_pConfig, m_pSoundManager, m_pEngine,
                                          m_pVCManager);
-    // Set up four decks for with the player manager
-    for (unsigned int deck = 0; deck < 4; ++deck) {
-        
-        // Add deck to the player manager
-        Deck* pDeck = m_pPlayerManager->addDeck();
-#ifdef __VINYLCONTROL__
-		if (deck < 2) {
-		    EngineDeck* pEngineDeck = pDeck->getEngineDeck();
-		    // Register vinyl input signal with deck for passthrough
-		    m_pSoundManager->registerInput(AudioInput(AudioInput::VINYLCONTROL, 0, deck), pEngineDeck);
-		}
-#endif
-    }
-
+    m_pPlayerManager->addDeck();
+    m_pPlayerManager->addDeck();
     m_pPlayerManager->addSampler();
     m_pPlayerManager->addSampler();
     m_pPlayerManager->addSampler();
@@ -362,6 +349,7 @@ MixxxApp::MixxxApp(QApplication *pApp, const CmdlineArgs& args)
     // getValueString will return "" if no value was set
     bool oldLibrary = m_pConfig->getValueString(ConfigKey("[Library]","newVersion"))=="";
     qDebug() << "kain88 status of library version" << oldLibrary;
+    //TODO(kain88) mode this into update code
     if (oldLibrary) {
         QString dir = m_pConfig->getValueString(ConfigKey("[Playlist]","Directory"));
         // adds the current library path to the directories table and updates
@@ -1507,6 +1495,7 @@ void MixxxApp::slotHelpAbout() {
 "Steven Boswell<br>"
 "Jo&atilde;o Reys Santos<br>"
 "Carl Pillot<br>"
+"Vedant Agarwala<br>"
 
 "</p>"
 "<p align=\"center\"><b>%3</b></p>"
