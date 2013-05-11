@@ -200,10 +200,17 @@ class Qt(Dependence):
             build.env.Append(
                 LINKFLAGS=' '.join('-framework %s' % m for m in qt_modules)
             )
-            build.env.Append(CPPPATH = [os.path.join(qtdir,'lib','%s.framework' % m,'Headers') for m in qt_modules])
-            build.env.Append(LINKFLAGS = [
-                '-F%s' % os.path.join(build.env['QTDIR'],'Frameworks')
-            ])
+            framework_path = Qt.find_framework_path(qtdir)
+            if not framework_path:
+                raise Exception('Could not find frameworks in Qt directory: %s' % qtdir)
+            # Necessary for raw includes of headers like #include <qobject.h>
+            build.env.Append(CPPPATH = [os.path.join(framework_path, '%s.framework' % m, 'Headers')
+                                        for m in qt_modules])
+            # Framework path needs to be altered for CCFLAGS as well since a
+            # header include of QtCore/QObject.h looks for a QtCore.framework on
+            # the search path and a QObject.h in QtCore.framework/Headers.
+            build.env.Append(CCFLAGS = ['-F%s' % os.path.join(framework_path)])
+            build.env.Append(LINKFLAGS = ['-F%s' % os.path.join(framework_path)])
 
         # Setup Qt library includes for non-OSX
         if build.platform_is_linux or build.platform_is_bsd:
@@ -385,17 +392,6 @@ class TagLib(Dependence):
         if build.platform_is_windows and build.static_dependencies:
             build.env.Append(CPPDEFINES = 'TAGLIB_STATIC')
 
-class Chromaprint(Dependence):
-    def configure(self, build, conf):
-        if not conf.CheckLib(['chromaprint', 'libchromaprint', 'chromaprint_p', 'libchromaprint_p']):
-            raise Exception("Could not find libchromaprint or its development headers.")
-        if build.platform_is_windows and build.static_dependencies:
-            build.env.Append(CPPDEFINES = 'CHROMAPRINT_NODLL')
-
-            # On Windows, we link chromaprint with FFTW3.
-            if not conf.CheckLib(['fftw', 'libfftw', 'fftw3', 'libfftw3']):
-                raise Exception("Could not find fftw3 or its development headers.")
-
 class ProtoBuf(Dependence):
     def configure(self, build, conf):
         libs = ['libprotobuf-lite', 'protobuf-lite', 'libprotobuf', 'protobuf']
@@ -445,7 +441,6 @@ class MixxxCore(Feature):
                    "dlgabout.cpp",
                    "dlgprefeq.cpp",
                    "dlgprefcrossfader.cpp",
-                   "dlgtagfetcher.cpp",
                    "dlgtrackinfo.cpp",
                    "dlgprepare.cpp",
                    "dlgautodj.cpp",
@@ -546,14 +541,6 @@ class MixxxCore(Feature):
 
                    "mathstuff.cpp",
 
-                   "network.cpp",
-                   "musicbrainz/tagfetcher.cpp",
-                   "musicbrainz/gzip.cpp",
-                   "musicbrainz/crc.c",
-                   "musicbrainz/acoustidclient.cpp",
-                   "musicbrainz/chromaprinter.cpp",
-                   "musicbrainz/musicbrainzclient.cpp",
-
                    "rotary.cpp",
                    "widget/wtracktableview.cpp",
                    "widget/wtracktableviewheader.cpp",
@@ -570,8 +557,8 @@ class MixxxCore(Feature):
                    "library/librarytablemodel.cpp",
                    "library/searchqueryparser.cpp",
                    "library/preparelibrarytablemodel.cpp",
-                   "library/hiddentablemodel.cpp",
                    "library/missingtablemodel.cpp",
+                   "library/hiddentablemodel.cpp",
                    "library/proxytrackmodel.cpp",
 
                    "library/playlisttablemodel.cpp",
@@ -618,7 +605,6 @@ class MixxxCore(Feature):
                    "library/dao/libraryhashdao.cpp",
                    "library/dao/settingsdao.cpp",
                    "library/dao/analysisdao.cpp",
-
 
                    "library/librarycontrol.cpp",
                    "library/schemamanager.cpp",
@@ -768,7 +754,6 @@ class MixxxCore(Feature):
         build.env.Uic4('dlgprefnovinyldlg.ui')
         build.env.Uic4('dlgprefrecorddlg.ui')
         build.env.Uic4('dlgaboutdlg.ui')
-        build.env.Uic4('dlgtagfetcher.ui')
         build.env.Uic4('dlgtrackinfo.ui')
         build.env.Uic4('dlgprepare.ui')
         build.env.Uic4('dlgautodj.ui')
@@ -923,8 +908,7 @@ class MixxxCore(Feature):
 
     def depends(self, build):
         return [SoundTouch, ReplayGain, PortAudio, PortMIDI, Qt,
-                FidLib, SndFile, FLAC, OggVorbis, OpenGL, TagLib, ProtoBuf,
-                Chromaprint]
+                FidLib, SndFile, FLAC, OggVorbis, OpenGL, TagLib, ProtoBuf]
 
     def post_dependency_check_configure(self, build, conf):
         """Sets up additional things in the Environment that must happen

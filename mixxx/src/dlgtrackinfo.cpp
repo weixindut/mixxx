@@ -7,22 +7,10 @@
 #include "library/dao/cue.h"
 #include "trackinfoobject.h"
 
-DlgTrackInfo::DlgTrackInfo(QWidget* parent,
-                           TagFetcher& TagFetcher,
-                           DlgTagFetcher& DlgTagFetcher)
-            : QDialog(parent),
-              m_pLoadedTrack(NULL),
-              m_DlgTagFetcher(DlgTagFetcher),
-              m_TagFetcher(TagFetcher){
-    init();
-}
+DlgTrackInfo::DlgTrackInfo(QWidget* parent) :
+        QDialog(parent),
+        m_pLoadedTrack() {
 
-DlgTrackInfo::~DlgTrackInfo() {
-    unloadTrack(false);
-    qDebug() << "~DlgTrackInfo()";
-}
-
-void DlgTrackInfo::init(){
     setupUi(this);
 
     cueTable->hideColumn(0);
@@ -35,9 +23,6 @@ void DlgTrackInfo::init(){
             this, SLOT(apply()));
     connect(btnCancel, SIGNAL(clicked()),
             this, SLOT(cancel()));
-
-    connect(btnFetchTag, SIGNAL(clicked()),
-            this, SLOT(fetchTag()));
 
     connect(bpmDouble, SIGNAL(clicked()),
             this, SLOT(slotBpmDouble()));
@@ -56,6 +41,11 @@ void DlgTrackInfo::init(){
     for (int i = 0; i < filterLength; ++i) {
         m_bpmTapFilter[i] = 0.0f;
     }
+}
+
+DlgTrackInfo::~DlgTrackInfo() {
+    unloadTrack(false);
+    qDebug() << "~DlgTrackInfo()";
 }
 
 void DlgTrackInfo::apply() {
@@ -329,10 +319,4 @@ void DlgTrackInfo::reloadTrackMetadata() {
         TrackPointer pTrack(new TrackInfoObject(m_pLoadedTrack->getLocation()));
         populateFields(pTrack);
     }
-}
-
-void DlgTrackInfo::fetchTag() {
-    m_DlgTagFetcher.init(m_pLoadedTrack);
-    m_TagFetcher.StartFetch(m_pLoadedTrack);
-    m_DlgTagFetcher.show();
 }

@@ -61,13 +61,6 @@
          <item row="1" column="1" colspan="3">
           <widget class="QLineEdit" name="txtArtist"/>
          </item>
-         <item row="8" column="0">
-          <widget class="QLabel" name="label_7">
-           <property name="text">
-            <string>Duration:</string>
-           </property>
-          </widget>
-         </item>
          <item row="2" column="0">
           <widget class="QLabel" name="label_6">
            <property name="text">
@@ -75,12 +68,25 @@
            </property>
           </widget>
          </item>
-         <item row="6" column="0">
-          <widget class="QLabel" name="label_12">
+         <item row="2" column="1" colspan="3">
+          <widget class="QLineEdit" name="txtAlbum"/>
+         </item>
+         <item row="3" column="0">
+          <widget class="QLabel" name="label_9">
            <property name="text">
-            <string>Key</string>
+            <string>Genre:</string>
            </property>
           </widget>
+         </item>
+         <item row="4" column="0">
+          <widget class="QLabel" name="label_11">
+           <property name="text">
+            <string>Composer:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="1" colspan="3">
+          <widget class="QLineEdit" name="txtComposer"/>
          </item>
          <item row="3" column="1" colspan="3">
           <widget class="QLineEdit" name="txtGenre"/>
@@ -92,30 +98,33 @@
            </property>
           </widget>
          </item>
-         <item row="9" column="3">
-          <widget class="QLabel" name="txtBitrate">
+         <item row="5" column="3">
+          <widget class="QLineEdit" name="txtTrackNumber"/>
+         </item>
+         <item row="5" column="1">
+          <widget class="QLineEdit" name="txtYear"/>
+         </item>
+         <item row="5" column="0">
+          <widget class="QLabel" name="label_8">
            <property name="text">
-            <string/>
-           </property>
-           <property name="textInteractionFlags">
-            <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
+            <string>Year</string>
            </property>
           </widget>
          </item>
-         <item row="12" column="0" colspan="4">
-          <widget class="Line" name="line_3">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
+         <item row="6" column="1">
+          <widget class="QLineEdit" name="txtKey"/>
+         </item>
+         <item row="6" column="0">
+          <widget class="QLabel" name="label_12">
+           <property name="text">
+            <string>Key</string>
            </property>
           </widget>
          </item>
-         <item row="11" column="0">
-          <widget class="QLabel" name="label_5">
+         <item row="8" column="0">
+          <widget class="QLabel" name="label_7">
            <property name="text">
-            <string>Location:</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+            <string>Duration:</string>
            </property>
           </widget>
          </item>
@@ -146,16 +155,6 @@
            </property>
           </widget>
          </item>
-         <item row="5" column="0">
-          <widget class="QLabel" name="label_8">
-           <property name="text">
-            <string>Year</string>
-           </property>
-          </widget>
-         </item>
-         <item row="6" column="1">
-          <widget class="QLineEdit" name="txtKey"/>
-         </item>
          <item row="9" column="0">
           <widget class="QLabel" name="label_13">
            <property name="text">
@@ -173,29 +172,30 @@
            </property>
           </widget>
          </item>
-         <item row="4" column="0">
-          <widget class="QLabel" name="label_11">
+         <item row="9" column="3">
+          <widget class="QLabel" name="txtBitrate">
            <property name="text">
-            <string>Composer:</string>
+            <string/>
+           </property>
+           <property name="textInteractionFlags">
+            <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
            </property>
           </widget>
          </item>
-         <item row="4" column="1" colspan="3">
-          <widget class="QLineEdit" name="txtComposer"/>
+         <item row="12" column="0" colspan="4">
+          <widget class="Line" name="line_3">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+          </widget>
          </item>
-         <item row="5" column="3">
-          <widget class="QLineEdit" name="txtTrackNumber"/>
-         </item>
-         <item row="5" column="1">
-          <widget class="QLineEdit" name="txtYear"/>
-         </item>
-         <item row="2" column="1" colspan="3">
-          <widget class="QLineEdit" name="txtAlbum"/>
-         </item>
-         <item row="3" column="0">
-          <widget class="QLabel" name="label_9">
+         <item row="11" column="0">
+          <widget class="QLabel" name="label_5">
            <property name="text">
-            <string>Genre:</string>
+            <string>Location:</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
            </property>
           </widget>
          </item>
@@ -212,7 +212,7 @@
            </property>
           </widget>
          </item>
-         <item row="14" column="1" colspan="3">
+         <item row="13" column="1" colspan="3">
           <widget class="QPushButton" name="btnReloadFromFile">
            <property name="text">
             <string>Reload track metadata from file.</string>
@@ -272,13 +272,6 @@
           <widget class="QLabel" name="Type_2">
            <property name="text">
             <string>Bitrate:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="13" column="1" colspan="3">
-          <widget class="QPushButton" name="btnFetchTag">
-           <property name="text">
-            <string>Reload track metadata from musicBrainz</string>
            </property>
           </widget>
          </item>
