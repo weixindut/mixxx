@@ -35,6 +35,9 @@ DlgPrefMappableController::DlgPrefMappableController(QWidget *parent, Controller
     connect(getUi().pushButtonLearning, SIGNAL(clicked()),
             this, SLOT(slotShowLearnDialog()));
 
+    connect(getUi().btnMappingPresetManager, SIGNAL(clicked()),
+            this, SLOT(slotShowMappingPresetManagerDialog()));
+
     connect(getUi().pushButtonLearning, SIGNAL(clicked()),
             this, SLOT(slotDirty()));
     // connect(m_ui.btnClearAllInputBindings, SIGNAL(clicked()),
@@ -62,6 +65,12 @@ DlgPrefMappableController::DlgPrefMappableController(QWidget *parent, Controller
 
 }
 
+void DlgPrefMappableController::slotShowMappingPresetManagerDialog() {
+	if (isEnabled() && !getController()->isOpen()) {
+		m_pMappingPresetManager = new DlgMappingPresetManager(this);
+		m_pMappingPresetManager->show();
+	}
+}
 void DlgPrefMappableController::slotShowLearnDialog() {
     // If the user has checked the "Enabled" checkbox but they haven't hit OK to
     // apply it yet, prompt them to apply the settings before we open the

@@ -10,7 +10,9 @@
 
 #include "controllers/dlgprefcontroller.h"
 #include "controllers/dlgcontrollerlearning.h"
+#include "controllers/dlgmappingpresetmanager.h"
 #include "controllers/ui_dlgprefmappablecontrollerdlg.h"
+
 
 class DlgPrefMappableController : public DlgPrefController {
     Q_OBJECT
@@ -30,6 +32,7 @@ class DlgPrefMappableController : public DlgPrefController {
     void slotShowLearnDialog();
     void slotUpdate();
     void slotDeviceState(int state);
+    void slotShowMappingPresetManagerDialog();
 
     // Input mappings
     void clearAllInputBindings();
@@ -42,6 +45,7 @@ class DlgPrefMappableController : public DlgPrefController {
   private:
     DlgControllerLearning* m_pDlgControllerLearning;
     Ui::ControllerMappingDlg m_ui;
+    DlgMappingPresetManager* m_pMappingPresetManager;
 };
 
 #endif
