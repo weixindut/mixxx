@@ -452,6 +452,8 @@ class MixxxCore(Feature):
                    "controllers/dlgcontrollerlearning.cpp",
                    "controllers/dlgprefnocontrollers.cpp",
                    "controllers/dlgmappingpresetmanager.cpp",
+                   "controllers/httpclient.cpp",
+                   #"controllers/json.cpp",
                    "dlgprefplaylist.cpp",
                    "dlgprefcontrols.cpp",
                    "dlgprefreplaygain.cpp",

@@ -5,11 +5,13 @@
 
 #include "controllers/ui_dlgmappingpresetmanagerdlg.h"
 
+
 class DlgMappingPresetManager : public QDialog {
     Q_OBJECT
   public:
     DlgMappingPresetManager(QWidget* parent);
     virtual ~DlgMappingPresetManager() {};
+    void getJsonDataTest();
   protected:
     Ui::DlgPresetManagerDlg& getUi() {
         return m_ui;
