@@ -523,6 +523,7 @@ class MixxxCore(Feature):
                    "controllers/qtscript-bytearray/bytearrayclass.cpp",
                    "controllers/qtscript-bytearray/bytearrayprototype.cpp",
                    "controllers/softtakeover.cpp",
+                   "controllers/json.cpp",
 
                    "main.cpp",
                    "mixxx.cpp",
