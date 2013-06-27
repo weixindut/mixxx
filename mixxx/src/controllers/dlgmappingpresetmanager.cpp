@@ -7,7 +7,7 @@
 
 #include <QtGui>
 #include <QHash>
-#include <QVariant>
+#include <QVariantMap>
 #include <QVariantList>
 #include <QMap>
 #include "controllers/dlgmappingpresetmanager.h"
@@ -17,33 +17,20 @@ using namespace QtJson;
 
 DlgMappingPresetManager::DlgMappingPresetManager(QWidget* parent)
         : QDialog(parent) {
-	m_ui.setupUi(this);
-	//this->show();
+    m_ui.setupUi(this);
 }
 void DlgMappingPresetManager::getJsonDataTest() {
-	HttpClient httpclient;
-	//QScriptEngine engine;
-	bool ok;
-	QString data = httpclient.get("http://127.0.0.1:8000/api/v1/midi/company/?format=json");
-	qDebug() << "Print JsonObject:"+data;
-	//QJsonValue qjvalue(data);
-	//QJsonObject qjObject = qjvalue.toObject();
-	//QVariantMap result = qjObject.toVariantMap();
-	//QMap<QString, QVariant> result = QtJson::parse(data, ok).toMap();
-	qDebug() <<"========Print parseJsonVariant:"+QtJson::parse(data, ok).toString();
-	QVariantMap result= QtJson::parse(data, ok).toMap();
-	if(!ok) {
-	    qFatal("An error occurred during parsing");
-	    exit(1);
-	}
-	QVariantList list = result["objects"].toList();
-	foreach(QVariant qv,list) {
-		qDebug() << "========Print parseJsonObject:"+qv.toMap()["id"].toInt();
-	}
+    HttpClient httpclient;
+    bool ok;
+    QString data = httpclient.get("http://127.0.0.1:8000/api/v1/midi/company/?format=json");
+    qDebug() << "Print JsonObject:"+data;
 
-	//QVariantMap nestedMap = result["objects"].toList();
-	//foreach(QVariantMap nestedMap, result["objects"]) {
-	//	qDebug() << "http get========================="+nestedMap["company_name"].toString();
-	//}
-
+    QVariantMap result = QtJson::parse(data,ok).toMap();
+    if(!ok) {
+        exit(1);
+    }
+    foreach(QVariant plugin, result["objects"].toList()) {
+        QVariantMap res = plugin.toMap();
+        qDebug() <<"print company name:"+res["company_name"].toString();
+    }
 }
