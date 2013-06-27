@@ -1,10 +1,4 @@
-﻿/**
-* @file dlgprefcontroller.h
-* @author Xin Wei  weixindlut@gmail.com
-* @date  June 25 2013
-* @brief Httpclient for preset manage issues
-*/
-#ifndef HTTPCLIENT_H
+﻿#ifndef HTTPCLIENT_H
 #define HTTPCLIENT_H
 
 #include <QTextCodec>
@@ -23,21 +17,21 @@ class HttpClient : public QObject {
     Q_OBJECT
 
   public:
-    explicit HttpClient(QObject *parent = 0);
+    explicit HttpClient(QObject* parent = 0);
     ~HttpClient();
 
-    QString post(const QString &url, const QByteArray &postData);
-    QString post(const QString &url, QMap<QString, QString> &postData);
-    QString get(const QString &url);
-    void setTextCodec(const QString &encoding);
-    QMap<QString, QString> allCookies(const QString &url);
-    QMap<QString, QString> defaultValuesFromName(const QString &html, const QString &name);
+    QString post(const QString& url, const QByteArray& postData);
+    QString post(const QString& url, QMap<QString, QString>& postData);
+    QString get(const QString& url);
+    void setTextCodec(const QString& encoding);
+    QMap<QString, QString> allCookies(const QString& url);
+    QMap<QString, QString> defaultValuesFromName(const QString& html, const QString& name);
 
   private:
-    void waitForFinish(QNetworkReply *reply);
+    void waitForFinish(QNetworkReply* reply);
 
-    QNetworkAccessManager *m_manager;
-    QTextCodec *m_textCodec;
+    QNetworkAccessManager* m_manager;
+    QTextCodec* m_textCodec;
 };
 
 #endif

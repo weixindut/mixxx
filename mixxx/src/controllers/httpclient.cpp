@@ -17,7 +17,7 @@ HttpClient::~HttpClient() {
     delete m_manager;
 }
 
-QString HttpClient::post(const QString& url, const QByteArray &postData) {
+QString HttpClient::post(const QString& url, const QByteArray& postData) {
     QNetworkRequest request;
     request.setUrl(QUrl(url));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
@@ -47,7 +47,7 @@ QString HttpClient::post(const QString& url, QMap<QString, QString>& postData) {
     return post(url, data.join("&").toAscii());
 }
 
-QString HttpClient::get(const QString &url) {
+QString HttpClient::get(const QString& url) {
     QNetworkRequest request;
     request.setUrl(QUrl(url));
     QNetworkReply* reply = m_manager->get(request);
@@ -80,8 +80,7 @@ QMap<QString, QString> HttpClient::allCookies(const QString& url) {
     return map;
 }
 
-QMap<QString, QString> HttpClient::defaultValuesFromName(const QString& html, const QString& name)
-{
+QMap<QString, QString> HttpClient::defaultValuesFromName(const QString& html, const QString& name) {
     QMap<QString, QString> map;
 
     // get form
