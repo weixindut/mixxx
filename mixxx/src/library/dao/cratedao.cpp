@@ -338,11 +338,20 @@ void CrateDAO::updateCratesTitleNum() {
 
     m_database.transaction();
     QSqlQuery selectQuery(m_database);
+<<<<<<< HEAD
 
     selectQuery.prepare(" SELECT Crates.name,count(*),Crates.id FROM Crates, Crate_tracks "
                         " WHERE Crates.id = Crate_tracks.crate_id "
                         " GROUP BY Crates.id ");
 
+=======
+    //selectQuery.prepare(" SELECT Crates.name,count(*),Crates.id FROM Crates, Crate_tracks "
+    //                    " WHERE Crates.id = Crate_tracks.crate_id "
+    //                    " GROUP BY Crates.id ");
+    selectQuery.prepare(" SELECT Crates.name,Count_table.count,Crates.id FROM Crates INNER JOIN "
+                        " (SELECT crate_id, count(*) AS count FROM Crate_tracks GROUP BY crate_id) "
+                        " AS Count_table ON Count_table.crate_id = Crates.id ");
+>>>>>>> 48a45e34921f25e51b168f6c0ebf2c8a8262fb7b
     if (!selectQuery.exec()) {
         LOG_FAILED_QUERY(selectQuery);
     } else {

@@ -340,11 +340,27 @@ METADATA
   </revision>
   <revision version="19" min_compatible="3">
     <description>
-      Add name_displayed column to playlists table.
+      Add table for mapping preset manager.
     </description>
     <sql>
-      ALTER TABLE Playlists ADD COLUMN name_displayed varchar(48);
-      ALTER TABLE Crates ADD COLUMN name_displayed varchar(48);
+        CREATE TABLE IF NOT EXISTS mapping_preset_object (
+        uuid char(36) PRIMARY KEY UNIQUE,
+        author varchar(128) NOT NULL,
+        url varchar(256) NOT NULL,
+        description varchar(512),
+        preset_source varchar(36) NOT NULL,
+        preset_status varchar(36) NOT NULL,
+        mixxx_version varchar(256) NOT NULL,
+        preset_name varchar(128) NOT NULL UNIQUE,
+        midicontroller_id char(36) NOT NULL,
+        datatime_added datetime);
+        CREATE TABLE IF NOT EXISTS files_storage (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        directory varchar(256) UNIQUE,
+        presetitem_id char(36) NOT NULL REFERENCES mapping_preset_object(uuid),
+        type INTEGER NOT NULL,
+        filesize INTEGER NOT NULL,
+        name_displayed varchar(48) NOT NULL);
     </sql>
   </revision>
 </schema>
