@@ -349,7 +349,7 @@ void CrateDAO::updateCratesTitleNum() {
         LOG_FAILED_QUERY(selectQuery);
     } else {
         while (selectQuery.next()) {
-            QString newNamewithNum;
+            QString newNameWithNum;
             QString oldName = selectQuery.value(0).toString();
             QString tracksNum = selectQuery.value(1).toString();
             int cratesID = selectQuery.value(2).toInt();

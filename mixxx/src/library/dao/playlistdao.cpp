@@ -112,7 +112,7 @@ int PlaylistDAO::getPlaylistIdFromName(QString name) {
     QRegExp rxnum(pattern);
 
     QSqlQuery query(m_database);
-    query.prepare("SELECT id,name FROM Playlists);
+    query.prepare("SELECT id,name FROM Playlists");
    
     if (query.exec()) {
         while (query.next()) {
@@ -732,7 +732,7 @@ void PlaylistDAO::updatePlaylistsTitleNum() {
     } else {
         while (selectQuery.next()) {
             QString newNameWithNum;
-            QString pldName = selectQuery.value(0).toString();
+            QString oldName = selectQuery.value(0).toString();
             QString tracksNum = selectQuery.value(1).toString();
             int playlistsID = selectQuery.value(2).toInt();
             if (!rxnum.exactMatch(oldName)) {
