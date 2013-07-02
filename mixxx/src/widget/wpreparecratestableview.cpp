@@ -87,8 +87,7 @@ void WPrepareCratesTableView::dropEvent(QDropEvent * event)
             {
                 QModelIndex destIndex = this->indexAt(event->pos());
                 QString crateName = destIndex.data().toString(); 
-                //int crateId = m_pTrackCollection->getCrateDAO().getCrateIdByName(crateName);
-                int crateId = m_pTrackCollection->getCrateDAO().getCrateIdByNameDisplayed(crateName);
+                int crateId = m_pTrackCollection->getCrateDAO().getCrateIdByName(crateName);
                 int trackId = m_pTrackCollection->getTrackDAO().getTrackId(url.toLocalFile());
                 if (trackId >= 0)
                     m_pTrackCollection->getCrateDAO().addTrackToCrate(trackId, crateId);
