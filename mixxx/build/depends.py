@@ -454,6 +454,7 @@ class MixxxCore(Feature):
                    "controllers/dlgmappingpresetmanager.cpp",
                    "controllers/httpclient.cpp",
                    #"controllers/json.cpp",
+
                    "dlgprefplaylist.cpp",
                    "dlgprefcontrols.cpp",
                    "dlgprefreplaygain.cpp",
@@ -524,7 +525,8 @@ class MixxxCore(Feature):
                    "controllers/qtscript-bytearray/bytearrayprototype.cpp",
                    "controllers/softtakeover.cpp",
                    "controllers/json.cpp",
-
+                   "controllers/wao/presetobjectwao.cpp",
+                   "controllers/presetobject.cpp",
                    "main.cpp",
                    "mixxx.cpp",
                    "errordialoghandler.cpp",
