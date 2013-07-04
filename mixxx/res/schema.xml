@@ -344,7 +344,7 @@ METADATA
     </description>
     <sql>
         CREATE TABLE IF NOT EXISTS mapping_preset_object (
-        uuid char(36) PRIMARY KEY UNIQUE,
+        pid char(36) PRIMARY KEY UNIQUE,
         author varchar(128) NOT NULL,
         url varchar(256) NOT NULL,
         description varchar(512),
@@ -352,7 +352,8 @@ METADATA
         preset_status varchar(36) NOT NULL,
         mixxx_version varchar(256) NOT NULL,
         preset_name varchar(128) NOT NULL UNIQUE,
-        midicontroller_id char(36) NOT NULL,
+        midicontroller_name varchar(128) NOT NULL,
+        company_name varchar(128) NOT NULL,
         datatime_added datetime);
         CREATE TABLE IF NOT EXISTS files_storage (
         id INTEGER PRIMARY KEY AUTOINCREMENT,

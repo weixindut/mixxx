@@ -11,7 +11,9 @@ class PresetObjectWAO {
   public:
 	PresetObjectWAO();
 	virtual ~PresetObjectWAO(){}
+	QList<PresetObject> getPresetByURL(QString url);
 	QList<PresetObject> getPresetByName(QString name);
-	void getPresetByCompanyName(QString name);
+	QList<PresetObject> getPresetByCompanyName(QString name);
+	QList<PresetObject> getPresetByPresetName(QString name);
 };
 #endif

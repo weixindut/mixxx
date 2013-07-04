@@ -526,6 +526,7 @@ class MixxxCore(Feature):
                    "controllers/softtakeover.cpp",
                    "controllers/json.cpp",
                    "controllers/wao/presetobjectwao.cpp",
+                   "controllers/dao/presetobjectdao.cpp",
                    "controllers/presetobject.cpp",
                    "main.cpp",
                    "mixxx.cpp",

@@ -6,8 +6,8 @@ class PresetObject {
   public:
     PresetObject(QString pid, QString author_name, QUrl url,
     		     QString description, QString preset_source, QString preset_status,
-    		     QString mixxx_version, QString preset_name, QString midi_controller_id,
-    		     QDateTime datetime);
+    		     QString mixxx_version, QString preset_name, QString midi_controller_name,
+    		     QString company_name, QDateTime datetime);
     virtual ~PresetObject(){}
 
     QString getPid();
@@ -18,8 +18,10 @@ class PresetObject {
     QString getPresetStatus();
     QString getMixxxVersion();
     QString getPresetName();
-    QString getMidiControllerID();
+    QString getMidiControllerName();
+    QString getCompanyName();
     QDateTime getDateTime();
+
 
   private:
     QString m_pid;
@@ -30,7 +32,8 @@ class PresetObject {
     QString m_preset_status;
     QString m_mixxx_version;
     QString m_preset_name;
-    QString m_midi_controller_id;
+    QString m_midi_controller_name;
+    QString m_company_name;
     QDateTime m_datetime;
 
 };
