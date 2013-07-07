@@ -1,16 +1,17 @@
 #ifndef PRESETOBJECTDAO_H
 #define PRESETOBJECTDAO_H
+#include <QObject>
 #include <QSqlDatabase>
+#include "controllers/midi/midicontrollerpreset.h"
 #define PRESETOBJECT_TABLE "mapping_preset_object"
-class PresetObjectDAO {
+class PresetObjectDAO: public QObject{
+	Q_OBJECT
   public:
     PresetObjectDAO(QSqlDatabase& database);
     virtual ~ PresetObjectDAO(){}
-	QList<PresetObject> getPresetByName(QString name);
-	QList<PresetObject> getPresetByCompanyName(QString name);
-	QList<PresetObject> getPresetByPresetName(QString name);
+	QList<MidiControllerPreset> getPresetByPresetName(QString name);
   private:
     QSqlDatabase& m_database;
-    DISALLOW_COPY_AND_ASSIGN(PresetObjectDAO);
+    //DISALLOW_COPY_AND_ASSIGN(PresetObjectDAO);
 };
 #endif

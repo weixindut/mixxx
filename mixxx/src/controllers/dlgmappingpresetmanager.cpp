@@ -22,7 +22,8 @@ DlgMappingPresetManager::DlgMappingPresetManager(QWidget* parent)
 }
 void DlgMappingPresetManager::getJsonDataTest() {
 	PresetObjectWAO pow;
-    pow.getPresetByName("vmpk");
+    pow.getPresetByPresetName("Akai LPD8 - RK");
+
     //HttpClient httpclient;
     //bool ok;
     //QString data = httpclient.get("http://127.0.0.1:8000/api/v1/midi/company/?format=json");

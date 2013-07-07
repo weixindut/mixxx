@@ -1,19 +1,19 @@
 #ifndef PRESETOBJECTWAO_H
 #define PRESETOBJECTWAO_H
 
+#include <QObject>
 #include <QVariantMap>
 #include <QVariantList>
 #include <QMap>
 
 
-#include "controllers/presetobject.h"
-class PresetObjectWAO {
+#include "controllers/midi/midicontrollerpreset.h"
+class PresetObjectWAO : public QObject{
+	Q_OBJECT
   public:
 	PresetObjectWAO();
 	virtual ~PresetObjectWAO(){}
-	QList<PresetObject> getPresetByURL(QString url);
-	QList<PresetObject> getPresetByName(QString name);
-	QList<PresetObject> getPresetByCompanyName(QString name);
-	QList<PresetObject> getPresetByPresetName(QString name);
+    QList<MidiControllerPreset> getPresetByURL(QString url);
+    QList<MidiControllerPreset> getPresetByPresetName(QString name);
 };
 #endif

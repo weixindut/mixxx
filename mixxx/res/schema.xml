@@ -346,21 +346,20 @@ METADATA
         CREATE TABLE IF NOT EXISTS mapping_preset_object (
         pid char(36) PRIMARY KEY UNIQUE,
         author varchar(128) NOT NULL,
-        url varchar(256) NOT NULL,
+        url varchar(256),
         description varchar(512),
         preset_source varchar(36) NOT NULL,
         preset_status varchar(36) NOT NULL,
-        mixxx_version varchar(256) NOT NULL,
+        mixxx_version varchar(36) NOT NULL,
         preset_name varchar(128) NOT NULL UNIQUE,
-        midicontroller_name varchar(128) NOT NULL,
-        company_name varchar(128) NOT NULL,
-        datatime_added datetime);
+        controller_name varchar(128) NOT NULL,
+        schema_version varchar(36) NOT NULL);
         CREATE TABLE IF NOT EXISTS files_storage (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         directory varchar(256) UNIQUE,
         presetitem_id char(36) NOT NULL REFERENCES mapping_preset_object(uuid),
         type INTEGER NOT NULL,
-        filesize INTEGER NOT NULL,
+        filesize INTEGER,
         name varchar(48) NOT NULL);
     </sql>
   </revision>

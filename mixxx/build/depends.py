@@ -453,7 +453,6 @@ class MixxxCore(Feature):
                    "controllers/dlgprefnocontrollers.cpp",
                    "controllers/dlgmappingpresetmanager.cpp",
                    "controllers/httpclient.cpp",
-                   #"controllers/json.cpp",
 
                    "dlgprefplaylist.cpp",
                    "dlgprefcontrols.cpp",
@@ -527,7 +526,6 @@ class MixxxCore(Feature):
                    "controllers/json.cpp",
                    "controllers/wao/presetobjectwao.cpp",
                    "controllers/dao/presetobjectdao.cpp",
-                   "controllers/presetobject.cpp",
                    "main.cpp",
                    "mixxx.cpp",
                    "errordialoghandler.cpp",

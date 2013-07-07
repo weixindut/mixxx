@@ -19,7 +19,11 @@ class ControllerPresetVisitor;
 
 class ControllerPreset {
   public:
-    ControllerPreset() {}
+    ControllerPreset() {
+    	//m_preset_status = "";
+    	//m_preset_source = "";
+    	//m_pid = "";
+    }
     virtual ~ControllerPreset() {}
 
     /** addScriptFile(QString,QString)
@@ -104,6 +108,30 @@ class ControllerPreset {
         return m_mixxxVersion;
     }
 
+    inline void setPresetSource(const QString presetSource) {
+        m_preset_source = presetSource;
+    }
+
+    inline QString presetSource() const {
+        return m_preset_source;
+    }
+
+    inline void setPresetStatus(const QString presetStatus) {
+        m_preset_status = presetStatus;
+    }
+
+    inline QString presetStatus() const {
+        return m_preset_status;
+    }
+
+    inline void setPid(const QString pid) {
+        m_pid = pid;
+    }
+
+    inline QString Pid() const {
+        return m_pid;
+    }
+
     inline void addProductMatch(QHash<QString,QString> match) {
         m_productMatches.append(match);
     }
@@ -128,6 +156,9 @@ class ControllerPreset {
     QString m_wikilink;
     QString m_schemaVersion;
     QString m_mixxxVersion;
+    QString m_preset_source;
+    QString m_preset_status;
+    QString m_pid;
 };
 
 typedef QSharedPointer<ControllerPreset> ControllerPresetPointer;
