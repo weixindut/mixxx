@@ -12,12 +12,22 @@ class DlgMappingPresetManager : public QDialog {
     DlgMappingPresetManager(QWidget* parent);
     virtual ~DlgMappingPresetManager() {};
     void getJsonDataTest();
+    void addDlgControllerPreset(QWidget w);
   protected:
     Ui::DlgPresetManagerDlg& getUi() {
         return m_ui;
     }
+  private signals:
+
+  private slots:
+    void slotSearch();
+    void slotSearchLocal();
+    void slotSearchCloud();
+    void slotShowLocalSearchResults();
+    void slotShowCloudSearchResults();
   private:
     Ui::DlgPresetManagerDlg m_ui;
+    QList<ControllerPreset>
 };
 #endif
 

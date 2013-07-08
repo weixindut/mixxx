@@ -14,11 +14,21 @@
 #include "controllers/httpclient.h"
 #include "controllers/json.h"
 #include "controllers/wao/presetobjectwao.h"
+#include "controllers/dlgcontrollerpreset.h"
 using namespace QtJson;
 
 DlgMappingPresetManager::DlgMappingPresetManager(QWidget* parent)
         : QDialog(parent) {
     m_ui.setupUi(this);
+    getUi().label_localleft
+    connect(getUi().btn_search, SIGNAL(clicked()),
+               this, SLOT(slotSearch()));
+}
+void DlgMappingPresetManager::addDlgControllerPreset(QWidget w) {
+
+}
+void DlgMappingPresetManager::slotSearch() {
+	getUi().tabWidget_results
 }
 void DlgMappingPresetManager::getJsonDataTest() {
 	PresetObjectWAO pow;
