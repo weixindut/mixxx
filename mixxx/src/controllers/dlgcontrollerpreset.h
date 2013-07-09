@@ -9,7 +9,7 @@ class DlgControllerPreset: public QWidget {
   public:
     DlgControllerPreset(QWidget* parent);
     virtual ~DlgControllerPreset() {};
-
+    //void setCover
   protected:
     Ui::DlgControllerPreset& getUi() {
         return m_ui;

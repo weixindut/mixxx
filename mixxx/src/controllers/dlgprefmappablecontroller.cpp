@@ -69,7 +69,7 @@ void DlgPrefMappableController::slotShowMappingPresetManagerDialog() {
 	if (isEnabled() && !getController()->isOpen()) {
 		m_pMappingPresetManager = new DlgMappingPresetManager(this);
 		m_pMappingPresetManager->show();
-		m_pMappingPresetManager->getJsonDataTest();
+		//m_pMappingPresetManager->getJsonDataTest();
 	}
 }
 void DlgPrefMappableController::slotShowLearnDialog() {

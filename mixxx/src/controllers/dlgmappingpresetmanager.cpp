@@ -20,31 +20,51 @@ using namespace QtJson;
 DlgMappingPresetManager::DlgMappingPresetManager(QWidget* parent)
         : QDialog(parent) {
     m_ui.setupUi(this);
-    getUi().label_localleft
+    getUi().tabWidget_results->setCurrentIndex(0);
+    //getUi().label_localleft
     connect(getUi().btn_search, SIGNAL(clicked()),
                this, SLOT(slotSearch()));
+
 }
 void DlgMappingPresetManager::addDlgControllerPreset(QWidget w) {
 
 }
 void DlgMappingPresetManager::slotSearch() {
-	getUi().tabWidget_results
+    int index=getUi().tabWidget_results->currentIndex();
+    if (index==0) {
+        emit(slotSearchLocal());
+    } else {
+        getUi().tabWidget_results->setCurrentIndex(1);
+        emit(slotSearchCloud());
+    }
+	qDebug("=====slotSearch()===========%d",index);
+}
+void DlgMappingPresetManager::slotSearchLocal() {
+	QString searchcontent=getUi().lineEdit_search->text();
+}
+void DlgMappingPresetManager::slotSearchCloud() {
+	qDebug("=====slotSearchCloud()===========");
+	QString searchcontent=getUi().lineEdit_search->text();
+	PresetObjectWAO pow;
+	QList<MidiControllerPreset> presetList;
+	// TODO(wexin):fuzzy query
+	presetList=pow.getPresetByPresetName(searchcontent);
+	emit(slotShowCloudSearchResults(presetList));
+
+
+}
+void DlgMappingPresetManager::slotShowLocalSearchResults(QList<MidiControllerPreset> presets) {
+
+}
+void DlgMappingPresetManager::slotShowCloudSearchResults(QList<MidiControllerPreset> presets) {
+	qDebug("=====slotShowCloudSearchResults()===========");
+	foreach(MidiControllerPreset preset, presets) {
+		qDebug("=====in loop===========");
+        DlgControllerPreset* showpreset = new DlgControllerPreset(this);
+        getUi().gridLayout_cloudresults->addWidget(showpreset);
+    }
 }
 void DlgMappingPresetManager::getJsonDataTest() {
 	PresetObjectWAO pow;
     pow.getPresetByPresetName("Akai LPD8 - RK");
-
-    //HttpClient httpclient;
-    //bool ok;
-    //QString data = httpclient.get("http://127.0.0.1:8000/api/v1/midi/company/?format=json");
-    //qDebug() << "Print JsonObject:"+data;
-
-    //QVariantMap result = QtJson::parse(data,ok).toMap();
-    //if(!ok) {
-    //    exit(1);
-    //}
-    //foreach(QVariant plugin, result["objects"].toList()) {
-    //    QVariantMap res = plugin.toMap();
-    //    qDebug() <<"print company name:"+res["company_name"].toString();
-    //}
 }
