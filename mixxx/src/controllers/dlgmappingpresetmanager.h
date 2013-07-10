@@ -25,6 +25,8 @@ class DlgMappingPresetManager : public QDialog {
     void slotSearchCloud();
     void slotShowLocalSearchResults(QList<MidiControllerPreset> presets);
     void slotShowCloudSearchResults(QList<MidiControllerPreset> presets);
+    void slotShowLastPageResults();
+    void slotShowNextPageResults();
   private:
     Ui::DlgPresetManagerDlg m_ui;
     //QList<ControllerPreset>

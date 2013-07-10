@@ -21,10 +21,23 @@ DlgMappingPresetManager::DlgMappingPresetManager(QWidget* parent)
         : QDialog(parent) {
     m_ui.setupUi(this);
     getUi().tabWidget_results->setCurrentIndex(0);
-    //getUi().label_localleft
+    // TODO(weixin): the path may adjust
+    QPixmap pixmapleft("./res/images/controllers/goleft.png");
+    QPixmap pixmapright("./res/images/controllers/goright.png");
+    getUi().label_localleft->setPixmap(pixmapleft);
+    getUi().label_localright->setPixmap(pixmapright);
+    getUi().label_cloudleft->setPixmap(pixmapleft);
+    getUi().label_cloudright->setPixmap(pixmapright);
     connect(getUi().btn_search, SIGNAL(clicked()),
-               this, SLOT(slotSearch()));
-
+    		this, SLOT(slotSearch()));
+    connect(getUi().label_localleft,SIGNAL(clicked()),
+    		this, SLOT(slotShowLastPageResults()));
+    connect(getUi().label_localright,SIGNAL(clicked()),
+        		this, SLOT(slotShowNextPageResults()));
+    connect(getUi().label_cloudleft,SIGNAL(clicked()),
+    		this, SLOT(slotShowLastPageResults()));
+    connect(getUi().label_cloudright,SIGNAL(clicked()),
+        		this, SLOT(slotShowNextPageResults()));
 }
 void DlgMappingPresetManager::addDlgControllerPreset(QWidget w) {
 
@@ -48,7 +61,8 @@ void DlgMappingPresetManager::slotSearchCloud() {
 	PresetObjectWAO pow;
 	QList<MidiControllerPreset> presetList;
 	// TODO(wexin):fuzzy query
-	presetList=pow.getPresetByPresetName(searchcontent);
+	//presetList=pow.getPresetByPresetName(searchcontent);
+	presetList=pow.getPresetByURL("http://127.0.0.1:8000/api/v1/midi/preset/?format=json");
 	emit(slotShowCloudSearchResults(presetList));
 
 
@@ -58,11 +72,25 @@ void DlgMappingPresetManager::slotShowLocalSearchResults(QList<MidiControllerPre
 }
 void DlgMappingPresetManager::slotShowCloudSearchResults(QList<MidiControllerPreset> presets) {
 	qDebug("=====slotShowCloudSearchResults()===========");
+	int row=0;
+	int column=0;
 	foreach(MidiControllerPreset preset, presets) {
 		qDebug("=====in loop===========");
         DlgControllerPreset* showpreset = new DlgControllerPreset(this);
-        getUi().gridLayout_cloudresults->addWidget(showpreset);
+
+        getUi().gridLayout_cloudresults->addWidget(showpreset,row,++column);
+
+
+
+
+
     }
+}
+void DlgMappingPresetManager::slotShowNextPageResults() {
+
+}
+void DlgMappingPresetManager::slotShowLastPageResults() {
+
 }
 void DlgMappingPresetManager::getJsonDataTest() {
 	PresetObjectWAO pow;
