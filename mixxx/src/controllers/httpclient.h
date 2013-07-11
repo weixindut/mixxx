@@ -33,14 +33,12 @@ class HttpClient : public QObject {
     QString saveFileName(const QUrl& url);
     bool saveToDisk(const QString& filename, QIODevice* data);
     void downloadFile(const QString path);
-  //public slots:
-    //void downloadFinished(QNetworkReply* reply);
+
   private:
     void waitForFinish(QNetworkReply* reply);
 
     QNetworkAccessManager* m_manager;
     QTextCodec* m_textCodec;
-
     QList<QNetworkReply* > m_currentDownloads;
 
 };

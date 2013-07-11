@@ -12,8 +12,6 @@ HttpClient::HttpClient(QObject* parent) : QObject(parent) {
     m_manager = new QNetworkAccessManager(this);
     m_manager->setCookieJar(new QNetworkCookieJar(this));
     m_textCodec = NULL;
-    //connect(m_manager, SIGNAL(finished(QNetworkReply*)),
-    //        SLOT(downloadFinished(QNetworkReply*)));
 }
 
 HttpClient::~HttpClient() {
@@ -116,7 +114,6 @@ void HttpClient::doDownload(const QUrl& url) {
     QNetworkReply* reply = m_manager->get(request);
     m_currentDownloads.append(reply);
     waitForFinish(reply);
-    //QUrl url = reply->url();
     if (reply->error()) {
         fprintf(stderr, "Download of %s failed: %s\n",
                 url.toEncoded().constData(),
@@ -170,28 +167,6 @@ bool HttpClient::saveToDisk(const QString& filename, QIODevice* data) {
 
     return true;
 }
-
-/*void HttpClient::downloadFinished(QNetworkReply* reply)
-{
-    QUrl url = reply->url();
-    if (reply->error()) {
-        fprintf(stderr, "Download of %s failed: %s\n",
-                url.toEncoded().constData(),
-                qPrintable(reply->errorString()));
-    } else {
-        QString filename = saveFileName(url);
-        if (saveToDisk(filename, reply))
-            printf("Download of %s succeded (saved to %s)\n",
-                   url.toEncoded().constData(), qPrintable(filename));
-    }
-
-    m_currentDownloads.removeAll(reply);
-    reply->deleteLater();
-
-    if (m_currentDownloads.isEmpty()) {
-        qDebug()<<"all downloads finished";
-    }
-}*/
 
 void HttpClient::downloadFile(const QString path) {
 	QUrl url;
