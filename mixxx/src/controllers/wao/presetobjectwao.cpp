@@ -33,11 +33,10 @@ QList<MidiControllerPreset> PresetObjectWAO::getPresetByURL(QString url) {
         QString schema_version = res["schema_version"].toString();
         QString picture_file = res["picture_file"].toString();
         QString xml_file = res["xml_file"].toString();
-        QString picFilepath;
-        QHttp http;
-        QTemporaryFile file;
-        file.open();
-        http.get(picture_file);
+
+        httpclient.downloadFile(picture_file);
+        httpclient.downloadFile(xml_file);
+
         MidiControllerPreset controllerpreset;
         controllerpreset.setPid(pid);
         controllerpreset.setPresetStatus(preset_status);

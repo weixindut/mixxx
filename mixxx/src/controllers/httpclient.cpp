@@ -4,13 +4,16 @@
 #include <QStringList>
 #include <QtNetwork/QNetworkCookieJar>
 #include <QtNetwork/QNetworkRequest>
-
+#include <QFileInfo>
+#include <QDebug>
 #include "httpclient.h"
 
 HttpClient::HttpClient(QObject* parent) : QObject(parent) {
     m_manager = new QNetworkAccessManager(this);
     m_manager->setCookieJar(new QNetworkCookieJar(this));
     m_textCodec = NULL;
+    //connect(m_manager, SIGNAL(finished(QNetworkReply*)),
+    //        SLOT(downloadFinished(QNetworkReply*)));
 }
 
 HttpClient::~HttpClient() {
@@ -106,4 +109,95 @@ void HttpClient::waitForFinish(QNetworkReply* reply) {
     QEventLoop loop;
     connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
     loop.exec();
+}
+
+void HttpClient::doDownload(const QUrl& url) {
+    QNetworkRequest request(url);
+    QNetworkReply* reply = m_manager->get(request);
+    m_currentDownloads.append(reply);
+    waitForFinish(reply);
+    //QUrl url = reply->url();
+    if (reply->error()) {
+        fprintf(stderr, "Download of %s failed: %s\n",
+                url.toEncoded().constData(),
+                qPrintable(reply->errorString()));
+    } else {
+        QString filename = saveFileName(url);
+        if (saveToDisk(filename, reply)) {
+        	printf("Download of %s succeded (saved to %s)\n",
+        	        url.toEncoded().constData(), qPrintable(filename));
+        }
+    }
+    m_currentDownloads.removeAll(reply);
+    reply->deleteLater();
+    if (m_currentDownloads.isEmpty()) {
+        qDebug()<<"all downloads finished";
+    }
+}
+
+QString HttpClient::saveFileName(const QUrl& url) {
+    QString path = url.path();
+    QString basename = QFileInfo(path).fileName();
+
+    if (basename.isEmpty())
+        basename = "index.html";
+
+    if (QFile::exists(basename)) {
+        // already exists, don't overwrite
+        int i = 0;
+        basename += '.';
+        while (QFile::exists(basename + QString::number(i))) {
+        	++i;
+        }
+        basename += QString::number(i);
+    }
+
+    return basename;
+}
+
+bool HttpClient::saveToDisk(const QString& filename, QIODevice* data) {
+    QFile file;
+    file.setFileName("./tmp/"+filename);
+    if (!file.open(QIODevice::WriteOnly)) {
+        fprintf(stderr, "Could not open %s for writing: %s\n",
+                qPrintable(filename),
+                qPrintable(file.errorString()));
+        return false;
+    }
+
+    file.write(data->readAll());
+    file.close();
+
+    return true;
+}
+
+/*void HttpClient::downloadFinished(QNetworkReply* reply)
+{
+    QUrl url = reply->url();
+    if (reply->error()) {
+        fprintf(stderr, "Download of %s failed: %s\n",
+                url.toEncoded().constData(),
+                qPrintable(reply->errorString()));
+    } else {
+        QString filename = saveFileName(url);
+        if (saveToDisk(filename, reply))
+            printf("Download of %s succeded (saved to %s)\n",
+                   url.toEncoded().constData(), qPrintable(filename));
+    }
+
+    m_currentDownloads.removeAll(reply);
+    reply->deleteLater();
+
+    if (m_currentDownloads.isEmpty()) {
+        qDebug()<<"all downloads finished";
+    }
+}*/
+
+void HttpClient::downloadFile(const QString path) {
+	QUrl url;
+    url.setHost("127.0.0.1");
+    url.setPort(8000);
+    url.setScheme("http");
+    url.setPath(path);
+    doDownload(url);
 }
