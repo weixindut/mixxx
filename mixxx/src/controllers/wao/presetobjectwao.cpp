@@ -32,22 +32,14 @@ QList<MidiControllerPreset> PresetObjectWAO::getPresetByURL(QString url) {
         QString controller_name = res["controller_name"].toString();
         QString schema_version = res["schema_version"].toString();
         QString picture_file = res["picture_file"].toString();
-        QString xml_file = res["xml_file"].toString();
-
-        httpclient.downloadFile(picture_file);
-        httpclient.downloadFile(xml_file);
+        float avg_rating = res["avg_ratings"].toFloat();
+        QString picture_name = httpclient.downloadFile(picture_file);
+        //QString xml_file = res["xml_file"].toString();
+        //httpclient.downloadFile(xml_file);
 
         MidiControllerPreset controllerpreset;
         controllerpreset.setPid(pid);
-        controllerpreset.setPresetStatus(preset_status);
-        controllerpreset.setPresetSource(preset_source);
-        controllerpreset.setMixxxVersion(mixxx_version);
-        controllerpreset.setSchemaVersion(schema_version);
-        controllerpreset.setDescription(description);
         controllerpreset.setAuthor(author);
-        controllerpreset.setName(preset_name);
-        controllerpreset.setFilePath("");
-        controllerpreset.setDeviceId(controller_name);
         if (url.contains("forums")) {
             controllerpreset.setForumLink(url);
             controllerpreset.setWikiLink("");
@@ -58,6 +50,16 @@ QList<MidiControllerPreset> PresetObjectWAO::getPresetByURL(QString url) {
         	controllerpreset.setForumLink("");
         	controllerpreset.setWikiLink("");
         }
+        controllerpreset.setDescription(description);
+        controllerpreset.setPresetSource(preset_source);
+        controllerpreset.setPresetStatus(preset_status);
+        controllerpreset.setMixxxVersion(mixxx_version);
+        controllerpreset.setName(preset_name);
+        controllerpreset.setDeviceId(controller_name);
+        controllerpreset.setSchemaVersion(schema_version);
+        controllerpreset.setPicturePath("./tmp/"+picture_name);
+        controllerpreset.setRatings(avg_rating);
+        controllerpreset.setFilePath("");
 
         presetList.append(controllerpreset);
     }

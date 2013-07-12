@@ -9,7 +9,12 @@ class DlgControllerPreset: public QWidget {
   public:
     DlgControllerPreset(QWidget* parent);
     virtual ~DlgControllerPreset() {};
-    //void setCover
+    void setCover(QString path);
+    void setPresetName(QString name);
+    void setSource(QString source);
+    void setStatus(QString status);
+    void setRatings(float ratings);
+
   protected:
     Ui::DlgControllerPreset& getUi() {
         return m_ui;

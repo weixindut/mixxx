@@ -19,11 +19,7 @@ class ControllerPresetVisitor;
 
 class ControllerPreset {
   public:
-    ControllerPreset() {
-    	//m_preset_status = "";
-    	//m_preset_source = "";
-    	//m_pid = "";
-    }
+    ControllerPreset() {}
     virtual ~ControllerPreset() {}
 
     /** addScriptFile(QString,QString)
@@ -132,6 +128,22 @@ class ControllerPreset {
         return m_pid;
     }
 
+    inline void setPicturePath(const QString path) {
+        m_picture_path = path;
+    }
+
+    inline QString picturePath() const {
+        return m_picture_path;
+    }
+
+    inline void setRatings(const float ratings) {
+    	m_ratings = ratings;
+    }
+
+    inline float Ratings() const {
+        return m_ratings;
+    }
+
     inline void addProductMatch(QHash<QString,QString> match) {
         m_productMatches.append(match);
     }
@@ -159,6 +171,8 @@ class ControllerPreset {
     QString m_preset_source;
     QString m_preset_status;
     QString m_pid;
+    QString m_picture_path;
+    float m_ratings;
 };
 
 typedef QSharedPointer<ControllerPreset> ControllerPresetPointer;

@@ -77,13 +77,12 @@ void DlgMappingPresetManager::slotShowCloudSearchResults(QList<MidiControllerPre
 	foreach(MidiControllerPreset preset, presets) {
 		qDebug("=====in loop===========");
         DlgControllerPreset* showpreset = new DlgControllerPreset(this);
-
+        showpreset->setCover(preset.picturePath());
+        showpreset->setPresetName(preset.name());
+        showpreset->setSource(preset.presetSource());
+        showpreset->setStatus(preset.presetStatus());
+        showpreset->setRatings(preset.Ratings());
         getUi().gridLayout_cloudresults->addWidget(showpreset,row,++column);
-
-
-
-
-
     }
 }
 void DlgMappingPresetManager::slotShowNextPageResults() {

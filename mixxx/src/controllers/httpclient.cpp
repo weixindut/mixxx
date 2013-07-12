@@ -109,7 +109,8 @@ void HttpClient::waitForFinish(QNetworkReply* reply) {
     loop.exec();
 }
 
-void HttpClient::doDownload(const QUrl& url) {
+QString HttpClient::doDownload(const QUrl& url) {
+	QString filename;
     QNetworkRequest request(url);
     QNetworkReply* reply = m_manager->get(request);
     m_currentDownloads.append(reply);
@@ -119,7 +120,7 @@ void HttpClient::doDownload(const QUrl& url) {
                 url.toEncoded().constData(),
                 qPrintable(reply->errorString()));
     } else {
-        QString filename = saveFileName(url);
+        filename = saveFileName(url);
         if (saveToDisk(filename, reply)) {
         	printf("Download of %s succeded (saved to %s)\n",
         	        url.toEncoded().constData(), qPrintable(filename));
@@ -130,6 +131,7 @@ void HttpClient::doDownload(const QUrl& url) {
     if (m_currentDownloads.isEmpty()) {
         qDebug()<<"all downloads finished";
     }
+    return filename;
 }
 
 QString HttpClient::saveFileName(const QUrl& url) {
@@ -168,11 +170,11 @@ bool HttpClient::saveToDisk(const QString& filename, QIODevice* data) {
     return true;
 }
 
-void HttpClient::downloadFile(const QString path) {
+QString HttpClient::downloadFile(const QString path) {
 	QUrl url;
     url.setHost("127.0.0.1");
     url.setPort(8000);
     url.setScheme("http");
     url.setPath(path);
-    doDownload(url);
+    return doDownload(url);
 }
