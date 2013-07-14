@@ -2,6 +2,9 @@
 #define DLGMAPPINGPRESETMANAGER_H_
 #include <QtGui>
 #include <QHash>
+#include <QList>
+#include <QStackedLayout>
+#include <QGridLayout>
 
 #include "controllers/ui_dlgmappingpresetmanagerdlg.h"
 #include "controllers/midi/midicontrollerpreset.h"
@@ -23,13 +26,20 @@ class DlgMappingPresetManager : public QDialog {
     void slotSearch();
     void slotSearchLocal();
     void slotSearchCloud();
-    void slotShowLocalSearchResults(QList<MidiControllerPreset> presets);
-    void slotShowCloudSearchResults(QList<MidiControllerPreset> presets);
-    void slotShowLastPageResults();
-    void slotShowNextPageResults();
+    void slotShowLocalSearchResults();
+    void slotShowCloudSearchResults();
+    void slotShowCloudLastPageResults();
+    void slotShowCloudNextPageResults();
+    void slotShowLocalLastPageResults();
+    void slotShowLocalNextPageResults();
   private:
     Ui::DlgPresetManagerDlg m_ui;
-    //QList<ControllerPreset>
+    QList<MidiControllerPreset> m_presetListCloud;
+    QList<MidiControllerPreset> m_presetListLocal;
+    int m_currentCloudResultsPage;
+    int m_currentLocalResultsPage;
+    //QStackedLayout* m_pStackedLayoutCloud;
+    //QList<QGridLayout> m_gridLayoutList;
 };
 #endif
 

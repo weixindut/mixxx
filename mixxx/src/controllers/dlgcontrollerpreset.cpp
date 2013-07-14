@@ -21,6 +21,8 @@ void DlgControllerPreset::setSource(QString source) {
 	    getUi().label_source->setPixmap(pixmap);
 	} else {
 	    qDebug() <<"Source string is neither forum nor mixxx, but"+source +"\n";
+		QPixmap pixmap("./res/images/controllers/forum.png");
+		getUi().label_source->setPixmap(pixmap);
 	}
 }
 void DlgControllerPreset::setStatus(QString status) {

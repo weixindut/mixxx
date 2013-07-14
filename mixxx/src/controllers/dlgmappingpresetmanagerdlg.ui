@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>830</width>
+    <width>831</width>
     <height>729</height>
    </rect>
   </property>
@@ -43,41 +43,35 @@
      </property>
      <layout class="QGridLayout" name="gridLayout_localresults"/>
     </widget>
-    <widget class="QLabel" name="label_localleft">
+    <widget class="QPushButton" name="btn_localleft">
      <property name="geometry">
       <rect>
        <x>0</x>
-       <y>230</y>
+       <y>210</y>
        <width>31</width>
-       <height>41</height>
+       <height>51</height>
       </rect>
      </property>
      <property name="text">
       <string/>
      </property>
-     <property name="pixmap">
-      <pixmap>../../res/images/controllers/goleft.png</pixmap>
-     </property>
-     <property name="scaledContents">
+     <property name="flat">
       <bool>true</bool>
      </property>
     </widget>
-    <widget class="QLabel" name="label_localright">
+    <widget class="QPushButton" name="btn_localright">
      <property name="geometry">
       <rect>
        <x>770</x>
-       <y>230</y>
+       <y>210</y>
        <width>31</width>
-       <height>41</height>
+       <height>51</height>
       </rect>
      </property>
      <property name="text">
       <string/>
      </property>
-     <property name="pixmap">
-      <pixmap>../../res/images/controllers/goright.png</pixmap>
-     </property>
-     <property name="scaledContents">
+     <property name="flat">
       <bool>true</bool>
      </property>
     </widget>
@@ -97,41 +91,35 @@
      </property>
      <layout class="QGridLayout" name="gridLayout_cloudresults"/>
     </widget>
-    <widget class="QLabel" name="label_cloudleft">
+    <widget class="QPushButton" name="btn_cloudleft">
      <property name="geometry">
       <rect>
        <x>0</x>
-       <y>230</y>
+       <y>210</y>
        <width>31</width>
-       <height>41</height>
+       <height>51</height>
       </rect>
      </property>
      <property name="text">
       <string/>
      </property>
-     <property name="pixmap">
-      <pixmap>../../res/images/controllers/goleft.png</pixmap>
-     </property>
-     <property name="scaledContents">
+     <property name="flat">
       <bool>true</bool>
      </property>
     </widget>
-    <widget class="QLabel" name="label_cloudright">
+    <widget class="QPushButton" name="btn_cloudright">
      <property name="geometry">
       <rect>
        <x>770</x>
-       <y>230</y>
+       <y>210</y>
        <width>31</width>
-       <height>41</height>
+       <height>51</height>
       </rect>
      </property>
      <property name="text">
       <string/>
      </property>
-     <property name="pixmap">
-      <pixmap>../../res/images/controllers/goright.png</pixmap>
-     </property>
-     <property name="scaledContents">
+     <property name="flat">
       <bool>true</bool>
      </property>
     </widget>
