@@ -1,4 +1,5 @@
 #include <QDebug>
+#include <QFont>
 #include "controllers/dlgcontrollerpreset.h"
 
 DlgControllerPreset::DlgControllerPreset(QWidget* parent)
@@ -11,6 +12,12 @@ void DlgControllerPreset::setCover(QString path) {
 }
 void DlgControllerPreset::setPresetName(QString name) {
 	getUi().label_name->setText(name);
+	QFont ft;
+	ft.setBold(true);
+	getUi().label_name->setFont(ft);
+	getUi().label_name->setGeometry(QRect(10, 100, 131, 20*2));
+	getUi().label_name->setWordWrap(true);
+	getUi().label_name->setAlignment(Qt::AlignTop);
 }
 void DlgControllerPreset::setSource(QString source) {
 	if(source == "forum") {
@@ -41,24 +48,27 @@ void DlgControllerPreset::setStatus(QString status) {
 	} else {
 		qDebug() <<"Wrong status string:"+status +"\n";
 	}
-
+	QFont ft;
+	ft.setPointSize(11);
+	getUi().label_certification->setFont(ft);
+	getUi().label_certification->adjustSize();
 }
 void DlgControllerPreset::setRatings(float ratings) {
 	int value = qRound(ratings);
 	if (value == 1) {
-		QPixmap pixmap("./res/images/controllers/1starts.png");
+		QPixmap pixmap("./res/images/controllers/1stars.png");
 		getUi().label_mark->setPixmap(pixmap);
 	} else if (value == 2) {
-	    QPixmap pixmap("./res/images/controllers/2starts.png");
+	    QPixmap pixmap("./res/images/controllers/2stars.png");
 	    getUi().label_mark->setPixmap(pixmap);
 	} else if (value == 3) {
-		QPixmap pixmap("./res/images/controllers/3starts.png");
+		QPixmap pixmap("./res/images/controllers/3stars.png");
 		getUi().label_mark->setPixmap(pixmap);
 	} else if (value == 4) {
-		QPixmap pixmap("./res/images/controllers/4starts.png");
+		QPixmap pixmap("./res/images/controllers/4stars.png");
 		getUi().label_mark->setPixmap(pixmap);
 	} else if (value == 5) {
-		QPixmap pixmap("./res/images/controllers/5fullstarts.png");
+		QPixmap pixmap("./res/images/controllers/5stars.png");
 		getUi().label_mark->setPixmap(pixmap);
 	} else {
 	    qDebug("Not support this rating:%d\n",value);

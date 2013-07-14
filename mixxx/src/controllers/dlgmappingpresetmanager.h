@@ -13,9 +13,8 @@ class DlgMappingPresetManager : public QDialog {
     Q_OBJECT
   public:
     DlgMappingPresetManager(QWidget* parent);
-    virtual ~DlgMappingPresetManager() {};
+    virtual ~DlgMappingPresetManager();
     void getJsonDataTest();
-    void addDlgControllerPreset(QWidget w);
   protected:
     Ui::DlgPresetManagerDlg& getUi() {
         return m_ui;
@@ -39,7 +38,7 @@ class DlgMappingPresetManager : public QDialog {
     int m_currentCloudResultsPage;
     int m_currentLocalResultsPage;
     //QStackedLayout* m_pStackedLayoutCloud;
-    //QList<QGridLayout> m_gridLayoutList;
+    QList<QGridLayout* > m_gridLayoutListCloud;
 };
 #endif
 

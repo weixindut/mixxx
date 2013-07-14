@@ -53,12 +53,23 @@ DlgMappingPresetManager::DlgMappingPresetManager(QWidget* parent)
     getUi().btn_cloudright->setMask(pixmapright.mask());
     getUi().btn_cloudright->setEnabled(false);
 
+    //m_pStackedLayoutCloud = new QStackedLayout();
+    //getUi().layout_cloudResults->addLayout(m_pStackedLayoutCloud);
     connect(getUi().btn_search, SIGNAL(clicked()),
     		this, SLOT(slotSearch()));
 }
-void DlgMappingPresetManager::addDlgControllerPreset(QWidget w) {
-
+DlgMappingPresetManager::~DlgMappingPresetManager()
+{
+	for(int i=0;i<m_gridLayoutListCloud.size();i++) {
+	    delete m_gridLayoutListCloud[i];
+	}
+	m_gridLayoutListCloud.clear();
+	m_presetListCloud.clear();
+	for(int i=0;i<getUi().stackedWidgetCloud->count();i++) {
+	    getUi().stackedWidgetCloud->removeWidget(getUi().stackedWidgetCloud->widget(i));
+	}
 }
+
 void DlgMappingPresetManager::slotSearch() {
     int index=getUi().tabWidget_results->currentIndex();
     if (index==0) {
@@ -74,14 +85,20 @@ void DlgMappingPresetManager::slotSearchLocal() {
 }
 void DlgMappingPresetManager::slotSearchCloud() {
 	qDebug("=====slotSearchCloud()===========");
+	for(int i=0;i<m_gridLayoutListCloud.size();i++) {
+		delete m_gridLayoutListCloud[i];
+	}
+	m_gridLayoutListCloud.clear();
+	m_presetListCloud.clear();
+	for(int i=0;i<getUi().stackedWidgetCloud->count();i++) {
+	    getUi().stackedWidgetCloud->removeWidget(getUi().stackedWidgetCloud->widget(i));
+	}
 	QString searchcontent=getUi().lineEdit_search->text();
 	PresetObjectWAO pow;
 	// TODO(wexin):fuzzy query
-	//presetList=pow.getPresetByPresetName(searchcontent);
-	m_presetListCloud=pow.getPresetByURL("http://127.0.0.1:8000/api/v1/midi/preset/?format=json");
+	m_presetListCloud=pow.getPresetByPresetName(searchcontent);
+	//m_presetListCloud=pow.getPresetByURL("http://127.0.0.1:8000/api/v1/midi/preset/?format=json");
 	emit(slotShowCloudSearchResults());
-
-
 }
 void DlgMappingPresetManager::slotShowLocalSearchResults() {
 
@@ -92,25 +109,23 @@ void DlgMappingPresetManager::slotShowCloudSearchResults() {
             this, SLOT(slotShowCloudLastPageResults()));
     connect(getUi().btn_cloudright,SIGNAL(clicked()),
             this, SLOT(slotShowCloudNextPageResults()));
-
-    for(int i=0; i<getUi().gridLayout_cloudresults->count();i++) {
-    	qDebug("=====removeItem()%d===========",i);
-        getUi().gridLayout_cloudresults->removeItem(getUi().gridLayout_cloudresults->itemAt(i));
-    }
-    int num;
     if(m_presetListCloud.size()>8) {
-        num=8;
         getUi().btn_cloudright->setEnabled(true);
     } else {
-        num=m_presetListCloud.size();
         getUi().btn_cloudright->setEnabled(false);
     }
-    int row=0;
-    int column=0;
-    for(int i=0;i<num;i++) {
-    	if(i==4) {
-    		row++;
-    		column=0;
+    for(int i=0,row=0,column=0;i<m_presetListCloud.size();i++,column++) {
+    	if(i%4==0) {
+    	    row++;
+    	    column=0;
+        	if(i%8==0) {
+        		QWidget* pPageWidget = new QWidget();
+        		QGridLayout* gridLayout = new QGridLayout();
+        		pPageWidget->setLayout(gridLayout);
+        		m_gridLayoutListCloud.append(gridLayout);
+        		getUi().stackedWidgetCloud->addWidget(pPageWidget);
+        		row=0;
+        	}
     	}
         DlgControllerPreset* showpreset = new DlgControllerPreset(this);
         showpreset->setCover(m_presetListCloud[i].picturePath());
@@ -118,8 +133,9 @@ void DlgMappingPresetManager::slotShowCloudSearchResults() {
         showpreset->setSource(m_presetListCloud[i].presetSource());
         showpreset->setStatus(m_presetListCloud[i].presetStatus());
         showpreset->setRatings(m_presetListCloud[i].Ratings());
-        getUi().gridLayout_cloudresults->addWidget(showpreset,row,++column);
+    	m_gridLayoutListCloud[i/8]->addWidget(showpreset,row,++column);
     }
+    getUi().stackedWidgetCloud->setCurrentIndex(m_currentCloudResultsPage);
 }
 void DlgMappingPresetManager::slotShowCloudNextPageResults() {
 	qDebug()<<"============slotShowCloudNextPageResults===========";
@@ -134,31 +150,7 @@ void DlgMappingPresetManager::slotShowCloudNextPageResults() {
     } else {
         getUi().btn_cloudright->setEnabled(true);
     }
-    int num;
-    if((m_currentCloudResultsPage+1)*8>m_presetListCloud.size()) {
-        num=m_presetListCloud.size();
-    } else {
-        num=(m_currentCloudResultsPage+1)*8;
-    }
-    for(int i=0; i<getUi().gridLayout_cloudresults->count();i++) {
-    	qDebug("=====removeItem()%d===========",i);
-        getUi().gridLayout_cloudresults->removeItem(getUi().gridLayout_cloudresults->itemAt(i));
-    }
-    int row=0;
-    int column=0;
-    for(int i=m_currentCloudResultsPage*8;i<num;i++) {
-        if(i==m_currentCloudResultsPage*8+4) {
-            row++;
-            column=0;
-        }
-        DlgControllerPreset* showpreset = new DlgControllerPreset(this);
-        showpreset->setCover(m_presetListCloud[i].picturePath());
-        showpreset->setPresetName(m_presetListCloud[i].name());
-        showpreset->setSource(m_presetListCloud[i].presetSource());
-        showpreset->setStatus(m_presetListCloud[i].presetStatus());
-        showpreset->setRatings(m_presetListCloud[i].Ratings());
-        getUi().gridLayout_cloudresults->addWidget(showpreset,row,++column);
-    }
+    getUi().stackedWidgetCloud->setCurrentIndex(m_currentCloudResultsPage);
 }
 void DlgMappingPresetManager::slotShowCloudLastPageResults() {
 	qDebug()<<"============slotShowCloudLastPageResults===========";
@@ -174,25 +166,7 @@ void DlgMappingPresetManager::slotShowCloudLastPageResults() {
         getUi().btn_cloudright->setEnabled(true);
     }
 
-    for(int i=0; i<getUi().gridLayout_cloudresults->count();i++) {
-    	qDebug("=====removeItem()%d===========",i);
-        getUi().gridLayout_cloudresults->removeItem(getUi().gridLayout_cloudresults->itemAt(i));
-    }
-    int row=0;
-    int column=0;
-    for(int i=m_currentCloudResultsPage*8;i<(m_currentCloudResultsPage+1)*8;i++) {
-        if(i==m_currentCloudResultsPage*8+4) {
-            row++;
-            column=0;
-        }
-        DlgControllerPreset* showpreset = new DlgControllerPreset(this);
-        showpreset->setCover(m_presetListCloud[i].picturePath());
-        showpreset->setPresetName(m_presetListCloud[i].name());
-        showpreset->setSource(m_presetListCloud[i].presetSource());
-        showpreset->setStatus(m_presetListCloud[i].presetStatus());
-        showpreset->setRatings(m_presetListCloud[i].Ratings());
-        getUi().gridLayout_cloudresults->addWidget(showpreset,row,++column);
-    }
+    getUi().stackedWidgetCloud->setCurrentIndex(m_currentCloudResultsPage);
 }
 void DlgMappingPresetManager::slotShowLocalLastPageResults() {
 
