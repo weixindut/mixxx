@@ -9,7 +9,7 @@ PresetObjectDAO::PresetObjectDAO(QSqlDatabase& database)
 }
 
 QList<MidiControllerPreset> PresetObjectDAO::getPresetByPresetName(QString name) {
-	ScopedTransaction transaction(m_database);
+    ScopedTransaction transaction(m_database);
     QList<MidiControllerPreset> presetList;
 
     QSqlQuery query(m_database);
@@ -56,6 +56,6 @@ QList<MidiControllerPreset> PresetObjectDAO::getPresetByPresetName(QString name)
 
         presetList.append(controllerpreset);
     }
-	transaction.commit();
-	return presetList;
+    transaction.commit();
+    return presetList;
 }

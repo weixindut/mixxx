@@ -19,7 +19,6 @@ class DlgMappingPresetManager : public QDialog {
     Ui::DlgPresetManagerDlg& getUi() {
         return m_ui;
     }
-  //private signals:
 
   private slots:
     void slotSearch();
@@ -31,13 +30,13 @@ class DlgMappingPresetManager : public QDialog {
     void slotShowCloudNextPageResults();
     void slotShowLocalLastPageResults();
     void slotShowLocalNextPageResults();
+
   private:
     Ui::DlgPresetManagerDlg m_ui;
     QList<MidiControllerPreset> m_presetListCloud;
     QList<MidiControllerPreset> m_presetListLocal;
     int m_currentCloudResultsPage;
     int m_currentLocalResultsPage;
-    //QStackedLayout* m_pStackedLayoutCloud;
     QList<QGridLayout* > m_gridLayoutListCloud;
 };
 #endif

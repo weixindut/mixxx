@@ -53,52 +53,51 @@ DlgMappingPresetManager::DlgMappingPresetManager(QWidget* parent)
     getUi().btn_cloudright->setMask(pixmapright.mask());
     getUi().btn_cloudright->setEnabled(false);
 
-    //m_pStackedLayoutCloud = new QStackedLayout();
-    //getUi().layout_cloudResults->addLayout(m_pStackedLayoutCloud);
     connect(getUi().btn_search, SIGNAL(clicked()),
-    		this, SLOT(slotSearch()));
+            this, SLOT(slotSearch()));
 }
-DlgMappingPresetManager::~DlgMappingPresetManager()
-{
-	for(int i=0;i<m_gridLayoutListCloud.size();i++) {
-	    delete m_gridLayoutListCloud[i];
-	}
-	m_gridLayoutListCloud.clear();
-	m_presetListCloud.clear();
-	for(int i=0;i<getUi().stackedWidgetCloud->count();i++) {
-	    getUi().stackedWidgetCloud->removeWidget(getUi().stackedWidgetCloud->widget(i));
-	}
+
+DlgMappingPresetManager::~DlgMappingPresetManager() {
+    for(int i=0;i<m_gridLayoutListCloud.size();i++) {
+        delete m_gridLayoutListCloud[i];
+    }
+    m_gridLayoutListCloud.clear();
+    m_presetListCloud.clear();
+    for(int i=0;i<getUi().stackedWidgetCloud->count();i++) {
+        getUi().stackedWidgetCloud->removeWidget(getUi().stackedWidgetCloud->widget(i));
+    }
 }
 
 void DlgMappingPresetManager::slotSearch() {
     int index=getUi().tabWidget_results->currentIndex();
-    if (index==0) {
+    if (index == 0) {
         emit(slotSearchLocal());
     } else {
         getUi().tabWidget_results->setCurrentIndex(1);
         emit(slotSearchCloud());
     }
-	qDebug("=====slotSearch()===========%d",index);
+    qDebug("=====slotSearch()===========%d",index);
 }
+
 void DlgMappingPresetManager::slotSearchLocal() {
-	QString searchcontent=getUi().lineEdit_search->text();
+    QString searchcontent=getUi().lineEdit_search->text();
 }
 void DlgMappingPresetManager::slotSearchCloud() {
-	qDebug("=====slotSearchCloud()===========");
-	for(int i=0;i<m_gridLayoutListCloud.size();i++) {
-		delete m_gridLayoutListCloud[i];
-	}
-	m_gridLayoutListCloud.clear();
-	m_presetListCloud.clear();
-	for(int i=0;i<getUi().stackedWidgetCloud->count();i++) {
-	    getUi().stackedWidgetCloud->removeWidget(getUi().stackedWidgetCloud->widget(i));
-	}
-	QString searchcontent=getUi().lineEdit_search->text();
-	PresetObjectWAO pow;
-	// TODO(wexin):fuzzy query
-	m_presetListCloud=pow.getPresetByPresetName(searchcontent);
-	//m_presetListCloud=pow.getPresetByURL("http://127.0.0.1:8000/api/v1/midi/preset/?format=json");
-	emit(slotShowCloudSearchResults());
+    qDebug("=====slotSearchCloud()===========");
+    for(int i=0;i<m_gridLayoutListCloud.size();i++) {
+    	delete m_gridLayoutListCloud[i];
+    }
+    m_gridLayoutListCloud.clear();
+    m_presetListCloud.clear();
+    for(int i=0;i<getUi().stackedWidgetCloud->count();i++) {
+        getUi().stackedWidgetCloud->removeWidget(getUi().stackedWidgetCloud->widget(i));
+    }
+    QString searchcontent=getUi().lineEdit_search->text();
+    PresetObjectWAO pow;
+    // TODO(wexin):fuzzy query
+    m_presetListCloud=pow.getPresetByPresetName(searchcontent);
+    //m_presetListCloud=pow.getPresetByURL("http://127.0.0.1:8000/api/v1/midi/preset/?format=json");
+    emit(slotShowCloudSearchResults());
 }
 void DlgMappingPresetManager::slotShowLocalSearchResults() {
 
@@ -115,35 +114,35 @@ void DlgMappingPresetManager::slotShowCloudSearchResults() {
         getUi().btn_cloudright->setEnabled(false);
     }
     for(int i=0,row=0,column=0;i<m_presetListCloud.size();i++,column++) {
-    	if(i%4==0) {
-    	    row++;
-    	    column=0;
-        	if(i%8==0) {
-        		QWidget* pPageWidget = new QWidget();
-        		QGridLayout* gridLayout = new QGridLayout();
-        		pPageWidget->setLayout(gridLayout);
-        		m_gridLayoutListCloud.append(gridLayout);
-        		getUi().stackedWidgetCloud->addWidget(pPageWidget);
-        		row=0;
-        	}
-    	}
+        if(i%4==0) {
+            row++;
+            column=0;
+            if(i%8==0) {
+                QWidget* pPageWidget = new QWidget();
+                QGridLayout* gridLayout = new QGridLayout();
+                pPageWidget->setLayout(gridLayout);
+                m_gridLayoutListCloud.append(gridLayout);
+                getUi().stackedWidgetCloud->addWidget(pPageWidget);
+                row=0;
+            }
+        }
         DlgControllerPreset* showpreset = new DlgControllerPreset(this);
         showpreset->setCover(m_presetListCloud[i].picturePath());
         showpreset->setPresetName(m_presetListCloud[i].name());
         showpreset->setSource(m_presetListCloud[i].presetSource());
         showpreset->setStatus(m_presetListCloud[i].presetStatus());
         showpreset->setRatings(m_presetListCloud[i].Ratings());
-    	m_gridLayoutListCloud[i/8]->addWidget(showpreset,row,++column);
+        m_gridLayoutListCloud[i/8]->addWidget(showpreset,row,++column);
     }
     getUi().stackedWidgetCloud->setCurrentIndex(m_currentCloudResultsPage);
 }
 void DlgMappingPresetManager::slotShowCloudNextPageResults() {
-	qDebug()<<"============slotShowCloudNextPageResults===========";
+    qDebug()<<"============slotShowCloudNextPageResults===========";
     m_currentCloudResultsPage++;
     if(m_currentCloudResultsPage <= 0) {
         getUi().btn_cloudleft->setEnabled(false);
     } else {
-    	getUi().btn_cloudleft->setEnabled(true);
+        getUi().btn_cloudleft->setEnabled(true);
     }
     if((m_currentCloudResultsPage+1)*8 >= m_presetListCloud.size()) {
         getUi().btn_cloudright->setEnabled(false);
@@ -153,19 +152,18 @@ void DlgMappingPresetManager::slotShowCloudNextPageResults() {
     getUi().stackedWidgetCloud->setCurrentIndex(m_currentCloudResultsPage);
 }
 void DlgMappingPresetManager::slotShowCloudLastPageResults() {
-	qDebug()<<"============slotShowCloudLastPageResults===========";
+    qDebug()<<"============slotShowCloudLastPageResults===========";
     m_currentCloudResultsPage--;
     if(m_currentCloudResultsPage <= 0) {
         getUi().btn_cloudleft->setEnabled(false);
     } else {
-    	getUi().btn_cloudleft->setEnabled(true);
+        getUi().btn_cloudleft->setEnabled(true);
     }
     if((m_currentCloudResultsPage+1)*8 >= m_presetListCloud.size()) {
         getUi().btn_cloudright->setEnabled(false);
     } else {
         getUi().btn_cloudright->setEnabled(true);
     }
-
     getUi().stackedWidgetCloud->setCurrentIndex(m_currentCloudResultsPage);
 }
 void DlgMappingPresetManager::slotShowLocalLastPageResults() {
@@ -175,6 +173,6 @@ void DlgMappingPresetManager::slotShowLocalNextPageResults() {
 
 }
 void DlgMappingPresetManager::getJsonDataTest() {
-	PresetObjectWAO pow;
+    PresetObjectWAO pow;
     pow.getPresetByPresetName("Akai LPD8 - RK");
 }

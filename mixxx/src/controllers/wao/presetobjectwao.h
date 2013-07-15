@@ -9,10 +9,10 @@
 
 #include "controllers/midi/midicontrollerpreset.h"
 class PresetObjectWAO : public QObject{
-	Q_OBJECT
+    Q_OBJECT
   public:
-	PresetObjectWAO();
-	virtual ~PresetObjectWAO(){}
+    PresetObjectWAO();
+    virtual ~PresetObjectWAO(){}
     QList<MidiControllerPreset> getPresetByURL(QString url);
     QList<MidiControllerPreset> getPresetByPresetName(QString name);
 };

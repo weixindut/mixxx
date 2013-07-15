@@ -1,4 +1,5 @@
 #include <QDebug>
+
 #include "controllers/wao/presetobjectwao.h"
 #include "controllers/httpclient.h"
 #include "controllers/json.h"
@@ -6,12 +7,12 @@
 using namespace QtJson;
 PresetObjectWAO::PresetObjectWAO() {}
 QList<MidiControllerPreset> PresetObjectWAO::getPresetByPresetName(QString name) {
-	QString url="http://127.0.0.1:8000/api/v1/midi/preset/?preset_name="+name+"&format=json";
-	return getPresetByURL(url);
+    QString url="http://127.0.0.1:8000/api/v1/midi/preset/?preset_name="+name+"&format=json";
+    return getPresetByURL(url);
 }
 QList<MidiControllerPreset> PresetObjectWAO::getPresetByURL(QString url) {
-	QList<MidiControllerPreset> presetList;
-	HttpClient httpclient;
+    QList<MidiControllerPreset> presetList;
+    HttpClient httpclient;
     bool ok;
     QString data = httpclient.get(url);
     qDebug() << "Print JsonObject:"+data;
@@ -44,11 +45,11 @@ QList<MidiControllerPreset> PresetObjectWAO::getPresetByURL(QString url) {
             controllerpreset.setForumLink(url);
             controllerpreset.setWikiLink("");
         } else if (url.contains("wiki")) {
-        	controllerpreset.setForumLink("");
-        	controllerpreset.setWikiLink(url);
+            controllerpreset.setForumLink("");
+            controllerpreset.setWikiLink(url);
         } else {
-        	controllerpreset.setForumLink("");
-        	controllerpreset.setWikiLink("");
+            controllerpreset.setForumLink("");
+            controllerpreset.setWikiLink("");
         }
         controllerpreset.setDescription(description);
         controllerpreset.setPresetSource(preset_source);

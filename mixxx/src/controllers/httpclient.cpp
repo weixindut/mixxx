@@ -146,7 +146,7 @@ QString HttpClient::saveFileName(const QUrl& url) {
         int i = 0;
         basename += '.';
         while (QFile::exists(basename + QString::number(i))) {
-        	++i;
+            ++i;
         }
         basename += QString::number(i);
     }
@@ -171,7 +171,7 @@ bool HttpClient::saveToDisk(const QString& filename, QIODevice* data) {
 }
 
 QString HttpClient::downloadFile(const QString path) {
-	QUrl url;
+    QUrl url;
     url.setHost("127.0.0.1");
     url.setPort(8000);
     url.setScheme("http");
