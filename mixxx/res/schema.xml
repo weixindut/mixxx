@@ -353,6 +353,7 @@ METADATA
         mixxx_version varchar(36) NOT NULL,
         preset_name varchar(128) NOT NULL UNIQUE,
         controller_name varchar(128) NOT NULL,
+        ratings float NOT NULL, 
         schema_version varchar(36) NOT NULL);
         CREATE TABLE IF NOT EXISTS files_storage (
         id INTEGER PRIMARY KEY AUTOINCREMENT,

@@ -13,7 +13,6 @@
 #include "controllers/dlgmappingpresetmanager.h"
 #include "controllers/ui_dlgprefmappablecontrollerdlg.h"
 
-
 class DlgPrefMappableController : public DlgPrefController {
     Q_OBJECT
   public:

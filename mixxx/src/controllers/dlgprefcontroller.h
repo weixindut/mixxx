@@ -61,7 +61,9 @@ class DlgPrefController : public QWidget {
     Ui::DlgPrefControllerDlg& getUi() {
         return m_ui;
     }
-
+    ConfigObject<ConfigValue>* getConfigObject() const {
+    	return m_pConfig;
+    }
   private slots:
     void slotPresetLoaded(ControllerPresetPointer preset);
 

@@ -13,7 +13,7 @@ QList<MidiControllerPreset> PresetObjectDAO::getPresetByPresetName(QString name)
     QList<MidiControllerPreset> presetList;
 
     QSqlQuery query(m_database);
-    QString queryStr = "SELECT * FROM Mapping_preset_object where midicontroller_name like %"+name+"%";
+    QString queryStr = "SELECT * FROM Mapping_preset_object WHERE preset_name = '"+name+"'";
     query.prepare(queryStr);
     if (!query.exec()) {
         LOG_FAILED_QUERY(query);
@@ -31,18 +31,24 @@ QList<MidiControllerPreset> PresetObjectDAO::getPresetByPresetName(QString name)
         QString preset_name = query.value(query.record().indexOf("preset_name")).toString();
         QString controller_name = query.value(query.record().indexOf("controller_name")).toString();
         QString schema_version = query.value(query.record().indexOf("schema_version")).toString();
-
+        float ratings = query.value(query.record().indexOf("ratings")).toFloat();
+        QSqlQuery picQuery(m_database);
+        QString queryStr = "SELECT directory FROM Files_storage where presetitem_id = '"+pid+"' AND type = 0";
+        picQuery.prepare(queryStr);
+        if (!picQuery.exec()) {
+            LOG_FAILED_QUERY(picQuery);
+            return QList<MidiControllerPreset>();
+        }
+        QString picPath;
+        if(picQuery.next()) {
+        	picPath = picQuery.value(query.record().indexOf("directory")).toString();
+        } else {
+        	qDebug()<<"there is not cover picture\n";
+        	picPath ="";
+        }
         MidiControllerPreset controllerpreset;
         controllerpreset.setPid(pid);
-        controllerpreset.setPresetStatus(preset_status);
-        controllerpreset.setPresetSource(preset_source);
-        controllerpreset.setMixxxVersion(mixxx_version);
-        controllerpreset.setSchemaVersion(schema_version);
-        controllerpreset.setDescription(description);
         controllerpreset.setAuthor(author);
-        controllerpreset.setName(preset_name);
-        controllerpreset.setFilePath("");
-        controllerpreset.setDeviceId(controller_name);
         if (url.contains("forums")) {
             controllerpreset.setForumLink(url);
             controllerpreset.setWikiLink("");
@@ -53,6 +59,16 @@ QList<MidiControllerPreset> PresetObjectDAO::getPresetByPresetName(QString name)
             controllerpreset.setForumLink("");
             controllerpreset.setWikiLink("");
         }
+        controllerpreset.setDescription(description);
+        controllerpreset.setPresetSource(preset_source);
+        controllerpreset.setPresetStatus(preset_status);
+        controllerpreset.setMixxxVersion(mixxx_version);
+        controllerpreset.setName(preset_name);
+        controllerpreset.setDeviceId(controller_name);
+        controllerpreset.setSchemaVersion(schema_version);
+        controllerpreset.setPicturePath(picPath);
+        controllerpreset.setRatings(ratings);
+        controllerpreset.setFilePath("");
 
         presetList.append(controllerpreset);
     }

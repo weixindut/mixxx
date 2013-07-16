@@ -14,11 +14,26 @@
 #include "controllers/httpclient.h"
 #include "controllers/json.h"
 #include "controllers/wao/presetobjectwao.h"
+#include "controllers/dao/presetobjectdao.h"
 #include "controllers/dlgcontrollerpreset.h"
 using namespace QtJson;
 
-DlgMappingPresetManager::DlgMappingPresetManager(QWidget* parent)
-        : QDialog(parent) {
+DlgMappingPresetManager::DlgMappingPresetManager(QWidget* parent,ConfigObject<ConfigValue>* pConfig)
+        :QDialog(parent),
+         m_db(QSqlDatabase::addDatabase("QSQLITE","MAPPING_PRESET_MANAGER")) {
+
+    if (!m_db.isOpen()) {
+        m_db.setHostName("localhost");
+        m_db.setDatabaseName(pConfig->getSettingsPath().append("/mixxxdb.sqlite"));
+        m_db.setUserName("mixxx");
+        m_db.setPassword("mixxx");
+        //Open the database connection in this thread.
+        if (!m_db.open()) {
+            qDebug()<< "Failed to open database from mapping preset manager thread."
+                    << m_db.lastError();
+        }
+    }
+
     m_ui.setupUi(this);
     getUi().tabWidget_results->setCurrentIndex(0);
     m_currentCloudResultsPage=0;
@@ -66,7 +81,16 @@ DlgMappingPresetManager::~DlgMappingPresetManager() {
     for(int i=0;i<getUi().stackedWidgetCloud->count();i++) {
         getUi().stackedWidgetCloud->removeWidget(getUi().stackedWidgetCloud->widget(i));
     }
+    for(int i=0;i<m_gridLayoutListLocal.size();i++) {
+        delete m_gridLayoutListLocal[i];
+    }
+    m_gridLayoutListLocal.clear();
+    m_presetListLocal.clear();
+    for(int i=0;i<getUi().stackedWidgetLocal->count();i++) {
+        getUi().stackedWidgetLocal->removeWidget(getUi().stackedWidgetLocal->widget(i));
+    }
 }
+
 
 void DlgMappingPresetManager::slotSearch() {
     int index=getUi().tabWidget_results->currentIndex();
@@ -80,7 +104,20 @@ void DlgMappingPresetManager::slotSearch() {
 }
 
 void DlgMappingPresetManager::slotSearchLocal() {
+	qDebug("=====slotSearchLocal()===========");
+    for(int i=0;i<m_gridLayoutListLocal.size();i++) {
+        delete m_gridLayoutListLocal[i];
+    }
+    m_gridLayoutListLocal.clear();
+    m_presetListLocal.clear();
+    for(int i=0;i<getUi().stackedWidgetLocal->count();i++) {
+        getUi().stackedWidgetLocal->removeWidget(getUi().stackedWidgetLocal->widget(i));
+    }
     QString searchcontent=getUi().lineEdit_search->text();
+    PresetObjectDAO pod(m_db);
+    m_presetListLocal=pod.getPresetByPresetName(searchcontent);
+
+    emit(slotShowLocalSearchResults());
 }
 void DlgMappingPresetManager::slotSearchCloud() {
     qDebug("=====slotSearchCloud()===========");
@@ -100,7 +137,52 @@ void DlgMappingPresetManager::slotSearchCloud() {
     emit(slotShowCloudSearchResults());
 }
 void DlgMappingPresetManager::slotShowLocalSearchResults() {
+    qDebug("=====slotShowLocalSearchResults()===========");
+    connect(getUi().btn_localleft,SIGNAL(clicked()),
+            this, SLOT(slotShowLocalLastPageResults()));
+    connect(getUi().btn_localright,SIGNAL(clicked()),
+            this, SLOT(slotShowLocalNextPageResults()));
+    if(m_presetListLocal.size()>8) {
+        getUi().btn_localright->setEnabled(true);
+    } else {
+        getUi().btn_localright->setEnabled(false);
+    }
+    if(m_presetListLocal.size()==0) {
+    	//QWidget* pPageWidget = new QWidget();
+    	//QGridLayout* gridLayout = new QGridLayout();
+    	//gridLayout
+    	//pPageWidget->setLayout(gridLayout);
 
+    	//m_gridLayoutListLocal.append(gridLayout);
+    	QLabel* label = new QLabel();
+    	//label->setFrameStyle(QFrame::Panel | QFrame::Sunken);
+    	label->setText("0 results!");
+    	//label->setAlignment(Qt::AlignBottom | Qt::AlignRight);
+    	getUi().stackedWidgetLocal->addWidget(label);
+    } else {
+        for(int i=0,row=0,column=0;i<m_presetListLocal.size();i++,column++) {
+            if(i%4==0) {
+                row++;
+                column=0;
+                if(i%8==0) {
+                    QWidget* pPageWidget = new QWidget();
+                    QGridLayout* gridLayout = new QGridLayout();
+                    pPageWidget->setLayout(gridLayout);
+                    m_gridLayoutListLocal.append(gridLayout);
+                    getUi().stackedWidgetLocal->addWidget(pPageWidget);
+                    row=0;
+                }
+            }
+            DlgControllerPreset* showpreset = new DlgControllerPreset(this);
+            showpreset->setCover(m_presetListLocal[i].picturePath());
+            showpreset->setPresetName(m_presetListLocal[i].name());
+            showpreset->setSource(m_presetListLocal[i].presetSource());
+            showpreset->setStatus(m_presetListLocal[i].presetStatus());
+            showpreset->setRatings(m_presetListLocal[i].Ratings());
+            m_gridLayoutListLocal[i/8]->addWidget(showpreset,row,++column);
+        }
+        getUi().stackedWidgetLocal->setCurrentIndex(m_currentLocalResultsPage);
+    }
 }
 void DlgMappingPresetManager::slotShowCloudSearchResults() {
     qDebug("=====slotShowCloudSearchResults()===========");
@@ -167,10 +249,34 @@ void DlgMappingPresetManager::slotShowCloudLastPageResults() {
     getUi().stackedWidgetCloud->setCurrentIndex(m_currentCloudResultsPage);
 }
 void DlgMappingPresetManager::slotShowLocalLastPageResults() {
-
+    qDebug()<<"============slotShowLocalLastPageResults()===========";
+    m_currentLocalResultsPage--;
+    if(m_currentLocalResultsPage <= 0) {
+        getUi().btn_localleft->setEnabled(false);
+    } else {
+        getUi().btn_localleft->setEnabled(true);
+    }
+    if((m_currentLocalResultsPage+1)*8 >= m_presetListLocal.size()) {
+        getUi().btn_localright->setEnabled(false);
+    } else {
+        getUi().btn_localright->setEnabled(true);
+    }
+    getUi().stackedWidgetLocal->setCurrentIndex(m_currentLocalResultsPage);
 }
 void DlgMappingPresetManager::slotShowLocalNextPageResults() {
-
+    qDebug()<<"============slotShowLocalNextPageResults()===========";
+    m_currentLocalResultsPage++;
+    if(m_currentLocalResultsPage <= 0) {
+        getUi().btn_localleft->setEnabled(false);
+    } else {
+        getUi().btn_localleft->setEnabled(true);
+    }
+    if((m_currentLocalResultsPage+1)*8 >= m_presetListLocal.size()) {
+        getUi().btn_localright->setEnabled(false);
+    } else {
+        getUi().btn_localright->setEnabled(true);
+    }
+    getUi().stackedWidgetLocal->setCurrentIndex(m_currentLocalResultsPage);
 }
 void DlgMappingPresetManager::getJsonDataTest() {
     PresetObjectWAO pow;
