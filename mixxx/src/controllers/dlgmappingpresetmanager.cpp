@@ -68,6 +68,7 @@ DlgMappingPresetManager::DlgMappingPresetManager(QWidget* parent,ConfigObject<Co
     getUi().btn_cloudright->setMask(pixmapright.mask());
     getUi().btn_cloudright->setEnabled(false);
 
+    getUi().label_statisticalresult->setText("...");
     connect(getUi().btn_search, SIGNAL(clicked()),
             this, SLOT(slotSearch()));
 }
@@ -138,6 +139,8 @@ void DlgMappingPresetManager::slotSearchCloud() {
 }
 void DlgMappingPresetManager::slotShowLocalSearchResults() {
     qDebug("=====slotShowLocalSearchResults()===========");
+    QString result = "WoW, "+QString::number(m_presetListLocal.size())+" presets!";
+    getUi().label_statisticalresult->setText(result);
     connect(getUi().btn_localleft,SIGNAL(clicked()),
             this, SLOT(slotShowLocalLastPageResults()));
     connect(getUi().btn_localright,SIGNAL(clicked()),
@@ -147,45 +150,33 @@ void DlgMappingPresetManager::slotShowLocalSearchResults() {
     } else {
         getUi().btn_localright->setEnabled(false);
     }
-    if(m_presetListLocal.size()==0) {
-    	//QWidget* pPageWidget = new QWidget();
-    	//QGridLayout* gridLayout = new QGridLayout();
-    	//gridLayout
-    	//pPageWidget->setLayout(gridLayout);
-
-    	//m_gridLayoutListLocal.append(gridLayout);
-    	QLabel* label = new QLabel();
-    	//label->setFrameStyle(QFrame::Panel | QFrame::Sunken);
-    	label->setText("0 results!");
-    	//label->setAlignment(Qt::AlignBottom | Qt::AlignRight);
-    	getUi().stackedWidgetLocal->addWidget(label);
-    } else {
-        for(int i=0,row=0,column=0;i<m_presetListLocal.size();i++,column++) {
-            if(i%4==0) {
-                row++;
-                column=0;
-                if(i%8==0) {
-                    QWidget* pPageWidget = new QWidget();
-                    QGridLayout* gridLayout = new QGridLayout();
-                    pPageWidget->setLayout(gridLayout);
-                    m_gridLayoutListLocal.append(gridLayout);
-                    getUi().stackedWidgetLocal->addWidget(pPageWidget);
-                    row=0;
-                }
+    for(int i=0,row=0,column=0;i<m_presetListLocal.size();i++,column++) {
+        if(i%4==0) {
+            row++;
+            column=0;
+            if(i%8==0) {
+                QWidget* pPageWidget = new QWidget();
+                QGridLayout* gridLayout = new QGridLayout();
+                pPageWidget->setLayout(gridLayout);
+                m_gridLayoutListLocal.append(gridLayout);
+                getUi().stackedWidgetLocal->addWidget(pPageWidget);
+                row=0;
             }
-            DlgControllerPreset* showpreset = new DlgControllerPreset(this);
-            showpreset->setCover(m_presetListLocal[i].picturePath());
-            showpreset->setPresetName(m_presetListLocal[i].name());
-            showpreset->setSource(m_presetListLocal[i].presetSource());
-            showpreset->setStatus(m_presetListLocal[i].presetStatus());
-            showpreset->setRatings(m_presetListLocal[i].Ratings());
-            m_gridLayoutListLocal[i/8]->addWidget(showpreset,row,++column);
         }
-        getUi().stackedWidgetLocal->setCurrentIndex(m_currentLocalResultsPage);
+        DlgControllerPreset* showpreset = new DlgControllerPreset(this);
+        showpreset->setCover(m_presetListLocal[i].picturePath());
+        showpreset->setPresetName(m_presetListLocal[i].name());
+        showpreset->setSource(m_presetListLocal[i].presetSource());
+        showpreset->setStatus(m_presetListLocal[i].presetStatus());
+        showpreset->setRatings(m_presetListLocal[i].Ratings());
+        m_gridLayoutListLocal[i/8]->addWidget(showpreset,row,++column);
     }
+    getUi().stackedWidgetLocal->setCurrentIndex(m_currentLocalResultsPage);
 }
 void DlgMappingPresetManager::slotShowCloudSearchResults() {
     qDebug("=====slotShowCloudSearchResults()===========");
+    QString result = "WoW, "+QString::number(m_presetListCloud.size())+" presets!";
+    getUi().label_statisticalresult->setText(result);
     connect(getUi().btn_cloudleft,SIGNAL(clicked()),
             this, SLOT(slotShowCloudLastPageResults()));
     connect(getUi().btn_cloudright,SIGNAL(clicked()),

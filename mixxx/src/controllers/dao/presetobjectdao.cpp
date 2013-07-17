@@ -13,7 +13,7 @@ QList<MidiControllerPreset> PresetObjectDAO::getPresetByPresetName(QString name)
     QList<MidiControllerPreset> presetList;
 
     QSqlQuery query(m_database);
-    QString queryStr = "SELECT * FROM Mapping_preset_object WHERE preset_name = '"+name+"'";
+    QString queryStr = "SELECT * FROM Mapping_preset_object WHERE preset_name LIKE '%"+name+"%'";
     query.prepare(queryStr);
     if (!query.exec()) {
         LOG_FAILED_QUERY(query);
@@ -33,7 +33,7 @@ QList<MidiControllerPreset> PresetObjectDAO::getPresetByPresetName(QString name)
         QString schema_version = query.value(query.record().indexOf("schema_version")).toString();
         float ratings = query.value(query.record().indexOf("ratings")).toFloat();
         QSqlQuery picQuery(m_database);
-        QString queryStr = "SELECT directory FROM Files_storage where presetitem_id = '"+pid+"' AND type = 0";
+        QString queryStr = "SELECT directory FROM Files_storage WHERE presetitem_id = '"+pid+"' AND type = 0";
         picQuery.prepare(queryStr);
         if (!picQuery.exec()) {
             LOG_FAILED_QUERY(picQuery);
@@ -41,7 +41,7 @@ QList<MidiControllerPreset> PresetObjectDAO::getPresetByPresetName(QString name)
         }
         QString picPath;
         if(picQuery.next()) {
-        	picPath = picQuery.value(query.record().indexOf("directory")).toString();
+        	picPath = picQuery.value(picQuery.record().indexOf("directory")).toString();
         } else {
         	qDebug()<<"there is not cover picture\n";
         	picPath ="";
