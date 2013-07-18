@@ -7,7 +7,7 @@
 using namespace QtJson;
 PresetObjectWAO::PresetObjectWAO() {}
 QList<MidiControllerPreset> PresetObjectWAO::getPresetByPresetName(QString name) {
-    QString url="http://127.0.0.1:8000/api/v1/midi/preset/?preset_name="+name+"&format=json";
+    QString url="http://127.0.0.1:8000/api/v1/midi/preset/?preset_name__contains="+name+"&format=json";
     return getPresetByURL(url);
 }
 QList<MidiControllerPreset> PresetObjectWAO::getPresetByURL(QString url) {
@@ -18,7 +18,7 @@ QList<MidiControllerPreset> PresetObjectWAO::getPresetByURL(QString url) {
     qDebug() << "Print JsonObject:"+data;
     QVariantMap result = QtJson::parse(data,ok).toMap();
     if(!ok) {
-        exit(1);
+    	qDebug()<<"There is something wrong with server side\n";
     }
     foreach(QVariant plugin, result["objects"].toList()) {
         QVariantMap res = plugin.toMap();

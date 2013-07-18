@@ -1,5 +1,5 @@
 #include "json.h"
-
+#include <QDebug>
 namespace QtJson {
 
     static QString sanitizeString(QString str);

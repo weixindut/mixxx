@@ -17,9 +17,9 @@ void DlgControllerPreset::setPresetName(QString name) {
     QFont ft;
     ft.setBold(true);
     getUi().label_name->setFont(ft);
-    getUi().label_name->setGeometry(QRect(10, 100, 131, 20*2));
+    getUi().label_name->setGeometry(QRect(10, 100, 140, 20*2));
     getUi().label_name->setWordWrap(true);
-    getUi().label_name->setAlignment(Qt::AlignTop);
+    getUi().label_name->setAlignment(Qt::AlignTop|Qt::AlignVCenter);
 }
 
 void DlgControllerPreset::setSource(QString source) {
@@ -53,7 +53,7 @@ void DlgControllerPreset::setStatus(QString status) {
         qDebug() <<"Wrong status string:"+status +"\n";
     }
     QFont ft;
-    ft.setPointSize(11);
+    ft.setPointSize(10);
     getUi().label_certification->setFont(ft);
     getUi().label_certification->adjustSize();
 }
