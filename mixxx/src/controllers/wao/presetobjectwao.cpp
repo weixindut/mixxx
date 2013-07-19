@@ -23,7 +23,15 @@ QList<MidiControllerPreset> PresetObjectWAO::getPresetByURL(QString url) {
     foreach(QVariant plugin, result["objects"].toList()) {
         QVariantMap res = plugin.toMap();
         QString pid = res["pid"].toString();
-        QString author = res["author"].toString();
+        QString author = "";
+        foreach(QVariant authorname, res["author"].toList()) {
+            if(author.isEmpty()) {
+                author.append(authorname.toString());
+            } else {
+            	author.append(",");
+            	author.append(authorname.toString());
+            }
+        }
         QString url = res["url"].toString();
         QString description = res["description"].toString();
         QString preset_source = res["preset_source"].toString();
