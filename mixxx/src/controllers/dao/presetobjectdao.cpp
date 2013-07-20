@@ -11,9 +11,8 @@ PresetObjectDAO::PresetObjectDAO(QSqlDatabase& database)
 QList<MidiControllerPreset> PresetObjectDAO::getPresetByPresetName(QString name) {
     ScopedTransaction transaction(m_database);
     QList<MidiControllerPreset> presetList;
-
     QSqlQuery query(m_database);
-    QString queryStr = "SELECT * FROM Mapping_preset_object WHERE preset_name LIKE '%"+name+"%'";
+    QString queryStr = generateQueryStr(name);
     query.prepare(queryStr);
     if (!query.exec()) {
         LOG_FAILED_QUERY(query);
@@ -74,4 +73,28 @@ QList<MidiControllerPreset> PresetObjectDAO::getPresetByPresetName(QString name)
     }
     transaction.commit();
     return presetList;
+}
+
+QString PresetObjectDAO::generateQueryStr(QString name) {
+
+    name.replace(" ",",");
+    name.replace("-",",");
+    name.replace("_",",");
+    name.replace(".",",");
+
+    QStringList words = name.split(",",QString::SkipEmptyParts);
+
+    QString queryStr = "SELECT * FROM Mapping_preset_object ";
+    for(int i=0; i<words.size(); i++) {
+        if(i==0) {
+            queryStr.append(" WHERE LOWER(preset_name) LIKE '%");
+            queryStr.append(words[i].toLower());
+            queryStr.append("%' ");
+        } else {
+            queryStr.append(" OR LOWER(preset_name) LIKE '%");
+            queryStr.append(words[i].toLower());
+            queryStr.append("%' ");
+    	}
+    }
+    return queryStr;
 }

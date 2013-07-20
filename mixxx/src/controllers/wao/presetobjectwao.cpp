@@ -7,7 +7,8 @@
 using namespace QtJson;
 PresetObjectWAO::PresetObjectWAO() {}
 QList<MidiControllerPreset> PresetObjectWAO::getPresetByPresetName(QString name) {
-    QString url="http://127.0.0.1:8000/api/v1/midi/preset/?preset_name__contains="+name+"&format=json";
+    //QString url="http://127.0.0.1:8000/api/v1/midi/preset/?preset_name__contains="+name+"&format=json";
+	QString url=generateQueryStr(name);
     return getPresetByURL(url);
 }
 QList<MidiControllerPreset> PresetObjectWAO::getPresetByURL(QString url) {
@@ -73,4 +74,25 @@ QList<MidiControllerPreset> PresetObjectWAO::getPresetByURL(QString url) {
         presetList.append(controllerpreset);
     }
     return presetList;
+}
+QString PresetObjectWAO::generateQueryStr(QString name) {
+
+    name.replace(" ",",");
+    name.replace("-",",");
+    name.replace("_",",");
+    name.replace(".",",");
+
+    QStringList words = name.split(",",QString::SkipEmptyParts);
+    QString url="http://127.0.0.1:8000/api/v1/midi/preset/?";
+    for(int i=0; i<words.size(); i++) {
+        if(i==0) {
+        	url.append(" preset_name__contains=");
+        	url.append(words[i].toLower());
+        } else {
+        	url.append(" &preset_name__contains=");
+        	url.append(words[i].toLower());
+    	}
+    }
+    url.append("&format=json");
+    return queryStr;
 }

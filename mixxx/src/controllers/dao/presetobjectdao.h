@@ -11,6 +11,8 @@ class PresetObjectDAO: public QObject{
     virtual ~PresetObjectDAO() {}
     QList<MidiControllerPreset> getPresetByPresetName(QString name);
   private:
+    QString generateQueryStr(QString name);
+
     QSqlDatabase& m_database;
 };
 #endif

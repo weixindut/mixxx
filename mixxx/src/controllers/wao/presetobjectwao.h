@@ -15,5 +15,8 @@ class PresetObjectWAO : public QObject{
     virtual ~PresetObjectWAO(){}
     QList<MidiControllerPreset> getPresetByURL(QString url);
     QList<MidiControllerPreset> getPresetByPresetName(QString name);
+
+  private:
+    QString generateQueryStr(QString name);
 };
 #endif
