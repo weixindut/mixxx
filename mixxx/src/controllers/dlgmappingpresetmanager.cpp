@@ -95,17 +95,15 @@ DlgMappingPresetManager::~DlgMappingPresetManager() {
 
 void DlgMappingPresetManager::slotSearch() {
     int index=getUi().tabWidget_results->currentIndex();
-    if (index == 0) {
+    if(index == 0) {
         emit(slotSearchLocal());
     } else {
         getUi().tabWidget_results->setCurrentIndex(1);
         emit(slotSearchCloud());
     }
-    qDebug("=====slotSearch()===========%d",index);
 }
 
 void DlgMappingPresetManager::slotSearchLocal() {
-	qDebug("=====slotSearchLocal()===========");
     for(int i=0;i<m_gridLayoutListLocal.size();i++) {
         delete m_gridLayoutListLocal[i];
     }
@@ -121,7 +119,6 @@ void DlgMappingPresetManager::slotSearchLocal() {
     emit(slotShowLocalSearchResults());
 }
 void DlgMappingPresetManager::slotSearchCloud() {
-    qDebug("=====slotSearchCloud()===========");
     for(int i=0;i<m_gridLayoutListCloud.size();i++) {
     	delete m_gridLayoutListCloud[i];
     }
@@ -132,13 +129,11 @@ void DlgMappingPresetManager::slotSearchCloud() {
     }
     QString searchcontent=getUi().lineEdit_search->text();
     PresetObjectWAO pow;
-    // TODO(wexin):fuzzy query
     m_presetListCloud=pow.getPresetByPresetName(searchcontent);
     //m_presetListCloud=pow.getPresetByURL("http://127.0.0.1:8000/api/v1/midi/preset/?format=json");
     emit(slotShowCloudSearchResults());
 }
 void DlgMappingPresetManager::slotShowLocalSearchResults() {
-    qDebug("=====slotShowLocalSearchResults()===========");
     QString result = "WoW, "+QString::number(m_presetListLocal.size())+" presets!";
     getUi().label_statisticalresult->setText(result);
     connect(getUi().btn_localleft,SIGNAL(clicked()),
@@ -174,7 +169,6 @@ void DlgMappingPresetManager::slotShowLocalSearchResults() {
     getUi().stackedWidgetLocal->setCurrentIndex(m_currentLocalResultsPage);
 }
 void DlgMappingPresetManager::slotShowCloudSearchResults() {
-    qDebug("=====slotShowCloudSearchResults()===========");
     QString result = "WoW, "+QString::number(m_presetListCloud.size())+" presets!";
     getUi().label_statisticalresult->setText(result);
     connect(getUi().btn_cloudleft,SIGNAL(clicked()),
@@ -210,7 +204,6 @@ void DlgMappingPresetManager::slotShowCloudSearchResults() {
     getUi().stackedWidgetCloud->setCurrentIndex(m_currentCloudResultsPage);
 }
 void DlgMappingPresetManager::slotShowCloudNextPageResults() {
-    qDebug()<<"============slotShowCloudNextPageResults===========";
     m_currentCloudResultsPage++;
     if(m_currentCloudResultsPage <= 0) {
         getUi().btn_cloudleft->setEnabled(false);
@@ -225,7 +218,6 @@ void DlgMappingPresetManager::slotShowCloudNextPageResults() {
     getUi().stackedWidgetCloud->setCurrentIndex(m_currentCloudResultsPage);
 }
 void DlgMappingPresetManager::slotShowCloudLastPageResults() {
-    qDebug()<<"============slotShowCloudLastPageResults===========";
     m_currentCloudResultsPage--;
     if(m_currentCloudResultsPage <= 0) {
         getUi().btn_cloudleft->setEnabled(false);
@@ -240,7 +232,6 @@ void DlgMappingPresetManager::slotShowCloudLastPageResults() {
     getUi().stackedWidgetCloud->setCurrentIndex(m_currentCloudResultsPage);
 }
 void DlgMappingPresetManager::slotShowLocalLastPageResults() {
-    qDebug()<<"============slotShowLocalLastPageResults()===========";
     m_currentLocalResultsPage--;
     if(m_currentLocalResultsPage <= 0) {
         getUi().btn_localleft->setEnabled(false);
@@ -255,7 +246,6 @@ void DlgMappingPresetManager::slotShowLocalLastPageResults() {
     getUi().stackedWidgetLocal->setCurrentIndex(m_currentLocalResultsPage);
 }
 void DlgMappingPresetManager::slotShowLocalNextPageResults() {
-    qDebug()<<"============slotShowLocalNextPageResults()===========";
     m_currentLocalResultsPage++;
     if(m_currentLocalResultsPage <= 0) {
         getUi().btn_localleft->setEnabled(false);

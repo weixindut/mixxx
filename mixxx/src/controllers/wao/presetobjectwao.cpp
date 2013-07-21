@@ -83,16 +83,16 @@ QString PresetObjectWAO::generateQueryStr(QString name) {
     name.replace(".",",");
 
     QStringList words = name.split(",",QString::SkipEmptyParts);
-    QString url="http://127.0.0.1:8000/api/v1/midi/preset/?";
+    QString url="http://127.0.0.1:8000/api/v1/midi/preset/search?";
     for(int i=0; i<words.size(); i++) {
         if(i==0) {
-        	url.append(" preset_name__contains=");
-        	url.append(words[i].toLower());
+        	url.append("q=");
+        	url.append(words[i]);
         } else {
-        	url.append(" &preset_name__contains=");
-        	url.append(words[i].toLower());
+        	url.append(" &q=");
+        	url.append(words[i]);
     	}
     }
     url.append("&format=json");
-    return queryStr;
+    return url;
 }
