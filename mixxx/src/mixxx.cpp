@@ -37,6 +37,7 @@
 #include "library/libraryscanner.h"
 #include "library/librarytablemodel.h"
 #include "controllers/controllermanager.h"
+#include "controllers/dlgpresetupload.h"
 #include "mixxxkeyboard.h"
 #include "playermanager.h"
 #include "recording/defs_recording.h"
@@ -415,6 +416,10 @@ MixxxApp::MixxxApp(QApplication *pApp, const CmdlineArgs& args)
                                     m_pControllerManager, m_pVCManager, m_pConfig);
     m_pPrefDlg->setWindowIcon(QIcon(":/images/ic_mixxx_window.png"));
     m_pPrefDlg->setHidden(true);
+
+    // Initialize preset upload dialog
+    m_pPresetUpload = new DlgPresetUpload(this);
+    m_pPresetUpload->setHidden(true);
 
     // Try open player device If that fails, the preference panel is opened.
     int setupDevices = m_pSoundManager->setupDevices();
@@ -1094,6 +1099,16 @@ void MixxxApp::initActions()
     m_pDeveloperReloadSkin->setWhatsThis(buildWhatsThis(reloadSkinTitle, reloadSkinText));
     connect(m_pDeveloperReloadSkin, SIGNAL(toggled(bool)),
             this, SLOT(slotDeveloperReloadSkin(bool)));
+
+    QString uploadMappingPresetTitle = tr("&Upload Mapping Preset");
+    QString uploadMappingPresetText = tr("Upload a mapping preset file");
+    m_pOptionsUploadPresetFile = new QAction(uploadMappingPresetTitle, this);
+    m_pOptionsUploadPresetFile->setShortcut(QKeySequence(tr("Ctrl+U")));
+    m_pOptionsUploadPresetFile->setShortcutContext(Qt::ApplicationShortcut);
+    m_pOptionsUploadPresetFile->setStatusTip(recordText);
+    m_pOptionsUploadPresetFile->setWhatsThis(buildWhatsThis(preferencesTitle, preferencesText));
+    connect(m_pOptionsUploadPresetFile, SIGNAL(triggered()),
+            this, SLOT(slotOptionsUploadPresetFile()));
 }
 
 void MixxxApp::initMenuBar()
@@ -1132,6 +1147,8 @@ void MixxxApp::initMenuBar()
     m_pOptionsMenu->addAction(m_pOptionsKeyboard);
     m_pOptionsMenu->addSeparator();
     m_pOptionsMenu->addAction(m_pOptionsPreferences);
+    m_pOptionsMenu->addSeparator();
+    m_pOptionsMenu->addAction(m_pOptionsUploadPresetFile);
 
     m_pLibraryMenu->addAction(m_pLibraryRescan);
     m_pLibraryMenu->addSeparator();
@@ -1294,6 +1311,11 @@ void MixxxApp::slotOptionsPreferences()
 {
     m_pPrefDlg->setHidden(false);
     m_pPrefDlg->activateWindow();
+}
+
+void MixxxApp::slotOptionsUploadPresetFile() {
+	m_pPresetUpload->setHidden(false);
+	m_pPresetUpload->activateWindow();
 }
 
 void MixxxApp::slotControlVinylControl(double toggle)

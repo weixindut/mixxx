@@ -527,6 +527,7 @@ class MixxxCore(Feature):
                    "controllers/wao/presetobjectwao.cpp",
                    "controllers/dao/presetobjectdao.cpp",
                    "controllers/dlgcontrollerpreset.cpp",
+                   "controllers/dlgpresetupload.cpp"
                    "main.cpp",
                    "mixxx.cpp",
                    "errordialoghandler.cpp",
@@ -772,6 +773,7 @@ class MixxxCore(Feature):
         build.env.Uic4('controllers/dlgprefnocontrollersdlg.ui')
         build.env.Uic4('controllers/dlgmappingpresetmanagerdlg.ui')
         build.env.Uic4('controllers/dlgcontrollerpreset.ui')
+        build.env.Uic4('controllers/dlgpresetupload.ui')
 
         build.env.Uic4('dlgprefplaylistdlg.ui')
         build.env.Uic4('dlgprefcontrolsdlg.ui')

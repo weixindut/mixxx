@@ -41,6 +41,7 @@ class VinylControlManager;
 
 class DlgPreferences;
 class SoundManager;
+class DlgPresetUpload;
 
 #include "configobject.h"
 #include "util/cmdlineargs.h"
@@ -89,6 +90,8 @@ class MixxxApp : public QMainWindow {
     void slotOptionsKeyboard(bool toggle);
     /** Preference dialog */
     void slotOptionsPreferences();
+    /** Preset upload dlg**/
+    void slotOptionsUploadPresetFile();
     /** shows an about dlg*/
     void slotHelpAbout();
     /** visits support section of website*/
@@ -195,7 +198,7 @@ class MixxxApp : public QMainWindow {
 #endif
     QAction *m_pOptionsRecord;
     QAction *m_pOptionsKeyboard;
-
+    QAction* m_pOptionsUploadPresetFile;
     QAction *m_pOptionsPreferences;
 #ifdef __SHOUTCAST__
     QAction *m_pOptionsShoutcast;
@@ -217,6 +220,8 @@ class MixxxApp : public QMainWindow {
 
     /** Pointer to preference dialog */
     DlgPreferences *m_pPrefDlg;
+
+    DlgPresetUpload* m_pPresetUpload;
 
     int noSoundDlg(void);
     int noOutputDlg(bool *continueClicked);
