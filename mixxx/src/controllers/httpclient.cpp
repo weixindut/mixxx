@@ -47,6 +47,22 @@ QString HttpClient::post(const QString& url, QMap<QString, QString>& postData) {
     }
     return post(url, data.join("&").toAscii());
 }
+bool HttpClient::postFile(const QString& url, const QString path) {
+    if (!QFile::exists(path)) {
+        qDebug() << "Filepath does not exist";
+        return false;
+    }
+    QFile* obj = new QFile(path);
+    obj->open(QIODevice::ReadOnly);
+    QNetworkRequest request;
+    request.setUrl(QUrl(url));
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
+
+    QNetworkReply* reply = m_manager->post(request, obj);
+    qDebug()<< "**************************";
+    waitForFinish(reply);
+
+}
 
 QString HttpClient::get(const QString& url) {
     QNetworkRequest request;
