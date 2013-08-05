@@ -23,7 +23,7 @@ class HttpClient : public QObject {
 
     QString post(const QString& url, const QByteArray& postData);
     QString post(const QString& url, QMap<QString, QString>& postData);
-    bool postFile(const QString& url, const QString path);
+    QString postFile(const QString& url, const QString path);
     QString get(const QString& url);
 
     void setTextCodec(const QString& encoding);

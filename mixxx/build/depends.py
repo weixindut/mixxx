@@ -527,7 +527,7 @@ class MixxxCore(Feature):
                    "controllers/wao/presetobjectwao.cpp",
                    "controllers/dao/presetobjectdao.cpp",
                    "controllers/dlgcontrollerpreset.cpp",
-                   "controllers/dlgpresetupload.cpp"
+                   "controllers/dlgpresetupload.cpp",
                    "main.cpp",
                    "mixxx.cpp",
                    "errordialoghandler.cpp",
