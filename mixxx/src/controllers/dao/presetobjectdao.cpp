@@ -19,7 +19,7 @@ QList<MidiControllerPreset> PresetObjectDAO::getPresetByPresetName(QString name)
         return QList<MidiControllerPreset>();
     }
     while (query.next()) {
-
+    	MidiControllerPreset controllerpreset;
         QString pid = query.value(query.record().indexOf("pid")).toString();
         QString author = query.value(query.record().indexOf("author")).toString();
         QString url = query.value(query.record().indexOf("url")).toString();
@@ -32,20 +32,18 @@ QList<MidiControllerPreset> PresetObjectDAO::getPresetByPresetName(QString name)
         QString schema_version = query.value(query.record().indexOf("schema_version")).toString();
         float ratings = query.value(query.record().indexOf("ratings")).toFloat();
         QSqlQuery picQuery(m_database);
-        QString queryStr = "SELECT directory FROM Files_storage WHERE presetitem_id = '"+pid+"' AND type = 0";
+        QString queryStr = "SELECT name FROM Files_storage WHERE presetitem_id = '"+pid+"' AND type = 0";
         picQuery.prepare(queryStr);
         if (!picQuery.exec()) {
             LOG_FAILED_QUERY(picQuery);
             return QList<MidiControllerPreset>();
         }
-        QString picPath;
-        if(picQuery.next()) {
-        	picPath = picQuery.value(picQuery.record().indexOf("directory")).toString();
-        } else {
-        	qDebug()<<"there is not cover picture\n";
-        	picPath ="";
+        QString picName;
+        for(picQuery.next()) {
+        	picName = picQuery.value(picQuery.record().indexOf("name")).toString();
+        	controllerpreset.addPictureFile(picName);
         }
-        MidiControllerPreset controllerpreset;
+
         controllerpreset.setPid(pid);
         controllerpreset.setAuthor(author);
         if (url.contains("forums")) {
@@ -68,7 +66,7 @@ QList<MidiControllerPreset> PresetObjectDAO::getPresetByPresetName(QString name)
         controllerpreset.setPicturePath(picPath);
         controllerpreset.setRatings(ratings);
         controllerpreset.setFilePath("");
-
+        // here JS Script files haven't been added, currently unnecessary
         presetList.append(controllerpreset);
     }
     transaction.commit();

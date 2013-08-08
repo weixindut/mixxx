@@ -67,7 +67,9 @@ QList<MidiControllerPreset> PresetObjectWAO::getPresetByURL(QString url) {
         controllerpreset.setName(preset_name);
         controllerpreset.setDeviceId(controller_name);
         controllerpreset.setSchemaVersion(schema_version);
-        controllerpreset.setPicturePath("./tmp/"+picture_name);
+        //controllerpreset.setPicturePath("./tmp/"+picture_name);
+        // currently server only return one picture file or none
+        controllerpreset.addPictureFile(picture_name);
         controllerpreset.setRatings(avg_rating);
         controllerpreset.setFilePath("");
 

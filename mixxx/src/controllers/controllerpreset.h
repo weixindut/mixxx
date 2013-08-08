@@ -31,7 +31,12 @@ class ControllerPreset {
         scriptFileNames.append(filename);
         scriptFunctionPrefixes.append(functionprefix);
     }
-
+    void addPictureFile(QString name) {
+    	m_pictureFileNames.append(name);
+    }
+    QList<QString> PictureFileNames() {
+    	return m_pictureFileNames;
+    }
     inline void setDeviceId(const QString id) {
         m_deviceId = id;
     }
@@ -128,13 +133,13 @@ class ControllerPreset {
         return m_pid;
     }
 
-    inline void setPicturePath(const QString path) {
-        m_picture_path = path;
-    }
+    //inline void setPicturePath(const QString path) {
+    //    m_picture_path = path;
+    //}
 
-    inline QString picturePath() const {
-        return m_picture_path;
-    }
+    //inline QString picturePath() const {
+    //    return m_picture_path;
+    //}
 
     inline void setRatings(const float ratings) {
     	m_ratings = ratings;
@@ -158,6 +163,7 @@ class ControllerPreset {
     // Optional list of controller device match details
     QList< QHash<QString,QString> > m_productMatches;
 
+
   private:
     QString m_deviceId;
     QString m_filePath;
@@ -171,7 +177,8 @@ class ControllerPreset {
     QString m_preset_source;
     QString m_preset_status;
     QString m_pid;
-    QString m_picture_path;
+    //QString m_picture_path;
+    QList<QString> m_pictureFileNames;
     float m_ratings;
 };
 
