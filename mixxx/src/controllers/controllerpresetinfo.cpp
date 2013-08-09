@@ -33,7 +33,9 @@ PresetInfo::PresetInfo(const QString preset_path) {
     description = "";
     forumlink = "";
     wikilink = "";
-
+    controllername = "";
+    mixxxVersion = "";
+    schemaVersion = "";
     QDomElement root = XmlParse::openXMLFile(path, "controller");
     if (root.isNull()) {
         qDebug() << "ERROR parsing" << path;
@@ -82,6 +84,39 @@ PresetInfo::PresetInfo(const QString preset_path) {
             }
             product = product.nextSiblingElement("product");
         }
+    }
+    if (root.hasAttribute("mixxxVersion")) {
+        mixxxVersion = root.attribute("mixxxVersion");
+    }
+    if (root.hasAttribute("schemaVersion")) {
+        schemaVersion = root.attribute("schemaVersion");
+    }
+    QDomElement controller = root.firstChildElement("controller");
+    if (controller.isNull()) {
+        qDebug() << "MISSING <controller> ELEMENT: " << path;
+        return;
+    } else {
+        if (controller.hasAttribute("id")) {
+             controllername = controller.attribute("id");
+        }
+    }
+    QDomElement scriptFiles = controller.firstChildElement("scriptfiles");
+    if (!scriptFiles.isNull()) {
+    	QDomNodeList scripts = scriptFiles.elementsByTagName("file");
+    	foreach(QDomElement script, scripts) {
+    	    if(script.hasAttribute("filename")) {
+    	    	jsFileNames.append(script.attribute("filename"));
+    	    }
+    	}
+    }
+    QDomElement picFiles = controller.firstChildElement("picfiles");
+    if (!picFiles.isNull()) {
+    	QDomNodeList pictures = picFiles.elementsByTagName("pic");
+    	foreach(QDomElement pic, pictures) {
+    	    if(pic.hasAttribute("name")) {
+    	    	picFileNames.append(pic.attribute("name"));
+    	    }
+    	}
     }
 }
 

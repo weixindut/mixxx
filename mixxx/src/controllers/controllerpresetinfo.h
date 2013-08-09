@@ -38,6 +38,11 @@ class PresetInfo {
 
     inline const QList< QHash<QString,QString> > getProducts() const { return products; };
 
+    inline const QString getControllerName() const { return controllername; };
+    inline const QString getMixxxVersion() const { return mixxxVersion; };
+    inline const QString getSchemaVersion() const { return schemaVersion; };
+    QList<QString> getPicFileNames();
+    QList<QString> getJsFileNames();
   private:
     QHash<QString,QString> parseBulkProduct(const QDomElement& element) const;
     QHash<QString,QString> parseHIDProduct(const QDomElement& element) const;
@@ -52,7 +57,13 @@ class PresetInfo {
     QString description;
     QString forumlink;
     QString wikilink;
+    QString controllername;
+    QString mixxxVersion;
+    QString schemaVersion;
     QList< QHash<QString,QString> > products;
+    QList<QString> picFileNames;
+    Qlist<QString> jsFileNames;
+
 };
 
 class PresetInfoEnumerator {
