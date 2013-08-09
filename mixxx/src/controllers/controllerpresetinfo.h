@@ -41,8 +41,8 @@ class PresetInfo {
     inline const QString getControllerName() const { return controllername; };
     inline const QString getMixxxVersion() const { return mixxxVersion; };
     inline const QString getSchemaVersion() const { return schemaVersion; };
-    QList<QString> getPicFileNames();
-    QList<QString> getJsFileNames();
+    QList<QString> getPicFileNames() { return picFileNames; };
+    QList<QString> getJsFileNames() { return jsFileNames; };
   private:
     QHash<QString,QString> parseBulkProduct(const QDomElement& element) const;
     QHash<QString,QString> parseHIDProduct(const QDomElement& element) const;
