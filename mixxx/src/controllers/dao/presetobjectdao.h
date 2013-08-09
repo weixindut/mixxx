@@ -10,6 +10,8 @@ class PresetObjectDAO: public QObject{
     PresetObjectDAO(QSqlDatabase& database);
     virtual ~PresetObjectDAO() {}
     QList<MidiControllerPreset> getPresetByPresetName(QString name);
+    bool insertOnePreset(QString pid, QString xmlFilePath);
+    bool insertOneFile(QString pid,QString filePath, int type);
   private:
     QString generateQueryStr(QString name);
 
