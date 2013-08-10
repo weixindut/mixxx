@@ -344,7 +344,7 @@ METADATA
     </description>
     <sql>
         CREATE TABLE IF NOT EXISTS mapping_preset_object (
-        pid char(36) PRIMARY KEY UNIQUE,
+        pid char(128) PRIMARY KEY UNIQUE NOT NULL,
         author varchar(128) NOT NULL,
         url varchar(256),
         description varchar(512),
@@ -358,7 +358,7 @@ METADATA
         CREATE TABLE IF NOT EXISTS files_storage (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         directory varchar(256) UNIQUE,
-        presetitem_id char(36) NOT NULL REFERENCES mapping_preset_object(uuid),
+        presetitem_id char(128) NOT NULL REFERENCES mapping_preset_object(uuid),
         type INTEGER NOT NULL,
         filesize INTEGER,
         name varchar(48) NOT NULL);
