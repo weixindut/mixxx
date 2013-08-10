@@ -160,7 +160,7 @@ void DlgMappingPresetManager::slotShowLocalSearchResults() {
         }
         DlgControllerPreset* showpreset = new DlgControllerPreset(this);
         //showpreset->setCover(m_presetListLocal[i].picturePath());
-        if (m_presetListLocal[i].PictureFileNames()) {
+        if (!m_presetListLocal[i].PictureFileNames().isEmpty()) {
         	//TODO(weixin): rewrite the path
             showpreset->setCover("./res/controllers/"+m_presetListLocal[i].PictureFileNames()[0]);
         }
@@ -173,6 +173,7 @@ void DlgMappingPresetManager::slotShowLocalSearchResults() {
     getUi().stackedWidgetLocal->setCurrentIndex(m_currentLocalResultsPage);
 }
 void DlgMappingPresetManager::slotShowCloudSearchResults() {
+	qDebug()<<"================slotShowCloudSearchResults()=============";
     QString result = "WoW, "+QString::number(m_presetListCloud.size())+" presets!";
     getUi().label_statisticalresult->setText(result);
     connect(getUi().btn_cloudleft,SIGNAL(clicked()),
@@ -199,10 +200,13 @@ void DlgMappingPresetManager::slotShowCloudSearchResults() {
         }
         DlgControllerPreset* showpreset = new DlgControllerPreset(this);
         //showpreset->setCover(m_presetListCloud[i].picturePath());
-        if (m_presetListLocal[i].PictureFileNames()) {
+        if (!m_presetListCloud[i].PictureFileNames().isEmpty()) {
         	//TODO(weixin): rewrite the path
+        	qDebug()<<"================showpreset->setCover=============";
             showpreset->setCover("./tmp/"+m_presetListCloud[i].PictureFileNames()[0]);
-        }
+
+        };
+
         showpreset->setPresetName(m_presetListCloud[i].name());
         showpreset->setSource(m_presetListCloud[i].presetSource());
         showpreset->setStatus(m_presetListCloud[i].presetStatus());

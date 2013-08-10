@@ -62,7 +62,7 @@ class PresetInfo {
     QString schemaVersion;
     QList< QHash<QString,QString> > products;
     QList<QString> picFileNames;
-    Qlist<QString> jsFileNames;
+    QList<QString> jsFileNames;
 
 };
 

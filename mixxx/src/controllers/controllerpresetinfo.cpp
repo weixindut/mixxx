@@ -102,21 +102,23 @@ PresetInfo::PresetInfo(const QString preset_path) {
     }
     QDomElement scriptFiles = controller.firstChildElement("scriptfiles");
     if (!scriptFiles.isNull()) {
-    	QDomNodeList scripts = scriptFiles.elementsByTagName("file");
-    	foreach(QDomElement script, scripts) {
-    	    if(script.hasAttribute("filename")) {
-    	    	jsFileNames.append(script.attribute("filename"));
-    	    }
-    	}
+        QDomNodeList scripts = scriptFiles.elementsByTagName("file");
+        for (int i=0; i<scripts.count(); i++) {
+            QDomElement script = scripts.at(i).toElement();
+            if(script.hasAttribute("filename")) {
+                jsFileNames.append(script.attribute("filename"));
+            }
+        }
     }
     QDomElement picFiles = controller.firstChildElement("picfiles");
     if (!picFiles.isNull()) {
-    	QDomNodeList pictures = picFiles.elementsByTagName("pic");
-    	foreach(QDomElement pic, pictures) {
-    	    if(pic.hasAttribute("name")) {
-    	    	picFileNames.append(pic.attribute("name"));
-    	    }
-    	}
+        QDomNodeList pictures = picFiles.elementsByTagName("pic");
+        for (int i=0; i<pictures.count(); i++) {
+            QDomElement pic = pictures.at(i).toElement();
+            if(pic.hasAttribute("name")) {
+            	picFileNames.append(pic.attribute("name"));
+            }
+        }
     }
 }
 

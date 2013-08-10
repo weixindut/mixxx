@@ -44,11 +44,11 @@ void DlgPresetUpload::sloSelectPICFile() {
     if(dialog.exec()==QFileDialog::Accepted) {
         m_picFiles=dialog.selectedFiles();
         QString showContent = "";
-        foreach (file, m_picFiles) {
+        foreach (QString file, m_picFiles) {
             QFileInfo info;
             info.setFile(file);
             showContent.append(info.fileName());
-            showContent.appent(";");
+            showContent.append(";");
         }
         getUi().labelImageName->setText(showContent);
     }
@@ -61,11 +61,11 @@ void DlgPresetUpload::slotSelectJSFile() {
     if(dialog.exec()==QFileDialog::Accepted) {
         m_jsFiles=dialog.selectedFiles();
         QString showContent = "";
-        foreach (file, m_jsFiles) {
+        foreach (QString file, m_jsFiles) {
             QFileInfo info;
             info.setFile(file);
             showContent.append(info.fileName());
-            showContent.appent(";");
+            showContent.append(";");
         }
         getUi().labelJSName->setText(showContent);
     }
@@ -73,8 +73,8 @@ void DlgPresetUpload::slotSelectJSFile() {
 
 void DlgPresetUpload::slotSubmit() {
     if(m_xmlFile.isEmpty()||
-            m_picFile.isEmpty()||
-            m_jsFile.isEmpty()) {
+            m_picFiles.isEmpty()||
+            m_jsFiles.isEmpty()) {
     	QString message = "Please make sure you select a file for every item!";
     	QMessageBox::information(this, tr("Info"), message);
     	return;
@@ -118,7 +118,7 @@ void DlgPresetUpload::slotSubmit() {
                             return;
                         }
                     }
-                    pod.insertOneFile(pid,m_xmlFile,1)
+                    pod.insertOneFile(pid,m_xmlFile,1);
                 }
 
             } else if (status=="false") {
@@ -133,24 +133,36 @@ void DlgPresetUpload::slotSubmit() {
     }
 }
 bool DlgPresetUpload::uploadCheck(QString xmlFile, QList<QString> picFiles, QList<QString> jsFiles) {
+    qDebug()<<"===========uploadCheck()=========";
 	PresetInfo presetInfo = PresetInfo(xmlFile);
-	QList<QString> pictures = presetInfo.getPicFileNames();
-	QList<QString> scripts = presetInfo.getJsFileNames();
-	if (pictures.size()==picFiles.size()) {
-	    foreach(QString pic, picFiles) {
-	        if (!pictures.contains(pic)) {
-	        	return false;
-	        }
-	    }
-	}
-	if (scripts.size()==jsFiles.size()) {
-	    foreach(QString js, jsFiles) {
-	        if (!scripts.contains(js)) {
-	        	return false;
-	        }
-	    }
-	}
-	return ture;
+    QList<QString> pictures = presetInfo.getPicFileNames();
+    QList<QString> scripts = presetInfo.getJsFileNames();
+    if (pictures.size()!=picFiles.size()||scripts.size()!=jsFiles.size()) {
+    	QString message = "Please select correct pictures and scripts!";
+    	QMessageBox::information(this, tr("Info"), message);
+    	return false;
+    }
+    foreach(QString pic, picFiles) {
+        QFileInfo info(pic);
+        QString picName = info.fileName();
+        if (!pictures.contains(picName)) {
+        	qDebug()<<"===========pic:" + picName;
+        	QString message = "Please select correct pictures!";
+        	QMessageBox::information(this, tr("Info"), message);
+        	return false;
+        }
+    }
+    foreach(QString js, jsFiles) {
+        QFileInfo info(js);
+        QString jsName = info.fileName();
+        if (!scripts.contains(jsName)) {
+        	qDebug()<<"===========JS:" + jsName;
+        	QString message = "Please select correct scripts!";
+        	QMessageBox::information(this, tr("Info"), message);
+            return false;
+        }
+    }
+    return true;
 }
 void DlgPresetUpload::slotCancel() {
     close();

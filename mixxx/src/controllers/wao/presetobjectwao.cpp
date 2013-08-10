@@ -43,7 +43,13 @@ QList<MidiControllerPreset> PresetObjectWAO::getPresetByURL(QString url) {
         QString schema_version = res["schema_version"].toString();
         QString picture_file = res["picture_file"].toString();
         float avg_rating = res["avg_ratings"].toFloat();
-        QString picture_name = httpclient.downloadFile(picture_file);
+        QString picture_name;
+        if (!picture_file.isEmpty()) {
+            picture_name = httpclient.downloadFile(picture_file);
+        } else {
+            picture_name = "";
+        }
+
         //QString xml_file = res["xml_file"].toString();
         //httpclient.downloadFile(xml_file);
 
@@ -69,7 +75,9 @@ QList<MidiControllerPreset> PresetObjectWAO::getPresetByURL(QString url) {
         controllerpreset.setSchemaVersion(schema_version);
         //controllerpreset.setPicturePath("./tmp/"+picture_name);
         // currently server only return one picture file or none
-        controllerpreset.addPictureFile(picture_name);
+        if (!picture_name.isEmpty()) {
+        	controllerpreset.addPictureFile(picture_name);
+        }
         controllerpreset.setRatings(avg_rating);
         controllerpreset.setFilePath("");
 

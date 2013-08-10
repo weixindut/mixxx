@@ -42,7 +42,7 @@ QList<MidiControllerPreset> PresetObjectDAO::getPresetByPresetName(QString name)
             return QList<MidiControllerPreset>();
         }
         QString picName;
-        for(picQuery.next()) {
+        while(picQuery.next()) {
         	picName = picQuery.value(picQuery.record().indexOf("name")).toString();
         	controllerpreset.addPictureFile(picName);
         }
@@ -66,7 +66,7 @@ QList<MidiControllerPreset> PresetObjectDAO::getPresetByPresetName(QString name)
         controllerpreset.setName(preset_name);
         controllerpreset.setDeviceId(controller_name);
         controllerpreset.setSchemaVersion(schema_version);
-        controllerpreset.setPicturePath(picPath);
+        controllerpreset.addPictureFile(picName);
         controllerpreset.setRatings(ratings);
         controllerpreset.setFilePath("");
         // here JS Script files haven't been added, currently unnecessary
@@ -100,6 +100,7 @@ QString PresetObjectDAO::generateQueryStr(QString name) {
     return queryStr;
 }
 bool PresetObjectDAO::insertOnePreset(QString pid, QString xmlFilePath) {
+    qDebug()<< "===========insertOnePreset()============";
 	PresetInfo presetInfo = PresetInfo(xmlFilePath);
 	QString author = presetInfo.getAuthor();
 	QString description = presetInfo.getDescription();
@@ -122,11 +123,11 @@ bool PresetObjectDAO::insertOnePreset(QString pid, QString xmlFilePath) {
 	    presetSource = "mixxx";
 	}
     QSqlQuery query(m_database);
-    query.prepare("INSERT INTO mapping_preset_object (pid,author,url,description,"
-                  "preset_source,preset_status,mixxx_version,preset_name,ratings,"
-                  "controller_name,schema_version) VALUES (:pid,:author,:url,"
-                  ":description,:preset_source,:preset_status,mixxx_version,"
-                  ":preset_name,:ratings,:controller_name,:schema_version)");
+    query.prepare("INSERT INTO mapping_preset_object (pid,author, url, description,"
+                  "preset_source, preset_status, mixxx_version, preset_name, ratings,"
+                  "controller_name, schema_version) VALUES (:pid, :author, :url, "
+                  ":description, :preset_source, :preset_status, :mixxx_version, "
+                  ":preset_name, :ratings, :controller_name, :schema_version)");
     query.bindValue(":pid", pid);
     query.bindValue(":author", author);
     query.bindValue(":url", url);
@@ -157,7 +158,7 @@ bool PresetObjectDAO::insertOneFile(QString pid,QString filePath, int type) {
     int size = fileInfo.size();
     QSqlQuery query(m_database);
     query.prepare("INSERT INTO files_storage (directory,presetitem_id,type,filesize,name) "
-                  "VALUES (:directory,:presetitem_id,:type,:filesize,name)");
+                  "VALUES (:directory, :presetitem_id, :type, :filesize, :name)");
     query.bindValue(":directory", directory);
     query.bindValue(":presetitem_id", pid);
     query.bindValue(":type", type);
