@@ -120,6 +120,12 @@ void DlgPresetUpload::slotSubmit() {
                     }
                     pod.insertOneFile(pid,m_xmlFile,1);
                 }
+                QString message = "Success!";
+                QMessageBox::information(this, tr("Info"), message);
+                close();
+                m_xmlFile = "";
+                m_picFiles.clear();
+                m_jsFiles.clear();
 
             } else if (status=="false") {
             	QMessageBox::information(this, tr("Info"), info);

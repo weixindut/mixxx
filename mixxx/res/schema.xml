@@ -357,7 +357,7 @@ METADATA
         schema_version varchar(36) NOT NULL);
         CREATE TABLE IF NOT EXISTS files_storage (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        directory varchar(256) UNIQUE,
+        directory varchar(256),
         presetitem_id char(128) NOT NULL REFERENCES mapping_preset_object(uuid),
         type INTEGER NOT NULL,
         filesize INTEGER,
