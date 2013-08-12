@@ -159,7 +159,6 @@ void DlgMappingPresetManager::slotShowLocalSearchResults() {
             }
         }
         DlgControllerPreset* showpreset = new DlgControllerPreset(this);
-        //showpreset->setCover(m_presetListLocal[i].picturePath());
         if (!m_presetListLocal[i].PictureFileNames().isEmpty()) {
         	//TODO(weixin): rewrite the path
             showpreset->setCover("./res/controllers/"+m_presetListLocal[i].PictureFileNames()[0]);
@@ -201,7 +200,6 @@ void DlgMappingPresetManager::slotShowCloudSearchResults() {
             }
         }
         DlgControllerPreset* showpreset = new DlgControllerPreset(this);
-        //showpreset->setCover(m_presetListCloud[i].picturePath());
         if (!m_presetListCloud[i].PictureFileNames().isEmpty()) {
         	//TODO(weixin): rewrite the path
         	qDebug()<<"================showpreset->setCover=============";

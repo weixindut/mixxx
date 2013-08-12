@@ -15,6 +15,8 @@ class DlgPresetUpload : public QDialog {
     // same with its real file names. this is used for a based check before the files
     // are uploaded
     bool uploadCheck(QString xmlFile, QList<QString> picFiles, QList<QString> jsFiles);
+    bool copyFile(QString path, QString destination);
+    bool removeFile(QString path, QString source);
   protected:
     Ui::DlgPresetUpload& getUi() {
         return m_ui;

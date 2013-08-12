@@ -1,4 +1,5 @@
 #include <QFileInfo>
+#include <QFile>
 #include "controllers/dlgpresetupload.h"
 #include "controllers/controllerpresetinfo.h"
 #include "controllers/dao/presetobjectdao.h"
@@ -72,10 +73,8 @@ void DlgPresetUpload::slotSelectJSFile() {
 }
 
 void DlgPresetUpload::slotSubmit() {
-    if(m_xmlFile.isEmpty()||
-            m_picFiles.isEmpty()||
-            m_jsFiles.isEmpty()) {
-    	QString message = "Please make sure you select a file for every item!";
+    if(m_xmlFile.isEmpty()) {
+    	QString message = "Please make sure that you have selected a xml mapping preset file!";
     	QMessageBox::information(this, tr("Info"), message);
     	return;
     } else {
@@ -93,6 +92,9 @@ void DlgPresetUpload::slotSubmit() {
             QVariantMap result = QtJson::parse(reply,ok).toMap();
             if(!ok) {
             	qDebug()<<"parse failed\n";
+                QString message = "Sorry!";
+                QMessageBox::information(this, tr("Notice"), message);
+                return;
             }
             QString status = result["status"].toString();
             QString info = result["info"].toString();
@@ -102,19 +104,27 @@ void DlgPresetUpload::slotSubmit() {
                 bool ok = pod.insertOnePreset(pid,m_xmlFile);
                 if (!ok) {
                     qDebug() << "preset local insert failed";
+                    QString message = "Sorry!";
+                    QMessageBox::information(this, tr("Notice"), message);
                     return;
                 } else {
                 // TODO(weixin): transfer files into a specified directory,
                 // and save that directory
                     foreach(QString file, m_picFiles) {
                         if(!pod.insertOneFile(pid,file,0)) {
-                        	// TODO(weixin): do something when some file is inserted failed
+                            QString message = "Pictures upload failed, try to rename the relevant "
+                                              "picture files' names and preset relevant code, and "
+                                              "then try to submit again!";
+                            QMessageBox::information(this, tr("Notice"), message);
                             return;
                         }
                     }
                     foreach(QString file, m_jsFiles) {
                         if(!pod.insertOneFile(pid,file,2)) {
-                        	// TODO(weixin): do something when some file is inserted failed
+                            QString message = "Scripts upload failed, try to rename the relevant "
+                                              "JS files' names and preset relevant code, and "
+                                              "then try to submit again!";
+                            QMessageBox::information(this, tr("Notice"), message);
                             return;
                         }
                     }
@@ -152,7 +162,7 @@ bool DlgPresetUpload::uploadCheck(QString xmlFile, QList<QString> picFiles, QLis
         QFileInfo info(pic);
         QString picName = info.fileName();
         if (!pictures.contains(picName)) {
-        	qDebug()<<"===========pic:" + picName;
+        	qDebug()<<"===========PIC:" + picName;
         	QString message = "Please select correct pictures!";
         	QMessageBox::information(this, tr("Info"), message);
         	return false;
@@ -175,4 +185,29 @@ void DlgPresetUpload::slotCancel() {
     m_xmlFile = "";
     m_picFiles.clear();
     m_jsFiles.clear();
+}
+bool DlgPresetUpload::copyFile(QString source, QString destination) {
+	if (source == destination) {
+		return true;
+	}
+    if (!QFile::exists(source)) {
+        qDebug() << "copyFile:Given path does not exist!Path:"+source;
+        return false;
+    }
+    if (!QFile::exists(destination)) {
+    	QString message = "File "+destination+" has been existed, please rename your file";
+    	QMessageBox::information(this, tr("Notice"), message);
+        return false;
+    }
+    QFile::copy(source, destination);
+    return true;
+}
+bool DlgPresetUpload::removeFile(QString path) {
+    if(QFile::exists(path)) {
+    	QFile::remove(path);
+    	return true;
+    } else {
+    	qDebug() << "removeFile:Given path does not exist!Path:"+path;
+        return false;
+    }
 }

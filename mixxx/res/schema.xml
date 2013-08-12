@@ -351,7 +351,7 @@ METADATA
         preset_source varchar(36) NOT NULL,
         preset_status varchar(36) NOT NULL,
         mixxx_version varchar(36) NOT NULL,
-        preset_name varchar(128) NOT NULL UNIQUE,
+        preset_name varchar(128) NOT NULL,
         controller_name varchar(128) NOT NULL,
         ratings float NOT NULL, 
         schema_version varchar(36) NOT NULL);
