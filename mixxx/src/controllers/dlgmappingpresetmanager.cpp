@@ -163,6 +163,8 @@ void DlgMappingPresetManager::slotShowLocalSearchResults() {
         if (!m_presetListLocal[i].PictureFileNames().isEmpty()) {
         	//TODO(weixin): rewrite the path
             showpreset->setCover("./res/controllers/"+m_presetListLocal[i].PictureFileNames()[0]);
+        } else {
+            showpreset->setCover("./res/images/mixxx-icon.png");
         }
         showpreset->setPresetName(m_presetListLocal[i].name());
         showpreset->setSource(m_presetListLocal[i].presetSource());
@@ -205,7 +207,9 @@ void DlgMappingPresetManager::slotShowCloudSearchResults() {
         	qDebug()<<"================showpreset->setCover=============";
             showpreset->setCover("./tmp/"+m_presetListCloud[i].PictureFileNames()[0]);
 
-        };
+        } else {
+            showpreset->setCover("./res/images/mixxx-icon.png");
+        }
 
         showpreset->setPresetName(m_presetListCloud[i].name());
         showpreset->setSource(m_presetListCloud[i].presetSource());
