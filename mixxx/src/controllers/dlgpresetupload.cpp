@@ -148,7 +148,7 @@ void DlgPresetUpload::slotSubmit() {
     	}
     }
 }
-bool DlgPresetUpload::uploadCheck(QString xmlFile, QList<QString> picFiles, QList<QString> jsFiles) {
+bool DlgPresetUpload::uploadCheck(QString& xmlFile, QList<QString>& picFiles, QList<QString>& jsFiles) {
     qDebug()<<"===========uploadCheck()=========";
 	PresetInfo presetInfo = PresetInfo(xmlFile);
     QList<QString> pictures = presetInfo.getPicFileNames();
@@ -176,6 +176,52 @@ bool DlgPresetUpload::uploadCheck(QString xmlFile, QList<QString> picFiles, QLis
         	QString message = "Please select correct scripts!";
         	QMessageBox::information(this, tr("Info"), message);
             return false;
+        }
+    }
+    bool status = true;
+    QString destDir = "./res/controllers";
+    QFileinfo xml(xmlFile);
+    QString destXML = destDir+xml.fileName();
+    if (!copyFile(xmlFile,destXML)) {
+        status = false;
+    }
+    foreach(QString pic, picFiles) {
+        QFileInfo info(pic);
+        QString destPic = destDir+info.fileName();
+        if (!copyFile(pic,destPic)) {
+        	status = false;
+        }
+    }
+    foreach(QString js, jsFiles) {
+        QFileInfo info(js);
+        QString destJS = destDir+info.fileName();
+        if (!copyFile(js,destJS)) {
+        	status = false;
+        }
+    }
+    if(status == false) {
+        removeFile(destXML);
+        foreach(QString pic, picFiles) {
+            QFileInfo info(pic);
+            QString destPic = destDir+info.fileName();
+            removeFile(destPic);
+        }
+        foreach(QString js, jsFiles) {
+        	QFileInfo info(js);
+        	QString destJS = destDir+info.fileName();
+        	removeFile(destJS);
+        }
+    } else {
+    	xmlFile=destXML;
+        foreach(QString pic, picFiles) {
+            QFileInfo info(pic);
+            QString destPic = destDir+info.fileName();
+            pic = destPic;
+        }
+        foreach(QString js, jsFiles) {
+        	QFileInfo info(js);
+        	QString destJS = destDir+info.fileName();
+        	js = destJS;
         }
     }
     return true;

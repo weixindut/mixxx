@@ -14,7 +14,7 @@ class DlgPresetUpload : public QDialog {
     // check whether the names of picure files and script files in the xml file are
     // same with its real file names. this is used for a based check before the files
     // are uploaded
-    bool uploadCheck(QString xmlFile, QList<QString> picFiles, QList<QString> jsFiles);
+    bool uploadCheck(QString& xmlFile, QList<QString>& picFiles, QList<QString>& jsFiles);
     bool copyFile(QString path, QString destination);
     bool removeFile(QString path, QString source);
   protected:
