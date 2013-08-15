@@ -79,11 +79,14 @@ void DlgPresetUpload::slotSubmit() {
     	return;
     } else {
         if(uploadCheck(m_xmlFile,m_picFiles,m_jsFiles)) {
+        	qDebug()<<"~~~~~~~~~~~"+m_xmlFile+"~~~~~~~~~";
             QString serverURL = "http://127.0.0.1:8000/upload";
             foreach(QString file, m_picFiles) {
+            	qDebug()<<"~~~~~~~~~~~"+file+"~~~~~~~~~";
                 m_client.postFile(serverURL,file);
             }
             foreach(QString file, m_jsFiles) {
+            	qDebug()<<"~~~~~~~~~~~"+file+"~~~~~~~~~";
                 m_client.postFile(serverURL,file);
             }
             QString reply = m_client.postFile(serverURL,m_xmlFile);
@@ -158,6 +161,8 @@ bool DlgPresetUpload::uploadCheck(QString& xmlFile, QList<QString>& picFiles, QL
     	QMessageBox::information(this, tr("Info"), message);
     	return false;
     }
+    // check whether selected file name is same with info inserted in
+    // xml file by the preset writer
     foreach(QString pic, picFiles) {
         QFileInfo info(pic);
         QString picName = info.fileName();
@@ -178,18 +183,28 @@ bool DlgPresetUpload::uploadCheck(QString& xmlFile, QList<QString>& picFiles, QL
             return false;
         }
     }
+    return transferPresetFiles(xmlFile,picFiles,jsFiles);
+}
+bool DlgPresetUpload::transferPresetFiles(QString& xmlFile, QList<QString>& picFiles, QList<QString>& jsFiles) {
     bool status = true;
-    QString destDir = "./res/controllers";
-    QFileinfo xml(xmlFile);
+	QString destDir = "./res/controllers/";
+    QFileInfo xml(xmlFile);
     QString destXML = destDir+xml.fileName();
     if (!copyFile(xmlFile,destXML)) {
-        status = false;
+    	status = false;
+    	QString message = "There already exists file "+xml.fileName()+" in directory "
+    	        +destDir+", please change your preset name and try again:(";
+    	QMessageBox::information(this, tr("Info"), message);
+    	return status;
     }
     foreach(QString pic, picFiles) {
         QFileInfo info(pic);
         QString destPic = destDir+info.fileName();
         if (!copyFile(pic,destPic)) {
-        	status = false;
+            status = false;
+        	QString message = "There already exists file "+info.fileName()+" in directory "
+        	        +destDir+", please change your preset name and try again:(";
+        	QMessageBox::information(this, tr("Info"), message);
         }
     }
     foreach(QString js, jsFiles) {
@@ -197,34 +212,38 @@ bool DlgPresetUpload::uploadCheck(QString& xmlFile, QList<QString>& picFiles, QL
         QString destJS = destDir+info.fileName();
         if (!copyFile(js,destJS)) {
         	status = false;
+        	QString message = "There already exists file "+info.fileName()+" in directory "
+        	        +destDir+", please change your preset name and try again:(";
+        	QMessageBox::information(this, tr("Info"), message);
         }
     }
     if(status == false) {
         removeFile(destXML);
         foreach(QString pic, picFiles) {
-            QFileInfo info(pic);
-            QString destPic = destDir+info.fileName();
-            removeFile(destPic);
+        	QFileInfo info(pic);
+        	QString destPic = destDir+info.fileName();
+        	removeFile(destPic);
         }
         foreach(QString js, jsFiles) {
         	QFileInfo info(js);
         	QString destJS = destDir+info.fileName();
         	removeFile(destJS);
         }
+        return false;
     } else {
-    	xmlFile=destXML;
-        foreach(QString pic, picFiles) {
-            QFileInfo info(pic);
-            QString destPic = destDir+info.fileName();
-            pic = destPic;
+    	xmlFile = destXML;
+    	for(int i=0; i<picFiles.size(); i++) {
+    		QFileInfo info(picFiles[i]);
+    		QString destPic = destDir+info.fileName();
+    		picFiles[i] = destPic;
+    	}
+        for(int i=0; i<jsFiles.size(); i++) {
+            QFileInfo info(jsFiles[i]);
+            QString destJS = destDir+info.fileName();
+            jsFiles[i] = destJS;
         }
-        foreach(QString js, jsFiles) {
-        	QFileInfo info(js);
-        	QString destJS = destDir+info.fileName();
-        	js = destJS;
-        }
+        return true;
     }
-    return true;
 }
 void DlgPresetUpload::slotCancel() {
     close();
@@ -240,7 +259,7 @@ bool DlgPresetUpload::copyFile(QString source, QString destination) {
         qDebug() << "copyFile:Given path does not exist!Path:"+source;
         return false;
     }
-    if (!QFile::exists(destination)) {
+    if (QFile::exists(destination)) {
     	QString message = "File "+destination+" has been existed, please rename your file";
     	QMessageBox::information(this, tr("Notice"), message);
         return false;

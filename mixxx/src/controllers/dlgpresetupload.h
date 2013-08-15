@@ -16,7 +16,8 @@ class DlgPresetUpload : public QDialog {
     // are uploaded
     bool uploadCheck(QString& xmlFile, QList<QString>& picFiles, QList<QString>& jsFiles);
     bool copyFile(QString path, QString destination);
-    bool removeFile(QString path, QString source);
+    bool removeFile(QString path);
+    bool transferPresetFiles(QString& xmlFile, QList<QString>& picFiles, QList<QString>& jsFiles);
   protected:
     Ui::DlgPresetUpload& getUi() {
         return m_ui;
