@@ -20,7 +20,7 @@ DlgPresetUpload::DlgPresetUpload(QWidget* parent):QDialog(parent) {
     connect(getUi().btnSubmit, SIGNAL(clicked()),
                 this, SLOT(slotSubmit()));
     connect(getUi().btnCancel, SIGNAL(clicked()),
-                this, SLOT(slotCancel()));
+                this, SLOT(slotClose()));
 }
 void DlgPresetUpload::slotSelectXMLFile() {
     QFileDialog dialog(this);
@@ -31,8 +31,9 @@ void DlgPresetUpload::slotSelectXMLFile() {
         QStringList files=dialog.selectedFiles();
         if(!files.isEmpty()) {
             m_xmlFile = files[0];
+            QFileInfo info(m_xmlFile);
             qDebug()<< "file name============" + m_xmlFile;
-            getUi().labelXMLName->setText(m_xmlFile);
+            getUi().labelXMLName->setText(info.fileName());
         }
     }
 
@@ -79,14 +80,11 @@ void DlgPresetUpload::slotSubmit() {
     	return;
     } else {
         if(uploadCheck(m_xmlFile,m_picFiles,m_jsFiles)) {
-        	qDebug()<<"~~~~~~~~~~~"+m_xmlFile+"~~~~~~~~~";
             QString serverURL = "http://127.0.0.1:8000/upload";
             foreach(QString file, m_picFiles) {
-            	qDebug()<<"~~~~~~~~~~~"+file+"~~~~~~~~~";
                 m_client.postFile(serverURL,file);
             }
             foreach(QString file, m_jsFiles) {
-            	qDebug()<<"~~~~~~~~~~~"+file+"~~~~~~~~~";
                 m_client.postFile(serverURL,file);
             }
             QString reply = m_client.postFile(serverURL,m_xmlFile);
@@ -97,62 +95,70 @@ void DlgPresetUpload::slotSubmit() {
             	qDebug()<<"parse failed\n";
                 QString message = "Sorry!";
                 QMessageBox::information(this, tr("Notice"), message);
+                removePresetFiles(m_xmlFile,m_picFiles,m_jsFiles);
                 return;
             }
             QString status = result["status"].toString();
             QString info = result["info"].toString();
             if (status=="true") {
-                QString pid = info;
-                PresetObjectDAO pod(m_db);
-                bool ok = pod.insertOnePreset(pid,m_xmlFile);
-                if (!ok) {
-                    qDebug() << "preset local insert failed";
-                    QString message = "Sorry!";
-                    QMessageBox::information(this, tr("Notice"), message);
-                    return;
-                } else {
-                // TODO(weixin): transfer files into a specified directory,
-                // and save that directory
-                    foreach(QString file, m_picFiles) {
-                        if(!pod.insertOneFile(pid,file,0)) {
-                            QString message = "Pictures upload failed, try to rename the relevant "
-                                              "picture files' names and preset relevant code, and "
-                                              "then try to submit again!";
-                            QMessageBox::information(this, tr("Notice"), message);
-                            return;
-                        }
-                    }
-                    foreach(QString file, m_jsFiles) {
-                        if(!pod.insertOneFile(pid,file,2)) {
-                            QString message = "Scripts upload failed, try to rename the relevant "
-                                              "JS files' names and preset relevant code, and "
-                                              "then try to submit again!";
-                            QMessageBox::information(this, tr("Notice"), message);
-                            return;
-                        }
-                    }
-                    pod.insertOneFile(pid,m_xmlFile,1);
-                }
-                QString message = "Success!";
-                QMessageBox::information(this, tr("Info"), message);
-                close();
-                m_xmlFile = "";
-                m_picFiles.clear();
-                m_jsFiles.clear();
-
+            	if(insertPresetIntoDB(info,m_xmlFile,m_picFiles,m_jsFiles)) {
+                    QString message = "Success!";
+                    QMessageBox::information(this, tr("Info"), message);
+                    slotClose();
+            	} else {
+            		removePresetFiles(m_xmlFile,m_picFiles,m_jsFiles);
+            		return;
+            	}
             } else if (status=="false") {
             	QMessageBox::information(this, tr("Info"), info);
+            	removePresetFiles(m_xmlFile,m_picFiles,m_jsFiles);
             	return;
             } else {
-            	QString message = "Something unexpected has happened!";
+            	removePresetFiles(m_xmlFile,m_picFiles,m_jsFiles);
+            	QString message = "Sorry, something unexpected has happened in Server! Please try again later!";
             	QMessageBox::information(this, tr("Info"), message);
             	return;
             }
     	}
     }
 }
+// This shoud be an atomic operation
+bool DlgPresetUpload::insertPresetIntoDB(QString pid,QString& xmlFile, QList<QString>& picFiles, QList<QString>& jsFiles) {
+    PresetObjectDAO pod(m_db);
+    bool ok = pod.insertOnePreset(pid,xmlFile);
+    if (!ok) {
+        qDebug() << "preset local insert failed";
+        QString message = "Sorry!";
+        QMessageBox::information(this, tr("Notice"), message);
+        return false;
+    } else {
+        foreach(QString file, picFiles) {
+            if(!pod.insertOneFile(pid,file,0)) {
+                QString message = "Pictures upload failed, try to rename the relevant "
+                                  "picture files' names and preset relevant code, and "
+                                  "then try to submit again!";
+                QMessageBox::information(this, tr("Notice"), message);
+                return false;
+            }
+        }
+        foreach(QString file, jsFiles) {
+            if(!pod.insertOneFile(pid,file,2)) {
+                QString message = "Scripts upload failed, try to rename the relevant "
+                                  "JS files' names and preset relevant code, and "
+                                  "then try to submit again!";
+                QMessageBox::information(this, tr("Notice"), message);
+                return false;
+            }
+        }
+        if (!pod.insertOneFile(pid,xmlFile,1)) {
+            QString message = "Xml file upload failed, try to rename it and submit again!";
+            QMessageBox::information(this, tr("Notice"), message);
+            return false;
+        }
+        return true;
+    }
+}
 bool DlgPresetUpload::uploadCheck(QString& xmlFile, QList<QString>& picFiles, QList<QString>& jsFiles) {
-    qDebug()<<"===========uploadCheck()=========";
 	PresetInfo presetInfo = PresetInfo(xmlFile);
     QList<QString> pictures = presetInfo.getPicFileNames();
     QList<QString> scripts = presetInfo.getJsFileNames();
@@ -167,7 +173,6 @@ bool DlgPresetUpload::uploadCheck(QString& xmlFile, QList<QString>& picFiles, QL
         QFileInfo info(pic);
         QString picName = info.fileName();
         if (!pictures.contains(picName)) {
-        	qDebug()<<"===========PIC:" + picName;
         	QString message = "Please select correct pictures!";
         	QMessageBox::information(this, tr("Info"), message);
         	return false;
@@ -177,7 +182,6 @@ bool DlgPresetUpload::uploadCheck(QString& xmlFile, QList<QString>& picFiles, QL
         QFileInfo info(js);
         QString jsName = info.fileName();
         if (!scripts.contains(jsName)) {
-        	qDebug()<<"===========JS:" + jsName;
         	QString message = "Please select correct scripts!";
         	QMessageBox::information(this, tr("Info"), message);
             return false;
@@ -218,17 +222,7 @@ bool DlgPresetUpload::transferPresetFiles(QString& xmlFile, QList<QString>& picF
         }
     }
     if(status == false) {
-        removeFile(destXML);
-        foreach(QString pic, picFiles) {
-        	QFileInfo info(pic);
-        	QString destPic = destDir+info.fileName();
-        	removeFile(destPic);
-        }
-        foreach(QString js, jsFiles) {
-        	QFileInfo info(js);
-        	QString destJS = destDir+info.fileName();
-        	removeFile(destJS);
-        }
+    	removePresetFiles(xmlFile,picFiles,jsFiles);
         return false;
     } else {
     	xmlFile = destXML;
@@ -245,11 +239,30 @@ bool DlgPresetUpload::transferPresetFiles(QString& xmlFile, QList<QString>& picF
         return true;
     }
 }
-void DlgPresetUpload::slotCancel() {
+void DlgPresetUpload::removePresetFiles(QString& xmlFile, QList<QString>& picFiles, QList<QString>& jsFiles) {
+	QString destDir = "./res/controllers/";
+	QFileInfo xml(xmlFile);
+	QString destXML = destDir+xml.fileName();
+	removeFile(destXML);
+	foreach(QString pic, picFiles) {
+	    QFileInfo info(pic);
+	    QString destPic = destDir+info.fileName();
+	    removeFile(destPic);
+	}
+	foreach(QString js, jsFiles) {
+		QFileInfo info(js);
+		QString destJS = destDir+info.fileName();
+		removeFile(destJS);
+	}
+}
+void DlgPresetUpload::slotClose() {
     close();
     m_xmlFile = "";
     m_picFiles.clear();
     m_jsFiles.clear();
+    getUi().labelXMLName->setText("...");
+    getUi().labelImageName->setText("...");
+    getUi().labelJSName->setText("...");
 }
 bool DlgPresetUpload::copyFile(QString source, QString destination) {
 	if (source == destination) {
@@ -275,4 +288,7 @@ bool DlgPresetUpload::removeFile(QString path) {
     	qDebug() << "removeFile:Given path does not exist!Path:"+path;
         return false;
     }
+}
+void DlgPresetUpload::closeEvent(QCloseEvent *event) {
+	slotClose();
 }

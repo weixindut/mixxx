@@ -4,6 +4,7 @@
 #include <QSqlDatabase>
 #include <QSqlError>
 #include <QList>
+#include <QCloseEvent>
 #include "controllers/httpclient.h"
 #include "controllers/ui_dlgpresetupload.h"
 class DlgPresetUpload : public QDialog {
@@ -18,6 +19,9 @@ class DlgPresetUpload : public QDialog {
     bool copyFile(QString path, QString destination);
     bool removeFile(QString path);
     bool transferPresetFiles(QString& xmlFile, QList<QString>& picFiles, QList<QString>& jsFiles);
+    bool insertPresetIntoDB(QString pid,QString& xmlFile, QList<QString>& picFiles, QList<QString>& jsFiles);
+    void removePresetFiles(QString& xmlFile, QList<QString>& picFiles, QList<QString>& jsFiles);
+    void closeEvent(QCloseEvent *event);
   protected:
     Ui::DlgPresetUpload& getUi() {
         return m_ui;
@@ -27,7 +31,7 @@ class DlgPresetUpload : public QDialog {
     void sloSelectPICFile();
     void slotSelectJSFile();
     void slotSubmit();
-    void slotCancel();
+    void slotClose();
   private:
     Ui::DlgPresetUpload m_ui;
     HttpClient m_client;

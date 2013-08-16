@@ -100,7 +100,6 @@ QString PresetObjectDAO::generateQueryStr(QString name) {
     return queryStr;
 }
 bool PresetObjectDAO::insertOnePreset(QString pid, QString xmlFilePath) {
-    qDebug()<< "===========insertOnePreset()============";
 	PresetInfo presetInfo = PresetInfo(xmlFilePath);
 	QString author = presetInfo.getAuthor();
 	QString description = presetInfo.getDescription();
