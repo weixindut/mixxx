@@ -128,7 +128,7 @@ bool DlgPresetUpload::insertPresetIntoDB(QString pid,QString& xmlFile, QList<QSt
     bool ok = pod.insertOnePreset(pid,xmlFile);
     if (!ok) {
         qDebug() << "preset local insert failed";
-        QString message = "Sorry!";
+        QString message = "Sorry,preset local insert failed!";
         QMessageBox::information(this, tr("Notice"), message);
         return false;
     } else {
@@ -182,12 +182,22 @@ bool DlgPresetUpload::uploadCheck(QString& xmlFile, QList<QString>& picFiles, QL
         QFileInfo info(js);
         QString jsName = info.fileName();
         if (!scripts.contains(jsName)) {
-        	QString message = "Please select correct scripts!";
-        	QMessageBox::information(this, tr("Info"), message);
+            QString message = "Please select correct scripts!";
+            QMessageBox::information(this, tr("Info"), message);
             return false;
         }
     }
-    return transferPresetFiles(xmlFile,picFiles,jsFiles);
+    if (!transferPresetFiles(xmlFile,picFiles,jsFiles)) {
+    	return false;
+    }
+    PresetObjectDAO pod(m_db);
+    if(!pod.isPresetInsertable(xmlFile)) {
+        QString message = "Preset with same schema version has already existed!";
+        QMessageBox::information(this, tr("Info"), message);
+        return false;
+    } else {
+        return true;
+    }
 }
 bool DlgPresetUpload::transferPresetFiles(QString& xmlFile, QList<QString>& picFiles, QList<QString>& jsFiles) {
     bool status = true;

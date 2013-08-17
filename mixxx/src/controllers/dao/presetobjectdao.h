@@ -12,6 +12,7 @@ class PresetObjectDAO: public QObject{
     QList<MidiControllerPreset> getPresetByPresetName(QString name);
     bool insertOnePreset(QString pid, QString xmlFilePath);
     bool insertOneFile(QString pid,QString filePath, int type);
+    bool isPresetInsertable(QString xmlFilePath);
   private:
     QString generateQueryStr(QString name);
 

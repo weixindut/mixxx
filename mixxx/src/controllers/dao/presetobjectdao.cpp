@@ -99,20 +99,45 @@ QString PresetObjectDAO::generateQueryStr(QString name) {
     }
     return queryStr;
 }
+bool PresetObjectDAO::isPresetInsertable(QString xmlFilePath) {
+	PresetInfo presetInfo = PresetInfo(xmlFilePath);
+	QString controllerName = presetInfo.getControllerName();
+	QString presetName = presetInfo.getName();
+	QString schemaVersion = presetInfo.getSchemaVersion();
+
+    QSqlQuery query(m_database);
+    query.prepare(" SELECT controller_name, preset_name, schema_version FROM mapping_preset_object "
+    		      " WHERE controller_name = :controller_name AND preset_name = :preset_name AND "
+    		      " schema_version = :schema_version");
+    query.bindValue(":controller_name", controllerName);
+	query.bindValue(":preset_name", presetName);
+    query.bindValue(":schema_version", schemaVersion);
+    if (!query.exec()) {
+        LOG_FAILED_QUERY(query);
+        return false;
+    }
+    if(query.next()) {
+        qDebug() << "Preset with controller_name:"+controllerName+", preset_name:"+presetName
+                +", schema_version:"+schemaVersion+" has already existed in local database.";
+        return false;
+    } else {
+        return true;
+    }
+}
 bool PresetObjectDAO::insertOnePreset(QString pid, QString xmlFilePath) {
 	PresetInfo presetInfo = PresetInfo(xmlFilePath);
+	QString controllerName = presetInfo.getControllerName();
+	QString presetName = presetInfo.getName();
+	QString schemaVersion = presetInfo.getSchemaVersion();
 	QString author = presetInfo.getAuthor();
 	QString description = presetInfo.getDescription();
-	QString presetName = presetInfo.getName();
 	QString mixxxVersion = presetInfo.getMixxxVersion();
-	QString schemaVersion = presetInfo.getSchemaVersion();
-	QString controllerName = presetInfo.getControllerName();
 	QString presetStatus = "undefined";
 	float ratings = 0;
 	QString url;
 	QString presetSource;
 	if(!presetInfo.getForumLink().isEmpty()) {
-		url = presetInfo.getForumLink();
+	    url = presetInfo.getForumLink();
 	    presetSource = "forum";
 	} else if(!presetInfo.getWikiLink().isEmpty()) {
 	    url = presetInfo.getWikiLink();
@@ -121,28 +146,28 @@ bool PresetObjectDAO::insertOnePreset(QString pid, QString xmlFilePath) {
 	    url = "www.mixxx.org";
 	    presetSource = "mixxx";
 	}
-    QSqlQuery query(m_database);
-    query.prepare("INSERT INTO mapping_preset_object (pid,author, url, description,"
-                  "preset_source, preset_status, mixxx_version, preset_name, ratings,"
-                  "controller_name, schema_version) VALUES (:pid, :author, :url, "
-                  ":description, :preset_source, :preset_status, :mixxx_version, "
-                  ":preset_name, :ratings, :controller_name, :schema_version)");
-    query.bindValue(":pid", pid);
-    query.bindValue(":author", author);
-    query.bindValue(":url", url);
-    query.bindValue(":description", description);
-    query.bindValue(":preset_source", presetSource);
-    query.bindValue(":preset_status", presetStatus);
-    query.bindValue(":mixxx_version", mixxxVersion);
-    query.bindValue(":preset_name", presetName);
-    query.bindValue(":ratings", ratings);
-    query.bindValue(":controller_name", controllerName);
-    query.bindValue(":schema_version", schemaVersion);
-    if (!query.exec()) {
-        LOG_FAILED_QUERY(query);
-        return false;
-    }
-    return true;
+	QSqlQuery query(m_database);
+	query.prepare("INSERT INTO mapping_preset_object (pid,author, url, description,"
+	               "preset_source, preset_status, mixxx_version, preset_name, ratings,"
+	               "controller_name, schema_version) VALUES (:pid, :author, :url, "
+	               ":description, :preset_source, :preset_status, :mixxx_version, "
+	               ":preset_name, :ratings, :controller_name, :schema_version)");
+	query.bindValue(":pid", pid);
+	query.bindValue(":author", author);
+	query.bindValue(":url", url);
+	query.bindValue(":description", description);
+	query.bindValue(":preset_source", presetSource);
+	query.bindValue(":preset_status", presetStatus);
+	query.bindValue(":mixxx_version", mixxxVersion);
+	query.bindValue(":preset_name", presetName);
+	query.bindValue(":ratings", ratings);
+	query.bindValue(":controller_name", controllerName);
+	query.bindValue(":schema_version", schemaVersion);
+	if (!query.exec()) {
+	    LOG_FAILED_QUERY(query);
+	    return false;
+	}
+	return true;
 }
 bool PresetObjectDAO::insertOneFile(QString pid,QString filePath, int type) {
     // TODO(weixin):give a unified definition of type, currently type:0-pic,1-xml,2-js
