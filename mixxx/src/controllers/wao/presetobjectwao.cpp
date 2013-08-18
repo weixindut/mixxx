@@ -7,9 +7,13 @@
 using namespace QtJson;
 PresetObjectWAO::PresetObjectWAO() {}
 QList<MidiControllerPreset> PresetObjectWAO::getPresetByPresetName(QString name) {
-    //QString url="http://127.0.0.1:8000/api/v1/midi/preset/?preset_name__contains="+name+"&format=json";
 	QString url=generateQueryStr(name);
     return getPresetByURL(url);
+}
+QList<MidiControllerPreset> PresetObjectWAO::checkForUpdate(QString presetname, QString controller) {
+	QString url="http://127.0.0.1:8000/api/v1/midi/preset/updatecheck?preset_name="
+	        +presetname+"&controller="+controller+"&format=json";
+	return getPresetByURL(url);
 }
 QList<MidiControllerPreset> PresetObjectWAO::getPresetByURL(QString url) {
     QList<MidiControllerPreset> presetList;
