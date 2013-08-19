@@ -98,6 +98,17 @@ QString DlgPrefController::presetDescription(const ControllerPresetPointer pPres
     return description;
 }
 
+QString DlgPrefController::presetCoverPath(const ControllerPresetPointer pPreset) const {
+    QString coverPath = "";
+    if(pPreset) {
+    	QList<QString> pictures = pPreset->PictureFileNames();
+    	if(!pictures.isEmpty()) {
+    		coverPath = "./res/controllers/" + pictures[0];
+    	}
+    }
+    return coverPath;
+}
+
 QString DlgPrefController::presetForumLink(const ControllerPresetPointer pPreset) const {
     QString url;
     if (pPreset) {
@@ -215,6 +226,8 @@ void DlgPrefController::slotLoadPreset(int chosenIndex) {
 void DlgPrefController::slotPresetLoaded(ControllerPresetPointer preset) {
     m_ui.labelLoadedPreset->setText(presetShortName(preset));
     m_ui.labelLoadedPresetDescription->setText(presetDescription(preset));
+    QPixmap pixmap(presetCoverPath(preset));
+    m_ui.labelCover->setPixmap(pixmap);
     QStringList supportLinks;
     QString forumLink = presetForumLink(preset);
     if (forumLink.length() > 0) {
