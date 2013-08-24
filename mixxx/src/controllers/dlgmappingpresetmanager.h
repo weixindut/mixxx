@@ -7,6 +7,7 @@
 #include <QGridLayout>
 #include <QSqlDatabase>
 #include <QSqlError>
+#include "controllers/controllerpreset.h"
 #include "controllers/ui_dlgmappingpresetmanagerdlg.h"
 #include "controllers/midi/midicontrollerpreset.h"
 #include "configobject.h"
@@ -18,21 +19,26 @@ class DlgMappingPresetManager : public QDialog {
     virtual ~DlgMappingPresetManager();
     bool checkForTables();
     void getJsonDataTest();
+    ControllerPreset getSelectedPreset(QList<QGridLayout* > layoutList,
+            QList<MidiControllerPreset> presetList);
   protected:
     Ui::DlgPresetManagerDlg& getUi() {
         return m_ui;
     }
 
   private slots:
+    void slotApply();
     void slotSearch();
     void slotSearchLocal();
     void slotSearchCloud();
+    void slotSetApplyText(int index);
     void slotShowLocalSearchResults();
     void slotShowCloudSearchResults();
     void slotShowCloudLastPageResults();
     void slotShowCloudNextPageResults();
     void slotShowLocalLastPageResults();
     void slotShowLocalNextPageResults();
+
 
   private:
     QSqlDatabase m_db;

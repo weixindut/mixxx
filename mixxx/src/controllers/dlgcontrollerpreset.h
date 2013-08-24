@@ -14,12 +14,18 @@ class DlgControllerPreset: public QWidget {
     void setSource(QString source);
     void setStatus(QString status);
     void setRatings(float ratings);
+    void setPresetID(QString pid);
+    bool checkBoxStatus();
+    QString presetID();
 
   protected:
     Ui::DlgControllerPreset& getUi() {
         return m_ui;
     }
+  private slots:
+    void slotToSelect();
   private:
+    QString m_pid;
     Ui::DlgControllerPreset m_ui;
 };
 #endif

@@ -5,8 +5,11 @@
 DlgControllerPreset::DlgControllerPreset(QWidget* parent)
         :QWidget(parent) {
     m_ui.setupUi(this);
+    connect(getUi().checkBox,SIGNAL(clicked()),this,SLOT(slotToSelect()));
 }
-
+void DlgControllerPreset::setPresetID(QString pid){
+    m_pid = pid;
+}
 void DlgControllerPreset::setCover(QString path) {
     QPixmap pixmap(path);
     getUi().label_cover->setPixmap(pixmap);
@@ -78,4 +81,18 @@ void DlgControllerPreset::setRatings(float ratings) {
     } else {
         qDebug("Not support this rating:%d\n",value);
     }
+}
+void DlgControllerPreset::slotToSelect(){
+	if(getUi().checkBox->isChecked()) {
+		getUi().frame->setAutoFillBackground(true);
+	} else {
+		getUi().frame->setAutoFillBackground(false);
+	}
+
+}
+bool DlgControllerPreset::checkBoxStatus() {
+	return getUi().checkBox->isChecked();
+}
+QString DlgControllerPreset::presetID() {
+    return m_pid;
 }

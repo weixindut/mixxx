@@ -71,8 +71,11 @@ DlgMappingPresetManager::DlgMappingPresetManager(QWidget* parent,ConfigObject<Co
     getUi().label_statisticalresult->setText("...");
     connect(getUi().btn_search, SIGNAL(clicked()),
             this, SLOT(slotSearch()));
+    connect(getUi().tabWidget_results, SIGNAL(currentChanged(int)),
+            this, SLOT(slotSetApplyText(int)));
+    connect(getUi().btn_apply, SIGNAL(clicked()),
+            this, SLOT(slotApply()));
 }
-
 DlgMappingPresetManager::~DlgMappingPresetManager() {
     for(int i=0;i<m_gridLayoutListCloud.size();i++) {
         delete m_gridLayoutListCloud[i];
@@ -169,6 +172,7 @@ void DlgMappingPresetManager::slotShowLocalSearchResults() {
         showpreset->setSource(m_presetListLocal[i].presetSource());
         showpreset->setStatus(m_presetListLocal[i].presetStatus());
         showpreset->setRatings(m_presetListLocal[i].Ratings());
+        showpreset->setPresetID(m_presetListLocal[i].Pid());
         m_gridLayoutListLocal[i/8]->addWidget(showpreset,row,++column);
     }
     getUi().stackedWidgetLocal->setCurrentIndex(m_currentLocalResultsPage);
@@ -213,6 +217,7 @@ void DlgMappingPresetManager::slotShowCloudSearchResults() {
         showpreset->setSource(m_presetListCloud[i].presetSource());
         showpreset->setStatus(m_presetListCloud[i].presetStatus());
         showpreset->setRatings(m_presetListCloud[i].Ratings());
+        showpreset->setPresetID(m_presetListCloud[i].Pid());
         m_gridLayoutListCloud[i/8]->addWidget(showpreset,row,++column);
     }
     getUi().stackedWidgetCloud->setCurrentIndex(m_currentCloudResultsPage);
@@ -276,4 +281,48 @@ void DlgMappingPresetManager::slotShowLocalNextPageResults() {
 void DlgMappingPresetManager::getJsonDataTest() {
     PresetObjectWAO pow;
     pow.getPresetByPresetName("Akai LPD8 - RK");
+}
+void DlgMappingPresetManager::slotSetApplyText(int index) {
+    if(index == 0) {
+        getUi().btn_apply->setText("Apply");
+    } else {
+        getUi().btn_apply->setText("Download&&Apply");
+    }
+}
+void DlgMappingPresetManager::slotApply() {
+	MidiControllerPreset preset;
+    if(getUi().tabWidget_results->currentIndex()==0) {
+    	preset = getSelectedPreset(m_gridLayoutListLocal,m_presetListLocal);
+    } else {
+    	preset = getSelectedPreset(m_gridLayoutListCloud,m_presetListCloud);
+    }
+}
+ControllerPreset DlgMappingPresetManager::getSelectedPreset(QList<QGridLayout* > layoutList,
+		QList<MidiControllerPreset> presetList) {
+    QList<QString> pids;
+    for(int i=0; i<layoutList.size(); i++) {
+    	for(int j=0; j<layoutList[i].count(); j++) {
+    		QLayoutItem item = layoutList[i].itemAt(i);
+    		DlgControllerPreset* dlg = (DlgControllerPreset)item;
+    		if(dlg->checkBoxStatus()) {
+    		    pids.append(dlg->presetID());
+    		}
+    	}
+    }
+    if(pid.size()==0) {
+        QString message = "Please select one preset!";
+        QMessageBox::information(this, tr("Info"), message);
+        return NULL;
+    } else if (pid.size()==1) {
+    	for(int i=0; i<presetList.size();i++) {
+    	    if(presetList[i].Pid()==pids[0]) {
+    	    	return presetList[i];
+    	    }
+    	    return NULL;
+    	}
+    } else {
+    	QString message = "More than one preset has been selected!";
+    	QMessageBox::information(this, tr("Info"), message);
+    	return NULL;
+    }
 }
