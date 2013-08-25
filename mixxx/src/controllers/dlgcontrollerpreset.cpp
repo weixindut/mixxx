@@ -7,6 +7,11 @@ DlgControllerPreset::DlgControllerPreset(QWidget* parent)
     m_ui.setupUi(this);
     connect(getUi().checkBox,SIGNAL(clicked()),this,SLOT(slotToSelect()));
 }
+/*DlgControllerPreset::DlgControllerPreset(QWidget* parent,const DlgControllerPreset& controllerpreset)
+        :QWidget(parent) {
+	m_ui = controllerpreset;
+    connect(getUi().checkBox,SIGNAL(clicked()),this,SLOT(slotToSelect()));
+}*/
 void DlgControllerPreset::setPresetID(QString pid){
     m_pid = pid;
 }
@@ -90,7 +95,8 @@ void DlgControllerPreset::slotToSelect(){
 	}
 
 }
-bool DlgControllerPreset::checkBoxStatus() {
+bool DlgControllerPreset::isSelected() {
+	qDebug()<< "=================="+getUi().checkBox->isChecked();
 	return getUi().checkBox->isChecked();
 }
 QString DlgControllerPreset::presetID() {

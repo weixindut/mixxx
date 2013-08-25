@@ -290,39 +290,45 @@ void DlgMappingPresetManager::slotSetApplyText(int index) {
     }
 }
 void DlgMappingPresetManager::slotApply() {
-	MidiControllerPreset preset;
+    QList<MidiControllerPreset> preset;
     if(getUi().tabWidget_results->currentIndex()==0) {
-    	preset = getSelectedPreset(m_gridLayoutListLocal,m_presetListLocal);
+        preset = getSelectedPreset(m_gridLayoutListLocal,m_presetListLocal);
+        if (preset.size()==1) {
+            qDebug()<<"selected preset name:====="+ preset[0].name();
+        }
     } else {
-    	preset = getSelectedPreset(m_gridLayoutListCloud,m_presetListCloud);
+        preset = getSelectedPreset(m_gridLayoutListCloud,m_presetListCloud);
+        if (preset.size()==1) {
+            qDebug()<<"selected preset name:====="+ preset[0].name();
+        }
     }
 }
-ControllerPreset DlgMappingPresetManager::getSelectedPreset(QList<QGridLayout* > layoutList,
-		QList<MidiControllerPreset> presetList) {
+QList<MidiControllerPreset> DlgMappingPresetManager::getSelectedPreset(QList<QGridLayout* > layoutList,
+        QList<MidiControllerPreset> presetList) {
     QList<QString> pids;
     for(int i=0; i<layoutList.size(); i++) {
-    	for(int j=0; j<layoutList[i].count(); j++) {
-    		QLayoutItem item = layoutList[i].itemAt(i);
-    		DlgControllerPreset* dlg = (DlgControllerPreset)item;
-    		if(dlg->checkBoxStatus()) {
-    		    pids.append(dlg->presetID());
-    		}
-    	}
+        for(int j=0; j<layoutList[i]->count(); j++) {
+            QWidget* item = layoutList[i]->itemAt(j)->widget();
+            DlgControllerPreset* dlg = (DlgControllerPreset*)item;
+            if(dlg->isSelected()) {
+                pids.append(dlg->presetID());
+            }
+        }
     }
-    if(pid.size()==0) {
+    QList<MidiControllerPreset> res;
+    if(pids.size()==0) {
         QString message = "Please select one preset!";
         QMessageBox::information(this, tr("Info"), message);
-        return NULL;
-    } else if (pid.size()==1) {
-    	for(int i=0; i<presetList.size();i++) {
-    	    if(presetList[i].Pid()==pids[0]) {
-    	    	return presetList[i];
-    	    }
-    	    return NULL;
-    	}
+        return res;
+    } else if (pids.size()==1) {
+        for(int i=0; i<presetList.size();i++) {
+            if(presetList[i].Pid()==pids[0]) {
+                res.append(presetList[i]);
+            }
+        }
     } else {
-    	QString message = "More than one preset has been selected!";
-    	QMessageBox::information(this, tr("Info"), message);
-    	return NULL;
+        QString message = "More than one preset has been selected!";
+        QMessageBox::information(this, tr("Info"), message);
     }
+    return res;
 }

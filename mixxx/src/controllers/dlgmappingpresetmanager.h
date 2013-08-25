@@ -19,7 +19,7 @@ class DlgMappingPresetManager : public QDialog {
     virtual ~DlgMappingPresetManager();
     bool checkForTables();
     void getJsonDataTest();
-    ControllerPreset getSelectedPreset(QList<QGridLayout* > layoutList,
+    QList<MidiControllerPreset> getSelectedPreset(QList<QGridLayout* > layoutList,
             QList<MidiControllerPreset> presetList);
   protected:
     Ui::DlgPresetManagerDlg& getUi() {

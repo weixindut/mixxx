@@ -8,6 +8,7 @@ class DlgControllerPreset: public QWidget {
     Q_OBJECT
   public:
     DlgControllerPreset(QWidget* parent);
+    //DlgControllerPreset(QWidget* parent, const DlgControllerPreset& controllerpreset);
     virtual ~DlgControllerPreset() {};
     void setCover(QString path);
     void setPresetName(QString name);
@@ -15,7 +16,7 @@ class DlgControllerPreset: public QWidget {
     void setStatus(QString status);
     void setRatings(float ratings);
     void setPresetID(QString pid);
-    bool checkBoxStatus();
+    bool isSelected();
     QString presetID();
 
   protected:
