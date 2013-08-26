@@ -295,11 +295,15 @@ void DlgMappingPresetManager::slotApply() {
         preset = getSelectedPreset(m_gridLayoutListLocal,m_presetListLocal);
         if (preset.size()==1) {
             qDebug()<<"selected preset name:====="+ preset[0].name();
+            emit(hasSelectedAPreset(preset[0]));
+            close();
         }
     } else {
         preset = getSelectedPreset(m_gridLayoutListCloud,m_presetListCloud);
         if (preset.size()==1) {
             qDebug()<<"selected preset name:====="+ preset[0].name();
+            emit(hasSelectedAPreset(preset[0]));
+            close();
         }
     }
 }

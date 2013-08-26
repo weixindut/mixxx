@@ -262,3 +262,10 @@ void DlgPrefController::disableDevice() {
     emit(closeController(m_pController));
     //TODO: Should probably check if close() actually succeeded.
 }
+
+void  DlgPrefController::slotUpdateCurrntIndex(MidiControllerPreset preset) {
+    PresetInfo match(preset.filePath());
+    int index = m_ui.comboBoxPreset->findText(nameForPreset(match));
+    if (index != -1)
+        m_ui.comboBoxPreset->setCurrentIndex(index);
+}

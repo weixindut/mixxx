@@ -26,6 +26,7 @@ class DlgPrefMappableController : public DlgPrefController {
     void clearOutputs();
     void mappingStarted();
     void mappingEnded();;
+    void updateCurrntIndex(MidiControllerPreset);
 
   private slots:
     void slotShowLearnDialog();
@@ -40,7 +41,7 @@ class DlgPrefMappableController : public DlgPrefController {
 
     // Output mappings
     void clearAllOutputBindings();
-
+    void slotGetReturnPreset(MidiControllerPreset);
   private:
     DlgControllerLearning* m_pDlgControllerLearning;
     Ui::ControllerMappingDlg m_ui;

@@ -40,6 +40,10 @@ DlgPrefMappableController::DlgPrefMappableController(QWidget *parent, Controller
 
     connect(getUi().pushButtonLearning, SIGNAL(clicked()),
             this, SLOT(slotDirty()));
+    connect(m_pMappingPresetManager, SIGNAL(hasSelectedAPreset(MidiControllerPreset)),
+            this, SLOT(slotGetReturnPreset(MidiControllerPreset)));
+    connect(this, SIGNAL(updateCurrntIndex(MidiControllerPreset)),
+            this, SLOT(slotUpdateCurrntIndex(MidiControllerPreset)));
     // connect(m_ui.btnClearAllInputBindings, SIGNAL(clicked()),
     //         this, SLOT(clearAllInputBindings()));
     // connect(this, SIGNAL(clearInputs()),
@@ -140,4 +144,9 @@ void DlgPrefMappableController::clearAllOutputBindings() {
             QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Cancel) != QMessageBox::Ok)
         return;
     emit(clearOutputs());
+}
+void DlgPrefMappableController::slotGetReturnPreset(MidiControllerPreset preset) {
+    enumeratePresets();
+    emit(updateCurrntIndex(preset));
+
 }

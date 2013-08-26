@@ -15,6 +15,7 @@
 #include "controllers/controllerpresetinfo.h"
 #include "controllers/ui_dlgprefcontrollerdlg.h"
 #include "configobject.h"
+#include "controllers/midi/midicontrollerpreset.h"
 
 // Forward declarations
 class Controller;
@@ -66,6 +67,7 @@ class DlgPrefController : public QWidget {
     }
   private slots:
     void slotPresetLoaded(ControllerPresetPointer preset);
+    void slotUpdateCurrntIndex(MidiControllerPreset);
 
   private:
     QString presetShortName(const ControllerPresetPointer pPreset) const;
