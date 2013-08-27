@@ -16,6 +16,7 @@
 #include "controllers/ui_dlgprefcontrollerdlg.h"
 #include "configobject.h"
 #include "controllers/midi/midicontrollerpreset.h"
+#include "controllers/dlgmappingpresetmanager.h"
 
 // Forward declarations
 class Controller;
@@ -41,7 +42,8 @@ class DlgPrefController : public QWidget {
     void slotDirty ();
     // Reload the mappings in the dropdown dialog
     void enumeratePresets();
-
+    void slotShowMappingPresetManagerDialog();
+    void slotGetPreset(QString);
   signals:
     void deviceStateChanged(DlgPrefController*, bool);
     void openController(Controller* pController);
@@ -67,7 +69,8 @@ class DlgPrefController : public QWidget {
     }
   private slots:
     void slotPresetLoaded(ControllerPresetPointer preset);
-    void slotUpdateCurrntIndex(MidiControllerPreset);
+    //void slotUpdateCurrntIndex(MidiControllerPreset);
+    //void slotUpdateCurrntIndex(QString);
 
   private:
     QString presetShortName(const ControllerPresetPointer pPreset) const;
@@ -87,6 +90,7 @@ class DlgPrefController : public QWidget {
     QGridLayout* m_pLayout;
     QSpacerItem* m_pVerticalSpacer;
     bool m_bDirty;
+    DlgMappingPresetManager* m_pMappingPresetManager;
 };
 
 #endif /*DLGPREFCONTROLLER_H_*/

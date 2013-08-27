@@ -36,8 +36,8 @@ DlgMappingPresetManager::DlgMappingPresetManager(QWidget* parent,ConfigObject<Co
 
     m_ui.setupUi(this);
     getUi().tabWidget_results->setCurrentIndex(0);
-    m_currentCloudResultsPage=0;
-    m_currentLocalResultsPage=0;
+    m_currentCloudResultsPage = 0;
+    m_currentLocalResultsPage = 0;
     // TODO(weixin): the path may adjust
     QIcon icon;
     QPixmap pixmapleft("./res/images/controllers/goleft.png");
@@ -295,17 +295,21 @@ void DlgMappingPresetManager::slotApply() {
         preset = getSelectedPreset(m_gridLayoutListLocal,m_presetListLocal);
         if (preset.size()==1) {
             qDebug()<<"selected preset name:====="+ preset[0].name();
-            emit(hasSelectedAPreset(preset[0]));
-            close();
+            //emit(hasSelectedAPreset(preset[0]));
+            qDebug()<<"filePath:====="+ preset[0].filePath();
+            emit(presetReturned(preset[0].filePath()));
+            hide();
+            //close();
         }
     } else {
         preset = getSelectedPreset(m_gridLayoutListCloud,m_presetListCloud);
         if (preset.size()==1) {
             qDebug()<<"selected preset name:====="+ preset[0].name();
-            emit(hasSelectedAPreset(preset[0]));
+            emit(presetReturned(preset[0].filePath()));
             close();
         }
     }
+	//exec();
 }
 QList<MidiControllerPreset> DlgMappingPresetManager::getSelectedPreset(QList<QGridLayout* > layoutList,
         QList<MidiControllerPreset> presetList) {

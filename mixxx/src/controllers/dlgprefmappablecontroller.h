@@ -10,7 +10,6 @@
 
 #include "controllers/dlgprefcontroller.h"
 #include "controllers/dlgcontrollerlearning.h"
-#include "controllers/dlgmappingpresetmanager.h"
 #include "controllers/ui_dlgprefmappablecontrollerdlg.h"
 
 class DlgPrefMappableController : public DlgPrefController {
@@ -26,13 +25,11 @@ class DlgPrefMappableController : public DlgPrefController {
     void clearOutputs();
     void mappingStarted();
     void mappingEnded();;
-    void updateCurrntIndex(MidiControllerPreset);
 
   private slots:
     void slotShowLearnDialog();
     void slotUpdate();
     void slotDeviceState(int state);
-    void slotShowMappingPresetManagerDialog();
 
     // Input mappings
     void clearAllInputBindings();
@@ -41,11 +38,11 @@ class DlgPrefMappableController : public DlgPrefController {
 
     // Output mappings
     void clearAllOutputBindings();
-    void slotGetReturnPreset(MidiControllerPreset);
+    //void slotGetReturnPreset(MidiControllerPreset);
+    //void slotGetReturnPreset(QString);
   private:
     DlgControllerLearning* m_pDlgControllerLearning;
     Ui::ControllerMappingDlg m_ui;
-    DlgMappingPresetManager* m_pMappingPresetManager;
 };
 
 #endif

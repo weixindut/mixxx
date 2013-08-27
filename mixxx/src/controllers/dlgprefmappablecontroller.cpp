@@ -34,16 +34,9 @@ DlgPrefMappableController::DlgPrefMappableController(QWidget *parent, Controller
     getUi().pushButtonLearning->setEnabled(controller->isOpen());
     connect(getUi().pushButtonLearning, SIGNAL(clicked()),
             this, SLOT(slotShowLearnDialog()));
-
-    connect(getUi().btnMappingPresetManager, SIGNAL(clicked()),
-            this, SLOT(slotShowMappingPresetManagerDialog()));
-
     connect(getUi().pushButtonLearning, SIGNAL(clicked()),
             this, SLOT(slotDirty()));
-    connect(m_pMappingPresetManager, SIGNAL(hasSelectedAPreset(MidiControllerPreset)),
-            this, SLOT(slotGetReturnPreset(MidiControllerPreset)));
-    connect(this, SIGNAL(updateCurrntIndex(MidiControllerPreset)),
-            this, SLOT(slotUpdateCurrntIndex(MidiControllerPreset)));
+
     // connect(m_ui.btnClearAllInputBindings, SIGNAL(clicked()),
     //         this, SLOT(clearAllInputBindings()));
     // connect(this, SIGNAL(clearInputs()),
@@ -69,14 +62,6 @@ DlgPrefMappableController::DlgPrefMappableController(QWidget *parent, Controller
 
 }
 
-void DlgPrefMappableController::slotShowMappingPresetManagerDialog() {
-
-	if (isEnabled() && !getController()->isOpen()) {
-		m_pMappingPresetManager = new DlgMappingPresetManager(this,getConfigObject());
-		m_pMappingPresetManager->show();
-		//m_pMappingPresetManager->getJsonDataTest();
-	}
-}
 void DlgPrefMappableController::slotShowLearnDialog() {
     // If the user has checked the "Enabled" checkbox but they haven't hit OK to
     // apply it yet, prompt them to apply the settings before we open the
@@ -145,8 +130,10 @@ void DlgPrefMappableController::clearAllOutputBindings() {
         return;
     emit(clearOutputs());
 }
-void DlgPrefMappableController::slotGetReturnPreset(MidiControllerPreset preset) {
-    enumeratePresets();
-    emit(updateCurrntIndex(preset));
+//void DlgPrefMappableController::slotGetReturnPreset(MidiControllerPreset preset) {
+//void DlgPrefMappableController::slotGetReturnPreset(QString preset) {
+//	qDebug()<<"============slotGetReturnPreset===============";
+//    enumeratePresets();
+//    emit(updateCurrntIndex(preset));
 
-}
+//}

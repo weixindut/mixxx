@@ -22,7 +22,7 @@ class DlgMappingPresetManager : public QDialog {
     QList<MidiControllerPreset> getSelectedPreset(QList<QGridLayout* > layoutList,
             QList<MidiControllerPreset> presetList);
   signals:
-    void hasSelectedAPreset(MidiControllerPreset);
+    void presetReturned(QString);
   protected:
     Ui::DlgPresetManagerDlg& getUi() {
         return m_ui;
