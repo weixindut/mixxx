@@ -74,7 +74,7 @@ DlgMappingPresetManager::DlgMappingPresetManager(QWidget* parent,ConfigObject<Co
     connect(getUi().tabWidget_results, SIGNAL(currentChanged(int)),
             this, SLOT(slotSetApplyText(int)));
     connect(getUi().btn_apply, SIGNAL(clicked()),
-            this, SLOT(slotApply()));
+            this, SLOT(slotOk()));
 }
 DlgMappingPresetManager::~DlgMappingPresetManager() {
     for(int i=0;i<m_gridLayoutListCloud.size();i++) {
@@ -289,27 +289,20 @@ void DlgMappingPresetManager::slotSetApplyText(int index) {
         getUi().btn_apply->setText("Download&&Apply");
     }
 }
-void DlgMappingPresetManager::slotApply() {
+void DlgMappingPresetManager::slotOk() {
     QList<MidiControllerPreset> preset;
     if(getUi().tabWidget_results->currentIndex()==0) {
         preset = getSelectedPreset(m_gridLayoutListLocal,m_presetListLocal);
-        if (preset.size()==1) {
-            qDebug()<<"selected preset name:====="+ preset[0].name();
-            //emit(hasSelectedAPreset(preset[0]));
-            qDebug()<<"filePath:====="+ preset[0].filePath();
-            emit(presetReturned(preset[0].filePath()));
-            hide();
-            //close();
-        }
     } else {
-        preset = getSelectedPreset(m_gridLayoutListCloud,m_presetListCloud);
-        if (preset.size()==1) {
-            qDebug()<<"selected preset name:====="+ preset[0].name();
-            emit(presetReturned(preset[0].filePath()));
-            close();
-        }
+    	preset = getSelectedPreset(m_gridLayoutListCloud,m_presetListCloud);
     }
-	//exec();
+    if (preset.size()==1) {
+        qDebug()<<"selected preset name:====="+ preset[0].name();
+        QString filePath = preset[0].filePath() + "/" + preset[0].name();
+        qDebug()<<"filePath:====="+ preset[0].filePath();
+        emit(presetReturned(filePath));
+        close();
+    }
 }
 QList<MidiControllerPreset> DlgMappingPresetManager::getSelectedPreset(QList<QGridLayout* > layoutList,
         QList<MidiControllerPreset> presetList) {
@@ -327,7 +320,6 @@ QList<MidiControllerPreset> DlgMappingPresetManager::getSelectedPreset(QList<QGr
     if(pids.size()==0) {
         QString message = "Please select one preset!";
         QMessageBox::information(this, tr("Info"), message);
-        return res;
     } else if (pids.size()==1) {
         for(int i=0; i<presetList.size();i++) {
             if(presetList[i].Pid()==pids[0]) {

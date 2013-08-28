@@ -29,7 +29,7 @@ class DlgMappingPresetManager : public QDialog {
     }
 
   private slots:
-    void slotApply();
+    void slotOk();
     void slotSearch();
     void slotSearchLocal();
     void slotSearchCloud();

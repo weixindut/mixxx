@@ -33,6 +33,7 @@ DlgPrefController::DlgPrefController(QWidget *parent, Controller* controller,
     m_ui.setupUi(this);
     m_pLayout = m_ui.gridLayout_4;
     const ControllerPresetPointer pPreset = controller->getPreset();
+    m_presetPath = "";
 
     slotPresetLoaded(pPreset);
 
@@ -68,6 +69,8 @@ DlgPrefController::DlgPrefController(QWidget *parent, Controller* controller,
             m_pControllerManager, SLOT(loadPreset(Controller*, QString, bool)));
     connect(getUi().btnMappingPresetManager, SIGNAL(clicked()),
             this, SLOT(slotShowMappingPresetManagerDialog()));
+    connect(this, SIGNAL(updateCurrentPreset()),
+            this, SLOT(slotUpdateCurrentPreset()));
 }
 
 DlgPrefController::~DlgPrefController() {
@@ -274,15 +277,17 @@ void DlgPrefController::disableDevice() {
     //TODO: Should probably check if close() actually succeeded.
 }
 
-//void  DlgPrefController::slotUpdateCurrntIndex(MidiControllerPreset preset) {
-/*void  DlgPrefController::slotUpdateCurrntIndex(QString preset) {
-    //PresetInfo match(preset.filePath());
-	PresetInfo match(preset);
+void  DlgPrefController::slotGetPreset(QString presetpath) {
+    qDebug()<<"============slotGetPreset==============="+presetpath;
+    m_presetPath = presetpath;
+    emit(updateCurrentPreset());
+}
+
+void DlgPrefController::slotUpdateCurrentPreset() {
+	PresetInfo match(m_presetPath);
     int index = m_ui.comboBoxPreset->findText(nameForPreset(match));
     qDebug()<<"============slotUpdateCurrntIndex===============";
     if (index != -1)
         m_ui.comboBoxPreset->setCurrentIndex(index);
-}*/
-void  DlgPrefController::slotGetPreset(QString presetpath) {
-    qDebug()<<"============slotGetPreset==============="+presetpath;
+    slotLoadPreset(index);
 }

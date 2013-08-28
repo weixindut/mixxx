@@ -42,13 +42,18 @@ class DlgPrefController : public QWidget {
     void slotDirty ();
     // Reload the mappings in the dropdown dialog
     void enumeratePresets();
+    // Show mapping preset manager dialog when button is pressed
     void slotShowMappingPresetManagerDialog();
+    // Get the file path of preset selected in Mapping Preset Manager dialog
     void slotGetPreset(QString);
+    // update current preset after new preset is returned
+    void slotUpdateCurrentPreset();
   signals:
     void deviceStateChanged(DlgPrefController*, bool);
     void openController(Controller* pController);
     void closeController(Controller* pController);
     void loadPreset(Controller* pController, QString controllerName, bool force);
+    void updateCurrentPreset();
 
   protected:
     Controller* getController() const {
@@ -69,8 +74,7 @@ class DlgPrefController : public QWidget {
     }
   private slots:
     void slotPresetLoaded(ControllerPresetPointer preset);
-    //void slotUpdateCurrntIndex(MidiControllerPreset);
-    //void slotUpdateCurrntIndex(QString);
+    //void slotUpdateCurrntPreset();
 
   private:
     QString presetShortName(const ControllerPresetPointer pPreset) const;
@@ -91,6 +95,7 @@ class DlgPrefController : public QWidget {
     QSpacerItem* m_pVerticalSpacer;
     bool m_bDirty;
     DlgMappingPresetManager* m_pMappingPresetManager;
+    QString m_presetPath;
 };
 
 #endif /*DLGPREFCONTROLLER_H_*/
