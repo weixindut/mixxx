@@ -20,6 +20,7 @@ class DlgPresetUpload : public QDialog {
     bool removeFile(QString path);
     bool transferPresetFiles(QString& xmlFile, QList<QString>& picFiles, QList<QString>& jsFiles);
     bool insertPresetIntoDB(QString pid,QString& xmlFile, QList<QString>& picFiles, QList<QString>& jsFiles);
+    // remove preset files has just moved to controllers directory
     void removePresetFiles(QString& xmlFile, QList<QString>& picFiles, QList<QString>& jsFiles);
     void closeEvent(QCloseEvent *event);
   protected:

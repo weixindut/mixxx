@@ -19,7 +19,7 @@ class DlgMappingPresetManager : public QDialog {
     virtual ~DlgMappingPresetManager();
     bool checkForTables();
     void getJsonDataTest();
-    QList<MidiControllerPreset> getSelectedPreset(QList<QGridLayout* > layoutList,
+    bool getSelectedPreset(QList<QGridLayout* > layoutList,
             QList<MidiControllerPreset> presetList);
   signals:
     void presetReturned(QString);
@@ -51,6 +51,7 @@ class DlgMappingPresetManager : public QDialog {
     int m_currentLocalResultsPage;
     QList<QGridLayout* > m_gridLayoutListCloud;
     QList<QGridLayout* > m_gridLayoutListLocal;
+    MidiControllerPreset m_selectedPreset;
 };
 #endif
 

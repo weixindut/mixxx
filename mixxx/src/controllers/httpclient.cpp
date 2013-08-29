@@ -131,8 +131,9 @@ void HttpClient::waitForFinish(QNetworkReply* reply) {
     loop.exec();
 }
 
-QString HttpClient::doDownload(const QUrl& url) {
-	QString filename;
+QString HttpClient::doDownload(QString destDirecotry, const QUrl& url) {
+	QString fileName;
+	QString filePath;
     QNetworkRequest request(url);
     QNetworkReply* reply = m_manager->get(request);
     m_currentDownloads.append(reply);
@@ -142,10 +143,11 @@ QString HttpClient::doDownload(const QUrl& url) {
                 url.toEncoded().constData(),
                 qPrintable(reply->errorString()));
     } else {
-        filename = saveFileName(url);
-        if (saveToDisk(filename, reply)) {
-        	printf("Download of %s succeded (saved to %s)\n",
-        	        url.toEncoded().constData(), qPrintable(filename));
+    	fileName = saveFileName(url);
+        if (saveToDisk(destDirecotry, fileName, reply)) {
+        	printf("Download of %s succeeded (saved to %s)\n",
+        	        url.toEncoded().constData(), qPrintable(fileName));
+        	filePath = destDirecotry+"/"+fileName;
         }
     }
     m_currentDownloads.removeAll(reply);
@@ -153,7 +155,7 @@ QString HttpClient::doDownload(const QUrl& url) {
     if (m_currentDownloads.isEmpty()) {
         qDebug()<<"all downloads finished";
     }
-    return filename;
+    return filePath;
 }
 
 QString HttpClient::saveFileName(const QUrl& url) {
@@ -176,9 +178,9 @@ QString HttpClient::saveFileName(const QUrl& url) {
     return basename;
 }
 
-bool HttpClient::saveToDisk(const QString& filename, QIODevice* data) {
+bool HttpClient::saveToDisk(QString destDirecotry, const QString& filename, QIODevice* data) {
     QFile file;
-    file.setFileName("./tmp/"+filename);
+    file.setFileName(destDirecotry+filename);
     if (!file.open(QIODevice::WriteOnly)) {
         fprintf(stderr, "Could not open %s for writing: %s\n",
                 qPrintable(filename),
@@ -192,11 +194,11 @@ bool HttpClient::saveToDisk(const QString& filename, QIODevice* data) {
     return true;
 }
 
-QString HttpClient::downloadFile(const QString path) {
+QString HttpClient::downloadFile(QString destDirecotry,const QString path) {
     QUrl url;
     url.setHost("127.0.0.1");
     url.setPort(8000);
     url.setScheme("http");
     url.setPath(path);
-    return doDownload(url);
+    return doDownload(destDirecotry, url);
 }

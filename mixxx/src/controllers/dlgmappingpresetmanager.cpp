@@ -132,7 +132,7 @@ void DlgMappingPresetManager::slotSearchCloud() {
     }
     QString searchcontent=getUi().lineEdit_search->text();
     PresetObjectWAO pow;
-    m_presetListCloud=pow.getPresetByPresetName(searchcontent);
+    m_presetListCloud=pow.getPresetByPresetName("/tmp",searchcontent);
     //m_presetListCloud=pow.getPresetByURL("http://127.0.0.1:8000/api/v1/midi/preset/?format=json");
     emit(slotShowCloudSearchResults());
 }
@@ -280,7 +280,7 @@ void DlgMappingPresetManager::slotShowLocalNextPageResults() {
 }
 void DlgMappingPresetManager::getJsonDataTest() {
     PresetObjectWAO pow;
-    pow.getPresetByPresetName("Akai LPD8 - RK");
+    pow.getPresetByPresetName("/tmp","Akai LPD8 - RK");
 }
 void DlgMappingPresetManager::slotSetApplyText(int index) {
     if(index == 0) {
@@ -290,21 +290,34 @@ void DlgMappingPresetManager::slotSetApplyText(int index) {
     }
 }
 void DlgMappingPresetManager::slotOk() {
-    QList<MidiControllerPreset> preset;
+    //QList<MidiControllerPreset> preset;
     if(getUi().tabWidget_results->currentIndex()==0) {
-        preset = getSelectedPreset(m_gridLayoutListLocal,m_presetListLocal);
+        //preset = getSelectedPreset(m_gridLayoutListLocal,m_presetListLocal);
+        if(getSelectedPreset(m_gridLayoutListLocal,m_presetListLocal)==true) {
+            qDebug()<<"selected preset name:====="+ m_selectedPreset.name();
+            QString filePath = m_selectedPreset.filePath() + "/" + m_selectedPreset.name();
+            qDebug()<<"filePath:====="+ m_selectedPreset.filePath();
+            emit(presetReturned(filePath));
+            close();
+        }
     } else {
-    	preset = getSelectedPreset(m_gridLayoutListCloud,m_presetListCloud);
-    }
-    if (preset.size()==1) {
-        qDebug()<<"selected preset name:====="+ preset[0].name();
-        QString filePath = preset[0].filePath() + "/" + preset[0].name();
-        qDebug()<<"filePath:====="+ preset[0].filePath();
-        emit(presetReturned(filePath));
-        close();
+        //preset = getSelectedPreset(m_gridLayoutListCloud,m_presetListCloud);
+        if(getSelectedPreset(m_gridLayoutListCloud,m_presetListCloud)==true) {
+            QMessageBox message(QMessageBox::NoIcon, "Question",
+                                "Before apply a preset, you should download it first. Whether download?",
+                                QMessageBox::Yes | QMessageBox::No, NULL);
+            if(message.exec() == QMessageBox::Yes) {
+            	PresetObjectWAO pow;
+                pow.getPresetByPresetID("/res/controllers", m_selectedPreset.Pid());
+                QString filePath = m_selectedPreset.filePath() + "/" + m_selectedPreset.name();
+                qDebug()<<"filePath:====="+ m_selectedPreset.filePath();
+                emit(presetReturned(filePath));
+                close();
+            }
+    	}
     }
 }
-QList<MidiControllerPreset> DlgMappingPresetManager::getSelectedPreset(QList<QGridLayout* > layoutList,
+bool DlgMappingPresetManager::getSelectedPreset(QList<QGridLayout* > layoutList,
         QList<MidiControllerPreset> presetList) {
     QList<QString> pids;
     for(int i=0; i<layoutList.size(); i++) {
@@ -316,19 +329,25 @@ QList<MidiControllerPreset> DlgMappingPresetManager::getSelectedPreset(QList<QGr
             }
         }
     }
-    QList<MidiControllerPreset> res;
+    //QList<MidiControllerPreset> res;
     if(pids.size()==0) {
         QString message = "Please select one preset!";
         QMessageBox::information(this, tr("Info"), message);
+        return false;
     } else if (pids.size()==1) {
         for(int i=0; i<presetList.size();i++) {
             if(presetList[i].Pid()==pids[0]) {
-                res.append(presetList[i]);
+            	m_selectedPreset = presetList[i];
+            	return true;
+                //res.append(presetList[i]);
             }
         }
+        QString message = "Sorry, there's something wrong!";
+        QMessageBox::information(this, tr("Info"), message);
+        return false;
     } else {
         QString message = "More than one preset has been selected!";
         QMessageBox::information(this, tr("Info"), message);
+        return false;
     }
-    return res;
 }

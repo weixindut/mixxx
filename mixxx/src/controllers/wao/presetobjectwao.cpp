@@ -6,20 +6,25 @@
 
 using namespace QtJson;
 PresetObjectWAO::PresetObjectWAO() {}
-QList<MidiControllerPreset> PresetObjectWAO::getPresetByPresetName(QString name) {
+QList<MidiControllerPreset> PresetObjectWAO::getPresetByPresetName(QString destDirecotry, QString name) {
 	QString url=generateQueryStr(name);
-    return getPresetByURL(url);
+    return getPresetByURL(destDirecotry, url);
+}
+QList<MidiControllerPreset> PresetObjectWAO::getPresetByPresetID(QString destDirecotry, QString pid) {
+	QString url="http://127.0.0.1:8000/api/v1/midi/preset/updatecheck?pid="
+	        +pid+"&format=json";
+    return getPresetByURL(destDirecotry, url);
 }
 QList<MidiControllerPreset> PresetObjectWAO::checkForUpdate(QString presetname, QString controller) {
 	QString url="http://127.0.0.1:8000/api/v1/midi/preset/updatecheck?preset_name="
 	        +presetname+"&controller="+controller+"&format=json";
-	return getPresetByURL(url);
+	return getPresetByURL("/tmp",url);
 }
-QList<MidiControllerPreset> PresetObjectWAO::getPresetByURL(QString url) {
+QList<MidiControllerPreset> PresetObjectWAO::getPresetByURL(QString destDirecotry, QString url) {
     QList<MidiControllerPreset> presetList;
-    HttpClient httpclient;
+    HttpClient httpClient;
     bool ok;
-    QString data = httpclient.get(url);
+    QString data = httpClient.get(url);
     qDebug() << "Print JsonObject:"+data;
     QVariantMap result = QtJson::parse(data,ok).toMap();
     if(!ok) {
@@ -39,53 +44,66 @@ QList<MidiControllerPreset> PresetObjectWAO::getPresetByURL(QString url) {
         }
         QString url = res["url"].toString();
         QString description = res["description"].toString();
-        QString preset_source = res["preset_source"].toString();
-        QString preset_status = res["preset_status"].toString();
-        QString mixxx_version = res["version"].toString();
-        QString preset_name = res["preset_name"].toString();
-        QString controller_name = res["controller_name"].toString();
-        QString schema_version = res["schema_version"].toString();
-        QString picture_file = res["picture_file"].toString();
-        float avg_rating = res["avg_ratings"].toFloat();
-        QString picture_name;
-        if (!picture_file.isEmpty()) {
-            picture_name = httpclient.downloadFile(picture_file);
+        QString presetSource = res["preset_source"].toString();
+        QString presetStatus = res["preset_status"].toString();
+        QString mixxxVersion = res["version"].toString();
+        QString presetName = res["preset_name"].toString();
+        QString controllerName = res["controller_name"].toString();
+        QString schemaVersion = res["schema_version"].toString();
+        QString pictureFile = res["picture_file"].toString();
+        QString jsFile = res["js_file"].toString();
+        QString xmlFile = res["xml_file"].toString();
+        float avgRating = res["avg_ratings"].toFloat();
+        QString picturePath;
+        QString jsPath;
+        QString xmlPath;
+        if (!pictureFile.isEmpty()) {
+        	picturePath = httpClient.downloadFile(destDirecotry,pictureFile);
         } else {
-            picture_name = "";
+        	picturePath = "";
+        }
+        if (!jsFile.isEmpty()) {
+        	jsPath = httpClient.downloadFile(destDirecotry,jsFile);
+        } else {
+        	jsPath = "";
+        }
+        if (!xmlFile.isEmpty()) {
+        	xmlPath = httpClient.downloadFile(destDirecotry,xmlFile);
+        } else {
+        	xmlPath = "";
         }
 
-        //QString xml_file = res["xml_file"].toString();
-        //httpclient.downloadFile(xml_file);
-
-        MidiControllerPreset controllerpreset;
-        controllerpreset.setPid(pid);
-        controllerpreset.setAuthor(author);
+        MidiControllerPreset controllerPreset;
+        controllerPreset.setPid(pid);
+        controllerPreset.setAuthor(author);
         if (url.contains("forums")) {
-            controllerpreset.setForumLink(url);
-            controllerpreset.setWikiLink("");
+        	controllerPreset.setForumLink(url);
+            controllerPreset.setWikiLink("");
         } else if (url.contains("wiki")) {
-            controllerpreset.setForumLink("");
-            controllerpreset.setWikiLink(url);
+        	controllerPreset.setForumLink("");
+            controllerPreset.setWikiLink(url);
         } else {
-            controllerpreset.setForumLink("");
-            controllerpreset.setWikiLink("");
+        	controllerPreset.setForumLink("");
+            controllerPreset.setWikiLink("");
         }
-        controllerpreset.setDescription(description);
-        controllerpreset.setPresetSource(preset_source);
-        controllerpreset.setPresetStatus(preset_status);
-        controllerpreset.setMixxxVersion(mixxx_version);
-        controllerpreset.setName(preset_name);
-        controllerpreset.setDeviceId(controller_name);
-        controllerpreset.setSchemaVersion(schema_version);
-        //controllerpreset.setPicturePath("./tmp/"+picture_name);
+        controllerPreset.setDescription(description);
+        controllerPreset.setPresetSource(presetSource);
+        controllerPreset.setPresetStatus(presetStatus);
+        controllerPreset.setMixxxVersion(mixxxVersion);
+        controllerPreset.setName(presetName);
+        controllerPreset.setDeviceId(controllerName);
+        controllerPreset.setSchemaVersion(schemaVersion);
         // currently server only return one picture file or none
-        if (!picture_name.isEmpty()) {
-        	controllerpreset.addPictureFile(picture_name);
+        if (!picturePath.isEmpty()) {
+        	controllerPreset.addPictureFile(QFileInfo(picturePath).fileName());
         }
-        controllerpreset.setRatings(avg_rating);
-        controllerpreset.setFilePath("");
+        if (!jsPath.isEmpty()) {
+            controllerPreset.addScriptFile(QFileInfo(jsPath).fileName(),"");
+        }
+        controllerPreset.setRatings(avgRating);
+        controllerPreset.setFilePath(xmlPath);
 
-        presetList.append(controllerpreset);
+        presetList.append(controllerPreset);
     }
     return presetList;
 }

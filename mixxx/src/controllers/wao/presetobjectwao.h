@@ -13,8 +13,9 @@ class PresetObjectWAO : public QObject{
   public:
     PresetObjectWAO();
     virtual ~PresetObjectWAO(){}
-    QList<MidiControllerPreset> getPresetByURL(QString url);
-    QList<MidiControllerPreset> getPresetByPresetName(QString name);
+    QList<MidiControllerPreset> getPresetByURL(QString destDirecotry, QString url);
+    QList<MidiControllerPreset> getPresetByPresetName(QString destDirecotry, QString name);
+    QList<MidiControllerPreset> getPresetByPresetID(QString destDirecotry, QString pid);
     QList<MidiControllerPreset> checkForUpdate(QString presetname, QString controller);
 
   private:

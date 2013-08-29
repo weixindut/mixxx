@@ -30,10 +30,10 @@ class HttpClient : public QObject {
     QMap<QString, QString> allCookies(const QString& url);
     QMap<QString, QString> defaultValuesFromName(const QString& html, const QString& name);
 
-    QString doDownload(const QUrl& url);
+    QString doDownload(QString destDirecotry, const QUrl& url);
     QString saveFileName(const QUrl& url);
-    bool saveToDisk(const QString& filename, QIODevice* data);
-    QString downloadFile(const QString path);
+    bool saveToDisk(QString destDirecotry, const QString& filename, QIODevice* data);
+    QString downloadFile(QString destDirecotry, const QString path);
 
   private:
     void waitForFinish(QNetworkReply* reply);
