@@ -12,7 +12,6 @@ PresetObjectDAO::PresetObjectDAO(QSqlDatabase& database)
 }
 
 QList<MidiControllerPreset> PresetObjectDAO::getPresetByPresetName(QString name) {
-    ScopedTransaction transaction(m_database);
     QList<MidiControllerPreset> presetList;
     QSqlQuery query(m_database);
     QString queryStr = generateQueryStr(name);
@@ -35,8 +34,8 @@ QList<MidiControllerPreset> PresetObjectDAO::getPresetByPresetName(QString name)
         QString schema_version = query.value(query.record().indexOf("schema_version")).toString();
         float ratings = query.value(query.record().indexOf("ratings")).toFloat();
         QSqlQuery picQuery(m_database);
-        QString queryStr = "SELECT name FROM Files_storage WHERE presetitem_id = '"+pid+"' AND type = 0";
-        picQuery.prepare(queryStr);
+        QString picStr = "SELECT name FROM Files_storage WHERE presetitem_id = '"+pid+"' AND type = 0";
+        picQuery.prepare(picStr);
         if (!picQuery.exec()) {
             LOG_FAILED_QUERY(picQuery);
             return QList<MidiControllerPreset>();
@@ -45,6 +44,19 @@ QList<MidiControllerPreset> PresetObjectDAO::getPresetByPresetName(QString name)
         while(picQuery.next()) {
         	picName = picQuery.value(picQuery.record().indexOf("name")).toString();
         	controllerpreset.addPictureFile(picName);
+        }
+
+        QSqlQuery jsQuery(m_database);
+        QString jsStr = "SELECT name FROM Files_storage WHERE presetitem_id = '"+pid+"' AND type = 2";
+        jsQuery.prepare(jsStr);
+        if (!jsQuery.exec()) {
+            LOG_FAILED_QUERY(jsQuery);
+            return QList<MidiControllerPreset>();
+        }
+        QString jsName;
+        while(jsQuery.next()) {
+        	jsName = jsQuery.value(jsQuery.record().indexOf("name")).toString();
+            controllerpreset.addScriptFile(jsName,"");
         }
 
         controllerpreset.setPid(pid);
@@ -68,11 +80,24 @@ QList<MidiControllerPreset> PresetObjectDAO::getPresetByPresetName(QString name)
         controllerpreset.setSchemaVersion(schema_version);
         controllerpreset.addPictureFile(picName);
         controllerpreset.setRatings(ratings);
-        controllerpreset.setFilePath("");
-        // here JS Script files haven't been added, currently unnecessary
-        presetList.append(controllerpreset);
+        QSqlQuery xmlQuery(m_database);
+        QString xmlStr = "SELECT directory,name FROM Files_storage WHERE presetitem_id = '"+pid+"' AND type = 1";
+        xmlQuery.prepare(xmlStr);
+        if (!xmlQuery.exec()) {
+            LOG_FAILED_QUERY(xmlQuery);
+            return QList<MidiControllerPreset>();
+        }
+
+        if(xmlQuery.next()) {
+        	QString directory = xmlQuery.value(xmlQuery.record().indexOf("directory")).toString();
+        	QString name = xmlQuery.value(xmlQuery.record().indexOf("name")).toString();
+            controllerpreset.setFilePath(directory+"/"+name);
+            presetList.append(controllerpreset);
+        } else {
+            qDebug()<< "Database is not complete.";
+        }
+
     }
-    transaction.commit();
     return presetList;
 }
 

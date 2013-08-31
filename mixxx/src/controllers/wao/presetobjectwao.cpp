@@ -11,14 +11,14 @@ QList<MidiControllerPreset> PresetObjectWAO::getPresetByPresetName(QString destD
     return getPresetByURL(destDirecotry, url);
 }
 QList<MidiControllerPreset> PresetObjectWAO::getPresetByPresetID(QString destDirecotry, QString pid) {
-	QString url="http://127.0.0.1:8000/api/v1/midi/preset/updatecheck?pid="
+	QString url="http://127.0.0.1:8000/api/v1/midi/preset/?pid="
 	        +pid+"&format=json";
     return getPresetByURL(destDirecotry, url);
 }
 QList<MidiControllerPreset> PresetObjectWAO::checkForUpdate(QString presetname, QString controller) {
 	QString url="http://127.0.0.1:8000/api/v1/midi/preset/updatecheck?preset_name="
 	        +presetname+"&controller="+controller+"&format=json";
-	return getPresetByURL("/tmp",url);
+	return getPresetByURL("/tmp/",url);
 }
 QList<MidiControllerPreset> PresetObjectWAO::getPresetByURL(QString destDirecotry, QString url) {
     QList<MidiControllerPreset> presetList;
@@ -69,8 +69,10 @@ QList<MidiControllerPreset> PresetObjectWAO::getPresetByURL(QString destDirecotr
         }
         if (!xmlFile.isEmpty()) {
         	xmlPath = httpClient.downloadFile(destDirecotry,xmlFile);
+        	qDebug()<<"xmlpath:========="+xmlPath;
         } else {
         	xmlPath = "";
+        	qDebug()<<"xmlpath is empty"+xmlPath;
         }
 
         MidiControllerPreset controllerPreset;

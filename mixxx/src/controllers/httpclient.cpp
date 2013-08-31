@@ -147,7 +147,9 @@ QString HttpClient::doDownload(QString destDirecotry, const QUrl& url) {
         if (saveToDisk(destDirecotry, fileName, reply)) {
         	printf("Download of %s succeeded (saved to %s)\n",
         	        url.toEncoded().constData(), qPrintable(fileName));
-        	filePath = destDirecotry+"/"+fileName;
+        	filePath = destDirecotry+fileName;
+        } else {
+
         }
     }
     m_currentDownloads.removeAll(reply);
@@ -180,6 +182,7 @@ QString HttpClient::saveFileName(const QUrl& url) {
 
 bool HttpClient::saveToDisk(QString destDirecotry, const QString& filename, QIODevice* data) {
     QFile file;
+    qDebug()<<"~~~~~~~"+destDirecotry+filename;
     file.setFileName(destDirecotry+filename);
     if (!file.open(QIODevice::WriteOnly)) {
         fprintf(stderr, "Could not open %s for writing: %s\n",

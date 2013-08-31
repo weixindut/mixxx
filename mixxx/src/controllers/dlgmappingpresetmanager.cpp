@@ -132,9 +132,9 @@ void DlgMappingPresetManager::slotSearchCloud() {
     }
     QString searchcontent=getUi().lineEdit_search->text();
     PresetObjectWAO pow;
-    m_presetListCloud=pow.getPresetByPresetName("/tmp",searchcontent);
+    m_presetListCloud=pow.getPresetByPresetName("/tmp/",searchcontent);
     //m_presetListCloud=pow.getPresetByURL("http://127.0.0.1:8000/api/v1/midi/preset/?format=json");
-    emit(slotShowCloudSearchResults());
+    slotShowCloudSearchResults();
 }
 void DlgMappingPresetManager::slotShowLocalSearchResults() {
     QString result = "WoW, "+QString::number(m_presetListLocal.size())+" presets!";
@@ -280,7 +280,7 @@ void DlgMappingPresetManager::slotShowLocalNextPageResults() {
 }
 void DlgMappingPresetManager::getJsonDataTest() {
     PresetObjectWAO pow;
-    pow.getPresetByPresetName("/tmp","Akai LPD8 - RK");
+    pow.getPresetByPresetName("/tmp/","Akai LPD8 - RK");
 }
 void DlgMappingPresetManager::slotSetApplyText(int index) {
     if(index == 0) {
@@ -290,28 +290,22 @@ void DlgMappingPresetManager::slotSetApplyText(int index) {
     }
 }
 void DlgMappingPresetManager::slotOk() {
-    //QList<MidiControllerPreset> preset;
     if(getUi().tabWidget_results->currentIndex()==0) {
-        //preset = getSelectedPreset(m_gridLayoutListLocal,m_presetListLocal);
         if(getSelectedPreset(m_gridLayoutListLocal,m_presetListLocal)==true) {
-            qDebug()<<"selected preset name:====="+ m_selectedPreset.name();
-            QString filePath = m_selectedPreset.filePath() + "/" + m_selectedPreset.name();
             qDebug()<<"filePath:====="+ m_selectedPreset.filePath();
-            emit(presetReturned(filePath));
+            emit(presetReturned(m_selectedPreset.filePath()));
             close();
         }
     } else {
-        //preset = getSelectedPreset(m_gridLayoutListCloud,m_presetListCloud);
         if(getSelectedPreset(m_gridLayoutListCloud,m_presetListCloud)==true) {
             QMessageBox message(QMessageBox::NoIcon, "Question",
-                                "Before apply a preset, you should download it first. Whether download?",
+                                "Before applying a preset, you should download it first. Whether download it?",
                                 QMessageBox::Yes | QMessageBox::No, NULL);
             if(message.exec() == QMessageBox::Yes) {
             	PresetObjectWAO pow;
-                pow.getPresetByPresetID("/res/controllers", m_selectedPreset.Pid());
-                QString filePath = m_selectedPreset.filePath() + "/" + m_selectedPreset.name();
+                pow.getPresetByPresetID("./res/controllers/", m_selectedPreset.Pid());
                 qDebug()<<"filePath:====="+ m_selectedPreset.filePath();
-                emit(presetReturned(filePath));
+                emit(presetReturned(m_selectedPreset.filePath()));
                 close();
             }
     	}

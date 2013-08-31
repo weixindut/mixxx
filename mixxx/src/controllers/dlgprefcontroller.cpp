@@ -286,7 +286,6 @@ void  DlgPrefController::slotGetPreset(QString presetpath) {
 void DlgPrefController::slotUpdateCurrentPreset() {
 	PresetInfo match(m_presetPath);
     int index = m_ui.comboBoxPreset->findText(nameForPreset(match));
-    qDebug()<<"============slotUpdateCurrntIndex===============";
     if (index != -1)
         m_ui.comboBoxPreset->setCurrentIndex(index);
     slotLoadPreset(index);
