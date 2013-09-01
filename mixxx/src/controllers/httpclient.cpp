@@ -149,7 +149,7 @@ QString HttpClient::doDownload(QString destDirecotry, const QUrl& url) {
         	        url.toEncoded().constData(), qPrintable(fileName));
         	filePath = destDirecotry+fileName;
         } else {
-
+            qDebug()<<"@@@@@@@@@@@@@@@@@@@@@";
         }
     }
     m_currentDownloads.removeAll(reply);

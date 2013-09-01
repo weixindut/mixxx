@@ -343,12 +343,15 @@ bool ControllerManager::loadPreset(Controller* pController,
     QString filenameWithExt;
     QString filepath;
     QFileInfo fileinfo(filename);
+    qDebug()<<"filename================"+filename;
     if (fileinfo.isFile()) {
         filenameWithExt = fileinfo.baseName();
         filepath = fileinfo.absoluteFilePath();
+        qDebug()<<"======filepath=========="+filepath;
     } else {
         filenameWithExt = filename + pController->presetExtension();
         filepath = userPresetsPath(m_pConfig).append(filenameWithExt);
+        qDebug()<<"======filepath2=========="+filepath;
     }
 
     // If the file isn't present in the user's directory, check the local

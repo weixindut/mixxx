@@ -95,7 +95,7 @@ QList<MidiControllerPreset> PresetObjectWAO::getPresetByURL(QString destDirecotr
         controllerPreset.setName(presetName);
         controllerPreset.setDeviceId(controllerName);
         controllerPreset.setSchemaVersion(schemaVersion);
-        // currently server only return one picture file or none
+        //TODO(weixin): currently server only return one picture file or none
         if (!picturePath.isEmpty()) {
         	controllerPreset.addPictureFile(QFileInfo(picturePath).fileName());
         }

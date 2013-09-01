@@ -99,14 +99,14 @@ DlgMappingPresetManager::~DlgMappingPresetManager() {
 void DlgMappingPresetManager::slotSearch() {
     int index=getUi().tabWidget_results->currentIndex();
     if(index == 0) {
-        emit(slotSearchLocal());
+        searchLocal();
     } else {
         getUi().tabWidget_results->setCurrentIndex(1);
-        emit(slotSearchCloud());
+        searchCloud();
     }
 }
 
-void DlgMappingPresetManager::slotSearchLocal() {
+void DlgMappingPresetManager::searchLocal() {
     for(int i=0;i<m_gridLayoutListLocal.size();i++) {
         delete m_gridLayoutListLocal[i];
     }
@@ -119,9 +119,9 @@ void DlgMappingPresetManager::slotSearchLocal() {
     PresetObjectDAO pod(m_db);
     m_presetListLocal=pod.getPresetByPresetName(searchcontent);
 
-    emit(slotShowLocalSearchResults());
+    showLocalSearchResults();
 }
-void DlgMappingPresetManager::slotSearchCloud() {
+void DlgMappingPresetManager::searchCloud() {
     for(int i=0;i<m_gridLayoutListCloud.size();i++) {
     	delete m_gridLayoutListCloud[i];
     }
@@ -134,9 +134,9 @@ void DlgMappingPresetManager::slotSearchCloud() {
     PresetObjectWAO pow;
     m_presetListCloud=pow.getPresetByPresetName("/tmp/",searchcontent);
     //m_presetListCloud=pow.getPresetByURL("http://127.0.0.1:8000/api/v1/midi/preset/?format=json");
-    slotShowCloudSearchResults();
+    showCloudSearchResults();
 }
-void DlgMappingPresetManager::slotShowLocalSearchResults() {
+void DlgMappingPresetManager::showLocalSearchResults() {
     QString result = "WoW, "+QString::number(m_presetListLocal.size())+" presets!";
     getUi().label_statisticalresult->setText(result);
     connect(getUi().btn_localleft,SIGNAL(clicked()),
@@ -177,7 +177,7 @@ void DlgMappingPresetManager::slotShowLocalSearchResults() {
     }
     getUi().stackedWidgetLocal->setCurrentIndex(m_currentLocalResultsPage);
 }
-void DlgMappingPresetManager::slotShowCloudSearchResults() {
+void DlgMappingPresetManager::showCloudSearchResults() {
 	qDebug()<<"================slotShowCloudSearchResults()=============";
     QString result = "WoW, "+QString::number(m_presetListCloud.size())+" presets!";
     getUi().label_statisticalresult->setText(result);

@@ -75,9 +75,9 @@ void DlgPresetUpload::slotSelectJSFile() {
 
 void DlgPresetUpload::slotSubmit() {
     if(m_xmlFile.isEmpty()) {
-    	QString message = "Please make sure that you have selected a xml mapping preset file!";
-    	QMessageBox::information(this, tr("Info"), message);
-    	return;
+        QString message = "Please make sure that you have selected a xml mapping preset file!";
+        QMessageBox::information(this, tr("Info"), message);
+        return;
     } else {
         if(uploadCheck(m_xmlFile,m_picFiles,m_jsFiles)) {
             QString serverURL = "http://127.0.0.1:8000/upload";
@@ -92,72 +92,37 @@ void DlgPresetUpload::slotSubmit() {
             bool ok;
             QVariantMap result = QtJson::parse(reply,ok).toMap();
             if(!ok) {
-            	qDebug()<<"parse failed\n";
+                qDebug()<<"parse failed\n";
                 QString message = "Sorry!";
                 QMessageBox::information(this, tr("Notice"), message);
-                removePresetFiles(m_xmlFile,m_picFiles,m_jsFiles);
                 return;
             }
             QString status = result["status"].toString();
             QString info = result["info"].toString();
             if (status=="true") {
-            	if(insertPresetIntoDB(info,m_xmlFile,m_picFiles,m_jsFiles)) {
+                PresetObjectDAO pod(m_db);
+                if(pod.insertOnePreset(info,m_xmlFile,m_picFiles,m_jsFiles)) {
+                    transferPresetFiles(m_xmlFile,m_picFiles,m_jsFiles);
                     QString message = "Success!";
                     QMessageBox::information(this, tr("Info"), message);
                     slotClose();
-            	} else {
-            		removePresetFiles(m_xmlFile,m_picFiles,m_jsFiles);
-            		return;
+                } else {
+            	    QString message = "Sorry, maybe there's something wrong with database!";
+            	    QMessageBox::information(this, tr("Info"), message);
+            	    return;
             	}
             } else if (status=="false") {
-            	QMessageBox::information(this, tr("Info"), info);
-            	removePresetFiles(m_xmlFile,m_picFiles,m_jsFiles);
-            	return;
+                QMessageBox::information(this, tr("Info"), info);
+                return;
             } else {
-            	removePresetFiles(m_xmlFile,m_picFiles,m_jsFiles);
-            	QString message = "Sorry, something unexpected has happened in Server! Please try again later!";
-            	QMessageBox::information(this, tr("Info"), message);
-            	return;
+                QString message = "Sorry, something unexpected has happened in Server! Please try again later!";
+                QMessageBox::information(this, tr("Info"), message);
+                return;
             }
     	}
     }
 }
-// This shoud be an atomic operation
-bool DlgPresetUpload::insertPresetIntoDB(QString pid,QString& xmlFile, QList<QString>& picFiles, QList<QString>& jsFiles) {
-    PresetObjectDAO pod(m_db);
-    bool ok = pod.insertOnePreset(pid,xmlFile);
-    if (!ok) {
-        qDebug() << "preset local insert failed";
-        QString message = "Sorry,preset local insert failed!";
-        QMessageBox::information(this, tr("Notice"), message);
-        return false;
-    } else {
-        foreach(QString file, picFiles) {
-            if(!pod.insertOneFile(pid,file,0)) {
-                QString message = "Pictures upload failed, try to rename the relevant "
-                                  "picture files' names and preset relevant code, and "
-                                  "then try to submit again!";
-                QMessageBox::information(this, tr("Notice"), message);
-                return false;
-            }
-        }
-        foreach(QString file, jsFiles) {
-            if(!pod.insertOneFile(pid,file,2)) {
-                QString message = "Scripts upload failed, try to rename the relevant "
-                                  "JS files' names and preset relevant code, and "
-                                  "then try to submit again!";
-                QMessageBox::information(this, tr("Notice"), message);
-                return false;
-            }
-        }
-        if (!pod.insertOneFile(pid,xmlFile,1)) {
-            QString message = "Xml file upload failed, try to rename it and submit again!";
-            QMessageBox::information(this, tr("Notice"), message);
-            return false;
-        }
-        return true;
-    }
-}
+
 bool DlgPresetUpload::uploadCheck(QString& xmlFile, QList<QString>& picFiles, QList<QString>& jsFiles) {
 	PresetInfo presetInfo = PresetInfo(xmlFile);
     QList<QString> pictures = presetInfo.getPicFileNames();
@@ -187,84 +152,75 @@ bool DlgPresetUpload::uploadCheck(QString& xmlFile, QList<QString>& picFiles, QL
             return false;
         }
     }
-    if (!transferPresetFiles(xmlFile,picFiles,jsFiles)) {
-    	return false;
-    }
+
     PresetObjectDAO pod(m_db);
     if(!pod.isPresetInsertable(xmlFile)) {
         QString message = "Preset with same schema version has already existed!";
         QMessageBox::information(this, tr("Info"), message);
         return false;
-    } else {
-        return true;
     }
+    if(!ableToTransferPresetFiles(xmlFile,picFiles,jsFiles)) {
+        return false;
+    }
+    return true;
+
 }
-bool DlgPresetUpload::transferPresetFiles(QString& xmlFile, QList<QString>& picFiles, QList<QString>& jsFiles) {
-    bool status = true;
-	QString destDir = "./res/controllers/";
-    QFileInfo xml(xmlFile);
-    QString destXML = destDir+xml.fileName();
-    if (!copyFile(xmlFile,destXML)) {
-    	status = false;
-    	QString message = "There already exists file "+xml.fileName()+" in directory "
-    	        +destDir+", please change your preset name and try again:(";
-    	QMessageBox::information(this, tr("Info"), message);
-    	return status;
+bool DlgPresetUpload::ableToTransferPresetFiles(QString& xmlFile, QList<QString>& picFiles, QList<QString>& jsFiles) {
+    QString destDir = "./res/controllers/";
+    QFileInfo xmlInfo(xmlFile);
+    QString destXML = destDir+xmlInfo.fileName();
+    QFile xml(destXML);
+    if(xml.exists()) {
+        QString message = "There already exists file "+xmlInfo.fileName()+" in directory "
+                +destDir+", please change your preset name and try again:(";
+        QMessageBox::information(this, tr("Info"), message);
+        return false;
     }
     foreach(QString pic, picFiles) {
-        QFileInfo info(pic);
-        QString destPic = destDir+info.fileName();
-        if (!copyFile(pic,destPic)) {
-            status = false;
-        	QString message = "There already exists file "+info.fileName()+" in directory "
-        	        +destDir+", please change your preset name and try again:(";
-        	QMessageBox::information(this, tr("Info"), message);
+        QFileInfo picInfo(pic);
+        QString destPic = destDir+picInfo.fileName();
+        QFile pic(destPic);
+        if (pic.exists()) {
+            QString message = "There already exists file "+picInfo.fileName()+" in directory "
+                    +destDir+", please change your preset name and try again:(";
+            QMessageBox::information(this, tr("Info"), message);
+            return false;
         }
     }
     foreach(QString js, jsFiles) {
-        QFileInfo info(js);
-        QString destJS = destDir+info.fileName();
-        if (!copyFile(js,destJS)) {
-        	status = false;
-        	QString message = "There already exists file "+info.fileName()+" in directory "
-        	        +destDir+", please change your preset name and try again:(";
-        	QMessageBox::information(this, tr("Info"), message);
+        QFileInfo jsInfo(js);
+        QString destJS = destDir+jsInfo.fileName();
+        QFile js(destJS);
+        if (js.exists()) {
+            QString message = "There already exists file "+jsInfo.fileName()+" in directory "
+                    +destDir+", please change your preset name and try again:(";
+            QMessageBox::information(this, tr("Info"), message);
+            return false;
         }
     }
-    if(status == false) {
-    	removePresetFiles(xmlFile,picFiles,jsFiles);
-        return false;
-    } else {
-    	xmlFile = destXML;
-    	for(int i=0; i<picFiles.size(); i++) {
-    		QFileInfo info(picFiles[i]);
-    		QString destPic = destDir+info.fileName();
-    		picFiles[i] = destPic;
-    	}
-        for(int i=0; i<jsFiles.size(); i++) {
-            QFileInfo info(jsFiles[i]);
-            QString destJS = destDir+info.fileName();
-            jsFiles[i] = destJS;
-        }
-        return true;
-    }
+    return true;
 }
-void DlgPresetUpload::removePresetFiles(QString& xmlFile, QList<QString>& picFiles, QList<QString>& jsFiles) {
+
+void DlgPresetUpload::transferPresetFiles(QString& xmlFile, QList<QString>& picFiles, QList<QString>& jsFiles) {
 	QString destDir = "./res/controllers/";
-	QFileInfo xml(xmlFile);
-	QString destXML = destDir+xml.fileName();
-	removeFile(destXML);
-	foreach(QString pic, picFiles) {
-	    QFileInfo info(pic);
-	    QString destPic = destDir+info.fileName();
-	    removeFile(destPic);
-	}
-	foreach(QString js, jsFiles) {
-		QFileInfo info(js);
-		QString destJS = destDir+info.fileName();
-		removeFile(destJS);
-	}
+    QFileInfo xml(xmlFile);
+    QString destXML = destDir+xml.fileName();
+    copyFile(xmlFile,destXML);
+    xmlFile = destXML;
+    for(int i=0; i<picFiles.size(); i++) {
+        QFileInfo info(picFiles[i]);
+        QString destPic = destDir+info.fileName();
+        copyFile(picFiles[i],destPic);
+        picFiles[i] = destPic;
+    }
+    for(int i=0; i<jsFiles.size(); i++) {
+        QFileInfo info(jsFiles[i]);
+        QString destJS = destDir+info.fileName();
+        copyFile(jsFiles[i],destJS);
+        jsFiles[i] = destJS;
+    }
 }
+
 void DlgPresetUpload::slotClose() {
     close();
     m_xmlFile = "";
@@ -283,22 +239,14 @@ bool DlgPresetUpload::copyFile(QString source, QString destination) {
         return false;
     }
     if (QFile::exists(destination)) {
-    	QString message = "File "+destination+" has been existed, please rename your file";
+    	QString message = "File "+destination+" has already existed, please rename your file";
     	QMessageBox::information(this, tr("Notice"), message);
         return false;
     }
     QFile::copy(source, destination);
     return true;
 }
-bool DlgPresetUpload::removeFile(QString path) {
-    if(QFile::exists(path)) {
-    	QFile::remove(path);
-    	return true;
-    } else {
-    	qDebug() << "removeFile:Given path does not exist!Path:"+path;
-        return false;
-    }
-}
+
 void DlgPresetUpload::closeEvent(QCloseEvent *event) {
 	slotClose();
 }

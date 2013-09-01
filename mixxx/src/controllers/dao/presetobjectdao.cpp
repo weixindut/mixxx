@@ -149,7 +149,7 @@ bool PresetObjectDAO::isPresetInsertable(QString xmlFilePath) {
         return true;
     }
 }
-bool PresetObjectDAO::insertOnePreset(QString pid, QString xmlFilePath) {
+bool PresetObjectDAO::insertOnePresetRecord(QString pid, QString xmlFilePath) {
 	PresetInfo presetInfo = PresetInfo(xmlFilePath);
 	QString controllerName = presetInfo.getControllerName();
 	QString presetName = presetInfo.getName();
@@ -217,5 +217,30 @@ bool PresetObjectDAO::insertOneFile(QString pid,QString filePath, int type) {
         LOG_FAILED_QUERY(query);
         return false;
     }
+    return true;
+}
+bool PresetObjectDAO::insertOnePreset(QString pid,QString xmlFile, QList<QString>& picFiles, QList<QString>& jsFiles) {
+    ScopedTransaction transaction(m_database);
+    if (!insertOnePresetRecord(pid,xmlFile)) {
+        m_database.rollback();
+        return false;
+    }
+    foreach(QString file, picFiles) {
+        if(!insertOneFile(pid,file,0)) {
+            m_database.rollback();
+            return false;
+        }
+    }
+    foreach(QString file, jsFiles) {
+        if(!insertOneFile(pid,file,2)) {
+            m_database.rollback();
+            return false;
+        }
+    }
+    if (!insertOneFile(pid,xmlFile,1)) {
+        m_database.rollback();
+        return false;
+    }
+    m_database.commit();
     return true;
 }

@@ -130,10 +130,3 @@ void DlgPrefMappableController::clearAllOutputBindings() {
         return;
     emit(clearOutputs());
 }
-//void DlgPrefMappableController::slotGetReturnPreset(MidiControllerPreset preset) {
-//void DlgPrefMappableController::slotGetReturnPreset(QString preset) {
-//	qDebug()<<"============slotGetReturnPreset===============";
-//    enumeratePresets();
-//    emit(updateCurrntIndex(preset));
-
-//}

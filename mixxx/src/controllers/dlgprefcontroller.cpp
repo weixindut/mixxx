@@ -71,6 +71,10 @@ DlgPrefController::DlgPrefController(QWidget *parent, Controller* controller,
             this, SLOT(slotShowMappingPresetManagerDialog()));
     connect(this, SIGNAL(updateCurrentPreset()),
             this, SLOT(slotUpdateCurrentPreset()));
+    //connect(this, SIGNAL(updateCurrentPreset()),
+    //        this, SLOT(enumeratePresets()));
+    //connect(this, SIGNAL(openController(Controller*)),
+    //        this, SLOT(enumeratePresets()));
 }
 
 DlgPrefController::~DlgPrefController() {
@@ -226,6 +230,7 @@ void DlgPrefController::slotApply() {
 }
 
 void DlgPrefController::slotLoadPreset(int chosenIndex) {
+    qDebug()<<"============slotLoadPreset===============";
     if (chosenIndex == 0) {
         // User picked ...
         return;
@@ -284,6 +289,7 @@ void  DlgPrefController::slotGetPreset(QString presetpath) {
 }
 
 void DlgPrefController::slotUpdateCurrentPreset() {
+	qDebug()<<"============slotUpdateCurrentPreset===============";
 	PresetInfo match(m_presetPath);
     int index = m_ui.comboBoxPreset->findText(nameForPreset(match));
     if (index != -1)

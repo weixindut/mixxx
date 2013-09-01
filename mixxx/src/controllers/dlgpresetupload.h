@@ -12,16 +12,17 @@ class DlgPresetUpload : public QDialog {
   public:
     DlgPresetUpload(QWidget* parent);
     virtual ~DlgPresetUpload(){}
-    // check whether the names of picure files and script files in the xml file are
-    // same with its real file names. this is used for a based check before the files
-    // are uploaded
+    // To check whether the names of picure files and script files in the xml file are
+    // same with its real file names. To check whether new preset data can insert into
+    // database. To check whether new preset files can be transfered to local preset lib
+    // directory. This is used for a full check before the files are uploaded
     bool uploadCheck(QString& xmlFile, QList<QString>& picFiles, QList<QString>& jsFiles);
+    // Used for copying one file from one directory to another.
     bool copyFile(QString path, QString destination);
-    bool removeFile(QString path);
-    bool transferPresetFiles(QString& xmlFile, QList<QString>& picFiles, QList<QString>& jsFiles);
-    bool insertPresetIntoDB(QString pid,QString& xmlFile, QList<QString>& picFiles, QList<QString>& jsFiles);
-    // remove preset files has just moved to controllers directory
-    void removePresetFiles(QString& xmlFile, QList<QString>& picFiles, QList<QString>& jsFiles);
+    // Used for copying new preset files to local preset lib directory.
+    void transferPresetFiles(QString& xmlFile, QList<QString>& picFiles, QList<QString>& jsFiles);
+    // To check whether preset files can be transfered to preset lib directory.
+    bool ableToTransferPresetFiles(QString& xmlFile, QList<QString>& picFiles, QList<QString>& jsFiles);
     void closeEvent(QCloseEvent *event);
   protected:
     Ui::DlgPresetUpload& getUi() {

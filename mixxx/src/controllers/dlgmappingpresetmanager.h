@@ -19,6 +19,10 @@ class DlgMappingPresetManager : public QDialog {
     virtual ~DlgMappingPresetManager();
     bool checkForTables();
     void getJsonDataTest();
+    void searchLocal();
+    void searchCloud();
+    void showLocalSearchResults();
+    void showCloudSearchResults();
     bool getSelectedPreset(QList<QGridLayout* > layoutList,
             QList<MidiControllerPreset> presetList);
   signals:
@@ -31,16 +35,11 @@ class DlgMappingPresetManager : public QDialog {
   private slots:
     void slotOk();
     void slotSearch();
-    void slotSearchLocal();
-    void slotSearchCloud();
     void slotSetApplyText(int index);
-    void slotShowLocalSearchResults();
-    void slotShowCloudSearchResults();
     void slotShowCloudLastPageResults();
     void slotShowCloudNextPageResults();
     void slotShowLocalLastPageResults();
     void slotShowLocalNextPageResults();
-
 
   private:
     QSqlDatabase m_db;
