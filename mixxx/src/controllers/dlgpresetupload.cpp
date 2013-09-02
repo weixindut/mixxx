@@ -101,7 +101,7 @@ void DlgPresetUpload::slotSubmit() {
             QString info = result["info"].toString();
             if (status=="true") {
                 PresetObjectDAO pod(m_db);
-                if(pod.insertOnePreset(info,m_xmlFile,m_picFiles,m_jsFiles)) {
+                if(pod.insertOnePreset(info,m_xmlFile,m_picFiles,m_jsFiles,"undefined")) {
                     transferPresetFiles(m_xmlFile,m_picFiles,m_jsFiles);
                     QString message = "Success!";
                     QMessageBox::information(this, tr("Info"), message);

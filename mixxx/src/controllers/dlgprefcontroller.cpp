@@ -245,6 +245,7 @@ void DlgPrefController::slotLoadPreset(int chosenIndex) {
 void DlgPrefController::slotPresetLoaded(ControllerPresetPointer preset) {
     m_ui.labelLoadedPreset->setText(presetShortName(preset));
     m_ui.labelLoadedPresetDescription->setText(presetDescription(preset));
+    qDebug()<<"======presetCoverPath:"+ presetCoverPath(preset);
     QPixmap pixmap(presetCoverPath(preset));
     m_ui.labelCover->setPixmap(pixmap);
     QStringList supportLinks;
@@ -289,8 +290,9 @@ void  DlgPrefController::slotGetPreset(QString presetpath) {
 }
 
 void DlgPrefController::slotUpdateCurrentPreset() {
-	qDebug()<<"============slotUpdateCurrentPreset===============";
-	PresetInfo match(m_presetPath);
+    qDebug()<<"============slotUpdateCurrentPreset===============";
+    PresetInfo match(m_presetPath);
+    m_ui.comboBoxPreset->addItem(nameForPreset(match), match.getPath());
     int index = m_ui.comboBoxPreset->findText(nameForPreset(match));
     if (index != -1)
         m_ui.comboBoxPreset->setCurrentIndex(index);

@@ -6,6 +6,7 @@
 #include "controllers/dao/presetobjectdao.h"
 #include "controllers/controllerpresetinfo.h"
 #include "library/queryutil.h"
+#include "xmlparse.h"
 PresetObjectDAO::PresetObjectDAO(QSqlDatabase& database)
         : m_database(database) {
 
@@ -149,7 +150,7 @@ bool PresetObjectDAO::isPresetInsertable(QString xmlFilePath) {
         return true;
     }
 }
-bool PresetObjectDAO::insertOnePresetRecord(QString pid, QString xmlFilePath) {
+bool PresetObjectDAO::insertOnePresetRecord(QString pid, QString xmlFilePath, QString status) {
 	PresetInfo presetInfo = PresetInfo(xmlFilePath);
 	QString controllerName = presetInfo.getControllerName();
 	QString presetName = presetInfo.getName();
@@ -157,7 +158,7 @@ bool PresetObjectDAO::insertOnePresetRecord(QString pid, QString xmlFilePath) {
 	QString author = presetInfo.getAuthor();
 	QString description = presetInfo.getDescription();
 	QString mixxxVersion = presetInfo.getMixxxVersion();
-	QString presetStatus = "undefined";
+	QString presetStatus = status;
 	float ratings = 0;
 	QString url;
 	QString presetSource;
@@ -219,28 +220,80 @@ bool PresetObjectDAO::insertOneFile(QString pid,QString filePath, int type) {
     }
     return true;
 }
-bool PresetObjectDAO::insertOnePreset(QString pid,QString xmlFile, QList<QString>& picFiles, QList<QString>& jsFiles) {
-    ScopedTransaction transaction(m_database);
-    if (!insertOnePresetRecord(pid,xmlFile)) {
-        m_database.rollback();
+bool PresetObjectDAO::insertOnePreset(QString pid,QString xmlFile,
+        QList<QString>& picFiles, QList<QString>& jsFiles, QString status) {
+	ScopedTransaction transaction(m_database);
+    if (!insertOnePresetRecord(pid,xmlFile,status)) {
+    	transaction.rollback();
         return false;
     }
     foreach(QString file, picFiles) {
         if(!insertOneFile(pid,file,0)) {
-            m_database.rollback();
+        	transaction.rollback();
             return false;
         }
     }
     foreach(QString file, jsFiles) {
         if(!insertOneFile(pid,file,2)) {
-            m_database.rollback();
+        	transaction.rollback();
             return false;
         }
     }
     if (!insertOneFile(pid,xmlFile,1)) {
-        m_database.rollback();
+    	transaction.rollback();
         return false;
     }
-    m_database.commit();
+    transaction.commit();
     return true;
+}
+void PresetObjectDAO::initialize(QString mapFile, QString directory) {
+    QDomElement root = XmlParse::openXMLFile(mapFile, "presets");
+    if (root.isNull()) {
+        qDebug() << "ERROR parsing" << mapFile;
+        return;
+    }
+    QDomNodeList presetList = root.childNodes();
+    for(int i=0; i<presetList.count();i++) {
+        QDomNode preset = presetList.at(i);
+        QString filename = preset.toElement().attribute("filename");
+        QString pid = preset.toElement().attribute("pid");
+        QString status = preset.toElement().attribute("status");
+        if(!doesPresetExist(pid)) {
+            QString xmlPath = directory + filename+"midi.xml";
+            QFile xmlFile(xmlPath);
+            QList<QString> jsFiles;
+            QList<QString> picFiles;
+            if(xmlFile.exists()) {
+                QDomElement xmlroot = XmlParse::openXMLFile(mapFile, "controller");
+                QDomElement scripts = xmlroot.firstChildElement("scriptfiles");
+                QDomNodeList scriptList = scripts.childNodes();
+                for(int j=0; j<scriptList.count();j++) {
+                    QDomNode script = scriptList.at(j);
+                    QString scriptName = directory + script.toElement().attribute("filename");
+                    jsFiles.append(scriptName);
+                }
+                QDomElement pictures = xmlroot.firstChildElement("picfiles");
+                QDomNodeList picList = pictures.childNodes();
+                for(int j=0; j<picList.count();j++) {
+                    QDomNode pic = picList.at(j);
+                    QString picName = directory + pic.toElement().attribute("name");
+                    jsFiles.append(picName);
+                }
+            }
+            insertOnePreset(pid,xmlPath,picFiles,jsFiles,status);
+        }
+    }
+}
+bool doesPresetExist(QString pid) {
+    QSqlQuery query(m_database);
+    query.prepare(" SELECT pid FROM mapping_preset_object WHERE pid = :pid");
+    query.bindValue(":pid", pid);
+    if (!query.exec()) {
+        LOG_FAILED_QUERY(query);
+        return false;
+    }
+    if(query.next()) {
+        return true;
+    }
+    return false;
 }

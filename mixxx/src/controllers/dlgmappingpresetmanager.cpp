@@ -20,7 +20,8 @@ using namespace QtJson;
 
 DlgMappingPresetManager::DlgMappingPresetManager(QWidget* parent,ConfigObject<ConfigValue>* pConfig)
         :QDialog(parent),
-         m_db(QSqlDatabase::addDatabase("QSQLITE","MAPPING_PRESET_MANAGER")) {
+         m_db(QSqlDatabase::addDatabase("QSQLITE","MAPPING_PRESET_MANAGER")),
+         m_presetObjectDAO(m_db) {
 
     if (!m_db.isOpen()) {
         m_db.setHostName("localhost");
@@ -69,6 +70,7 @@ DlgMappingPresetManager::DlgMappingPresetManager(QWidget* parent,ConfigObject<Co
     getUi().btn_cloudright->setEnabled(false);
 
     getUi().label_statisticalresult->setText("...");
+    m_presetObjectDAO.initialize();
     connect(getUi().btn_search, SIGNAL(clicked()),
             this, SLOT(slotSearch()));
     connect(getUi().tabWidget_results, SIGNAL(currentChanged(int)),
@@ -116,8 +118,9 @@ void DlgMappingPresetManager::searchLocal() {
         getUi().stackedWidgetLocal->removeWidget(getUi().stackedWidgetLocal->widget(i));
     }
     QString searchcontent=getUi().lineEdit_search->text();
-    PresetObjectDAO pod(m_db);
-    m_presetListLocal=pod.getPresetByPresetName(searchcontent);
+    //PresetObjectDAO pod(m_db);
+    //m_presetListLocal=pod.getPresetByPresetName(searchcontent);
+    m_presetListLocal=m_presetObjectDAO.getPresetByPresetName(searchcontent);
 
     showLocalSearchResults();
 }

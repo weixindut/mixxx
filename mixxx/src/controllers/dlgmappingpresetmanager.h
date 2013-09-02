@@ -10,6 +10,7 @@
 #include "controllers/controllerpreset.h"
 #include "controllers/ui_dlgmappingpresetmanagerdlg.h"
 #include "controllers/midi/midicontrollerpreset.h"
+#include "controllers/dao/presetobjectdao.h"
 #include "configobject.h"
 
 class DlgMappingPresetManager : public QDialog {
@@ -17,7 +18,7 @@ class DlgMappingPresetManager : public QDialog {
   public:
     DlgMappingPresetManager(QWidget* parent,ConfigObject<ConfigValue>* pConfig);
     virtual ~DlgMappingPresetManager();
-    bool checkForTables();
+    //bool checkForTables();
     void getJsonDataTest();
     void searchLocal();
     void searchCloud();
@@ -51,6 +52,7 @@ class DlgMappingPresetManager : public QDialog {
     QList<QGridLayout* > m_gridLayoutListCloud;
     QList<QGridLayout* > m_gridLayoutListLocal;
     MidiControllerPreset m_selectedPreset;
+    PresetObjectDAO m_presetObjectDAO;
 };
 #endif
 
