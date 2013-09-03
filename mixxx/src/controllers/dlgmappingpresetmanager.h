@@ -53,6 +53,7 @@ class DlgMappingPresetManager : public QDialog {
     QList<QGridLayout* > m_gridLayoutListLocal;
     MidiControllerPreset m_selectedPreset;
     PresetObjectDAO m_presetObjectDAO;
+    ConfigObject<ConfigValue>* m_pConfig;
 };
 #endif
 

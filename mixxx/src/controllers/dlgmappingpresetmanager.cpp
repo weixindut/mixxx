@@ -20,12 +20,13 @@ using namespace QtJson;
 
 DlgMappingPresetManager::DlgMappingPresetManager(QWidget* parent,ConfigObject<ConfigValue>* pConfig)
         :QDialog(parent),
+         m_pConfig(pConfig),
          m_db(QSqlDatabase::addDatabase("QSQLITE","MAPPING_PRESET_MANAGER")),
          m_presetObjectDAO(m_db) {
 
     if (!m_db.isOpen()) {
         m_db.setHostName("localhost");
-        m_db.setDatabaseName(pConfig->getSettingsPath().append("/mixxxdb.sqlite"));
+        m_db.setDatabaseName(m_pConfig->getSettingsPath().append("/mixxxdb.sqlite"));
         m_db.setUserName("mixxx");
         m_db.setPassword("mixxx");
         //Open the database connection in this thread.
@@ -70,7 +71,11 @@ DlgMappingPresetManager::DlgMappingPresetManager(QWidget* parent,ConfigObject<Co
     getUi().btn_cloudright->setEnabled(false);
 
     getUi().label_statisticalresult->setText("...");
-    m_presetObjectDAO.initialize();
+    QString mapFilename = m_pConfig->getResourcePath();
+    mapFilename.append("mapScript.xml");
+    QString directory = m_pConfig->getResourcePath();
+    directory.append("controllers/");
+    m_presetObjectDAO.initialize(mapFilename,directory);
     connect(getUi().btn_search, SIGNAL(clicked()),
             this, SLOT(slotSearch()));
     connect(getUi().tabWidget_results, SIGNAL(currentChanged(int)),

@@ -259,7 +259,7 @@ void PresetObjectDAO::initialize(QString mapFile, QString directory) {
         QString pid = preset.toElement().attribute("pid");
         QString status = preset.toElement().attribute("status");
         if(!doesPresetExist(pid)) {
-            QString xmlPath = directory + filename+"midi.xml";
+            QString xmlPath = directory + filename+".midi.xml";
             QFile xmlFile(xmlPath);
             QList<QString> jsFiles;
             QList<QString> picFiles;
@@ -284,7 +284,7 @@ void PresetObjectDAO::initialize(QString mapFile, QString directory) {
         }
     }
 }
-bool doesPresetExist(QString pid) {
+bool PresetObjectDAO::doesPresetExist(QString pid) {
     QSqlQuery query(m_database);
     query.prepare(" SELECT pid FROM mapping_preset_object WHERE pid = :pid");
     query.bindValue(":pid", pid);
