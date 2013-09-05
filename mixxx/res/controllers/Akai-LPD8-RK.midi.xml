@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <MixxxMIDIPreset mixxxVersion="1.10.1+" schemaVersion="1">
     <info>
         <name>Akai LPD8 - RK</name>
@@ -8,19 +7,19 @@
     </info>
     <controller id="LPD8">
         <scriptfiles>
-            <file functionprefix="LPD8RK" filename="Akai-LPD8-RK-scripts.js"/>
+            <file filename="Akai-LPD8-RK-scripts.js" functionprefix="LPD8RK" />
         </scriptfiles>
-        <controls>
+        <picfiles><pic name="Akai-LPD8-RK.png" /></picfiles><controls>
 
-<!-- ###################  PROG 1 - DECK 1 ################ -->
-<!-- KNOBS PROG 1-->
+
+
             <control>
                 <group>[Channel1]</group>
                 <key>LPD8RK.softVolume</key>
                 <status>0xB0</status>
                 <midino>0x65</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -29,7 +28,7 @@
                 <status>0xB0</status>
                 <midino>0x66</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -38,7 +37,7 @@
                 <status>0xB0</status>
                 <midino>0x67</midino>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -47,7 +46,7 @@
                 <status>0xB0</status>
                 <midino>0x68</midino>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -56,7 +55,7 @@
                 <status>0xB0</status>
                 <midino>0x69</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -65,7 +64,7 @@
                 <status>0xB0</status>
                 <midino>0x6A</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -74,7 +73,7 @@
                 <status>0xB0</status>
                 <midino>0x6B</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -83,7 +82,7 @@
                 <status>0xB0</status>
                 <midino>0x6C</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
 
@@ -91,14 +90,14 @@
 
 
 
-<!-- HOTCUES - PAD - PROG 1-->
+
             <control>
                 <group>[Channel1]</group>
                 <key>LPD8RK.hotcueButton</key>
                 <status>0x90</status>
                 <midino>0x2B</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -107,7 +106,7 @@
                 <status>0x90</status>
                 <midino>0x2A</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
              <control>
@@ -116,7 +115,7 @@
                 <status>0x90</status>
                 <midino>0x29</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
 	    <control>
@@ -125,7 +124,7 @@
                 <status>0x90</status>
                 <midino>0x27</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -134,7 +133,7 @@
                 <status>0x90</status>
                 <midino>0x26</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -143,7 +142,7 @@
                 <status>0x90</status>
                 <midino>0x25</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -152,7 +151,7 @@
                 <status>0x90</status>
                 <midino>0x28</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -161,16 +160,16 @@
                 <status>0x90</status>
                 <midino>0x24</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
-            <control><!-- BUTTON UP - CLEAR -->
+            <control>
                 <group>[Channel1]</group>
                 <key>LPD8RK.noclear</key>
                 <status>0x80</status>
                 <midino>0x24</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
 
@@ -178,14 +177,14 @@
 
 
 
-<!-- LOOPS - CC - PROG 1 -->
+
             <control>
                 <group>[Channel1]</group>
                 <key>LPD8RK.loopButton</key>
                 <status>0xB0</status>
                 <midino>0x09</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -194,7 +193,7 @@
                 <status>0xB0</status>
                 <midino>0x08</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -203,7 +202,7 @@
                 <status>0xB0</status>
                 <midino>0x04</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -212,7 +211,7 @@
                 <status>0xB0</status>
                 <midino>0x03</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -221,7 +220,7 @@
                 <status>0xB0</status>
                 <midino>0x06</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -230,7 +229,7 @@
                 <status>0xB0</status>
                 <midino>0x02</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -239,7 +238,7 @@
                 <status>0xB0</status>
                 <midino>0x05</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -248,21 +247,21 @@
                 <status>0xB0</status>
                 <midino>0x01</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
 
 
 
 
-<!-- PROG CHANGE - PROG 1-->
+
             <control>
                 <group>[Channel1]</group>
                 <key>LPD8RK.progChng</key>
                 <status>0xC0</status>
                 <midino>0x07</midino>
 		<options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -271,7 +270,7 @@
                 <status>0xC0</status>
                 <midino>0x03</midino>
 		<options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -280,7 +279,7 @@
                 <status>0xC0</status>
                 <midino>0x06</midino>
 		<options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -289,7 +288,7 @@
                 <status>0xC0</status>
                 <midino>0x02</midino>
 		<options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -298,7 +297,7 @@
                 <status>0xC0</status>
                 <midino>0x05</midino>
 		<options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -307,7 +306,7 @@
                 <status>0xC0</status>
                 <midino>0x01</midino>
 		<options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -316,7 +315,7 @@
                 <status>0xC0</status>
                 <midino>0x04</midino>
 		<options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -325,20 +324,20 @@
                 <status>0xC0</status>
                 <midino>0x00</midino>
 		<options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
 
 
-<!-- ###################  PROG 2 - DECK 2 ################ -->
-<!-- KNOBS PROG 2-->
+
+
             <control>
                 <group>[Channel2]</group>
                 <key>LPD8RK.softVolume</key>
                 <status>0xB1</status>
                 <midino>0x65</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -347,7 +346,7 @@
                 <status>0xB1</status>
                 <midino>0x66</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -356,7 +355,7 @@
                 <status>0xB1</status>
                 <midino>0x67</midino>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -365,7 +364,7 @@
                 <status>0xB1</status>
                 <midino>0x68</midino>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -374,7 +373,7 @@
                 <status>0xB1</status>
                 <midino>0x69</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -383,7 +382,7 @@
                 <status>0xB1</status>
                 <midino>0x6A</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -392,7 +391,7 @@
                 <status>0xB1</status>
                 <midino>0x6B</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -401,7 +400,7 @@
                 <status>0xB1</status>
                 <midino>0x6C</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
 
@@ -409,14 +408,14 @@
 
 
 
-<!-- HOTCUES - PAD - PROG 2-->
+
             <control>
                 <group>[Channel2]</group>
                 <key>LPD8RK.hotcueButton</key>
                 <status>0x91</status>
                 <midino>0x2C</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -425,7 +424,7 @@
                 <status>0x91</status>
                 <midino>0x27</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
              <control>
@@ -434,7 +433,7 @@
                 <status>0x91</status>
                 <midino>0x2e</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
 	    <control>
@@ -443,7 +442,7 @@
                 <status>0x91</status>
                 <midino>0x2a</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -452,7 +451,7 @@
                 <status>0x91</status>
                 <midino>0x26</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -461,7 +460,7 @@
                 <status>0x91</status>
                 <midino>0x24</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -470,7 +469,7 @@
                 <status>0x91</status>
                 <midino>0x25</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -479,16 +478,16 @@
                 <status>0x91</status>
                 <midino>0x23</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
-            <control><!-- BUTTON UP - CLEAR -->
+            <control>
                 <group>[Channel2]</group>
                 <key>LPD8RK.noclear</key>
                 <status>0x81</status>
                 <midino>0x23</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
 
@@ -496,14 +495,14 @@
 
 
 
-<!-- LOOPS - CC - PROG 2 -->
+
             <control>
                 <group>[Channel2]</group>
                 <key>LPD8RK.loopButton</key>
                 <status>0xB1</status>
                 <midino>0x09</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -512,7 +511,7 @@
                 <status>0xB1</status>
                 <midino>0x08</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -521,7 +520,7 @@
                 <status>0xB1</status>
                 <midino>0x04</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -530,7 +529,7 @@
                 <status>0xB1</status>
                 <midino>0x03</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -539,7 +538,7 @@
                 <status>0xB1</status>
                 <midino>0x06</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -548,7 +547,7 @@
                 <status>0xB1</status>
                 <midino>0x02</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -557,7 +556,7 @@
                 <status>0xB1</status>
                 <midino>0x05</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -566,21 +565,21 @@
                 <status>0xB1</status>
                 <midino>0x01</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
 
 
 
 
-<!-- PROG CHANGE - PROG 2-->
+
             <control>
                 <group>[Channel2]</group>
                 <key>LPD8RK.progChng</key>
                 <status>0xC1</status>
                 <midino>0x07</midino>
 		<options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -589,7 +588,7 @@
                 <status>0xC1</status>
                 <midino>0x03</midino>
 		<options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -598,7 +597,7 @@
                 <status>0xC1</status>
                 <midino>0x06</midino>
 		<options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -607,7 +606,7 @@
                 <status>0xC1</status>
                 <midino>0x02</midino>
 		<options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -616,7 +615,7 @@
                 <status>0xC1</status>
                 <midino>0x05</midino>
 		<options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -625,7 +624,7 @@
                 <status>0xC1</status>
                 <midino>0x01</midino>
 		<options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -634,7 +633,7 @@
                 <status>0xC1</status>
                 <midino>0x04</midino>
 		<options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -643,22 +642,22 @@
                 <status>0xC1</status>
                 <midino>0x00</midino>
 		<options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
 
 
 
 
-<!-- ###################  PROG 3 - SAMPLER 1 ################ -->
-<!-- KNOBS PROG 3-->
+
+
             <control>
                 <group>[Sampler1]</group>
                 <key>LPD8RK.softVolume</key>
                 <status>0xB2</status>
                 <midino>0x65</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -667,7 +666,7 @@
                 <status>0xB2</status>
                 <midino>0x66</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -676,7 +675,7 @@
                 <status>0xB2</status>
                 <midino>0x67</midino>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -685,7 +684,7 @@
                 <status>0xB2</status>
                 <midino>0x68</midino>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -694,7 +693,7 @@
                 <status>0xB2</status>
                 <midino>0x69</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -703,7 +702,7 @@
                 <status>0xB2</status>
                 <midino>0x6A</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -712,7 +711,7 @@
                 <status>0xB2</status>
                 <midino>0x6B</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -721,7 +720,7 @@
                 <status>0xB2</status>
                 <midino>0x6C</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
 
@@ -729,14 +728,14 @@
 
 
 
-<!-- HOTCUES - PAD - PROG 3-->
+
             <control>
                 <group>[Sampler1]</group>
                 <key>LPD8RK.hotcueButton</key>
                 <status>0x92</status>
                 <midino>0x48</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -745,7 +744,7 @@
                 <status>0x92</status>
                 <midino>0x41</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
              <control>
@@ -754,7 +753,7 @@
                 <status>0x92</status>
                 <midino>0x47</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
 	    <control>
@@ -763,7 +762,7 @@
                 <status>0x92</status>
                 <midino>0x40</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -772,7 +771,7 @@
                 <status>0x92</status>
                 <midino>0x45</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -781,7 +780,7 @@
                 <status>0x92</status>
                 <midino>0x3e</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -790,7 +789,7 @@
                 <status>0x92</status>
                 <midino>0x43</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -799,16 +798,16 @@
                 <status>0x92</status>
                 <midino>0x3c</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
-            <control><!-- BUTTON UP - CLEAR -->
+            <control>
                 <group>[Sampler1]</group>
                 <key>LPD8RK.noclear</key>
                 <status>0x82</status>
                 <midino>0x3c</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
 
@@ -816,14 +815,14 @@
 
 
 
-<!-- LOOPS - CC - PROG 3 -->
+
             <control>
                 <group>[Sampler1]</group>
                 <key>LPD8RK.loopButton</key>
                 <status>0xB2</status>
                 <midino>0x09</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -832,7 +831,7 @@
                 <status>0xB2</status>
                 <midino>0x08</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -841,7 +840,7 @@
                 <status>0xB2</status>
                 <midino>0x04</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -850,7 +849,7 @@
                 <status>0xB2</status>
                 <midino>0x03</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -859,7 +858,7 @@
                 <status>0xB2</status>
                 <midino>0x06</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -868,7 +867,7 @@
                 <status>0xB2</status>
                 <midino>0x02</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -877,7 +876,7 @@
                 <status>0xB2</status>
                 <midino>0x05</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -886,21 +885,21 @@
                 <status>0xB2</status>
                 <midino>0x01</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
 
 
 
 
-<!-- PROG CHANGE - PROG 3-->
+
             <control>
                 <group>[Sampler1]</group>
                 <key>LPD8RK.progChng</key>
                 <status>0xC2</status>
                 <midino>0x07</midino>
 		<options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -909,7 +908,7 @@
                 <status>0xC2</status>
                 <midino>0x03</midino>
 		<options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -918,7 +917,7 @@
                 <status>0xC2</status>
                 <midino>0x06</midino>
 		<options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -927,7 +926,7 @@
                 <status>0xC2</status>
                 <midino>0x02</midino>
 		<options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -936,7 +935,7 @@
                 <status>0xC2</status>
                 <midino>0x05</midino>
 		<options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -945,7 +944,7 @@
                 <status>0xC2</status>
                 <midino>0x01</midino>
 		<options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -954,7 +953,7 @@
                 <status>0xC2</status>
                 <midino>0x04</midino>
 		<options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -963,22 +962,22 @@
                 <status>0xC2</status>
                 <midino>0x00</midino>
 		<options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
 
 
 
 
-<!-- ###################  PROG 4 - SAMPLER 2 ################ -->
-<!-- KNOBS PROG 4-->
+
+
             <control>
                 <group>[Sampler2]</group>
                 <key>LPD8RK.softVolume</key>
                 <status>0xb3</status>
                 <midino>0x65</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -987,7 +986,7 @@
                 <status>0xb3</status>
                 <midino>0x66</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -996,7 +995,7 @@
                 <status>0xb3</status>
                 <midino>0x67</midino>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -1005,7 +1004,7 @@
                 <status>0xb3</status>
                 <midino>0x68</midino>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -1014,7 +1013,7 @@
                 <status>0xb3</status>
                 <midino>0x69</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -1023,7 +1022,7 @@
                 <status>0xb3</status>
                 <midino>0x6A</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -1032,7 +1031,7 @@
                 <status>0xb3</status>
                 <midino>0x6B</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -1041,7 +1040,7 @@
                 <status>0xb3</status>
                 <midino>0x6C</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
 
@@ -1049,14 +1048,14 @@
 
 
 
-<!-- HOTCUES - PAD - PROG 4-->
+
             <control>
                 <group>[Sampler2]</group>
                 <key>LPD8RK.hotcueButton</key>
                 <status>0x93</status>
                 <midino>0x30</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -1065,7 +1064,7 @@
                 <status>0x93</status>
                 <midino>0x29</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
              <control>
@@ -1074,7 +1073,7 @@
                 <status>0x93</status>
                 <midino>0x2f</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
 	    <control>
@@ -1083,7 +1082,7 @@
                 <status>0x93</status>
                 <midino>0x28</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -1092,7 +1091,7 @@
                 <status>0x93</status>
                 <midino>0x2d</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -1101,7 +1100,7 @@
                 <status>0x93</status>
                 <midino>0x26</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -1110,7 +1109,7 @@
                 <status>0x93</status>
                 <midino>0x2b</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -1119,16 +1118,16 @@
                 <status>0x93</status>
                 <midino>0x24</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
-            <control><!-- BUTTON UP - CLEAR -->
+            <control>
                 <group>[Sampler2]</group>
                 <key>LPD8RK.noclear</key>
                 <status>0x83</status>
                 <midino>0x24</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
 
@@ -1136,14 +1135,14 @@
 
 
 
-<!-- LOOPS - CC - PROG 4 -->
+
             <control>
                 <group>[Sampler2]</group>
                 <key>LPD8RK.loopButton</key>
                 <status>0xb3</status>
                 <midino>0x09</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -1152,7 +1151,7 @@
                 <status>0xb3</status>
                 <midino>0x08</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -1161,7 +1160,7 @@
                 <status>0xb3</status>
                 <midino>0x04</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -1170,7 +1169,7 @@
                 <status>0xb3</status>
                 <midino>0x03</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -1179,7 +1178,7 @@
                 <status>0xb3</status>
                 <midino>0x06</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -1188,7 +1187,7 @@
                 <status>0xb3</status>
                 <midino>0x02</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -1197,7 +1196,7 @@
                 <status>0xb3</status>
                 <midino>0x05</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -1206,21 +1205,21 @@
                 <status>0xb3</status>
                 <midino>0x01</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
 
 
 
 
-<!-- PROG CHANGE - PROG 4-->
+
             <control>
                 <group>[Sampler2]</group>
                 <key>LPD8RK.progChng</key>
                 <status>0xC3</status>
                 <midino>0x07</midino>
 		<options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -1229,7 +1228,7 @@
                 <status>0xC3</status>
                 <midino>0x03</midino>
 		<options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -1238,7 +1237,7 @@
                 <status>0xC3</status>
                 <midino>0x06</midino>
 		<options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -1247,7 +1246,7 @@
                 <status>0xC3</status>
                 <midino>0x02</midino>
 		<options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -1256,7 +1255,7 @@
                 <status>0xC3</status>
                 <midino>0x05</midino>
 		<options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -1265,7 +1264,7 @@
                 <status>0xC3</status>
                 <midino>0x01</midino>
 		<options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -1274,7 +1273,7 @@
                 <status>0xC3</status>
                 <midino>0x04</midino>
 		<options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -1283,7 +1282,7 @@
                 <status>0xC3</status>
                 <midino>0x00</midino>
 		<options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
 
@@ -1293,6 +1292,6 @@
 
 
         </controls>
-        <outputs/>
+        <outputs />
     </controller>
 </MixxxMIDIPreset>

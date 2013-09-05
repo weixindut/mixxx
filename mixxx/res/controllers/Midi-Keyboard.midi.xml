@@ -1,8 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?>
-<MixxxMIDIPreset schemaVersion="1" mixxxVersion="1.6.2+">
+<MixxxMIDIPreset mixxxVersion="1.6.2+" schemaVersion="1">
   <info>
     <name>MIDI Keyboard</name>
-    <author></author>
+    <author />
     <description>Generic MIDI Keyboard Mapping</description>
   </info>
   <controller id="Midi-Keyboard" port="Port">
@@ -254,5 +253,5 @@
         <midino>0x4c</midino>
       </control>
     </controls>
-  </controller>
+  <picfiles><pic name="" /></picfiles></controller>
 </MixxxMIDIPreset>

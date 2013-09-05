@@ -1,16 +1,15 @@
-<?xml version="1.0" encoding="utf-8"?>
-    <MixxxMIDIPreset mixxxVersion="1.8.0+" schemaVersion="1" >
+<MixxxMIDIPreset mixxxVersion="1.8.0+" schemaVersion="1">
 	<info>
 		<name>Ion Discover DJ</name>
 		<author>Rick Prokup</author>
 		<description>This preset provides functionality for the Ion Discover DJ controller for Mixxx</description>
                 <forums>http://www.mixxx.org/forums/viewtopic.php?f=7&amp;t=939</forums>
 	</info>
-        <controller id="Ion Discover DJ" >
+        <controller id="Ion Discover DJ">
         	<scriptfiles>
-			<file filename="Ion-Discover-DJ-scripts.js" functionprefix="IonDiscoverDJ"/>
+			<file filename="Ion-Discover-DJ-scripts.js" functionprefix="IonDiscoverDJ" />
         	</scriptfiles>
-            <controls>
+            <picfiles><pic name="Ion Discover DJ.jpg" /></picfiles><controls>
 
                 <control>
                     <status>0x90</status>
@@ -18,7 +17,7 @@
                     <group>[Channel1]</group>
                     <key>IonDiscoverDJ.volCh1Down</key>
                     <options>
-                        <Script-Binding/>
+                        <Script-Binding />
                     </options>
                 </control>
                 <control>
@@ -27,7 +26,7 @@
                     <group>[Channel1]</group>
                     <key>IonDiscoverDJ.volCh1Up</key>
                     <options>
-                        <Script-Binding/>
+                        <Script-Binding />
                     </options>
                 </control>
                 <control>
@@ -36,7 +35,7 @@
                     <group>[Channel2]</group>
                     <key>IonDiscoverDJ.volCh2Down</key>
                     <options>
-                        <Script-Binding/>
+                        <Script-Binding />
                     </options>
                 </control>
                 <control>
@@ -45,7 +44,7 @@
                     <group>[Channel2]</group>
                     <key>IonDiscoverDJ.volCh2Up</key>
                     <options>
-                        <Script-Binding/>
+                        <Script-Binding />
                     </options>
                 </control>
                 <control>
@@ -54,7 +53,7 @@
                     <group>[Channel2]</group>
                     <key>filterHigh</key>
                     <options>
-                        <normal/>
+                        <normal />
                     </options>
                 </control>
                <control>
@@ -63,7 +62,7 @@
                     <group>[Channel1]</group>
                     <key>filterHigh</key>
                     <options>
-                        <normal/>
+                        <normal />
                     </options>
                 </control>
                 <control>
@@ -72,7 +71,7 @@
                     <group>[Channel2]</group>
                     <key>beatsync</key>
                     <options>
-                        <normal/>
+                        <normal />
                     </options>
                 </control>
 	        <control>
@@ -81,7 +80,7 @@
                     <group>[Channel1]</group>
                     <key>beatsync</key>
                     <options>
-                        <normal/>
+                        <normal />
                     </options>
                 </control>
                 <control>
@@ -90,7 +89,7 @@
                     <group>[Channel1]</group>
                     <key>filterMid</key>
                     <options>
-                        <normal/>
+                        <normal />
                     </options>
                 </control>
                 <control>
@@ -99,7 +98,7 @@
                     <group>[Channel2]</group>
                     <key>filterMid</key>
                     <options>
-                        <normal/>
+                        <normal />
                     </options>
                 </control>
                 <control>
@@ -108,7 +107,7 @@
                     <group>[Master]</group>
                     <key>volume</key>
                     <options>
-                        <normal/>
+                        <normal />
                     </options>
                 </control>
 
@@ -119,7 +118,7 @@
                     <group>[Channel2]</group>
                     <key>IonDiscoverDJ.pflCh2Off</key>
                     <options>
-                        <Script-Binding/>
+                        <Script-Binding />
                     </options>
                 </control>
                 <control>
@@ -128,7 +127,7 @@
                     <group>[Channel1]</group>
                     <key>IonDiscoverDJ.pflCh1Off</key>
                     <options>
-                        <Script-Binding/>
+                        <Script-Binding />
                     </options>
                 </control>
                 <control>
@@ -137,7 +136,7 @@
                     <group>[Channel2]</group>
                     <key>IonDiscoverDJ.pflCh2On</key>
                     <options>
-                        <Script-Binding/>
+                        <Script-Binding />
                     </options>
                 </control>
 		<control>
@@ -146,7 +145,7 @@
                     <group>[Channel1]</group>
                     <key>IonDiscoverDJ.pflCh1On</key>
                     <options>
-                        <Script-Binding/>
+                        <Script-Binding />
                     </options>
                 </control>
                 <control>
@@ -155,7 +154,7 @@
                     <group>[Playlist]</group>
                     <key>SelectTrackKnob</key>
                     <options>
-                        <selectknob/>
+                        <selectknob />
                     </options>
                 </control>
                 <control>
@@ -164,7 +163,7 @@
                     <group>[Playlist]</group>
                     <key>LoadSelectedIntoFirstStopped</key>
                     <options>
-                        <normal/>
+                        <normal />
                     </options>
                 </control>
                 <control>
@@ -173,7 +172,7 @@
                     <group>[Channel1]</group>
                     <key>play</key>
                     <options>
-                        <normal/>
+                        <normal />
                     </options>
                 </control>
                 <control>
@@ -182,7 +181,7 @@
                     <group>[Channel2]</group>
                     <key>play</key>
                     <options>
-                        <normal/>
+                        <normal />
                     </options>
                 </control>
 		<control>
@@ -191,7 +190,7 @@
                     <group>[Channel1]</group>
                     <key>play</key>
                     <options>
-                        <normal/>
+                        <normal />
                     </options>
                 </control>
 		<control>
@@ -200,7 +199,7 @@
                     <group>[Channel2]</group>
                     <key>play</key>
                     <options>
-                        <normal/>
+                        <normal />
                     </options>
                 </control>
                 <control>
@@ -209,7 +208,7 @@
                     <group>[Channel1]</group>
 			           <key>IonDiscoverDJ.reversek</key>
                     <options>
-                        <Script-Binding/>
+                        <Script-Binding />
                     </options>
                 </control>
                 <control>
@@ -218,7 +217,7 @@
                     <group>[Channel2]</group>
 			           <key>IonDiscoverDJ.reversek</key>
                     <options>
-                        <Script-Binding/>
+                        <Script-Binding />
                     </options>
                 </control>
                 <control>
@@ -227,7 +226,7 @@
                     <group>[Channel1]</group>
                     <key>IonDiscoverDJ.reversek</key>
                     <options>
-                        <Script-Binding/>
+                        <Script-Binding />
                     </options>
                 </control>
                 <control>
@@ -236,7 +235,7 @@
                     <group>[Channel2]</group>
                     <key>IonDiscoverDJ.reversek</key>
                     <options>
-                        <Script-Binding/>
+                        <Script-Binding />
                     </options>
                 </control>
                 <control>
@@ -245,7 +244,7 @@
                     <group>[Channel2]</group>
                     <key>IonDiscoverDJ.LoadSelectedTrackCh2</key>
                     <options>
-                        <Script-Binding/>
+                        <Script-Binding />
                     </options>
                 </control>
 		          <control>
@@ -254,7 +253,7 @@
                     <group>[Channel1]</group>
                     <key>IonDiscoverDJ.LoadSelectedTrackCh1</key>
                     <options>
-                        <Script-Binding/>
+                        <Script-Binding />
                     </options>
                 </control>
                 <control>
@@ -263,7 +262,7 @@
                     <group>[Channel1]</group>
                     <key>filterLow</key>
                     <options>
-                        <normal/>
+                        <normal />
                     </options>
                 </control>
 
@@ -273,7 +272,7 @@
                     <group>[Channel2]</group>
                     <key>filterLow</key>
                     <options>
-                        <normal/>
+                        <normal />
                     </options>
                 </control>
                 <control>
@@ -282,7 +281,7 @@
                     <group>[Master]</group>
                     <key>crossfader</key>
                     <options>
-                        <invert/>
+                        <invert />
                     </options>
                 </control>
                 <control>
@@ -291,7 +290,7 @@
                     <group>[Channel1]</group>
                     <key>IonDiscoverDJ.toggle_scratch_mode_on</key>
                     <options>
-                        <Script-Binding/>
+                        <Script-Binding />
                     </options>
                 </control>
                 <control>
@@ -300,7 +299,7 @@
                     <group>[Channel1]</group>
                     <key>IonDiscoverDJ.toggle_scratch_mode_off</key>
                     <options>
-                        <Script-Binding/>
+                        <Script-Binding />
                     </options>
                 </control>
 
@@ -310,7 +309,7 @@
                     <group>[Channel1]</group>
                     <key>IonDiscoverDJ.jog_touch</key>
                     <options>
-                       <Script-Binding/>
+                       <Script-Binding />
                     </options>
                 </control>
                 <control>
@@ -319,7 +318,7 @@
                     <group>[Channel1]</group>
                     <key>IonDiscoverDJ.jog_touch</key>
                     <options>
-                       <Script-Binding/>
+                       <Script-Binding />
                     </options>
                 </control>
                 <control>
@@ -328,7 +327,7 @@
                     <group>[Channel2]</group>
                     <key>IonDiscoverDJ.jog_touch</key>
                     <options>
-                       <Script-Binding/>
+                       <Script-Binding />
                     </options>
                 </control>
                 <control>
@@ -337,7 +336,7 @@
                     <group>[Channel2]</group>
                     <key>IonDiscoverDJ.jog_touch</key>
                     <options>
-                       <Script-Binding/>
+                       <Script-Binding />
                     </options>
                 </control>
 
@@ -347,7 +346,7 @@
                     <group>[Channel1]</group>
                     <key>IonDiscoverDJ.jog_wheel</key>
                     <options>
-                                  <Script-Binding/>
+                                  <Script-Binding />
                     </options>
                 </control>
                 <control>
@@ -356,41 +355,10 @@
                     <group>[Channel2]</group>
                     <key>IonDiscoverDJ.jog_wheel</key>
                     <options>
-                                  <Script-Binding/>
+                                  <Script-Binding />
                     </options>
                 </control>
-                <!-- <control>
-                    <status>0x90</status>
-                    <midino>0x4d</midino>
-                    <key>IonDiscoverDJ.deck_hold</key>
-                    <options>
-                        <Script-Binding/>
-                    </options>
-                </control>
-                <control>
-                    <status>0x90</status>
-                    <midino>0x4e</midino>
-                    <key>IonDiscoverDJ.deck_hold </key>
-                    <options>
-                        <Script-Binding/>
-                    </options>
-                </control>
-                <control>
-                    <status>0x80</status>
-                    <midino>0x4d</midino>
-                    <key>IonDiscoverDJ.deck_release</key>
-                    <options>
-                        <Script-Binding/>
-                    </options>
-                </control>
-                <control>
-                    <status>0x80</status>
-                    <midino>0x4e</midino>
-                    <key>IonDiscoverDJ.deck_release </key>
-                    <options>
-                        <Script-Binding/>
-                    </options>
-                </control>     -->
+                
             </controls>
         </controller>
     </MixxxMIDIPreset>

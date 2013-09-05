@@ -10,14 +10,14 @@
         <scriptfiles>
             <file filename="Vestax-VCI-400-scripts.js" functionprefix="VestaxVCI400" />
          </scriptfiles>
-        <controls>
-        <!-- Vinyl control -->
+        <picfiles><pic name="Vestax VCI-400.jpg" /></picfiles><controls>
+        
              <control>
                 <status>0x92</status>
                 <midino>0x06</midino>
                 <group>[Channel1]</group>
                 <key>VestaxVCI400.vinyl</key>
-                <description></description>
+                <description />
                 <options>
                     <Script-Binding />
                 </options>
@@ -27,7 +27,7 @@
                 <midino>0x06</midino>
                 <group>[Channel2]</group>
                 <key>VestaxVCI400.vinyl</key>
-                <description></description>
+                <description />
                 <options>
                     <Script-Binding />
                 </options>
@@ -37,7 +37,7 @@
                 <midino>0x06</midino>
                 <group>[Channel3]</group>
                 <key>VestaxVCI400.vinyl</key>
-                <description></description>
+                <description />
                 <options>
                     <Script-Binding />
                 </options>
@@ -47,19 +47,19 @@
                 <midino>0x06</midino>
                 <group>[Channel4]</group>
                 <key>VestaxVCI400.vinyl</key>
-                <description></description>
+                <description />
                 <options>
                     <Script-Binding />
                 </options>
             </control>
 
-            <!-- Deck Switch to control 4 decks -->
+            
             <control>
                 <status>0x92</status>
                 <midino>0x22</midino>
                 <group>[Channel1]</group>
                 <key>VestaxVCI400.deckSwitch</key>
-                <description></description>
+                <description />
                 <options>
                      <Script-Binding />
                 </options>
@@ -69,7 +69,7 @@
                 <midino>0x23</midino>
                 <group>[Channel3]</group>
                 <key>VestaxVCI400.deckSwitch</key>
-                <description></description>
+                <description />
                 <options>
                      <Script-Binding />
                 </options>
@@ -79,7 +79,7 @@
                 <midino>0x22</midino>
                 <group>[Channel2]</group>
                 <key>VestaxVCI400.deckSwitch</key>
-                <description></description>
+                <description />
                 <options>
                      <Script-Binding />
                 </options>
@@ -89,19 +89,19 @@
                 <midino>0x23</midino>
                 <group>[Channel4]</group>
                 <key>VestaxVCI400.deckSwitch</key>
-                <description></description>
+                <description />
                 <options>
                      <Script-Binding />
                 </options>
             </control>
 
-<!-- HOT CUE ACTIVATE BUTTONS -->
+
             <control>
                 <status>0x92</status>
                 <midino>0xb</midino>
                 <group>[Channel1]</group>
                 <key>VestaxVCI400.hotCue1Activate</key>
-                <description></description>
+                <description />
                 <options>
                      <Script-Binding />
                 </options>
@@ -111,7 +111,7 @@
                 <midino>0xc</midino>
                 <group>[Channel1]</group>
                 <key>VestaxVCI400.hotCue2Activate</key>
-                <description></description>
+                <description />
                 <options>
                      <Script-Binding />
                 </options>
@@ -121,7 +121,7 @@
                 <midino>0xd</midino>
                 <group>[Channel1]</group>
                 <key>VestaxVCI400.hotCue3Activate</key>
-                <description></description>
+                <description />
                 <options>
                      <Script-Binding />
                 </options>
@@ -131,18 +131,18 @@
                 <midino>0xe</midino>
                 <group>[Channel1]</group>
                 <key>VestaxVCI400.hotCue4Activate</key>
-                <description></description>
+                <description />
                 <options>
                      <Script-Binding />
                 </options>
             </control>
-            <!--Channel 2-->
+            
             <control>
                 <status>0x93</status>
                 <midino>0xb</midino>
                 <group>[Channel2]</group>
                 <key>VestaxVCI400.hotCue1Activate</key>
-                <description></description>
+                <description />
                 <options>
                      <Script-Binding />
                 </options>
@@ -152,7 +152,7 @@
                 <midino>0xc</midino>
                 <group>[Channel2]</group>
                 <key>VestaxVCI400.hotCue2Activate</key>
-                <description></description>
+                <description />
                 <options>
                      <Script-Binding />
                 </options>
@@ -162,7 +162,7 @@
                 <midino>0xd</midino>
                 <group>[Channel2]</group>
                 <key>VestaxVCI400.hotCue3Activate</key>
-                <description></description>
+                <description />
                <options>
                      <Script-Binding />
                 </options>
@@ -172,20 +172,20 @@
                 <midino>0xe</midino>
                 <group>[Channel2]</group>
                 <key>VestaxVCI400.hotCue4Activate</key>
-                <description></description>
+                <description />
                 <options>
                      <Script-Binding />
                 </options>
             </control>
-<!-- HOT CUE DELETE BUTTON -->
+
             <control>
                 <status>0x92</status>
                 <midino>0x15</midino>
                 <group>[Channel1]</group>
                 <key>hotcue_1_clear</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -193,9 +193,9 @@
                 <midino>0x16</midino>
                 <group>[Channel1]</group>
                 <key>hotcue_2_clear</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -203,9 +203,9 @@
                 <midino>0x17</midino>
                 <group>[Channel1]</group>
                 <key>hotcue_3_clear</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -213,20 +213,20 @@
                 <midino>0x18</midino>
                 <group>[Channel1]</group>
                 <key>hotcue_4_clear</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
-            <!-- Channel 2-->
+            
             <control>
                 <status>0x93</status>
                 <midino>0x15</midino>
                 <group>[Channel2]</group>
                 <key>hotcue_1_clear</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -234,9 +234,9 @@
                 <midino>0x16</midino>
                 <group>[Channel2]</group>
                 <key>hotcue_2_clear</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -244,9 +244,9 @@
                 <midino>0x17</midino>
                 <group>[Channel2]</group>
                 <key>hotcue_3_clear</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -254,20 +254,20 @@
                 <midino>0x18</midino>
                 <group>[Channel2]</group>
                 <key>hotcue_4_clear</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
-            <!-- END HOT CUE -->
+            
             <control>
                 <status>0xb3</status>
                 <midino>0x12</midino>
                 <group>[Channel1]</group>
                 <key>flanger</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -275,18 +275,18 @@
                 <midino>0xc</midino>
                 <group>[Channel2]</group>
                 <key>pregain</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
-            <!-- Play Buttons -->
+            
             <control>
                 <status>0x92</status>
                 <midino>0x1e</midino>
                 <group>[Channel1]</group>
                 <key>VestaxVCI400.play</key>
-                <description></description>
+                <description />
                 <options>
                     <Script-Binding />
                 </options>
@@ -297,7 +297,7 @@
                 <midino>0x1e</midino>
                 <group>[Channel2]</group>
                 <key>VestaxVCI400.play</key>
-                <description></description>
+                <description />
                 <options>
                     <Script-Binding />
                 </options>
@@ -307,7 +307,7 @@
                 <midino>0x26</midino>
                 <group>[Channel3]</group>
                 <key>VestaxVCI400.play</key>
-                <description></description>
+                <description />
                 <options>
                     <Script-Binding />
                 </options>
@@ -317,19 +317,19 @@
                 <midino>0x24</midino>
                 <group>[Channel4]</group>
                 <key>VestaxVCI400.play</key>
-                <description></description>
+                <description />
                 <options>
                     <Script-Binding />
                 </options>
             </control>
 
-             <!-- CUE buttons -->
+             
              <control>
                 <status>0x92</status>
                 <midino>0x1d</midino>
                 <group>[Channel1]</group>
                   <key>VestaxVCI400.cue</key>
-                <description></description>
+                <description />
                 <options>
                     <Script-Binding />
                 </options>
@@ -339,7 +339,7 @@
                 <midino>0x1d</midino>
                 <group>[Channel2]</group>
                   <key>VestaxVCI400.cue</key>
-                <description></description>
+                <description />
                 <options>
                     <Script-Binding />
                 </options>
@@ -349,7 +349,7 @@
                 <midino>0x25</midino>
                 <group>[Channel3]</group>
                   <key>VestaxVCI400.cue</key>
-                <description></description>
+                <description />
                 <options>
                     <Script-Binding />
                 </options>
@@ -359,18 +359,18 @@
                 <midino>0x23</midino>
                 <group>[Channel4]</group>
                   <key>VestaxVCI400.cue</key>
-                <description></description>
+                <description />
                 <options>
                     <Script-Binding />
                 </options>
             </control>
-            <!-- Wheel Touch-->
+            
             <control>
                 <status>0x92</status>
                 <midino>0x27</midino>
                 <group>[Channel1]</group>
                   <key>VestaxVCI400.wheelTouch</key>
-                <description></description>
+                <description />
                 <options>
                     <Script-Binding />
                 </options>
@@ -380,7 +380,7 @@
                 <midino>0x27</midino>
                 <group>[Channel2]</group>
                   <key>VestaxVCI400.wheelTouch</key>
-                <description></description>
+                <description />
                 <options>
                     <Script-Binding />
                 </options>
@@ -390,7 +390,7 @@
                 <midino>0x27</midino>
                 <group>[Channel3]</group>
                   <key>VestaxVCI400.wheelTouch</key>
-                <description></description>
+                <description />
                 <options>
                     <Script-Binding />
                 </options>
@@ -400,18 +400,18 @@
                 <midino>0x27</midino>
                 <group>[Channel4]</group>
                   <key>VestaxVCI400.wheelTouch</key>
-                <description></description>
+                <description />
                 <options>
                     <Script-Binding />
                 </options>
             </control>
-            <!-- PLATTER MOVE -->
+            
             <control>
                 <status>0xB2</status>
                 <midino>0x13</midino>
                 <group>[Channel1]</group>
                   <key>VestaxVCI400.wheelMove</key>
-                <description></description>
+                <description />
                 <options>
                     <Script-Binding />
                 </options>
@@ -421,7 +421,7 @@
                 <midino>0x13</midino>
                 <group>[Channel2]</group>
                   <key>VestaxVCI400.wheelMove</key>
-                <description></description>
+                <description />
                 <options>
                     <Script-Binding />
                 </options>
@@ -431,7 +431,7 @@
                 <midino>0x13</midino>
                 <group>[Channel3]</group>
                   <key>VestaxVCI400.wheelMove</key>
-                <description></description>
+                <description />
                 <options>
                     <Script-Binding />
                 </options>
@@ -441,7 +441,7 @@
                 <midino>0x13</midino>
                 <group>[Channel4]</group>
                   <key>VestaxVCI400.wheelMove</key>
-                <description></description>
+                <description />
                 <options>
                     <Script-Binding />
                 </options>
@@ -451,18 +451,18 @@
                 <midino>0xd</midino>
                 <group>[Channel2]</group>
                 <key>filterHigh</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
-            <!-- Beat loops -->
+            
             <control>
                 <status>0x92</status>
                 <midino>0x14</midino>
                 <group>[Channel1]</group>
                 <key>VestaxVCI400.beatLoop</key>
-                <description></description>
+                <description />
                 <options>
                      <Script-Binding />
                 </options>
@@ -472,7 +472,7 @@
                 <midino>0x14</midino>
                 <group>[Channel2]</group>
                 <key>VestaxVCI400.beatLoop</key>
-                <description></description>
+                <description />
                 <options>
                      <Script-Binding />
                 </options>
@@ -482,7 +482,7 @@
                 <midino>0x06</midino>
                 <group>[Channel1]</group>
                 <key>VestaxVCI400.beatLengthWheel</key>
-                <description></description>
+                <description />
                 <options>
                      <Script-Binding />
                 </options>
@@ -492,21 +492,21 @@
                 <midino>0x06</midino>
                 <group>[Channel2]</group>
                 <key>VestaxVCI400.beatLengthWheel</key>
-                <description></description>
+                <description />
                 <options>
                      <Script-Binding />
                 </options>
             </control>
-            <!-- END BEAT LOOP -->
+            
 
             <control>
                 <status>0xb3</status>
                 <midino>0xe</midino>
                 <group>[Channel2]</group>
                 <key>filterMid</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -514,9 +514,9 @@
                 <midino>0xf</midino>
                 <group>[Channel2]</group>
                 <key>filterLow</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -524,9 +524,9 @@
                 <midino>0x11</midino>
                 <group>[Channel2]</group>
                 <key>volume</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -534,9 +534,9 @@
                 <midino>0xc</midino>
                 <group>[Channel1]</group>
                 <key>pregain</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
 
@@ -545,9 +545,9 @@
                 <midino>0xd</midino>
                 <group>[Channel1]</group>
                 <key>filterHigh</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -555,9 +555,9 @@
                 <midino>0xe</midino>
                 <group>[Channel1]</group>
                 <key>filterMid</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -565,9 +565,9 @@
                 <midino>0xf</midino>
                 <group>[Channel1]</group>
                 <key>filterLow</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -575,9 +575,9 @@
                 <midino>0x11</midino>
                 <group>[Channel1]</group>
                 <key>volume</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -585,9 +585,9 @@
                 <midino>0x12</midino>
                 <group>[Channel1]</group>
                 <key>rate</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -595,18 +595,18 @@
                 <midino>0x12</midino>
                 <group>[Channel2]</group>
                 <key>rate</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
-            <!-- File Browser: Track selection -->
+            
             <control>
                 <status>0xbe</status>
                 <midino>0x28</midino>
                 <group>[Playlist]</group>
                 <key>VestaxVCI400.trackSelectionWheel</key>
-                <description></description>
+                <description />
                 <options>
                      <Script-Binding />
                 </options>
@@ -616,9 +616,9 @@
                 <midino>0x2a</midino>
                 <group>[Master]</group>
                 <key>headMix</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -626,9 +626,9 @@
                 <midino>0x2b</midino>
                 <group>[Master]</group>
                 <key>volume</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -636,9 +636,9 @@
                 <midino>0x1</midino>
                 <group>[Channel2]</group>
                 <key>beatsync</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -646,18 +646,18 @@
                 <midino>0x2</midino>
                 <group>[Channel2]</group>
                 <key>LoadSelectedTrack</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
-            <!-- PFL buttons -->
+            
             <control>
                 <status>0x92</status>
                 <midino>0x5</midino>
                 <group>[Channel1]</group>
                 <key>VestaxVCI400.pfl</key>
-                <description></description>
+                <description />
                 <options>
                      <Script-Binding />
                 </options>
@@ -667,7 +667,7 @@
                 <midino>0x5</midino>
                 <group>[Channel2]</group>
                 <key>VestaxVCI400.pfl</key>
-                <description></description>
+                <description />
                 <options>
                      <Script-Binding />
                 </options>
@@ -677,7 +677,7 @@
                 <midino>0x5</midino>
                 <group>[Channel3]</group>
                 <key>VestaxVCI400.pfl</key>
-                <description></description>
+                <description />
                 <options>
                      <Script-Binding />
                 </options>
@@ -687,7 +687,7 @@
                 <midino>0x5</midino>
                 <group>[Channel4]</group>
                 <key>VestaxVCI400.pfl</key>
-                <description></description>
+                <description />
                 <options>
                      <Script-Binding />
                 </options>
@@ -697,18 +697,18 @@
                 <midino>0x14</midino>
                 <group>[Master]</group>
                 <key>crossfader</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
-            <!-- Manual looping control -->
+            
             <control>
                 <status>0x93</status>
                 <midino>0x9</midino>
                 <group>[Channel2]</group>
                 <key>VestaxVCI400.loopIn</key>
-                <description></description>
+                <description />
                 <options>
                      <Script-Binding />
                 </options>
@@ -718,7 +718,7 @@
                 <midino>0xa</midino>
                 <group>[Channel2]</group>
                 <key>VestaxVCI400.loopOut</key>
-                <description></description>
+                <description />
                 <options>
                      <Script-Binding />
                 </options>
@@ -728,7 +728,7 @@
                 <midino>0x9</midino>
                 <group>[Channel1]</group>
                 <key>VestaxVCI400.loopIn</key>
-                <description></description>
+                <description />
                 <options>
                      <Script-Binding />
                 </options>
@@ -738,20 +738,20 @@
                 <midino>0xa</midino>
                 <group>[Channel1]</group>
                 <key>VestaxVCI400.loopOut</key>
-                <description></description>
+                <description />
                 <options>
                      <Script-Binding />
                 </options>
             </control>
-            <!-- End looping -->
+            
             <control>
                 <status>0x92</status>
                 <midino>0x1</midino>
                 <group>[Channel1]</group>
                 <key>beatsync</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -759,9 +759,9 @@
                 <midino>0x2</midino>
                 <group>[Channel1]</group>
                 <key>LoadSelectedTrack</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -769,12 +769,12 @@
                 <midino>0x1</midino>
                 <group>[Channel2]</group>
                 <key>flanger</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
           </controls>
-        <outputs/>
+        <outputs />
     </controller>
 </MixxxMIDIPreset>

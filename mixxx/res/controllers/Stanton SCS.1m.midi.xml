@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<MixxxMIDIPreset schemaVersion="1" mixxxVersion="1.7.0+">
+<MixxxMIDIPreset mixxxVersion="1.7.0+" schemaVersion="1">
     <info>
         <name>Stanton SCS.1m</name>
         <author>Sean M. Pappalardo</author>
@@ -8,10 +7,10 @@
     </info>
     <controller id="Stanton SCS.1m" port="">
         <scriptfiles>
-            <file filename="Stanton-SCS1m-scripts.js" functionprefix="StantonSCS1m"/>
+            <file filename="Stanton-SCS1m-scripts.js" functionprefix="StantonSCS1m" />
         </scriptfiles>
 
-            <controls>
+            <picfiles><pic name="Stanton SCS.1m.png" /></picfiles><controls>
                 <control>
                     <status>0x90</status>
                     <midino>0x1</midino>
@@ -90,7 +89,7 @@
                     <group>[Channel1]</group>
                     <key>StantonSCS1m.playButton1</key>
                     <options>
-                        <Script-Binding/>
+                        <Script-Binding />
                     </options>
                 </control>
                 <control>
@@ -99,7 +98,7 @@
                     <group>[Channel1]</group>
                     <key>StantonSCS1m.playButton1</key>
                     <options>
-                        <Script-Binding/>
+                        <Script-Binding />
                     </options>
                 </control>
                 <control>
@@ -108,7 +107,7 @@
                     <group>[Channel2]</group>
                     <key>StantonSCS1m.playButton2</key>
                     <options>
-                        <Script-Binding/>
+                        <Script-Binding />
                     </options>
                 </control>
                 <control>
@@ -117,7 +116,7 @@
                     <group>[Channel2]</group>
                     <key>StantonSCS1m.playButton2</key>
                     <options>
-                        <Script-Binding/>
+                        <Script-Binding />
                     </options>
                 </control>
                 <control>
@@ -126,7 +125,7 @@
                     <group>[Channel1]</group>
                     <key>StantonSCS1m.cueButton1</key>
                     <options>
-                        <Script-Binding/>
+                        <Script-Binding />
                     </options>
                 </control>
                 <control>
@@ -135,7 +134,7 @@
                     <group>[Channel1]</group>
                     <key>StantonSCS1m.cueButton1</key>
                     <options>
-                        <Script-Binding/>
+                        <Script-Binding />
                     </options>
                 </control>
                 <control>
@@ -144,7 +143,7 @@
                     <group>[Channel2]</group>
                     <key>StantonSCS1m.cueButton2</key>
                     <options>
-                        <Script-Binding/>
+                        <Script-Binding />
                     </options>
                 </control>
                 <control>
@@ -153,7 +152,7 @@
                     <group>[Channel2]</group>
                     <key>StantonSCS1m.cueButton2</key>
                     <options>
-                        <Script-Binding/>
+                        <Script-Binding />
                     </options>
                 </control>
                 <control>
@@ -378,7 +377,7 @@
                     <group>[Channel1]</group>
                     <key>StantonSCS1m.encoderJog1</key>
                     <options>
-                        <Script-Binding/>
+                        <Script-Binding />
                     </options>
                 </control>
                 <control>
@@ -387,7 +386,7 @@
                     <group>[Channel2]</group>
                     <key>StantonSCS1m.encoderJog2</key>
                     <options>
-                        <Script-Binding/>
+                        <Script-Binding />
                     </options>
                 </control>
                 <control>
@@ -492,7 +491,7 @@
                     <group>[Master]</group>
                     <key>StantonSCS1m.selectKnob</key>
                     <options>
-                        <Script-Binding/>
+                        <Script-Binding />
                     </options>
                 </control>
                 <control>
@@ -501,7 +500,7 @@
                     <group>[Playlist]</group>
                     <key>StantonSCS1m.cancelButton</key>
                     <options>
-                        <Script-Binding/>
+                        <Script-Binding />
                     </options>
                 </control>
                 <control>
@@ -510,7 +509,7 @@
                     <group>[Playlist]</group>
                     <key>StantonSCS1m.cancelButton</key>
                     <options>
-                        <Script-Binding/>
+                        <Script-Binding />
                     </options>
                 </control>
                 <control>
@@ -519,7 +518,7 @@
                     <group>[Playlist]</group>
                     <key>StantonSCS1m.enterButton</key>
                     <options>
-                        <Script-Binding/>
+                        <Script-Binding />
                     </options>
                 </control>
                 <control>
@@ -528,25 +527,25 @@
                     <group>[Playlist]</group>
                     <key>StantonSCS1m.enterButton</key>
                     <options>
-                        <Script-Binding/>
+                        <Script-Binding />
                     </options>
                 </control>
-                <control>   <!-- Select knob press -->
+                <control>   
                     <status>0x90</status>
                     <midino>0x27</midino>
                     <group>[Master]</group>
                     <key>StantonSCS1m.pressSelectKnob</key>
                     <options>
-                        <Script-Binding/>
+                        <Script-Binding />
                     </options>
                 </control>
-                <control>   <!-- Select knob release -->
+                <control>   
                     <status>0x80</status>
                     <midino>0x27</midino>
                     <group>[Master]</group>
                     <key>StantonSCS1m.pressSelectKnob</key>
                     <options>
-                        <Script-Binding/>
+                        <Script-Binding />
                     </options>
                 </control>
                 <control>
@@ -579,7 +578,7 @@
                     <group>[Master]</group>
                     <key>StantonSCS1m.browseButton</key>
                     <options>
-                        <Script-Binding/>
+                        <Script-Binding />
                     </options>
                 </control>
                 <control>
@@ -588,7 +587,7 @@
                     <group>[Master]</group>
                     <key>StantonSCS1m.browseButton</key>
                     <options>
-                        <Script-Binding/>
+                        <Script-Binding />
                     </options>
                 </control>
                 <control>
@@ -597,7 +596,7 @@
                     <group>[Master]</group>
                     <key>StantonSCS1m.controlButton</key>
                     <options>
-                        <Script-Binding/>
+                        <Script-Binding />
                     </options>
                 </control>
                 <control>
@@ -606,7 +605,7 @@
                     <group>[Master]</group>
                     <key>StantonSCS1m.controlButton</key>
                     <options>
-                        <Script-Binding/>
+                        <Script-Binding />
                     </options>
                 </control>
                 <control>
@@ -615,7 +614,7 @@
                     <group>[Master]</group>
                     <key>StantonSCS1m.setupButton</key>
                     <options>
-                        <Script-Binding/>
+                        <Script-Binding />
                     </options>
                 </control>
                 <control>
@@ -624,129 +623,129 @@
                     <group>[Master]</group>
                     <key>StantonSCS1m.setupButton</key>
                     <options>
-                        <Script-Binding/>
+                        <Script-Binding />
                     </options>
                 </control>
-                <control>   <!-- Pitch range knob Ch1 -->
+                <control>   
                     <status>0xB0</status>
                     <midino>0x7F</midino>
                     <group>[Master]</group>
                     <key>StantonSCS1m.pitchRangeKnob1</key>
                     <options>
-                        <Script-Binding/>
+                        <Script-Binding />
                     </options>
                 </control>
-                <control>   <!-- Pitch range knob Ch2 -->
+                <control>   
                     <status>0xB0</status>
                     <midino>0x7C</midino>
                     <group>[Master]</group>
                     <key>StantonSCS1m.pitchRangeKnob2</key>
                     <options>
-                        <Script-Binding/>
+                        <Script-Binding />
                     </options>
                 </control>
-                <control>   <!-- Fader start toggle -->
+                <control>   
                     <status>0x90</status>
                     <midino>0x08</midino>
                     <group>[Master]</group>
                     <key>StantonSCS1m.faderStartToggle</key>
                     <options>
-                        <Script-Binding/>
+                        <Script-Binding />
                     </options>
                 </control>
-                <control>   <!-- Hot cue deck toggle -->
+                <control>   
                     <status>0x90</status>
                     <midino>0x22</midino>
                     <group>[Master]</group>
                     <key>StantonSCS1m.hotCueDeckChange</key>
                     <options>
-                        <Script-Binding/>
+                        <Script-Binding />
                     </options>
                 </control>
-                <control>   <!-- Hot cue deck toggle -->
+                <control>   
                     <status>0x80</status>
                     <midino>0x22</midino>
                     <group>[Master]</group>
                     <key>StantonSCS1m.hotCueDeckChange</key>
                     <options>
-                        <Script-Binding/>
+                        <Script-Binding />
                     </options>
                 </control>
-                <control>    <!--    Preset 1   -->
+                <control>    
                     <group>[Master]</group>
                     <key>StantonSCS1m.presetButton</key>
                     <status>0x90</status>
                     <midino>0x23</midino>
                     <options>
-                        <Script-Binding/>
+                        <Script-Binding />
                     </options>
                 </control>
-                <control>    <!--    Preset 1   -->
+                <control>    
                     <group>[Master]</group>
                     <key>StantonSCS1m.presetButton</key>
                     <status>0x80</status>
                     <midino>0x23</midino>
                     <options>
-                        <Script-Binding/>
+                        <Script-Binding />
                     </options>
                 </control>
-                <control>    <!--    Preset 2   -->
+                <control>    
                     <group>[Master]</group>
                     <key>StantonSCS1m.presetButton</key>
                     <status>0x90</status>
                     <midino>0x24</midino>
                     <options>
-                        <Script-Binding/>
+                        <Script-Binding />
                     </options>
                 </control>
-                <control>    <!--    Preset 2   -->
+                <control>    
                     <group>[Master]</group>
                     <key>StantonSCS1m.presetButton</key>
                     <status>0x80</status>
                     <midino>0x24</midino>
                     <options>
-                        <Script-Binding/>
+                        <Script-Binding />
                     </options>
                 </control>
-                <control>    <!--    Preset 3   -->
+                <control>    
                     <group>[Master]</group>
                     <key>StantonSCS1m.presetButton</key>
                     <status>0x90</status>
                     <midino>0x25</midino>
                     <options>
-                        <Script-Binding/>
+                        <Script-Binding />
                     </options>
                 </control>
-                <control>    <!--    Preset 3   -->
+                <control>    
                     <group>[Master]</group>
                     <key>StantonSCS1m.presetButton</key>
                     <status>0x80</status>
                     <midino>0x25</midino>
                     <options>
-                        <Script-Binding/>
+                        <Script-Binding />
                     </options>
                 </control>
-                <control>    <!--    Preset 4   -->
+                <control>    
                     <group>[Master]</group>
                     <key>StantonSCS1m.presetButton</key>
                     <status>0x90</status>
                     <midino>0x26</midino>
                     <options>
-                        <Script-Binding/>
+                        <Script-Binding />
                     </options>
                 </control>
-                <control>    <!--    Preset 4   -->
+                <control>    
                     <group>[Master]</group>
                     <key>StantonSCS1m.presetButton</key>
                     <status>0x80</status>
                     <midino>0x26</midino>
                     <options>
-                        <Script-Binding/>
+                        <Script-Binding />
                     </options>
                 </control>
             </controls>
             <outputs>
-                <output>    <!--    Play Ch1    -->
+                <output>    
                     <group>[Channel1]</group>
                     <key>play</key>
                     <status>0x90</status>
@@ -755,7 +754,7 @@
                     <off>0x20</off>
                     <minimum>0.1</minimum>
                 </output>
-                <output>    <!--    Play Ch2    -->
+                <output>    
                     <group>[Channel2]</group>
                     <key>play</key>
                     <status>0x90</status>
@@ -764,7 +763,7 @@
                     <off>0x20</off>
                     <minimum>0.1</minimum>
                 </output>
-                <output>    <!--    Cue Ch1    -->
+                <output>    
                     <group>[Channel1]</group>
                     <key>cue_default</key>
                     <status>0x90</status>
@@ -773,7 +772,7 @@
                     <off>0x00</off>
                     <minimum>0.1</minimum>
                 </output>
-                <output>    <!--    Cue Ch2    -->
+                <output>    
                     <group>[Channel2]</group>
                     <key>cue_default</key>
                     <status>0x90</status>
@@ -782,7 +781,7 @@
                     <off>0x00</off>
                     <minimum>0.1</minimum>
                 </output>
-                <output>    <!--    Temp pitch up Ch1    -->
+                <output>    
                     <group>[Channel1]</group>
                     <key>rate_temp_up</key>
                     <status>0x90</status>
@@ -791,7 +790,7 @@
                     <off>0x20</off>
                     <minimum>0.1</minimum>
                 </output>
-                <output>    <!--    Temp pitch up Ch2    -->
+                <output>    
                     <group>[Channel2]</group>
                     <key>rate_temp_up</key>
                     <status>0x90</status>
@@ -800,7 +799,7 @@
                     <off>0x20</off>
                     <minimum>0.1</minimum>
                 </output>
-                <output>    <!--    Temp pitch down Ch1    -->
+                <output>    
                     <group>[Channel1]</group>
                     <key>rate_temp_down</key>
                     <status>0x90</status>
@@ -809,7 +808,7 @@
                     <off>0x00</off>
                     <minimum>0.1</minimum>
                 </output>
-                <output>    <!--    Temp pitch down Ch2    -->
+                <output>    
                     <group>[Channel2]</group>
                     <key>rate_temp_down</key>
                     <status>0x90</status>
@@ -818,7 +817,7 @@
                     <off>0x00</off>
                     <minimum>0.1</minimum>
                 </output>
-                <output>    <!--    Headphone cue Ch1    -->
+                <output>    
                     <group>[Channel1]</group>
                     <key>pfl</key>
                     <status>0x90</status>
@@ -827,7 +826,7 @@
                     <off>0x20</off>
                     <minimum>0.1</minimum>
                 </output>
-                <output>    <!--    Headphone cue Ch2    -->
+                <output>    
                     <group>[Channel2]</group>
                     <key>pfl</key>
                     <status>0x90</status>
@@ -836,7 +835,7 @@
                     <off>0x20</off>
                     <minimum>0.1</minimum>
                 </output>
-                <output>    <!--    Sync Ch1    -->
+                <output>    
                     <group>[Channel1]</group>
                     <key>beatsync</key>
                     <status>0x90</status>
@@ -845,7 +844,7 @@
                     <off>0x40</off>
                     <minimum>0.1</minimum>
                 </output>
-                <output>    <!--    Sync Ch2    -->
+                <output>    
                     <group>[Channel2]</group>
                     <key>beatsync</key>
                     <status>0x90</status>
@@ -854,7 +853,7 @@
                     <off>0x40</off>
                     <minimum>0.1</minimum>
                 </output>
-                <output>    <!--    Flanger Ch1    -->
+                <output>    
                     <group>[Channel1]</group>
                     <key>flanger</key>
                     <status>0xB0</status>
@@ -863,7 +862,7 @@
                     <off>0x00</off>
                     <minimum>0.1</minimum>
                 </output>
-                <output>    <!--    Flanger Ch2    -->
+                <output>    
                     <group>[Channel2]</group>
                     <key>flanger</key>
                     <status>0xB0</status>

@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <MixxxMIDIPreset mixxxVersion="1.11+" schemaVersion="1">
     <info>
         <name>DJ-Tech Kontrol One</name>
@@ -8,19 +7,19 @@
     </info>
     <controller id="KONTROL1">
         <scriptfiles>
-            <file functionprefix="KONTROL1" filename="DJ-Tech-Kontrol-One-scripts.js"/>
+            <file filename="DJ-Tech-Kontrol-One-scripts.js" functionprefix="KONTROL1" />
         </scriptfiles>
-        <controls>
+        <picfiles><pic name="DJ-Tech Kontrol One.jpg" /></picfiles><controls>
 
-<!-- DECK 2 -->
-<!-- KNOBS -->
+
+
             <control>
                 <group>[Channel1]</group>
                 <key>KONTROL1.knob</key>
                 <status>0xB0</status>
                 <midino>0x37</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -29,7 +28,7 @@
                 <status>0xB0</status>
                 <midino>0x36</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -38,7 +37,7 @@
                 <status>0xB0</status>
                 <midino>0x35</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -47,31 +46,31 @@
                 <status>0xB0</status>
                 <midino>0x34</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
 
 
-<!-- PITCH SLIDER -->
+
             <control>
                 <group>[Channel1]</group>
                 <key>KONTROL1.knob</key>
                 <status>0xB0</status>
                 <midino>0x21</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
 
 
-<!-- WHEEL -->
+
             <control>
                 <group>[Channel1]</group>
                 <key>KONTROL1.button</key>
                 <status>0x90</status>
                 <midino>0x1f</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -80,19 +79,19 @@
                 <status>0xB0</status>
                 <midino>0x20</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
 
 
-<!-- KNOB BUTTONS -->
+
             <control>
                 <group>[Channel1]</group>
                 <key>KONTROL1.button</key>
                 <status>0x90</status>
                 <midino>0x04</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -101,7 +100,7 @@
                 <status>0x90</status>
                 <midino>0x03</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -110,7 +109,7 @@
                 <status>0x90</status>
                 <midino>0x02</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -119,19 +118,19 @@
                 <status>0x90</status>
                 <midino>0x01</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
 
 
-<!-- MODS - Shift, Pitch -, Pitch + -->
+
             <control>
                 <group>[Channel1]</group>
                 <key>KONTROL1.button</key>
                 <status>0x90</status>
                 <midino>0x1a</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -140,7 +139,7 @@
                 <status>0x90</status>
                 <midino>0x19</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -149,19 +148,19 @@
                 <status>0x90</status>
                 <midino>0x1e</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
 
 
-<!-- SYNC CUE PLAY -->
+
             <control>
                 <group>[Channel1]</group>
                 <key>KONTROL1.button</key>
                 <status>0x90</status>
                 <midino>0x1d</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -170,7 +169,7 @@
                 <status>0x90</status>
                 <midino>0x1c</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -179,19 +178,19 @@
                 <status>0x90</status>
                 <midino>0x1b</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
 
 
-<!-- BUTTONS ROW 1 -->
+
             <control>
                 <group>[Channel1]</group>
                 <key>KONTROL1.button</key>
                 <status>0x90</status>
                 <midino>0x09</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -200,7 +199,7 @@
                 <status>0x90</status>
                 <midino>0x08</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -209,7 +208,7 @@
                 <status>0x90</status>
                 <midino>0x07</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -218,19 +217,19 @@
                 <status>0x90</status>
                 <midino>0x06</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
 
 
-<!-- BUTTONS ROW 2 -->
+
             <control>
                 <group>[Channel1]</group>
                 <key>KONTROL1.button</key>
                 <status>0x90</status>
                 <midino>0x0e</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -239,7 +238,7 @@
                 <status>0x90</status>
                 <midino>0x0d</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -248,7 +247,7 @@
                 <status>0x90</status>
                 <midino>0x0c</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -257,19 +256,19 @@
                 <status>0x90</status>
                 <midino>0x0b</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
 
 
-<!-- BUTTONS ROW 3 -->
+
             <control>
                 <group>[Channel1]</group>
                 <key>KONTROL1.button</key>
                 <status>0x90</status>
                 <midino>0x13</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -278,7 +277,7 @@
                 <status>0x90</status>
                 <midino>0x12</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -287,7 +286,7 @@
                 <status>0x90</status>
                 <midino>0x11</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -296,19 +295,19 @@
                 <status>0x90</status>
                 <midino>0x10</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
 
 
-<!-- BUTTONS ROW 4 -->
+
             <control>
                 <group>[Channel1]</group>
                 <key>KONTROL1.button</key>
                 <status>0x90</status>
                 <midino>0x18</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -317,7 +316,7 @@
                 <status>0x90</status>
                 <midino>0x17</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -326,7 +325,7 @@
                 <status>0x90</status>
                 <midino>0x16</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -335,21 +334,21 @@
                 <status>0x90</status>
                 <midino>0x15</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
 
 
 
-<!-- DECK 2 -->
-<!-- KNOBS -->
+
+
             <control>
                 <group>[Channel2]</group>
                 <key>KONTROL1.knob</key>
                 <status>0xb1</status>
                 <midino>0x37</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -358,7 +357,7 @@
                 <status>0xb1</status>
                 <midino>0x36</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -367,7 +366,7 @@
                 <status>0xb1</status>
                 <midino>0x35</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -376,31 +375,31 @@
                 <status>0xb1</status>
                 <midino>0x34</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
 
 
-<!-- PITCH SLIDER -->
+
             <control>
                 <group>[Channel2]</group>
                 <key>KONTROL1.knob</key>
                 <status>0xb1</status>
                 <midino>0x21</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
 
 
-<!-- WHEEL -->
+
             <control>
                 <group>[Channel2]</group>
                 <key>KONTROL1.button</key>
                 <status>0x91</status>
                 <midino>0x1f</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -409,19 +408,19 @@
                 <status>0xb1</status>
                 <midino>0x20</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
 
 
-<!-- KNOB BUTTONS -->
+
             <control>
                 <group>[Channel2]</group>
                 <key>KONTROL1.button</key>
                 <status>0x91</status>
                 <midino>0x04</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -430,7 +429,7 @@
                 <status>0x91</status>
                 <midino>0x03</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -439,7 +438,7 @@
                 <status>0x91</status>
                 <midino>0x02</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -448,19 +447,19 @@
                 <status>0x91</status>
                 <midino>0x01</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
 
 
-<!-- MODS - Shift, Pitch -, Pitch + -->
+
             <control>
                 <group>[Channel2]</group>
                 <key>KONTROL1.button</key>
                 <status>0x91</status>
                 <midino>0x1a</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -469,7 +468,7 @@
                 <status>0x91</status>
                 <midino>0x19</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -478,19 +477,19 @@
                 <status>0x91</status>
                 <midino>0x1e</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
 
 
-<!-- SYNC CUE PLAY -->
+
             <control>
                 <group>[Channel2]</group>
                 <key>KONTROL1.button</key>
                 <status>0x91</status>
                 <midino>0x1d</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -499,7 +498,7 @@
                 <status>0x91</status>
                 <midino>0x1c</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -508,19 +507,19 @@
                 <status>0x91</status>
                 <midino>0x1b</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
 
 
-<!-- BUTTONS ROW 1 -->
+
             <control>
                 <group>[Channel2]</group>
                 <key>KONTROL1.button</key>
                 <status>0x91</status>
                 <midino>0x09</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -529,7 +528,7 @@
                 <status>0x91</status>
                 <midino>0x08</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -538,7 +537,7 @@
                 <status>0x91</status>
                 <midino>0x07</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -547,19 +546,19 @@
                 <status>0x91</status>
                 <midino>0x06</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
 
 
-<!-- BUTTONS ROW 2 -->
+
             <control>
                 <group>[Channel2]</group>
                 <key>KONTROL1.button</key>
                 <status>0x91</status>
                 <midino>0x0e</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -568,7 +567,7 @@
                 <status>0x91</status>
                 <midino>0x0d</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -577,7 +576,7 @@
                 <status>0x91</status>
                 <midino>0x0c</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -586,19 +585,19 @@
                 <status>0x91</status>
                 <midino>0x0b</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
 
 
-<!-- BUTTONS ROW 3 -->
+
             <control>
                 <group>[Channel2]</group>
                 <key>KONTROL1.button</key>
                 <status>0x91</status>
                 <midino>0x13</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -607,7 +606,7 @@
                 <status>0x91</status>
                 <midino>0x12</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -616,7 +615,7 @@
                 <status>0x91</status>
                 <midino>0x11</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -625,19 +624,19 @@
                 <status>0x91</status>
                 <midino>0x10</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
 
 
-<!-- BUTTONS ROW 4 -->
+
             <control>
                 <group>[Channel2]</group>
                 <key>KONTROL1.button</key>
                 <status>0x91</status>
                 <midino>0x18</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -646,7 +645,7 @@
                 <status>0x91</status>
                 <midino>0x17</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -655,7 +654,7 @@
                 <status>0x91</status>
                 <midino>0x16</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -664,22 +663,22 @@
                 <status>0x91</status>
                 <midino>0x15</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
 
 
 
 
-<!-- DECK 3 -->
-<!-- KNOBS -->
+
+
             <control>
                 <group>[Channel3]</group>
                 <key>KONTROL1.knob</key>
                 <status>0xb2</status>
                 <midino>0x37</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -688,7 +687,7 @@
                 <status>0xb2</status>
                 <midino>0x36</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -697,7 +696,7 @@
                 <status>0xb2</status>
                 <midino>0x35</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -706,31 +705,31 @@
                 <status>0xb2</status>
                 <midino>0x34</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
 
 
-<!-- PITCH SLIDER -->
+
             <control>
                 <group>[Channel3]</group>
                 <key>KONTROL1.knob</key>
                 <status>0xb2</status>
                 <midino>0x21</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
 
 
-<!-- WHEEL -->
+
             <control>
                 <group>[Channel3]</group>
                 <key>KONTROL1.button</key>
                 <status>0x92</status>
                 <midino>0x1f</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -739,19 +738,19 @@
                 <status>0xb2</status>
                 <midino>0x20</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
 
 
-<!-- KNOB BUTTONS -->
+
             <control>
                 <group>[Channel3]</group>
                 <key>KONTROL1.button</key>
                 <status>0x92</status>
                 <midino>0x04</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -760,7 +759,7 @@
                 <status>0x92</status>
                 <midino>0x03</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -769,7 +768,7 @@
                 <status>0x92</status>
                 <midino>0x02</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -778,19 +777,19 @@
                 <status>0x92</status>
                 <midino>0x01</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
 
 
-<!-- MODS - Shift, Pitch -, Pitch + -->
+
             <control>
                 <group>[Channel3]</group>
                 <key>KONTROL1.button</key>
                 <status>0x92</status>
                 <midino>0x1a</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -799,7 +798,7 @@
                 <status>0x92</status>
                 <midino>0x19</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -808,19 +807,19 @@
                 <status>0x92</status>
                 <midino>0x1e</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
 
 
-<!-- SYNC CUE PLAY -->
+
             <control>
                 <group>[Channel3]</group>
                 <key>KONTROL1.button</key>
                 <status>0x92</status>
                 <midino>0x1d</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -829,7 +828,7 @@
                 <status>0x92</status>
                 <midino>0x1c</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -838,19 +837,19 @@
                 <status>0x92</status>
                 <midino>0x1b</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
 
 
-<!-- BUTTONS ROW 1 -->
+
             <control>
                 <group>[Channel3]</group>
                 <key>KONTROL1.button</key>
                 <status>0x92</status>
                 <midino>0x09</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -859,7 +858,7 @@
                 <status>0x92</status>
                 <midino>0x08</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -868,7 +867,7 @@
                 <status>0x92</status>
                 <midino>0x07</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -877,19 +876,19 @@
                 <status>0x92</status>
                 <midino>0x06</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
 
 
-<!-- BUTTONS ROW 2 -->
+
             <control>
                 <group>[Channel3]</group>
                 <key>KONTROL1.button</key>
                 <status>0x92</status>
                 <midino>0x0e</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -898,7 +897,7 @@
                 <status>0x92</status>
                 <midino>0x0d</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -907,7 +906,7 @@
                 <status>0x92</status>
                 <midino>0x0c</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -916,19 +915,19 @@
                 <status>0x92</status>
                 <midino>0x0b</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
 
 
-<!-- BUTTONS ROW 3 -->
+
             <control>
                 <group>[Channel3]</group>
                 <key>KONTROL1.button</key>
                 <status>0x92</status>
                 <midino>0x13</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -937,7 +936,7 @@
                 <status>0x92</status>
                 <midino>0x12</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -946,7 +945,7 @@
                 <status>0x92</status>
                 <midino>0x11</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -955,19 +954,19 @@
                 <status>0x92</status>
                 <midino>0x10</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
 
 
-<!-- BUTTONS ROW 4 -->
+
             <control>
                 <group>[Channel3]</group>
                 <key>KONTROL1.button</key>
                 <status>0x92</status>
                 <midino>0x18</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -976,7 +975,7 @@
                 <status>0x92</status>
                 <midino>0x17</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -985,7 +984,7 @@
                 <status>0x92</status>
                 <midino>0x16</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -994,7 +993,7 @@
                 <status>0x92</status>
                 <midino>0x15</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
 
@@ -1006,15 +1005,15 @@
 
 
 
-<!-- DECK 4 -->
-<!-- KNOBS -->
+
+
             <control>
                 <group>[Sampler2]</group>
                 <key>KONTROL1.knob</key>
                 <status>0xb3</status>
                 <midino>0x37</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -1023,7 +1022,7 @@
                 <status>0xb3</status>
                 <midino>0x36</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -1032,7 +1031,7 @@
                 <status>0xb3</status>
                 <midino>0x35</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -1041,31 +1040,31 @@
                 <status>0xb3</status>
                 <midino>0x34</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
 
 
-<!-- PITCH SLIDER -->
+
             <control>
                 <group>[Sampler2]</group>
                 <key>KONTROL1.knob</key>
                 <status>0xb3</status>
                 <midino>0x21</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
 
 
-<!-- WHEEL -->
+
             <control>
                 <group>[Sampler2]</group>
                 <key>KONTROL1.button</key>
                 <status>0x93</status>
                 <midino>0x1f</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -1074,19 +1073,19 @@
                 <status>0xb3</status>
                 <midino>0x20</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
 
 
-<!-- KNOB BUTTONS -->
+
             <control>
                 <group>[Sampler2]</group>
                 <key>KONTROL1.button</key>
                 <status>0x93</status>
                 <midino>0x04</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -1095,7 +1094,7 @@
                 <status>0x93</status>
                 <midino>0x03</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -1104,7 +1103,7 @@
                 <status>0x93</status>
                 <midino>0x02</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -1113,19 +1112,19 @@
                 <status>0x93</status>
                 <midino>0x01</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
 
 
-<!-- MODS - Shift, Pitch -, Pitch + -->
+
             <control>
                 <group>[Sampler2]</group>
                 <key>KONTROL1.button</key>
                 <status>0x93</status>
                 <midino>0x1a</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -1134,7 +1133,7 @@
                 <status>0x93</status>
                 <midino>0x19</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -1143,19 +1142,19 @@
                 <status>0x93</status>
                 <midino>0x1e</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
 
 
-<!-- SYNC CUE PLAY -->
+
             <control>
                 <group>[Sampler2]</group>
                 <key>KONTROL1.button</key>
                 <status>0x93</status>
                 <midino>0x1d</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -1164,7 +1163,7 @@
                 <status>0x93</status>
                 <midino>0x1c</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -1173,19 +1172,19 @@
                 <status>0x93</status>
                 <midino>0x1b</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
 
 
-<!-- BUTTONS ROW 1 -->
+
             <control>
                 <group>[Sampler2]</group>
                 <key>KONTROL1.button</key>
                 <status>0x93</status>
                 <midino>0x09</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -1194,7 +1193,7 @@
                 <status>0x93</status>
                 <midino>0x08</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -1203,7 +1202,7 @@
                 <status>0x93</status>
                 <midino>0x07</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -1212,19 +1211,19 @@
                 <status>0x93</status>
                 <midino>0x06</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
 
 
-<!-- BUTTONS ROW 2 -->
+
             <control>
                 <group>[Sampler2]</group>
                 <key>KONTROL1.button</key>
                 <status>0x93</status>
                 <midino>0x0e</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -1233,7 +1232,7 @@
                 <status>0x93</status>
                 <midino>0x0d</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -1242,7 +1241,7 @@
                 <status>0x93</status>
                 <midino>0x0c</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -1251,19 +1250,19 @@
                 <status>0x93</status>
                 <midino>0x0b</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
 
 
-<!-- BUTTONS ROW 3 -->
+
             <control>
                 <group>[Sampler2]</group>
                 <key>KONTROL1.button</key>
                 <status>0x93</status>
                 <midino>0x13</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -1272,7 +1271,7 @@
                 <status>0x93</status>
                 <midino>0x12</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -1281,7 +1280,7 @@
                 <status>0x93</status>
                 <midino>0x11</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -1290,19 +1289,19 @@
                 <status>0x93</status>
                 <midino>0x10</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
 
 
-<!-- BUTTONS ROW 4 -->
+
             <control>
                 <group>[Sampler2]</group>
                 <key>KONTROL1.button</key>
                 <status>0x93</status>
                 <midino>0x18</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -1311,7 +1310,7 @@
                 <status>0x93</status>
                 <midino>0x17</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -1320,7 +1319,7 @@
                 <status>0x93</status>
                 <midino>0x16</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -1329,13 +1328,13 @@
                 <status>0x93</status>
                 <midino>0x15</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
 
 
 
         </controls>
-        <outputs/>
+        <outputs />
     </controller>
 </MixxxMIDIPreset>

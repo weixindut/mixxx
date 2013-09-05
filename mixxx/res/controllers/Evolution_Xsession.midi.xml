@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<MixxxMIDIPreset schemaVersion="1" mixxxVersion="1.6.2+">
+<MixxxMIDIPreset mixxxVersion="1.6.2+" schemaVersion="1">
   <info>
     <name>Evolution X-Session</name>
     <author>Amias Channer</author>
@@ -230,5 +229,5 @@
         <midino>0x12</midino>
       </control>
     </controls>
-  </controller>
+  <picfiles><pic name="Evolution_Xsession.jpg" /></picfiles></controller>
 </MixxxMIDIPreset>

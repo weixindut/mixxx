@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<MixxxMIDIPreset schemaVersion="1" mixxxVersion="1.6.2+">
+<MixxxMIDIPreset mixxxVersion="1.6.2+" schemaVersion="1">
   <info>
     <name>M-Audio X-Session Pro</name>
     <author>Karli</author>
@@ -230,5 +229,5 @@
         <midino>0x1f</midino>
       </control>
     </controls>
-  </controller>
+  <picfiles><pic name="M-Audio_Xsession_pro.jpg" /></picfiles></controller>
 </MixxxMIDIPreset>

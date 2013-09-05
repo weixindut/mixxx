@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<MixxxMIDIPreset schemaVersion="1" mixxxVersion="1.8.0">
+<MixxxMIDIPreset mixxxVersion="1.8.0" schemaVersion="1">
 	<info>
 		<name>Hercules DJ Control MP3</name>
 		<author>Vittorio Colao</author>
@@ -8,11 +7,10 @@
 	</info>
 	<controller id="Hercules DJ Control MP3 MIDI">
 		<scriptfiles>
-			<file filename="Hercules-DJ-Control-MP3-scripts.js"
-				functionprefix="HerculesMp3" />
+			<file filename="Hercules-DJ-Control-MP3-scripts.js" functionprefix="HerculesMp3" />
 		</scriptfiles>
 
-		<controls>
+		<picfiles><pic name="Hercules DJ Control MP3.jpg" /></picfiles><controls>
 			<control>
 				<group>[Master]</group>
 				<key>crossfader</key>
@@ -397,25 +395,25 @@
 
 			</control>
 
-<!--			<control>-->
-<!--				<group>[Channel1]</group>-->
-<!--				<key>keylock</key>-->
-<!--				<status>0xB0</status>-->
-<!--				<midino>0x16</midino>-->
-<!--				<options>-->
-<!--					<Button />-->
-<!--				</options>-->
-<!--			</control>-->
-<!---->
-<!--			<control>-->
-<!--				<group>[Channel2]</group>-->
-<!--				<key>keylock</key>-->
-<!--				<status>0xB0</status>-->
-<!--				<midino>0x1A</midino>-->
-<!--				<options>-->
-<!--					<Button />-->
-<!--				</options>-->
-<!--			</control>-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 		</controls>
@@ -424,7 +422,3 @@
 		</outputs>
 	</controller>
 </MixxxMIDIPreset>
-
-
-
-

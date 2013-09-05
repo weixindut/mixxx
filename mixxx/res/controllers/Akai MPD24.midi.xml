@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<MixxxMIDIPreset schemaVersion="1" mixxxVersion="1.6.2+">
+<MixxxMIDIPreset mixxxVersion="1.6.2+" schemaVersion="1">
   <info>
     <name>Akai MPD24</name>
     <author>klico</author>
@@ -351,5 +350,5 @@
       <midino>14</midino>
     </control>
   </controls>
-</controller>
+<picfiles><pic name="Akai MPD24.png" /></picfiles></controller>
 </MixxxMIDIPreset>

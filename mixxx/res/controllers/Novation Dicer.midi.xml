@@ -8,17 +8,17 @@
 </info>
     <controller id="Dicer Novation Dicer">
         <scriptfiles>
-            <file functionprefix="NovationDicer" filename="Novation-Dicer-scripts.js"/>
+            <file filename="Novation-Dicer-scripts.js" functionprefix="NovationDicer" />
         </scriptfiles>
-        <controls>
+        <picfiles><pic name="Novation Dicer.jpg" /></picfiles><controls>
             <control>
                 <status>0x9c</status>
                 <midino>0x42</midino>
                 <group>[Playlist]</group>
                 <key>SelectPrevTrack</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -26,9 +26,9 @@
                 <midino>0x43</midino>
                 <group>[Channel1]</group>
                 <key>LoadSelectedTrack</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -36,9 +36,9 @@
                 <midino>0x44</midino>
                 <group>[Playlist]</group>
                 <key>SelectNextTrack</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -46,9 +46,9 @@
                 <midino>0x45</midino>
                 <group>[Playlist]</group>
                 <key>SelectNextPlaylist</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -56,9 +56,9 @@
                 <midino>0x3c</midino>
                 <group>[Channel1]</group>
                 <key>NovationDicer.effectThenContinue</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -66,9 +66,9 @@
                 <midino>0x3d</midino>
                 <group>[Channel1]</group>
                 <key>NovationDicer.effectThenContinue</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -76,9 +76,9 @@
                 <midino>0x3e</midino>
                 <group>[Channel1]</group>
                 <key>NovationDicer.effectThenContinue</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -86,9 +86,9 @@
                 <midino>0x3f</midino>
                 <group>[Channel1]</group>
                 <key>NovationDicer.effectThenContinue</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -96,9 +96,9 @@
                 <midino>0x40</midino>
                 <group>[Channel1]</group>
                 <key>NovationDicer.effectThenContinue</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -106,9 +106,9 @@
                 <midino>0x41</midino>
                 <group>[Channel1]</group>
                 <key>beatloop_1_toggle</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -116,9 +116,9 @@
                 <midino>0x42</midino>
                 <group>[Channel1]</group>
                 <key>beatloop_2_toggle</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -126,9 +126,9 @@
                 <midino>0x43</midino>
                 <group>[Channel1]</group>
                 <key>beatloop_4_toggle</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -136,9 +136,9 @@
                 <midino>0x44</midino>
                 <group>[Channel1]</group>
                 <key>beatloop_8_toggle</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -146,9 +146,9 @@
                 <midino>0x45</midino>
                 <group>[Channel1]</group>
                 <key>beatloop_16_toggle</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -156,9 +156,9 @@
                 <midino>0x3c</midino>
                 <group>[Channel1]</group>
                 <key>hotcue_1_activate</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -166,9 +166,9 @@
                 <midino>0x3d</midino>
                 <group>[Channel1]</group>
                 <key>hotcue_2_activate</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -176,9 +176,9 @@
                 <midino>0x3e</midino>
                 <group>[Channel1]</group>
                 <key>hotcue_3_activate</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -186,9 +186,9 @@
                 <midino>0x3f</midino>
                 <group>[Channel1]</group>
                 <key>hotcue_4_activate</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -196,9 +196,9 @@
                 <midino>0x40</midino>
                 <group>[Channel1]</group>
                 <key>hotcue_5_activate</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -206,9 +206,9 @@
                 <midino>0x41</midino>
                 <group>[Channel1]</group>
                 <key>hotcue_1_clear</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -216,9 +216,9 @@
                 <midino>0x42</midino>
                 <group>[Channel1]</group>
                 <key>hotcue_2_clear</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -226,9 +226,9 @@
                 <midino>0x43</midino>
                 <group>[Channel1]</group>
                 <key>hotcue_3_clear</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -236,9 +236,9 @@
                 <midino>0x3c</midino>
                 <group>[Channel2]</group>
                 <key>NovationDicer.effectThenContinue</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -246,9 +246,9 @@
                 <midino>0x44</midino>
                 <group>[Channel1]</group>
                 <key>hotcue_4_clear</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -256,9 +256,9 @@
                 <midino>0x3d</midino>
                 <group>[Channel2]</group>
                 <key>NovationDicer.cueButton</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -266,9 +266,9 @@
                 <midino>0x45</midino>
                 <group>[Channel1]</group>
                 <key>hotcue_5_clear</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -276,9 +276,9 @@
                 <midino>0x3e</midino>
                 <group>[Channel2]</group>
                 <key>NovationDicer.flangeEffect</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -286,9 +286,9 @@
                 <midino>0x3f</midino>
                 <group>[Channel2]</group>
                 <key>NovationDicer.transformer</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -296,9 +296,9 @@
                 <midino>0x40</midino>
                 <group>[Channel2]</group>
                 <key>NovationDicer.effectThenContinue</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -306,9 +306,9 @@
                 <midino>0x41</midino>
                 <group>[Playlist]</group>
                 <key>SelectPrevPlaylist</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -316,9 +316,9 @@
                 <midino>0x42</midino>
                 <group>[Playlist]</group>
                 <key>SelectPrevTrack</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -326,9 +326,9 @@
                 <midino>0x43</midino>
                 <group>[Channel2]</group>
                 <key>LoadSelectedTrack</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -336,9 +336,9 @@
                 <midino>0x44</midino>
                 <group>[Playlist]</group>
                 <key>SelectNextTrack</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -346,9 +346,9 @@
                 <midino>0x45</midino>
                 <group>[Playlist]</group>
                 <key>SelectNextPlaylist</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -356,9 +356,9 @@
                 <midino>0x3c</midino>
                 <group>[Channel2]</group>
                 <key>NovationDicer.effectThenContinue</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -366,9 +366,9 @@
                 <midino>0x3d</midino>
                 <group>[Channel2]</group>
                 <key>NovationDicer.effectThenContinue</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -376,9 +376,9 @@
                 <midino>0x3e</midino>
                 <group>[Channel2]</group>
                 <key>NovationDicer.effectThenContinue</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -386,9 +386,9 @@
                 <midino>0x3f</midino>
                 <group>[Channel2]</group>
                 <key>NovationDicer.effectThenContinue</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -396,9 +396,9 @@
                 <midino>0x40</midino>
                 <group>[Channel2]</group>
                 <key>NovationDicer.effectThenContinue</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -406,9 +406,9 @@
                 <midino>0x41</midino>
                 <group>[Channel2]</group>
                 <key>beatloop_1_toggle</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -416,9 +416,9 @@
                 <midino>0x42</midino>
                 <group>[Channel2]</group>
                 <key>beatloop_2_toggle</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -426,9 +426,9 @@
                 <midino>0x43</midino>
                 <group>[Channel2]</group>
                 <key>beatloop_4_toggle</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -436,9 +436,9 @@
                 <midino>0x44</midino>
                 <group>[Channel2]</group>
                 <key>beatloop_8_toggle</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -446,9 +446,9 @@
                 <midino>0x45</midino>
                 <group>[Channel2]</group>
                 <key>beatloop_16_toggle</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -456,9 +456,9 @@
                 <midino>0x3c</midino>
                 <group>[Channel2]</group>
                 <key>hotcue_1_activate</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -466,9 +466,9 @@
                 <midino>0x3d</midino>
                 <group>[Channel2]</group>
                 <key>hotcue_2_activate</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -476,9 +476,9 @@
                 <midino>0x3e</midino>
                 <group>[Channel2]</group>
                 <key>hotcue_3_activate</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -486,9 +486,9 @@
                 <midino>0x3f</midino>
                 <group>[Channel2]</group>
                 <key>hotcue_4_activate</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -496,9 +496,9 @@
                 <midino>0x40</midino>
                 <group>[Channel2]</group>
                 <key>hotcue_5_activate</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -506,9 +506,9 @@
                 <midino>0x41</midino>
                 <group>[Channel2]</group>
                 <key>hotcue_1_clear</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -516,9 +516,9 @@
                 <midino>0x42</midino>
                 <group>[Channel2]</group>
                 <key>hotcue_2_clear</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -526,9 +526,9 @@
                 <midino>0x43</midino>
                 <group>[Channel2]</group>
                 <key>hotcue_3_clear</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -536,9 +536,9 @@
                 <midino>0x44</midino>
                 <group>[Channel2]</group>
                 <key>hotcue_4_clear</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -546,9 +546,9 @@
                 <midino>0x45</midino>
                 <group>[Channel2]</group>
                 <key>hotcue_5_clear</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -556,9 +556,9 @@
                 <midino>0x3c</midino>
                 <group>[Channel1]</group>
                 <key>NovationDicer.effectThenContinue</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -566,9 +566,9 @@
                 <midino>0x3d</midino>
                 <group>[Channel1]</group>
                 <key>NovationDicer.cueButton</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -576,9 +576,9 @@
                 <midino>0x3e</midino>
                 <group>[Channel1]</group>
                 <key>NovationDicer.flangeEffect</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -586,9 +586,9 @@
                 <midino>0x3f</midino>
                 <group>[Channel1]</group>
                 <key>NovationDicer.transformer</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -596,9 +596,9 @@
                 <midino>0x40</midino>
                 <group>[Channel1]</group>
                 <key>NovationDicer.effectThenContinue</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -606,9 +606,9 @@
                 <midino>0x41</midino>
                 <group>[Playlist]</group>
                 <key>SelectPrevPlaylist</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
         </controls>
@@ -616,7 +616,7 @@
             <output>
                 <group>[Channel2]</group>
                 <key>hotcue_4_enabled</key>
-                <description></description>
+                <description />
                 <minimum>0.1</minimum>
                 <maximum>1</maximum>
                 <status>0x9d</status>
@@ -627,7 +627,7 @@
             <output>
                 <group>[Channel2]</group>
                 <key>hotcue_4_enabled</key>
-                <description></description>
+                <description />
                 <minimum>0.1</minimum>
                 <maximum>1</maximum>
                 <status>0x9d</status>
@@ -638,7 +638,7 @@
             <output>
                 <group>[Channel1]</group>
                 <key>hotcue_5_enabled</key>
-                <description></description>
+                <description />
                 <minimum>0.1</minimum>
                 <maximum>1</maximum>
                 <status>0x9a</status>
@@ -649,7 +649,7 @@
             <output>
                 <group>[Channel1]</group>
                 <key>hotcue_5_enabled</key>
-                <description></description>
+                <description />
                 <minimum>0.1</minimum>
                 <maximum>1</maximum>
                 <status>0x9a</status>
@@ -660,7 +660,7 @@
             <output>
                 <group>[Channel2]</group>
                 <key>beatloop_4_enabled</key>
-                <description></description>
+                <description />
                 <minimum>0.1</minimum>
                 <maximum>1</maximum>
                 <status>0x9e</status>
@@ -671,7 +671,7 @@
             <output>
                 <group>[Channel2]</group>
                 <key>beatloop_2_enabled</key>
-                <description></description>
+                <description />
                 <minimum>0.1</minimum>
                 <maximum>1</maximum>
                 <status>0x9e</status>
@@ -682,7 +682,7 @@
             <output>
                 <group>[Channel1]</group>
                 <key>hotcue_1_enabled</key>
-                <description></description>
+                <description />
                 <minimum>0.1</minimum>
                 <maximum>1</maximum>
                 <status>0x9a</status>
@@ -693,7 +693,7 @@
             <output>
                 <group>[Channel1]</group>
                 <key>hotcue_1_enabled</key>
-                <description></description>
+                <description />
                 <minimum>0.1</minimum>
                 <maximum>1</maximum>
                 <status>0x9a</status>
@@ -704,7 +704,7 @@
             <output>
                 <group>[Channel2]</group>
                 <key>hotcue_5_enabled</key>
-                <description></description>
+                <description />
                 <minimum>0.1</minimum>
                 <maximum>1</maximum>
                 <status>0x9d</status>
@@ -715,7 +715,7 @@
             <output>
                 <group>[Channel2]</group>
                 <key>hotcue_5_enabled</key>
-                <description></description>
+                <description />
                 <minimum>0.1</minimum>
                 <maximum>1</maximum>
                 <status>0x9d</status>
@@ -726,7 +726,7 @@
             <output>
                 <group>[Channel1]</group>
                 <key>hotcue_2_enabled</key>
-                <description></description>
+                <description />
                 <minimum>0.1</minimum>
                 <maximum>1</maximum>
                 <status>0x9a</status>
@@ -737,7 +737,7 @@
             <output>
                 <group>[Channel1]</group>
                 <key>hotcue_2_enabled</key>
-                <description></description>
+                <description />
                 <minimum>0.1</minimum>
                 <maximum>1</maximum>
                 <status>0x9a</status>
@@ -748,7 +748,7 @@
             <output>
                 <group>[Channel2]</group>
                 <key>beatloop_1_enabled</key>
-                <description></description>
+                <description />
                 <minimum>0.1</minimum>
                 <maximum>1</maximum>
                 <status>0x9e</status>
@@ -759,7 +759,7 @@
             <output>
                 <group>[Channel2]</group>
                 <key>hotcue_1_enabled</key>
-                <description></description>
+                <description />
                 <minimum>0.1</minimum>
                 <maximum>1</maximum>
                 <status>0x9d</status>
@@ -770,7 +770,7 @@
             <output>
                 <group>[Channel2]</group>
                 <key>hotcue_1_enabled</key>
-                <description></description>
+                <description />
                 <minimum>0.1</minimum>
                 <maximum>1</maximum>
                 <status>0x9d</status>
@@ -781,7 +781,7 @@
             <output>
                 <group>[Channel1]</group>
                 <key>flanger</key>
-                <description></description>
+                <description />
                 <minimum>0.1</minimum>
                 <maximum>1</maximum>
                 <status>0x9c</status>
@@ -792,7 +792,7 @@
             <output>
                 <group>[Channel1]</group>
                 <key>beatloop_4_enabled</key>
-                <description></description>
+                <description />
                 <minimum>0.1</minimum>
                 <maximum>1</maximum>
                 <status>0x9b</status>
@@ -803,7 +803,7 @@
             <output>
                 <group>[Channel1]</group>
                 <key>beatloop_2_enabled</key>
-                <description></description>
+                <description />
                 <minimum>0.1</minimum>
                 <maximum>1</maximum>
                 <status>0x9b</status>
@@ -814,7 +814,7 @@
             <output>
                 <group>[Channel1]</group>
                 <key>hotcue_3_enabled</key>
-                <description></description>
+                <description />
                 <minimum>0.1</minimum>
                 <maximum>1</maximum>
                 <status>0x9a</status>
@@ -825,7 +825,7 @@
             <output>
                 <group>[Channel1]</group>
                 <key>hotcue_3_enabled</key>
-                <description></description>
+                <description />
                 <minimum>0.1</minimum>
                 <maximum>1</maximum>
                 <status>0x9a</status>
@@ -836,7 +836,7 @@
             <output>
                 <group>[Channel2]</group>
                 <key>hotcue_2_enabled</key>
-                <description></description>
+                <description />
                 <minimum>0.1</minimum>
                 <maximum>1</maximum>
                 <status>0x9d</status>
@@ -847,7 +847,7 @@
             <output>
                 <group>[Channel2]</group>
                 <key>hotcue_2_enabled</key>
-                <description></description>
+                <description />
                 <minimum>0.1</minimum>
                 <maximum>1</maximum>
                 <status>0x9d</status>
@@ -858,7 +858,7 @@
             <output>
                 <group>[Channel2]</group>
                 <key>flanger</key>
-                <description></description>
+                <description />
                 <minimum>0.1</minimum>
                 <maximum>1</maximum>
                 <status>0x9f</status>
@@ -869,7 +869,7 @@
             <output>
                 <group>[Channel2]</group>
                 <key>hotcue_3_enabled</key>
-                <description></description>
+                <description />
                 <minimum>0.1</minimum>
                 <maximum>1</maximum>
                 <status>0x9d</status>
@@ -880,7 +880,7 @@
             <output>
                 <group>[Channel2]</group>
                 <key>hotcue_3_enabled</key>
-                <description></description>
+                <description />
                 <minimum>0.1</minimum>
                 <maximum>1</maximum>
                 <status>0x9d</status>
@@ -891,7 +891,7 @@
             <output>
                 <group>[Channel1]</group>
                 <key>beatloop_16_enabled</key>
-                <description></description>
+                <description />
                 <minimum>0.1</minimum>
                 <maximum>1</maximum>
                 <status>0x9b</status>
@@ -902,7 +902,7 @@
             <output>
                 <group>[Channel2]</group>
                 <key>beatloop_8_enabled</key>
-                <description></description>
+                <description />
                 <minimum>0.1</minimum>
                 <maximum>1</maximum>
                 <status>0x9e</status>
@@ -913,7 +913,7 @@
             <output>
                 <group>[Channel1]</group>
                 <key>beatloop_1_enabled</key>
-                <description></description>
+                <description />
                 <minimum>0.1</minimum>
                 <maximum>1</maximum>
                 <status>0x9b</status>
@@ -924,7 +924,7 @@
             <output>
                 <group>[Channel1]</group>
                 <key>hotcue_4_enabled</key>
-                <description></description>
+                <description />
                 <minimum>0.1</minimum>
                 <maximum>1</maximum>
                 <status>0x9a</status>
@@ -935,7 +935,7 @@
             <output>
                 <group>[Channel1]</group>
                 <key>hotcue_4_enabled</key>
-                <description></description>
+                <description />
                 <minimum>0.1</minimum>
                 <maximum>1</maximum>
                 <status>0x9a</status>
@@ -946,7 +946,7 @@
             <output>
                 <group>[Channel1]</group>
                 <key>beatloop_8_enabled</key>
-                <description></description>
+                <description />
                 <minimum>0.1</minimum>
                 <maximum>1</maximum>
                 <status>0x9b</status>
@@ -957,7 +957,7 @@
             <output>
                 <group>[Channel2]</group>
                 <key>beatloop_16_enabled</key>
-                <description></description>
+                <description />
                 <minimum>0.1</minimum>
                 <maximum>1</maximum>
                 <status>0x9e</status>

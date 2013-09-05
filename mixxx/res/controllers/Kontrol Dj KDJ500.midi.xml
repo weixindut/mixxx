@@ -6,17 +6,17 @@
     </info>
     <controller id="KDJ500">
         <scriptfiles>
-            <file filename="Kontrol-Dj-KDJ500-scripts.js" functionprefix="KDJ500"/>
+            <file filename="Kontrol-Dj-KDJ500-scripts.js" functionprefix="KDJ500" />
         </scriptfiles>
-        <controls>
+        <picfiles><pic name="Kontrol Dj KDJ500.jpg" /></picfiles><controls>
             <control>
                 <status>0x90</status>
                 <midino>0x24</midino>
                 <group>[Channel2]</group>
                 <key>cue_default</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -24,9 +24,9 @@
                 <midino>0x26</midino>
                 <group>[Channel2]</group>
                 <key>play</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -34,9 +34,9 @@
                 <midino>0x3</midino>
                 <group>[Channel1]</group>
                 <key>beatloop_8_toggle</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
 			<control>
@@ -44,9 +44,9 @@
                 <midino>0x19</midino>
                 <group>[Channel2]</group>
                 <key>beatloop_8_toggle</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -54,9 +54,9 @@
                 <midino>0x28</midino>
                 <group>[Channel2]</group>
                 <key>LoadSelectedTrack</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -64,9 +64,9 @@
                 <midino>0x2c</midino>
                 <group>[Channel1]</group>
                 <key>pfl</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -74,9 +74,9 @@
                 <midino>0x2e</midino>
                 <group>[Channel2]</group>
                 <key>pfl</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -84,9 +84,9 @@
                 <midino>0x0e</midino>
                 <group>[Channel1]</group>
                 <key>cue_default</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -94,9 +94,9 @@
                 <midino>0x2a</midino>
                 <group>[Playlist]</group>
                 <key>KDJ500.track</key>
-                <description></description>
+                <description />
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
 			<control>
@@ -104,9 +104,9 @@
                 <midino>0x2e</midino>
                 <group>[Playlist]</group>
                 <key>KDJ500.track</key>
-                <description></description>
+                <description />
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
             <control>
@@ -114,9 +114,9 @@
                 <midino>0x10</midino>
                 <group>[Channel1]</group>
                 <key>play</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -124,9 +124,9 @@
                 <midino>0x1</midino>
                 <group>[Channel1]</group>
                 <key>pregain</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -134,9 +134,9 @@
                 <midino>0x2</midino>
                 <group>[Channel1]</group>
                 <key>filterHigh</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -144,9 +144,9 @@
                 <midino>0x3</midino>
                 <group>[Channel1]</group>
                 <key>filterMid</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -154,9 +154,9 @@
                 <midino>0x28</midino>
                 <group>[Channel1]</group>
                 <key>KDJ500.jog</key>
-                <description></description>
+                <description />
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
             <control>
@@ -164,9 +164,9 @@
                 <midino>0x4</midino>
                 <group>[Channel1]</group>
                 <key>filterLow</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -174,9 +174,9 @@
                 <midino>0x14</midino>
                 <group>[Channel1]</group>
                 <key>LoadSelectedTrack</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -184,9 +184,9 @@
                 <midino>0x5</midino>
                 <group>[Channel2]</group>
                 <key>pregain</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -194,9 +194,9 @@
                 <midino>0x6</midino>
                 <group>[Channel2]</group>
                 <key>filterHigh</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -204,9 +204,9 @@
                 <midino>0x7</midino>
                 <group>[Channel2]</group>
                 <key>filterMid</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -214,9 +214,9 @@
                 <midino>0x2c</midino>
                 <group>[Channel2]</group>
                 <key>KDJ500.jog</key>
-                <description></description>
+                <description />
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
             <control>
@@ -224,9 +224,9 @@
                 <midino>0x8</midino>
                 <group>[Channel2]</group>
                 <key>filterLow</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -234,9 +234,9 @@
                 <midino>0x9</midino>
                 <group>[Channel1]</group>
                 <key>rate</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -244,9 +244,9 @@
                 <midino>0xa</midino>
                 <group>[Channel2]</group>
                 <key>rate</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -254,9 +254,9 @@
                 <midino>0xb</midino>
                 <group>[Channel1]</group>
                 <key>volume</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -264,9 +264,9 @@
                 <midino>0xc</midino>
                 <group>[Channel2]</group>
                 <key>volume</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -274,12 +274,12 @@
                 <midino>0xd</midino>
                 <group>[Master]</group>
                 <key>crossfader</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
         </controls>
-        <outputs/>
+        <outputs />
     </controller>
 </MixxxMIDIPreset>

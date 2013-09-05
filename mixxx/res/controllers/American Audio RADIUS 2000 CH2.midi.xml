@@ -6,16 +6,16 @@
     </info>
     <controller id="Radius 2000 MIDI 1">
         <scriptfiles>
-            <file functionprefix="RADIUS2000" filename="American-Audio-RADIUS-2000-scripts.js"/>
+            <file filename="American-Audio-RADIUS-2000-scripts.js" functionprefix="RADIUS2000" />
         </scriptfiles>
-        <controls>
+        <picfiles><pic name="American Audio RADIUS 2000 CH2.jpg" /></picfiles><controls>
 	    <control>
                 <status>0xB0</status>
                 <midino>0x38</midino>
                 <group>[Playlist]</group>
                 <key>RADIUS2000.trackSearch</key>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
 	    <control>
@@ -24,7 +24,7 @@
                 <group>[Playlist]</group>
                 <key>RADIUS2000.menuSearch</key>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
             <control>
@@ -33,7 +33,7 @@
                 <group>[Channel2]</group>
                 <key>RADIUS2000.cue</key>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
             <control>
@@ -42,7 +42,7 @@
                 <group>[Channel2]</group>
                 <key>RADIUS2000.wheelTouch</key>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
             <control>
@@ -51,7 +51,7 @@
                 <group>[Channel2]</group>
                 <key>RADIUS2000.wheelTurn</key>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
             <control>
@@ -60,7 +60,7 @@
                 <group>[Channel2]</group>
                 <key>RADIUS2000.play</key>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
             <control>
@@ -69,7 +69,7 @@
                 <group>[Channel2]</group>
                 <key>RADIUS2000.keylock</key>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
             <control>
@@ -78,7 +78,7 @@
                 <group>[Channel2]</group>
                 <key>RADIUS2000.pitchRateRange</key>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
             <control>
@@ -87,7 +87,7 @@
                 <group>[Channel2]</group>
                 <key>RADIUS2000.pitchRate</key>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
             <control>
@@ -96,7 +96,7 @@
                 <group>[Channel2]</group>
                 <key>RADIUS2000.flanger</key>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
             <control>
@@ -105,7 +105,7 @@
                 <group>[Channel2]</group>
                 <key>RADIUS2000.flangerDelay</key>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
             <control>
@@ -114,7 +114,7 @@
                 <group>[Channel2]</group>
                 <key>rate_temp_down</key>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -123,7 +123,7 @@
                 <group>[Channel2]</group>
                 <key>rate_temp_up</key>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -132,7 +132,7 @@
                 <group>[Channel2]</group>
                 <key>beatloop_4</key>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -141,7 +141,7 @@
                 <group>[Channel2]</group>
                 <key>reverse</key>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -150,7 +150,7 @@
                 <group>[Channel2]</group>
                 <key>loop_out</key>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -159,7 +159,7 @@
                 <group>[Channel2]</group>
                 <key>loop_double</key>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -168,7 +168,7 @@
                 <group>[Channel2]</group>
                 <key>LoadSelectedTrack</key>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -177,7 +177,7 @@
                 <group>[Channel2]</group>
                 <key>hotcue_3_activate</key>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -186,7 +186,7 @@
                 <group>[Channel2]</group>
                 <key>loop_in</key>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -195,7 +195,7 @@
                 <group>[Channel2]</group>
                 <key>rate</key>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -204,7 +204,7 @@
                 <group>[Channel2]</group>
                 <key>loop_halve</key>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -213,7 +213,7 @@
                 <group>[Channel2]</group>
                 <key>hotcue_2_activate</key>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -222,7 +222,7 @@
                 <group>[Channel2]</group>
                 <key>back</key>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -231,7 +231,7 @@
                 <group>[Channel2]</group>
                 <key>beatsync</key>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -240,7 +240,7 @@
                 <group>[Channel2]</group>
                 <key>LoadSelectedTrack</key>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -249,7 +249,7 @@
                 <group>[Channel2]</group>
                 <key>hotcue_1_activate</key>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -258,7 +258,7 @@
                 <group>[Channel2]</group>
                 <key>reloop_exit</key>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -267,7 +267,7 @@
                 <group>[Playlist]</group>
                 <key>SelectNextTrack</key>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -276,7 +276,7 @@
                 <group>[Channel2]</group>
                 <key>hotcue_4_activate</key>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -285,7 +285,7 @@
                 <group>[Channel2]</group>
                 <key>fwd</key>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -294,10 +294,10 @@
                 <group>[Playlist]</group>
                 <key>SelectPrevTrack</key>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
         </controls>
-        <outputs/>
+        <outputs />
     </controller>
 </MixxxMIDIPreset>

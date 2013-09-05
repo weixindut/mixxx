@@ -1,8 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?>
-<MixxxMIDIPreset schemaVersion="1" mixxxVersion="1.6.2+">
+<MixxxMIDIPreset mixxxVersion="1.6.2+" schemaVersion="1">
   <info>
     <name>MidiTech MidiControl</name>
-    <author></author>
+    <author />
     <description>MIDI Mapping for MidiTech MidiControl</description>
   </info>
   <controller id="MidiTech-MidiControl" port="Port">
@@ -362,5 +361,5 @@
         <midino>0x4c</midino>
       </control>
     </controls>
-  </controller>
+  <picfiles><pic name="MidiTech-MidiControl.gif" /></picfiles></controller>
 </MixxxMIDIPreset>

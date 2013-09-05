@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <MixxxMIDIPreset mixxxVersion="1.10.0" schemaVersion="1">
 	<info>
 		<name>Numark Total Control</name>
@@ -8,10 +7,10 @@
 	</info>
 	<controller id="TotalTrack Control">
 		<scriptfiles>
-			<file filename="Numark-Total-Control-scripts.js" functionprefix="NumarkTotalControl"/>
+			<file filename="Numark-Total-Control-scripts.js" functionprefix="NumarkTotalControl" />
 		</scriptfiles>
-		<controls>
-<!-- Master and PFL controls -->
+		<picfiles><pic name="Numark Total Control.jpg" /></picfiles><controls>
+
 			<control>
 				<group>[Master]</group>
 				<key>headVolume</key>
@@ -36,7 +35,7 @@
 				<status>0xb0</status>
 				<midino>0x0a</midino>
 				<options>
-					<invert/>
+					<invert />
 				</options>
 			</control>
 			<control>
@@ -51,7 +50,7 @@
 				<status>0x90</status>
 				<midino>0x37</midino>
 			</control>
-<!-- Flanger -->
+
 			<control>
 				<group>[Channel1]</group>
 				<key>flanger</key>
@@ -70,7 +69,7 @@
 				<status>0xb0</status>
 				<midino>0x00</midino>
 				<options>
-					<diff/>
+					<diff />
 				</options>
 			</control>
 			<control>
@@ -79,7 +78,7 @@
 				<status>0xb0</status>
 				<midino>0x02</midino>
 				<options>
-					<diff/>
+					<diff />
 				</options>
 			</control>
 			<control>
@@ -88,7 +87,7 @@
 				<status>0xb0</status>
 				<midino>0x01</midino>
 				<options>
-					<diff/>
+					<diff />
 				</options>
 			</control>
 			<control>
@@ -97,7 +96,7 @@
 				<status>0xb0</status>
 				<midino>0x04</midino>
 				<options>
-					<diff/>
+					<diff />
 				</options>
 			</control>
 			<control>
@@ -106,7 +105,7 @@
 				<status>0xb0</status>
 				<midino>0x06</midino>
 				<options>
-					<diff/>
+					<diff />
 				</options>
 			</control>
 			<control>
@@ -115,17 +114,17 @@
 				<status>0xb0</status>
 				<midino>0x05</midino>
 				<options>
-					<diff/>
+					<diff />
 				</options>
 			</control>
-<!-- Playlist and loading -->
+
 			<control>
 				<group>[Playlist]</group>
 				<key>NumarkTotalControl.toggleDirectoryMode</key>
 				<status>0x90</status>
 				<midino>0x48</midino>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control>
@@ -134,7 +133,7 @@
 				<status>0xb0</status>
 				<midino>0x1a</midino>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control>
@@ -155,7 +154,7 @@
 				<status>0x90</status>
 				<midino>0x34</midino>
 			</control>
-<!-- Playback and cueing -->
+
 			<control>
 				<group>[Channel1]</group>
 				<key>play</key>
@@ -168,7 +167,7 @@
 				<status>0x90</status>
 				<midino>0x4c</midino>
 			</control>
-			<!-- Keylock -->
+			
 			<control>
 				<group>[Channel1]</group>
 				<key>keylock</key>
@@ -181,14 +180,14 @@
 				<status>0x90</status>
 				<midino>0x3f</midino>
 			</control>
-			<!-- Select -->
+			
 			<control>
 				<group>[Master]</group>
 				<key>NumarkTotalControl.toggleSimpleCue</key>
 				<status>0x90</status>
 				<midino>0x31</midino>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control>
@@ -197,7 +196,7 @@
 				<status>0x90</status>
 				<midino>0x3b</midino>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control>
@@ -206,7 +205,7 @@
 				<status>0x90</status>
 				<midino>0x44</midino>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control>
@@ -215,7 +214,7 @@
 				<status>0x90</status>
 				<midino>0x33</midino>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control>
@@ -224,10 +223,10 @@
 				<status>0x90</status>
 				<midino>0x3c</midino>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
-<!-- Jog and pitch controls -->
+
 			<control>
 				<group>[Channel1]</group>
 				<key>beatsync</key>
@@ -246,7 +245,7 @@
 				<status>0x90</status>
 				<midino>0x41</midino>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control>
@@ -255,7 +254,7 @@
 				<status>0x90</status>
 				<midino>0x42</midino>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control>
@@ -264,7 +263,7 @@
 				<status>0x90</status>
 				<midino>0x45</midino>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control>
@@ -273,7 +272,7 @@
 				<status>0x90</status>
 				<midino>0x46</midino>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control>
@@ -282,7 +281,7 @@
 				<status>0xb0</status>
 				<midino>0x03</midino>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control>
@@ -291,7 +290,7 @@
 				<status>0xb0</status>
 				<midino>0x07</midino>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control>
@@ -300,7 +299,7 @@
 				<status>0x90</status>
 				<midino>0x3a</midino>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control>
@@ -309,17 +308,17 @@
 				<status>0x90</status>
 				<midino>0x3e</midino>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
-			<!-- Filter On/Off -->
+			
 			<control>
 				<group>[Channel1]</group>
 				<key>NumarkTotalControl.toggleScratchMode</key>
 				<status>0x90</status>
 				<midino>0x32</midino>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control>
@@ -328,7 +327,7 @@
 				<status>0xb0</status>
 				<midino>0x19</midino>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control>
@@ -337,7 +336,7 @@
 				<status>0xb0</status>
 				<midino>0x18</midino>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control>
@@ -352,7 +351,7 @@
 				<status>0xb0</status>
 				<midino>0x0c</midino>
 			</control>
-<!-- Levels and Equalizer -->
+
 			<control>
 				<group>[Channel1]</group>
 				<key>volume</key>
@@ -449,25 +448,25 @@
 				<status>0xb0</status>
 				<midino>0x15</midino>
 			</control>
-<!-- Loops -->
-			<!-- Select -->
+
+			
 			<control>
 				<group>[Master]</group>
 				<key>NumarkTotalControl.toggleExtendedLooping</key>
 				<status>0x90</status>
 				<midino>0x35</midino>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
-			<!-- Filter On/Off -->
+			
 			<control>
 				<group>[Channel2]</group>
 				<key>NumarkTotalControl.toggleQuantize</key>
 				<status>0x90</status>
 				<midino>0x36</midino>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control>
@@ -476,7 +475,7 @@
 				<status>0x90</status>
 				<midino>0x49</midino>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control>
@@ -485,7 +484,7 @@
 				<status>0x90</status>
 				<midino>0x4a</midino>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control>
@@ -494,7 +493,7 @@
 				<status>0x90</status>
 				<midino>0x4d</midino>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control>
@@ -503,13 +502,13 @@
 				<status>0x90</status>
 				<midino>0x4e</midino>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 		</controls>
 
 		<outputs>
-<!-- Master and PFL controls -->
+
 			<output>
 				<group>[Channel1]</group>
 				<key>pfl</key>
@@ -530,7 +529,7 @@
 				<maximum>0.1</maximum>
 				<minimum>0.0</minimum>
 			</output>
-<!-- Flanger -->
+
 			<output>
 				<group>[Channel1]</group>
 				<key>flanger</key>
@@ -551,7 +550,7 @@
 				<maximum>0.1</maximum>
 				<minimum>0.0</minimum>
 			</output>
-<!-- Playlist and loading -->
+
 			<output>
 				<group>[Channel1]</group>
 				<key>playposition</key>
@@ -572,7 +571,7 @@
 				<maximum>1.0</maximum>
 				<minimum>0.75</minimum>
 			</output>
-<!-- Cuing and playback -->
+
 			<output>
 				<group>[Channel1]</group>
 				<key>play</key>
@@ -613,7 +612,7 @@
 				<maximum>1.0</maximum>
 				<minimum>0.0</minimum>
 			</output>
-			<!-- Keylock -->
+			
 			<output>
 				<group>[Channel1]</group>
 				<key>keylock</key>
@@ -634,7 +633,7 @@
 				<maximum>1.0</maximum>
 				<minimum>0.1</minimum>
 			</output>
-<!-- Jog and pitch controls -->
+
 			<output>
 				<group>[Channel1]</group>
 				<key>rate</key>
@@ -655,8 +654,8 @@
 				<maximum>0.05</maximum>
 				<minimum>-0.05</minimum>
 			</output>
-<!-- Levels and Equalizer -->
-			<!-- Sync -->
+
+			
 			<output>
 				<group>[Channel1]</group>
 				<key>beat_active</key>

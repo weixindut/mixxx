@@ -1,17 +1,16 @@
-<?xml version="1.0" encoding="utf-8"?>
-<MixxxMIDIPreset schemaVersion="1" mixxxVersion="1.8+">
+<MixxxMIDIPreset mixxxVersion="1.8+" schemaVersion="1">
 <info>
   <name>M-Audio Xponent</name>
-  <author>Luca Franceschini, Juan Pedro Bolívar Puente</author>
+  <author>Luca Franceschini, Juan Pedro Bol&#237;var Puente</author>
   <description>Make sure to set the bank switch on the bottom of the Xponent to A.</description>
-  <!-- These comments are not suppported by mixxx hile 2012-08-06 -->
-  <!-- <deviceid>Xponent Port 1</deviceid><deviceid>Xponent Port 2</deviceid> -->
+  
+  
 </info>
 <controller id="Xponent Port 1">
 <scriptfiles>
-  <file filename="M-Audio-Xponent-scripts.js" functionprefix="MaudioXponent"/>
+  <file filename="M-Audio-Xponent-scripts.js" functionprefix="MaudioXponent" />
 </scriptfiles>
-  <controls>
+  <picfiles><pic name="M-Audio_Xponent.jpg" /></picfiles><controls>
     <control>
       <group>[Master]</group>
       <key>crossfader</key>
@@ -32,7 +31,7 @@
       <status>0x90</status>
       <midino>7</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -41,7 +40,7 @@
       <status>0x80</status>
       <midino>7</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -50,7 +49,7 @@
       <status>0x90</status>
       <midino>36</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -66,7 +65,7 @@
       <status>0x90</status>
       <midino>35</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -75,7 +74,7 @@
       <status>0x80</status>
       <midino>35</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -84,7 +83,7 @@
       <status>0x90</status>
       <midino>33</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -93,7 +92,7 @@
       <status>0x80</status>
       <midino>33</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -102,7 +101,7 @@
       <status>0x90</status>
       <midino>34</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -111,7 +110,7 @@
       <status>0x80</status>
       <midino>34</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -120,7 +119,7 @@
       <status>0x90</status>
       <midino>19</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -136,7 +135,7 @@
       <status>0xE0</status>
       <midino>0</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -145,7 +144,7 @@
       <status>0xB0</status>
       <midino>22</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -154,7 +153,7 @@
       <status>0x90</status>
       <midino>22</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -163,7 +162,7 @@
       <status>0x80</status>
       <midino>22</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -172,7 +171,7 @@
       <status>0x90</status>
       <midino>20</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -209,7 +208,7 @@
       <status>0x90</status>
       <midino>8</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -225,7 +224,7 @@
       <status>0x90</status>
       <midino>9</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -241,7 +240,7 @@
       <status>0x90</status>
       <midino>10</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -299,7 +298,7 @@
       <status>0x90</status>
       <midino>41</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -308,7 +307,7 @@
       <status>0x90</status>
       <midino>42</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -317,7 +316,7 @@
       <status>0x90</status>
       <midino>43</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -326,7 +325,7 @@
       <status>0x90</status>
       <midino>23</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -335,7 +334,7 @@
       <status>0x90</status>
       <midino>24</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -344,7 +343,7 @@
       <status>0x90</status>
       <midino>25</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -353,7 +352,7 @@
       <status>0x90</status>
       <midino>26</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -362,7 +361,7 @@
       <status>0x90</status>
       <midino>27</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -371,7 +370,7 @@
       <status>0x90</status>
       <midino>44</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -380,7 +379,7 @@
       <status>0x80</status>
       <midino>44</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -389,7 +388,7 @@
       <status>0x90</status>
       <midino>21</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -398,7 +397,7 @@
       <status>0x90</status>
       <midino>28</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -407,7 +406,7 @@
       <status>0x80</status>
       <midino>28</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -416,7 +415,7 @@
       <status>0x90</status>
       <midino>29</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -425,7 +424,7 @@
       <status>0x80</status>
       <midino>29</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -434,7 +433,7 @@
       <status>0x90</status>
       <midino>30</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -443,7 +442,7 @@
       <status>0x80</status>
       <midino>30</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -452,7 +451,7 @@
       <status>0x90</status>
       <midino>31</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -461,7 +460,7 @@
       <status>0x80</status>
       <midino>31</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -470,7 +469,7 @@
       <status>0x90</status>
       <midino>32</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -479,7 +478,7 @@
       <status>0x80</status>
       <midino>32</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -488,7 +487,7 @@
       <status>0x90</status>
       <midino>11</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -497,7 +496,7 @@
       <status>0x80</status>
       <midino>11</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -506,7 +505,7 @@
       <status>0x91</status>
       <midino>7</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -515,7 +514,7 @@
       <status>0x81</status>
       <midino>7</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -524,7 +523,7 @@
       <status>0x91</status>
       <midino>36</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -540,7 +539,7 @@
       <status>0x91</status>
       <midino>35</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -549,7 +548,7 @@
       <status>0x81</status>
       <midino>35</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -558,7 +557,7 @@
       <status>0x91</status>
       <midino>33</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -567,7 +566,7 @@
       <status>0x81</status>
       <midino>33</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -576,7 +575,7 @@
       <status>0x91</status>
       <midino>34</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -585,7 +584,7 @@
       <status>0x81</status>
       <midino>34</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -594,7 +593,7 @@
       <status>0x91</status>
       <midino>19</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -610,7 +609,7 @@
       <status>0xE1</status>
       <midino>0</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -619,7 +618,7 @@
       <status>0xB1</status>
       <midino>22</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -628,7 +627,7 @@
       <status>0x91</status>
       <midino>22</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -637,7 +636,7 @@
       <status>0x81</status>
       <midino>22</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -646,7 +645,7 @@
       <status>0x91</status>
       <midino>20</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -683,7 +682,7 @@
       <status>0x91</status>
       <midino>8</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -699,7 +698,7 @@
       <status>0x91</status>
       <midino>9</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -715,7 +714,7 @@
       <status>0x91</status>
       <midino>10</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -773,7 +772,7 @@
       <status>0x91</status>
       <midino>41</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -782,7 +781,7 @@
       <status>0x91</status>
       <midino>42</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -791,7 +790,7 @@
       <status>0x91</status>
       <midino>43</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -800,7 +799,7 @@
       <status>0x91</status>
       <midino>23</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -809,7 +808,7 @@
       <status>0x91</status>
       <midino>24</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -818,7 +817,7 @@
       <status>0x91</status>
       <midino>25</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -827,7 +826,7 @@
       <status>0x91</status>
       <midino>26</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -836,7 +835,7 @@
       <status>0x91</status>
       <midino>27</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -845,7 +844,7 @@
       <status>0x91</status>
       <midino>44</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -854,7 +853,7 @@
       <status>0x81</status>
       <midino>44</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -863,7 +862,7 @@
       <status>0x91</status>
       <midino>12</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -872,7 +871,7 @@
       <status>0x91</status>
       <midino>13</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -902,7 +901,7 @@
       <status>0x91</status>
       <midino>21</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -911,7 +910,7 @@
       <status>0x91</status>
       <midino>28</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -920,7 +919,7 @@
       <status>0x81</status>
       <midino>28</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -929,7 +928,7 @@
       <status>0x91</status>
       <midino>29</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -938,7 +937,7 @@
       <status>0x81</status>
       <midino>29</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -947,7 +946,7 @@
       <status>0x91</status>
       <midino>30</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -956,7 +955,7 @@
       <status>0x81</status>
       <midino>30</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -965,7 +964,7 @@
       <status>0x91</status>
       <midino>31</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -974,7 +973,7 @@
       <status>0x81</status>
       <midino>31</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -983,7 +982,7 @@
       <status>0x91</status>
       <midino>32</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -992,7 +991,7 @@
       <status>0x81</status>
       <midino>32</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -1001,7 +1000,7 @@
       <status>0x91</status>
       <midino>11</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -1010,7 +1009,7 @@
       <status>0x81</status>
       <midino>11</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -1019,7 +1018,7 @@
       <status>0x90</status>
       <midino>18</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
     <control>
@@ -1028,18 +1027,18 @@
       <status>0x91</status>
       <midino>18</midino>
       <options>
-        <Script-Binding/>
+        <Script-Binding />
       </options>
     </control>
-    <!-- <control> -->
-    <!--   <group>[Channel2]</group> -->
-    <!--   <key>MaudioXponent.actbinstop</key> -->
-    <!--   <status>0x80</status> -->
-    <!--   <midino>18</midino> -->
-    <!--   <options> -->
-    <!--     <Script-Binding/> -->
-    <!--   </options> -->
-    <!-- </control> -->
+    
+    
+    
+    
+    
+    
+    
+    
+    
   </controls>
 </controller>
 </MixxxMIDIPreset>

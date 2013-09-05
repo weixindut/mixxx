@@ -3,23 +3,23 @@
     <name>Keith McMillen Instruments QuNeo</name>
     <author>Daniel Leja</author>
     <description>This is a fully customized DJ mapping for the QuNeo, complete with beat-jumping and pulsing LED sequencers.</description>
-    <forums>http://mixxx.org/forums/viewtopic.php?f=7&amp;amp;t=4130&amp;amp;sid=bc90140a4dc6e650e06dae0df8562604</forums>-->
+    <forums>http://mixxx.org/forums/viewtopic.php?f=7&amp;amp;t=4130&amp;amp;sid=bc90140a4dc6e650e06dae0df8562604</forums>--&gt;
     <wiki>https://github.com/wolfbiter/kane-quneo-mixxx</wiki>
   </info>
   <controller id="QUNEO">
     <scriptfiles>
-      <file functionprefix="KANE_QuNeo" filename="KANE_QuNeo_scripts.js"/>
+      <file filename="KANE_QuNeo_scripts.js" functionprefix="KANE_QuNeo" />
     </scriptfiles>
-    <controls>
+    <picfiles><pic name="KANE_QuNeo.jpg" /></picfiles><controls>
 
-      <!-- Hotcues - deleting only available in cuing mode -->
+      
       <control>
 	<status>0x90</status>
 	<midino>0x00</midino>
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.deck1Cue1Activate</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -28,7 +28,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.deck1Cue2Activate</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -37,7 +37,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.deck1Cue3Activate</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -46,7 +46,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.deck1Cue4Activate</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -55,7 +55,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.deck2Cue1Activate</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -64,7 +64,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.deck2Cue2Activate</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -73,7 +73,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.deck2Cue3Activate</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -82,7 +82,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.deck2Cue4Activate</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -91,7 +91,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.deck1Cue1Deactivate</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -100,7 +100,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.deck1Cue2Deactivate</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -109,7 +109,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.deck1Cue3Deactivate</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -118,7 +118,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.deck1Cue4Deactivate</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -127,7 +127,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.deck2Cue1Deactivate</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -136,7 +136,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.deck2Cue2Deactivate</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -145,7 +145,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.deck2Cue3Deactivate</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -154,7 +154,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.deck2Cue4Deactivate</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -163,7 +163,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.deck1Cue5Deactivate</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -172,7 +172,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.deck1Cue6Deactivate</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -181,7 +181,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.deck1Cue7Deactivate</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -190,7 +190,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.deck1Cue8Deactivate</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -199,7 +199,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.deck2Cue5Deactivate</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -208,7 +208,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.deck2Cue6Deactivate</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -217,7 +217,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.deck2Cue7Deactivate</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -226,7 +226,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.deck2Cue8Deactivate</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -235,7 +235,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.deck1Cue5Activate</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -244,7 +244,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.deck1Cue6Activate</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -253,7 +253,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.deck1Cue7Activate</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -262,7 +262,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.deck1Cue8Activate</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -271,7 +271,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.deck2Cue5Activate</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -280,7 +280,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.deck2Cue6Activate</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -289,7 +289,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.deck2Cue7Activate</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -298,7 +298,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.deck2Cue8Activate</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -307,7 +307,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.deck1Cue9Activate</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -316,7 +316,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.deck1Cue10Activate</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -325,7 +325,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.deck1Cue11Activate</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -334,7 +334,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.deck1Cue12Activate</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -343,7 +343,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.deck2Cue9Activate</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -352,7 +352,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.deck2Cue10Activate</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -361,7 +361,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.deck2Cue11Activate</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -370,7 +370,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.deck2Cue12Activate</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -379,7 +379,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.deck1Cue9Deactivate</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -388,7 +388,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.deck1Cue10Deactivate</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -397,7 +397,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.deck1Cue11Deactivate</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -406,7 +406,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.deck1Cue12Deactivate</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -415,7 +415,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.deck2Cue9Deactivate</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -424,7 +424,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.deck2Cue10Deactivate</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -433,7 +433,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.deck2Cue11Deactivate</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -442,7 +442,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.deck2Cue12Deactivate</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -451,7 +451,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.deck1Cue13Deactivate</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -460,7 +460,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.deck1Cue14Deactivate</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -469,7 +469,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.deck1Cue15Deactivate</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -478,7 +478,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.deck1Cue16Deactivate</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -487,7 +487,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.deck2Cue13Deactivate</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -496,7 +496,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.deck2Cue14Deactivate</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -505,7 +505,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.deck2Cue15Deactivate</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -514,7 +514,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.deck2Cue16Deactivate</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -523,7 +523,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.deck1Cue13Activate</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -532,7 +532,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.deck1Cue14Activate</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -541,7 +541,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.deck1Cue15Activate</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -550,7 +550,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.deck1Cue16Activate</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -559,7 +559,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.deck2Cue13Activate</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -568,7 +568,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.deck2Cue14Activate</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -577,7 +577,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.deck2Cue15Activate</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -586,7 +586,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.deck2Cue16Activate</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -595,7 +595,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.deck1Cue1Clear</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -604,7 +604,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.deck1Cue2Clear</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -613,7 +613,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.deck1Cue3Clear</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -622,7 +622,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.deck1Cue4Clear</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -631,7 +631,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.deck2Cue1Clear</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -640,7 +640,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.deck2Cue2Clear</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -649,7 +649,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.deck2Cue3Clear</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -658,7 +658,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.deck2Cue4Clear</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -667,7 +667,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.deck1Cue1Clear</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -676,7 +676,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.deck1Cue2Clear</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -685,7 +685,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.deck1Cue3Clear</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -694,7 +694,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.deck1Cue4Clear</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -703,7 +703,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.deck2Cue1Clear</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -712,7 +712,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.deck2Cue2Clear</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -721,7 +721,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.deck2Cue3Clear</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -730,7 +730,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.deck2Cue4Clear</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -739,7 +739,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.deck1Cue5Clear</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -748,7 +748,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.deck1Cue6Clear</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -757,7 +757,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.deck1Cue7Clear</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -766,7 +766,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.deck1Cue8Clear</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -775,7 +775,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.deck2Cue5Clear</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -784,7 +784,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.deck2Cue6Clear</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -793,7 +793,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.deck2Cue7Clear</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -802,7 +802,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.deck2Cue8Clear</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -811,7 +811,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.deck1Cue5Clear</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -820,7 +820,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.deck1Cue6Clear</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -829,7 +829,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.deck1Cue7Clear</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -838,7 +838,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.deck1Cue8Clear</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -847,7 +847,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.deck2Cue5Clear</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -856,7 +856,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.deck2Cue6Clear</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -865,7 +865,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.deck2Cue7Clear</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -874,7 +874,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.deck2Cue8Clear</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -883,7 +883,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.deck1Cue9Clear</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -892,7 +892,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.deck1Cue10Clear</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -901,7 +901,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.deck1Cue11Clear</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -910,7 +910,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.deck1Cue12Clear</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -919,7 +919,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.deck2Cue9Clear</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -928,7 +928,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.deck2Cue10Clear</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -937,7 +937,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.deck2Cue11Clear</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -946,7 +946,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.deck2Cue12Clear</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -955,7 +955,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.deck1Cue9Clear</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -964,7 +964,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.deck1Cue10Clear</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -973,7 +973,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.deck1Cue11Clear</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -982,7 +982,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.deck1Cue12Clear</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -991,7 +991,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.deck2Cue9Clear</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -1000,7 +1000,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.deck2Cue10Clear</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -1009,7 +1009,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.deck2Cue11Clear</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -1018,7 +1018,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.deck2Cue12Clear</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -1027,7 +1027,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.deck1Cue13Clear</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -1036,7 +1036,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.deck1Cue14Clear</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -1045,7 +1045,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.deck1Cue15Clear</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -1054,7 +1054,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.deck1Cue16Clear</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -1063,7 +1063,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.deck2Cue13Clear</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -1072,7 +1072,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.deck2Cue14Clear</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -1081,7 +1081,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.deck2Cue15Clear</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -1090,7 +1090,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.deck2Cue16Clear</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -1099,7 +1099,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.deck1Cue13Clear</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -1108,7 +1108,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.deck1Cue14Clear</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -1117,7 +1117,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.deck1Cue15Clear</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -1126,7 +1126,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.deck1Cue16Clear</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -1135,7 +1135,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.deck2Cue13Clear</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -1144,7 +1144,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.deck2Cue14Clear</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -1153,7 +1153,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.deck2Cue15Clear</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -1162,18 +1162,18 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.deck2Cue16Clear</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
 
-      <!-- Channel 1 Looping -->
+      
       <control>
 	<status>0x91</status>
 	<midino>0x00</midino>
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.deck1JumpLoop1</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -1182,7 +1182,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.deck1JumpLoop2</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -1191,7 +1191,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.deck1JumpLoop4</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -1200,7 +1200,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.deck1JumpLoop8</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -1209,7 +1209,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.deck1JumpOff1</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -1218,7 +1218,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.deck1JumpOff2</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -1227,7 +1227,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.deck1JumpOff4</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -1236,7 +1236,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.deck1JumpOff8</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -1245,7 +1245,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.jump1Backward</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -1254,7 +1254,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.jump1Forward</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -1263,7 +1263,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.deck1reloop</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -1272,7 +1272,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.toggle1JumpSync</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -1281,7 +1281,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.deck1loop_double</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -1296,7 +1296,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.deck1loop_halve</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -1306,14 +1306,14 @@
 	<key>loop_halve</key>
       </control>
 
-      <!-- Channel 2 Looping -->
+      
       <control>
 	<status>0x91</status>
 	<midino>0x18</midino>
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.deck2JumpLoop1</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -1322,7 +1322,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.deck2JumpLoop2</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -1331,7 +1331,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.deck2JumpLoop4</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -1340,7 +1340,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.deck2JumpLoop8</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -1349,7 +1349,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.deck2JumpOff1</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -1358,7 +1358,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.deck2JumpOff2</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -1367,7 +1367,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.deck2JumpOff4</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -1376,7 +1376,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.deck2JumpOff8</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -1385,7 +1385,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.jump2Backward</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -1394,7 +1394,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.jump2Forward</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -1403,7 +1403,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.toggle2JumpSync</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -1412,7 +1412,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.deck2reloop</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -1421,7 +1421,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.deck2loop_double</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -1436,7 +1436,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.deck2loop_halve</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -1451,7 +1451,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.toggle1Looping</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -1460,18 +1460,18 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.toggle2Looping</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
 
-      <!-- Sync, Cue -->
+      
       <control>
 	<status>0x91</status>
 	<midino>0x0b</midino>
 	<group>[Channel1]</group>
 	<key>beatsync</key>
 	<options>
-	  <normal/>
+	  <normal />
 	</options>
       </control>
       <control>
@@ -1480,7 +1480,7 @@
 	<group>[Channel1]</group>
 	<key>beatsync</key>
 	<options>
-	  <normal/>
+	  <normal />
 	</options>
       </control>
       <control>
@@ -1489,7 +1489,7 @@
 	<group>[Channel1]</group>
 	<key>cue_default</key>
 	<options>
-	  <normal/>
+	  <normal />
 	</options>
       </control>
       <control>
@@ -1498,7 +1498,7 @@
 	<group>[Channel1]</group>
 	<key>cue_default</key>
 	<options>
-	  <normal/>
+	  <normal />
 	</options>
       </control>
       <control>
@@ -1507,7 +1507,7 @@
 	<group>[Channel2]</group>
 	<key>beatsync</key>
 	<options>
-	  <normal/>
+	  <normal />
 	</options>
       </control>
       <control>
@@ -1516,7 +1516,7 @@
 	<group>[Channel2]</group>
 	<key>beatsync</key>
 	<options>
-	  <normal/>
+	  <normal />
 	</options>
       </control>
       <control>
@@ -1525,7 +1525,7 @@
 	<group>[Channel2]</group>
 	<key>cue_default</key>
 	<options>
-	  <normal/>
+	  <normal />
 	</options>
       </control>
       <control>
@@ -1534,18 +1534,18 @@
 	<group>[Channel2]</group>
 	<key>cue_default</key>
 	<options>
-	  <normal/>
+	  <normal />
 	</options>
       </control>
 
-      <!-- Kill High, Lows, Mids -->
+      
       <control>
 	<status>0x91</status>
 	<midino>0x0c</midino>
 	<group>[Channel1]</group>
 	<key>filterHighKill</key>
 	<options>
-	  <normal/>
+	  <normal />
 	</options>
       </control>
       <control>
@@ -1554,7 +1554,7 @@
 	<group>[Channel1]</group>
 	<key>filterMidKill</key>
 	<options>
-	  <normal/>
+	  <normal />
 	</options>
       </control>
       <control>
@@ -1563,7 +1563,7 @@
 	<group>[Channel1]</group>
 	<key>filterLowKill</key>
 	<options>
-	  <normal/>
+	  <normal />
 	</options>
       </control>
       <control>
@@ -1572,7 +1572,7 @@
 	<group>[Channel2]</group>
 	<key>filterHighKill</key>
 	<options>
-	  <normal/>
+	  <normal />
 	</options>
       </control>
       <control>
@@ -1581,7 +1581,7 @@
 	<group>[Channel2]</group>
 	<key>filterMidKill</key>
 	<options>
-	  <normal/>
+	  <normal />
 	</options>
       </control>
       <control>
@@ -1590,18 +1590,18 @@
 	<group>[Channel2]</group>
 	<key>filterLowKill</key>
 	<options>
-	  <normal/>
+	  <normal />
 	</options>
       </control>
 
-      <!-- Horizontal sliders -->
+      
       <control>
 	<status>0xb5</status>
 	<midino>0x00</midino>
 	<group>[Master]</group>
 	<key>volume</key>
 	<options>
-	  <normal/>
+	  <normal />
 	</options>
       </control>
       <control>
@@ -1610,7 +1610,7 @@
 	<group>[Master]</group>
 	<key>headVolume</key>
 	<options>
-	  <normal/>
+	  <normal />
 	</options>
       </control>
       <control>
@@ -1619,7 +1619,7 @@
 	<group>[Flanger]</group>
 	<key>lfoPeriod</key>
 	<options>
-	  <normal/>
+	  <normal />
 	</options>
       </control>
       <control>
@@ -1628,18 +1628,18 @@
 	<group>[Flanger]</group>
 	<key>lfoDepth</key>
 	<options>
-	  <normal/>
+	  <normal />
 	</options>
       </control>
 
-      <!-- Horizontal Arrow Buttons -->
+      
       <control>
 	<status>0x96</status>
 	<midino>0x00</midino>
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.deck1keylock</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -1648,7 +1648,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.deck2keylock</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -1657,7 +1657,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.deck1pfl</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -1666,7 +1666,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.deck2pfl</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -1675,7 +1675,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.deck1slip_enabled</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -1684,7 +1684,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.deck2slip_enabled</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -1693,7 +1693,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.deck1flanger</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -1702,7 +1702,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.deck2flanger</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -1711,7 +1711,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.quantize1Cues</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -1720,7 +1720,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.quantize1CuesOff</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -1729,7 +1729,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.quantize2Cues</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -1738,7 +1738,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.quantize2CuesOff</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -1747,7 +1747,7 @@
 	<group>[Channel1]</group>
 	<key>beats_translate_curpos</key>
 	<options>
-	  <normal/>
+	  <normal />
 	</options>
       </control>
       <control>
@@ -1756,7 +1756,7 @@
 	<group>[Channel2]</group>
 	<key>beats_translate_curpos</key>
 	<options>
-	  <normal/>
+	  <normal />
 	</options>
       </control>
       <control>
@@ -1765,7 +1765,7 @@
 	<group>[Channel1]</group>
 	<key>beats_translate_curpos</key>
 	<options>
-	  <normal/>
+	  <normal />
 	</options>
       </control>
       <control>
@@ -1774,18 +1774,18 @@
 	<group>[Channel2]</group>
 	<key>beats_translate_curpos</key>
 	<options>
-	  <normal/>
+	  <normal />
 	</options>
       </control>
 
-      <!-- Crossfader and up/down buttons -->
+      
       <control>
 	<status>0xB3</status>
 	<midino>0x00</midino>
 	<group>[Master]</group>
 	<key>crossfader</key>
 	<options>
-	  <normal/>
+	  <normal />
 	</options>
       </control>
       <control>
@@ -1794,7 +1794,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.rateNudge1Forward</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -1803,7 +1803,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.rateNudge1Backward</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -1812,7 +1812,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.rateNudge2Forward</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -1821,7 +1821,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.rateNudge2Backward</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -1830,7 +1830,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.rateNudge1ForwardOff</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -1839,7 +1839,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.rateNudge1BackwardOff</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -1848,7 +1848,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.rateNudge2ForwardOff</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -1857,7 +1857,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.rateNudge2BackwardOff</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -1866,7 +1866,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.visualNudge1Forward</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -1875,7 +1875,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.visualNudge1Backward</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -1884,7 +1884,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.visualNudge2Forward</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -1893,7 +1893,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.visualNudge2Backward</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -1902,7 +1902,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.visualNudge1ForwardOff</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -1911,7 +1911,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.visualNudge1BackwardOff</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -1920,7 +1920,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.visualNudge2ForwardOff</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -1929,18 +1929,18 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.visualNudge2BackwardOff</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
 
-      <!-- Vertical Sliders -->
+      
       <control>
 	<status>0x94</status>
 	<midino>0x00</midino>
 	<group>[Master]</group>
 	<key>KANE_QuNeo.sliderCycle</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -1949,7 +1949,7 @@
 	<group>[Master]</group>
 	<key>KANE_QuNeo.verticalSlider1Move</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -1958,7 +1958,7 @@
 	<group>[Master]</group>
 	<key>KANE_QuNeo.verticalSlider1Touch</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -1967,7 +1967,7 @@
 	<group>[Master]</group>
 	<key>KANE_QuNeo.verticalSlider2Move</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -1976,7 +1976,7 @@
 	<group>[Master]</group>
 	<key>KANE_QuNeo.verticalSlider2Touch</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -1985,7 +1985,7 @@
 	<group>[Master]</group>
 	<key>KANE_QuNeo.verticalSlider3Move</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -1994,7 +1994,7 @@
 	<group>[Master]</group>
 	<key>KANE_QuNeo.verticalSlider3Touch</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -2003,7 +2003,7 @@
 	<group>[Master]</group>
 	<key>KANE_QuNeo.verticalSlider4Move</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -2012,18 +2012,18 @@
 	<group>[Master]</group>
 	<key>KANE_QuNeo.verticalSlider4Touch</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
 
-      <!-- Rotaries - Scripts -->
+      
       <control>
 	<status>0x92</status>
 	<midino>0x00</midino>
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.rotary1Touch</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -2032,7 +2032,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.rotary1Touch</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -2041,7 +2041,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.rotary2Touch</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -2050,7 +2050,7 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.rotary2Touch</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -2059,7 +2059,7 @@
 	<group>[Sampler1]</group>
 	<key>KANE_QuNeo.rotary3Touch</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -2068,7 +2068,7 @@
 	<group>[Sampler1]</group>
 	<key>KANE_QuNeo.rotary3Touch</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -2077,7 +2077,7 @@
 	<group>[Sampler2]</group>
 	<key>KANE_QuNeo.rotary4Touch</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -2086,7 +2086,7 @@
 	<group>[Sampler2]</group>
 	<key>KANE_QuNeo.rotary4Touch</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -2095,7 +2095,7 @@
 	<group>[Sampler3]</group>
 	<key>KANE_QuNeo.rotary5Touch</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -2104,7 +2104,7 @@
 	<group>[Sampler3]</group>
 	<key>KANE_QuNeo.rotary5Touch</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -2113,7 +2113,7 @@
 	<group>[Sampler4]</group>
 	<key>KANE_QuNeo.rotary6Touch</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -2122,7 +2122,7 @@
 	<group>[Sampler4]</group>
 	<key>KANE_QuNeo.rotary6Touch</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -2131,7 +2131,7 @@
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.wheel1Turn</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -2140,18 +2140,18 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.wheel2Turn</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
 
-      <!-- Playlist Editing -->
+      
       <control>
 	<status>0x97</status>
 	<midino>0x13</midino>
 	<group>[Playlist]</group>
 	<key>KANE_QuNeo.touchPlaylist</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -2160,7 +2160,7 @@
 	<group>[Playlist]</group>
 	<key>KANE_QuNeo.touchTracklist</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -2169,7 +2169,7 @@
 	<group>[Playlist]</group>
 	<key>KANE_QuNeo.scrollPlaylist</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -2178,7 +2178,7 @@
 	<group>[Playlist]</group>
 	<key>KANE_QuNeo.scrollTracklist</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -2242,14 +2242,14 @@
 	<key>SelectNextTrack</key>
       </control>
 
-      <!-- Transport Buttons -->
+      
       <control>
 	<status>0x97</status>
 	<midino>0x00</midino>
 	<group>[Master]</group>
 	<key>KANE_QuNeo.toggleRecord</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -2258,7 +2258,7 @@
 	<group>[Master]</group>
 	<key>KANE_QuNeo.assert13LEDs</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -2267,7 +2267,7 @@
 	<group>[Master]</group>
 	<key>KANE_QuNeo.assertLEDOn</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -2276,7 +2276,7 @@
 	<group>[Master]</group>
 	<key>KANE_QuNeo.togglePlayScratch</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -2285,7 +2285,7 @@
 	<group>[Master]</group>
 	<key>KANE_QuNeo.assert5LEDs</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -2294,7 +2294,7 @@
 	<group>[Master]</group>
 	<key>KANE_QuNeo.assert14LEDs</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -2303,7 +2303,7 @@
 	<group>[Master]</group>
 	<key>KANE_QuNeo.assert15LEDs</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -2312,7 +2312,7 @@
 	<group>[Master]</group>
 	<key>KANE_QuNeo.assert16LEDs</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -2321,7 +2321,7 @@
 	<group>[Master]</group>
 	<key>KANE_QuNeo.assertLEDOn</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -2330,7 +2330,7 @@
 	<group>[Master]</group>
 	<key>KANE_QuNeo.assertLEDOn</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -2339,7 +2339,7 @@
 	<group>[Master]</group>
 	<key>KANE_QuNeo.assertLEDOn</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -2348,18 +2348,18 @@
 	<group>[Master]</group>
 	<key>KANE_QuNeo.assertLEDOn</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
 
-      <!-- Visualizer -->
+      
       <control>
 	<status>0x97</status>
 	<midino>0x11</midino>
 	<group>[Channel1]</group>
 	<key>KANE_QuNeo.reset1Beat</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -2368,18 +2368,18 @@
 	<group>[Channel2]</group>
 	<key>KANE_QuNeo.reset2Beat</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
 
-      <!-- Sampler 1 Looping -->
+      
       <control>
 	<status>0x99</status>
 	<midino>0x00</midino>
 	<group>[Sampler1]</group>
 	<key>KANE_QuNeo.deck3JumpLoop1</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -2388,7 +2388,7 @@
 	<group>[Sampler1]</group>
 	<key>KANE_QuNeo.deck3JumpLoop2</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -2397,7 +2397,7 @@
 	<group>[Sampler1]</group>
 	<key>KANE_QuNeo.deck3JumpLoop4</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -2406,7 +2406,7 @@
 	<group>[Sampler1]</group>
 	<key>KANE_QuNeo.deck3JumpLoop8</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -2415,7 +2415,7 @@
 	<group>[Sampler1]</group>
 	<key>KANE_QuNeo.deck3JumpOff1</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -2424,7 +2424,7 @@
 	<group>[Sampler1]</group>
 	<key>KANE_QuNeo.deck3JumpOff2</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -2433,7 +2433,7 @@
 	<group>[Sampler1]</group>
 	<key>KANE_QuNeo.deck3JumpOff4</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -2442,7 +2442,7 @@
 	<group>[Sampler1]</group>
 	<key>KANE_QuNeo.deck3JumpOff8</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -2451,7 +2451,7 @@
 	<group>[Sampler1]</group>
 	<key>KANE_QuNeo.jump3Backward</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -2460,7 +2460,7 @@
 	<group>[Sampler1]</group>
 	<key>KANE_QuNeo.jump3Forward</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -2469,7 +2469,7 @@
 	<group>[Sampler1]</group>
 	<key>reloop_exit</key>
 	<options>
-	  <normal/>
+	  <normal />
 	</options>
       </control>
       <control>
@@ -2478,7 +2478,7 @@
 	<group>[Sampler1]</group>
 	<key>reloop_exit</key>
 	<options>
-	  <normal/>
+	  <normal />
 	</options>
       </control>
       <control>
@@ -2487,7 +2487,7 @@
 	<group>[Sampler1]</group>
 	<key>KANE_QuNeo.toggle3JumpSync</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -2496,7 +2496,7 @@
 	<group>[Sampler1]</group>
 	<key>loop_double</key>
 	<options>
-	  <normal/>
+	  <normal />
 	</options>
       </control>
       <control>
@@ -2505,7 +2505,7 @@
 	<group>[Sampler1]</group>
 	<key>loop_double</key>
 	<options>
-	  <normal/>
+	  <normal />
 	</options>
       </control>
       <control>
@@ -2514,7 +2514,7 @@
 	<group>[Sampler1]</group>
 	<key>loop_halve</key>
 	<options>
-	  <normal/>
+	  <normal />
 	</options>
       </control>
       <control>
@@ -2523,7 +2523,7 @@
 	<group>[Sampler1]</group>
 	<key>loop_halve</key>
 	<options>
-	  <normal/>
+	  <normal />
 	</options>
       </control>
       <control>
@@ -2532,18 +2532,18 @@
 	<group>[Sampler1]</group>
 	<key>KANE_QuNeo.toggle3Looping</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
 
-      <!-- Sampler 2 Looping -->
+      
       <control>
 	<status>0x99</status>
 	<midino>0x18</midino>
 	<group>[Sampler2]</group>
 	<key>KANE_QuNeo.deck4JumpLoop1</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -2552,7 +2552,7 @@
 	<group>[Sampler2]</group>
 	<key>KANE_QuNeo.deck4JumpLoop2</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -2561,7 +2561,7 @@
 	<group>[Sampler2]</group>
 	<key>KANE_QuNeo.deck4JumpLoop4</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -2570,7 +2570,7 @@
 	<group>[Sampler2]</group>
 	<key>KANE_QuNeo.deck4JumpLoop8</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -2579,7 +2579,7 @@
 	<group>[Sampler2]</group>
 	<key>KANE_QuNeo.deck4JumpOff1</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -2588,7 +2588,7 @@
 	<group>[Sampler2]</group>
 	<key>KANE_QuNeo.deck4JumpOff2</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -2597,7 +2597,7 @@
 	<group>[Sampler2]</group>
 	<key>KANE_QuNeo.deck4JumpOff4</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -2606,7 +2606,7 @@
 	<group>[Sampler2]</group>
 	<key>KANE_QuNeo.deck4JumpOff8</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -2615,7 +2615,7 @@
 	<group>[Sampler2]</group>
 	<key>KANE_QuNeo.jump4Backward</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -2624,7 +2624,7 @@
 	<group>[Sampler2]</group>
 	<key>KANE_QuNeo.jump4Forward</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -2633,7 +2633,7 @@
 	<group>[Sampler2]</group>
 	<key>KANE_QuNeo.toggle4JumpSync</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -2642,7 +2642,7 @@
 	<group>[Sampler2]</group>
 	<key>reloop_exit</key>
 	<options>
-	  <normal/>
+	  <normal />
 	</options>
       </control>
       <control>
@@ -2651,7 +2651,7 @@
 	<group>[Sampler2]</group>
 	<key>reloop_exit</key>
 	<options>
-	  <normal/>
+	  <normal />
 	</options>
       </control>
       <control>
@@ -2660,7 +2660,7 @@
 	<group>[Sampler2]</group>
 	<key>loop_double</key>
 	<options>
-	  <normal/>
+	  <normal />
 	</options>
       </control>
       <control>
@@ -2669,7 +2669,7 @@
 	<group>[Sampler2]</group>
 	<key>loop_double</key>
 	<options>
-	  <normal/>
+	  <normal />
 	</options>
       </control>
       <control>
@@ -2678,7 +2678,7 @@
 	<group>[Sampler2]</group>
 	<key>loop_halve</key>
 	<options>
-	  <normal/>
+	  <normal />
 	</options>
       </control>
       <control>
@@ -2687,7 +2687,7 @@
 	<group>[Sampler2]</group>
 	<key>loop_halve</key>
 	<options>
-	  <normal/>
+	  <normal />
 	</options>
       </control>
       <control>
@@ -2696,18 +2696,18 @@
 	<group>[Sampler2]</group>
 	<key>KANE_QuNeo.toggle4Looping</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
 
-      <!-- Sampler 3 Looping -->
+      
       <control>
 	<status>0x9b</status>
 	<midino>0x00</midino>
 	<group>[Sampler3]</group>
 	<key>KANE_QuNeo.deck5JumpLoop1</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -2716,7 +2716,7 @@
 	<group>[Sampler3]</group>
 	<key>KANE_QuNeo.deck5JumpLoop2</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -2725,7 +2725,7 @@
 	<group>[Sampler3]</group>
 	<key>KANE_QuNeo.deck5JumpLoop4</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -2734,7 +2734,7 @@
 	<group>[Sampler3]</group>
 	<key>KANE_QuNeo.deck5JumpLoop8</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -2743,7 +2743,7 @@
 	<group>[Sampler3]</group>
 	<key>KANE_QuNeo.deck5JumpOff1</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -2752,7 +2752,7 @@
 	<group>[Sampler3]</group>
 	<key>KANE_QuNeo.deck5JumpOff2</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -2761,7 +2761,7 @@
 	<group>[Sampler3]</group>
 	<key>KANE_QuNeo.deck5JumpOff4</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -2770,7 +2770,7 @@
 	<group>[Sampler3]</group>
 	<key>KANE_QuNeo.deck5JumpOff8</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -2779,7 +2779,7 @@
 	<group>[Sampler3]</group>
 	<key>KANE_QuNeo.jump5Backward</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -2788,7 +2788,7 @@
 	<group>[Sampler3]</group>
 	<key>KANE_QuNeo.jump5Forward</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -2797,7 +2797,7 @@
 	<group>[Sampler3]</group>
 	<key>reloop_exit</key>
 	<options>
-	  <normal/>
+	  <normal />
 	</options>
       </control>
       <control>
@@ -2806,7 +2806,7 @@
 	<group>[Sampler3]</group>
 	<key>reloop_exit</key>
 	<options>
-	  <normal/>
+	  <normal />
 	</options>
       </control>
       <control>
@@ -2815,7 +2815,7 @@
 	<group>[Sampler3]</group>
 	<key>KANE_QuNeo.toggle5JumpSync</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -2824,7 +2824,7 @@
 	<group>[Sampler3]</group>
 	<key>loop_double</key>
 	<options>
-	  <normal/>
+	  <normal />
 	</options>
       </control>
       <control>
@@ -2833,7 +2833,7 @@
 	<group>[Sampler3]</group>
 	<key>loop_double</key>
 	<options>
-	  <normal/>
+	  <normal />
 	</options>
       </control>
       <control>
@@ -2842,7 +2842,7 @@
 	<group>[Sampler3]</group>
 	<key>loop_halve</key>
 	<options>
-	  <normal/>
+	  <normal />
 	</options>
       </control>
       <control>
@@ -2851,7 +2851,7 @@
 	<group>[Sampler3]</group>
 	<key>loop_halve</key>
 	<options>
-	  <normal/>
+	  <normal />
 	</options>
       </control>
       <control>
@@ -2860,18 +2860,18 @@
 	<group>[Sampler3]</group>
 	<key>KANE_QuNeo.toggle5Looping</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
 
-      <!-- Sampler 4 Looping -->
+      
       <control>
 	<status>0x9b</status>
 	<midino>0x18</midino>
 	<group>[Sampler4]</group>
 	<key>KANE_QuNeo.deck6JumpLoop1</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -2880,7 +2880,7 @@
 	<group>[Sampler4]</group>
 	<key>KANE_QuNeo.deck6JumpLoop2</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -2889,7 +2889,7 @@
 	<group>[Sampler4]</group>
 	<key>KANE_QuNeo.deck6JumpLoop4</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -2898,7 +2898,7 @@
 	<group>[Sampler4]</group>
 	<key>KANE_QuNeo.deck6JumpLoop8</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -2907,7 +2907,7 @@
 	<group>[Sampler4]</group>
 	<key>KANE_QuNeo.deck6JumpOff1</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -2916,7 +2916,7 @@
 	<group>[Sampler4]</group>
 	<key>KANE_QuNeo.deck6JumpOff2</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -2925,7 +2925,7 @@
 	<group>[Sampler4]</group>
 	<key>KANE_QuNeo.deck6JumpOff4</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -2934,7 +2934,7 @@
 	<group>[Sampler4]</group>
 	<key>KANE_QuNeo.deck6JumpOff8</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -2943,7 +2943,7 @@
 	<group>[Sampler4]</group>
 	<key>KANE_QuNeo.jump6Backward</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -2952,7 +2952,7 @@
 	<group>[Sampler4]</group>
 	<key>KANE_QuNeo.jump6Forward</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -2961,7 +2961,7 @@
 	<group>[Sampler4]</group>
 	<key>KANE_QuNeo.toggle6JumpSync</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
       <control>
@@ -2970,7 +2970,7 @@
 	<group>[Sampler4]</group>
 	<key>reloop_exit</key>
 	<options>
-	  <normal/>
+	  <normal />
 	</options>
       </control>
       <control>
@@ -2979,7 +2979,7 @@
 	<group>[Sampler4]</group>
 	<key>reloop_exit</key>
 	<options>
-	  <normal/>
+	  <normal />
 	</options>
       </control>
       <control>
@@ -2988,7 +2988,7 @@
 	<group>[Sampler4]</group>
 	<key>loop_double</key>
 	<options>
-	  <normal/>
+	  <normal />
 	</options>
       </control>
       <control>
@@ -2997,7 +2997,7 @@
 	<group>[Sampler4]</group>
 	<key>loop_double</key>
 	<options>
-	  <normal/>
+	  <normal />
 	</options>
       </control>
       <control>
@@ -3006,7 +3006,7 @@
 	<group>[Sampler4]</group>
 	<key>loop_halve</key>
 	<options>
-	  <normal/>
+	  <normal />
 	</options>
       </control>
       <control>
@@ -3015,7 +3015,7 @@
 	<group>[Sampler4]</group>
 	<key>loop_halve</key>
 	<options>
-	  <normal/>
+	  <normal />
 	</options>
       </control>
       <control>
@@ -3024,18 +3024,18 @@
 	<group>[Sampler4]</group>
 	<key>KANE_QuNeo.toggle6Looping</key>
 	<options>
-	  <Script-Binding/>
+	  <Script-Binding />
 	</options>
       </control>
 
-      <!-- Sampler Syncs, Cues -->
+      
       <control>
 	<status>0x99</status>
 	<midino>0x0b</midino>
 	<group>[Sampler1]</group>
 	<key>beatsync</key>
 	<options>
-	  <normal/>
+	  <normal />
 	</options>
       </control>
       <control>
@@ -3044,7 +3044,7 @@
 	<group>[Sampler1]</group>
 	<key>beatsync</key>
 	<options>
-	  <normal/>
+	  <normal />
 	</options>
       </control>
       <control>
@@ -3053,7 +3053,7 @@
 	<group>[Sampler1]</group>
 	<key>cue_default</key>
 	<options>
-	  <normal/>
+	  <normal />
 	</options>
       </control>
       <control>
@@ -3062,7 +3062,7 @@
 	<group>[Sampler1]</group>
 	<key>cue_default</key>
 	<options>
-	  <normal/>
+	  <normal />
 	</options>
       </control>
       <control>
@@ -3071,7 +3071,7 @@
 	<group>[Sampler2]</group>
 	<key>beatsync</key>
 	<options>
-	  <normal/>
+	  <normal />
 	</options>
       </control>
       <control>
@@ -3080,7 +3080,7 @@
 	<group>[Sampler2]</group>
 	<key>beatsync</key>
 	<options>
-	  <normal/>
+	  <normal />
 	</options>
       </control>
       <control>
@@ -3089,7 +3089,7 @@
 	<group>[Sampler2]</group>
 	<key>cue_default</key>
 	<options>
-	  <normal/>
+	  <normal />
 	</options>
       </control>
       <control>
@@ -3098,7 +3098,7 @@
 	<group>[Sampler2]</group>
 	<key>cue_default</key>
 	<options>
-	  <normal/>
+	  <normal />
 	</options>
       </control>
       <control>
@@ -3107,7 +3107,7 @@
 	<group>[Sampler3]</group>
 	<key>beatsync</key>
 	<options>
-	  <normal/>
+	  <normal />
 	</options>
       </control>
       <control>
@@ -3116,7 +3116,7 @@
 	<group>[Sampler3]</group>
 	<key>beatsync</key>
 	<options>
-	  <normal/>
+	  <normal />
 	</options>
       </control>
       <control>
@@ -3125,7 +3125,7 @@
 	<group>[Sampler3]</group>
 	<key>cue_default</key>
 	<options>
-	  <normal/>
+	  <normal />
 	</options>
       </control>
       <control>
@@ -3134,7 +3134,7 @@
 	<group>[Sampler3]</group>
 	<key>cue_default</key>
 	<options>
-	  <normal/>
+	  <normal />
 	</options>
       </control>
       <control>
@@ -3143,7 +3143,7 @@
 	<group>[Sampler4]</group>
 	<key>beatsync</key>
 	<options>
-	  <normal/>
+	  <normal />
 	</options>
       </control>
       <control>
@@ -3152,7 +3152,7 @@
 	<group>[Sampler4]</group>
 	<key>beatsync</key>
 	<options>
-	  <normal/>
+	  <normal />
 	</options>
       </control>
       <control>
@@ -3161,7 +3161,7 @@
 	<group>[Sampler4]</group>
 	<key>cue_default</key>
 	<options>
-	  <normal/>
+	  <normal />
 	</options>
       </control>
       <control>
@@ -3170,18 +3170,18 @@
 	<group>[Sampler4]</group>
 	<key>cue_default</key>
 	<options>
-	  <normal/>
+	  <normal />
 	</options>
       </control>
 
-      <!-- Sampler Kill Highs, Lows, Mids -->
+      
       <control>
 	<status>0x99</status>
 	<midino>0x0c</midino>
 	<group>[Sampler1]</group>
 	<key>filterHighKill</key>
 	<options>
-	  <normal/>
+	  <normal />
 	</options>
       </control>
       <control>
@@ -3190,7 +3190,7 @@
 	<group>[Sampler1]</group>
 	<key>filterMidKill</key>
 	<options>
-	  <normal/>
+	  <normal />
 	</options>
       </control>
       <control>
@@ -3199,7 +3199,7 @@
 	<group>[Sampler1]</group>
 	<key>filterLowKill</key>
 	<options>
-	  <normal/>
+	  <normal />
 	</options>
       </control>
       <control>
@@ -3208,7 +3208,7 @@
 	<group>[Sampler2]</group>
 	<key>filterHighKill</key>
 	<options>
-	  <normal/>
+	  <normal />
 	</options>
       </control>
       <control>
@@ -3217,7 +3217,7 @@
 	<group>[Sampler2]</group>
 	<key>filterMidKill</key>
 	<options>
-	  <normal/>
+	  <normal />
 	</options>
       </control>
       <control>
@@ -3226,7 +3226,7 @@
 	<group>[Sampler2]</group>
 	<key>filterLowKill</key>
 	<options>
-	  <normal/>
+	  <normal />
 	</options>
       </control>
       <control>
@@ -3235,7 +3235,7 @@
 	<group>[Sampler3]</group>
 	<key>filterHighKill</key>
 	<options>
-	  <normal/>
+	  <normal />
 	</options>
       </control>
       <control>
@@ -3244,7 +3244,7 @@
 	<group>[Sampler3]</group>
 	<key>filterMidKill</key>
 	<options>
-	  <normal/>
+	  <normal />
 	</options>
       </control>
       <control>
@@ -3253,7 +3253,7 @@
 	<group>[Sampler3]</group>
 	<key>filterLowKill</key>
 	<options>
-	  <normal/>
+	  <normal />
 	</options>
       </control>
       <control>
@@ -3262,7 +3262,7 @@
 	<group>[Sampler4]</group>
 	<key>filterHighKill</key>
 	<options>
-	  <normal/>
+	  <normal />
 	</options>
       </control>
       <control>
@@ -3271,7 +3271,7 @@
 	<group>[Sampler4]</group>
 	<key>filterMidKill</key>
 	<options>
-	  <normal/>
+	  <normal />
 	</options>
       </control>
       <control>
@@ -3280,23 +3280,23 @@
 	<group>[Sampler4]</group>
 	<key>filterLowKill</key>
 	<options>
-	  <normal/>
+	  <normal />
 	</options>
       </control>
     </controls>
 
     <outputs>
-      <!-- Remote LED Settings -->
+      
 
-      <!-- Kill Lows, Mids, Highs -->
+      
       <output>
 	<group>[Channel1]</group>
 	<key>filterHighKill</key>
-	<status>0x91</status>  <!-- First byte sent to device -->
-	<midino>0x37</midino>  <!-- Second byte -->
-	<on>0x7F</on>  <!-- Third byte. If not specified, 0x7F is used. -->
-	<off>0x00</off> <!-- Alternate third byte. 0x00 is the default. If set to 0xFF, nothing is sent.-->
-	<maximum>1</maximum>  <!-- Optional upper value for the Mixxx control, above which the 'off' value is sent. 1.0 is the default. -->
+	<status>0x91</status>  
+	<midino>0x37</midino>  
+	<on>0x7F</on>  
+	<off>0x00</off> 
+	<maximum>1</maximum>  
 	<minimum>1</minimum>
       </output>
       <output>
@@ -3350,7 +3350,7 @@
 	<minimum>1</minimum>
       </output>
 
-      <!-- Channel 1 Looping -->
+      
       <output>
 	<group>[Channel1]</group>
 	<key>loop_double</key>
@@ -3392,7 +3392,7 @@
 	<minimum>1</minimum>
       </output>
 
-      <!-- Channel 2 Looping -->
+      
       <output>
 	<group>[Channel2]</group>
 	<key>loop_double</key>
@@ -3434,7 +3434,7 @@
 	<minimum>1</minimum>
       </output>
 
-      <!-- Sync, Cue -->
+      
       <output>
 	<group>[Channel1]</group>
 	<key>beatsync</key>
@@ -3476,87 +3476,8 @@
 	<minimum>1</minimum>
       </output>
 
-      <!-- Horizontal Arrows -->
-      <!--<output>
-	<group>[Channel1]</group>
-	<key>keylock</key>
-	<status>0x90</status>
-	<midino>0x24</midino>
-	<on>0x7F</on>
-	<off>0x00</off>
-	<maximum>127</maximum>
-	<minimum>1</minimum>
-      </output>
-      <output>
-	<group>[Channel2]</group>
-	<key>keylock</key>
-	<status>0x90</status>
-	<midino>0x25</midino>
-	<on>0x7F</on>
-	<off>0x00</off>
-	<maximum>127</maximum>
-	<minimum>1</minimum>
-      </output>
-      <output>
-	<group>[Channel1]</group>
-	<key>pfl</key>
-	<status>0x90</status>
-	<midino>0x26</midino>
-	<on>0x7F</on>
-	<off>0x00</off>
-	<maximum>127</maximum>
-	<minimum>1</minimum>
-      </output>
-      <output>
-	<group>[Channel2]</group>
-	<key>pfl</key>
-	<status>0x90</status>
-	<midino>0x27</midino>
-	<on>0x7F</on>
-	<off>0x00</off>
-	<maximum>127</maximum>
-	<minimum>1</minimum>
-      </output>
-      <output>
-	<group>[Channel1]</group>
-	<key>slip_enabled</key>
-	<status>0x90</status>
-	<midino>0x28</midino>
-	<on>0x7F</on>
-	<off>0x00</off>
-	<maximum>127</maximum>
-	<minimum>1</minimum>
-      </output>
-      <output>
-	<group>[Channel2]</group>
-	<key>slip_enabled</key>
-	<status>0x90</status>
-	<midino>0x29</midino>
-	<on>0x7F</on>
-	<off>0x00</off>
-	<maximum>127</maximum>
-	<minimum>1</minimum>
-      </output>
-      <output>
-	<group>[Channel1]</group>
-	<key>flanger</key>
-	<status>0x90</status>
-	<midino>0x2a</midino>
-	<on>0x7F</on>
-	<off>0x00</off>
-	<maximum>127</maximum>
-	<minimum>1</minimum>
-      </output>
-      <output>
-	<group>[Channel2]</group>
-	<key>flanger</key>
-	<status>0x90</status>
-	<midino>0x2b</midino>
-	<on>0x7F</on>
-	<off>0x00</off>
-	<maximum>127</maximum>
-	<minimum>1</minimum>
-      </output>-->
+      
+      
       <output>
 	<group>[Channel1]</group>
 	<key>beats_translate_curpos</key>

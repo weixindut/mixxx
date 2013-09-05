@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-    <MixxxMIDIPreset schemaVersion="1" mixxxVersion="1.10.0+">
+<MixxxMIDIPreset mixxxVersion="1.10.0+" schemaVersion="1">
 	<info>
 		<name>Numark V7</name>
 		<author>Mike Bucceroni</author>
@@ -8,11 +7,11 @@
 
     <controller id="Numark V7" port="">
     <scriptfiles>
-            <file filename="Numark-V7-scripts.js" functionprefix="NumarkV7"/>
+            <file filename="Numark-V7-scripts.js" functionprefix="NumarkV7" />
     </scriptfiles>
 
-    <controls>
-            <!--Fx Controls-->
+    <picfiles><pic name="Numark V7.png" /></picfiles><controls>
+            
             <control>
                 <group>[Channel1]</group>
 				<key>flanger</key>
@@ -121,7 +120,7 @@
 					<Script-Binding />
 				</options>
             </control>
-            <!--Tap buttons-->
+            
             <control>
 				<group>[Channel1]</group>
 				<key>bpm_tap</key>
@@ -140,7 +139,7 @@
 					<Button />
 				</options>
             </control>
-            <!--Reverse Switch-->
+            
             <control>
 				<group>[Channel1]</group>
 				<key>NumarkV7.ReverseA</key>
@@ -177,14 +176,14 @@
 					<Script-Binding />
 				</options>
             </control>
-            <!--Motor Off Button-->
+            
             <control>
 				<group>[Channel1]</group>
 				<key>NumarkV7.MotorOffButtonA</key>
                 <status>0x90</status>
 				<midino>0x21</midino>
                 <options>
-					<Script-Binding/>
+					<Script-Binding />
 				</options>
             </control>
             <control>
@@ -193,17 +192,17 @@
                 <status>0x90</status>
 				<midino>0x42</midino>
                 <options>
-					<Script-Binding/>
+					<Script-Binding />
 				</options>
             </control>
-            <!--Start/Stop Knobs-->
+            
             <control>
 				<group>[Channel1]</group>
 				<key>NumarkV7.MotorStartKnobA</key>
                 <status>0xB0</status>
 				<midino>0x46</midino>
                 <options>
-					<Script-Binding/>
+					<Script-Binding />
 				</options>
             </control>
             <control>
@@ -212,7 +211,7 @@
                 <status>0xB0</status>
 				<midino>0x4E</midino>
                 <options>
-					<Script-Binding/>
+					<Script-Binding />
 				</options>
             </control>
             <control>
@@ -221,7 +220,7 @@
                 <status>0xB0</status>
 				<midino>0x47</midino>
                 <options>
-					<Script-Binding/>
+					<Script-Binding />
 				</options>
             </control>
             <control>
@@ -230,10 +229,10 @@
                 <status>0xB0</status>
 				<midino>0x4F</midino>
                 <options>
-					<Script-Binding/>
+					<Script-Binding />
 				</options>
             </control>
-            <!--Play/Pause/Sync Buttons-->
+            
             <control>
 				<group>[Channel1]</group>
 				<key>NumarkV7.PlayA</key>
@@ -288,14 +287,14 @@
 					<Button />
 				</options>
             </control>
-            <!--Hot Cues-->
+            
             <control>
 				<group>[Channel1]</group>
 				<key>NumarkV7.ShiftA</key>
                 <status>0x90</status>
 				<midino>0x12</midino>
                 <options>
-					<Script-Binding/>
+					<Script-Binding />
 				</options>
             </control>
             <control>
@@ -304,7 +303,7 @@
                 <status>0x90</status>
 				<midino>0x33</midino>
                 <options>
-					<Script-Binding/>
+					<Script-Binding />
 				</options>
             </control>
             <control>
@@ -313,7 +312,7 @@
                 <status>0x90</status>
 				<midino>0x13</midino>
                 <options>
-					<Script-Binding/>
+					<Script-Binding />
 				</options>
             </control>
             <control>
@@ -322,7 +321,7 @@
                 <status>0x90</status>
 				<midino>0x14</midino>
                 <options>
-					<Script-Binding/>
+					<Script-Binding />
 				</options>
             </control>
             <control>
@@ -331,7 +330,7 @@
                 <status>0x90</status>
 				<midino>0x15</midino>
                 <options>
-					<Script-Binding/>
+					<Script-Binding />
 				</options>
             </control>
             <control>
@@ -340,7 +339,7 @@
                 <status>0x90</status>
 				<midino>0x16</midino>
                 <options>
-					<Script-Binding/>
+					<Script-Binding />
 				</options>
             </control>
             <control>
@@ -349,7 +348,7 @@
                 <status>0x90</status>
 				<midino>0x17</midino>
                 <options>
-					<Script-Binding/>
+					<Script-Binding />
 				</options>
             </control>
             <control>
@@ -358,7 +357,7 @@
                 <status>0x90</status>
 				<midino>0x34</midino>
                 <options>
-					<Script-Binding/>
+					<Script-Binding />
 				</options>
             </control>
             <control>
@@ -367,7 +366,7 @@
                 <status>0x90</status>
 				<midino>0x35</midino>
                 <options>
-					<Script-Binding/>
+					<Script-Binding />
 				</options>
             </control>
             <control>
@@ -376,7 +375,7 @@
                 <status>0x90</status>
 				<midino>0x36</midino>
                 <options>
-					<Script-Binding/>
+					<Script-Binding />
 				</options>
             </control>
             <control>
@@ -385,7 +384,7 @@
                 <status>0x90</status>
 				<midino>0x37</midino>
                 <options>
-					<Script-Binding/>
+					<Script-Binding />
 				</options>
             </control>
             <control>
@@ -394,10 +393,10 @@
                 <status>0x90</status>
 				<midino>0x38</midino>
                 <options>
-					<Script-Binding/>
+					<Script-Binding />
 				</options>
             </control>
-            <!--Pitch Controls-->
+            
             <control>
 				<group>[Channel1]</group>
 				<key>rate_temp_down</key>
@@ -440,7 +439,7 @@
                 <status>0xB0</status>
 				<midino>0x04</midino>
                 <options>
-					<Script-Binding/>
+					<Script-Binding />
 				</options>
             </control>
             <control>
@@ -449,7 +448,7 @@
                 <status>0xB0</status>
 				<midino>0x24</midino>
                 <options>
-					<Script-Binding/>
+					<Script-Binding />
 				</options>
             </control>
             <control>
@@ -458,7 +457,7 @@
                 <status>0xB0</status>
 				<midino>0x05</midino>
                 <options>
-					<Script-Binding/>
+					<Script-Binding />
 				</options>
             </control>
             <control>
@@ -467,7 +466,7 @@
                 <status>0xB0</status>
 				<midino>0x25</midino>
                 <options>
-					<Script-Binding/>
+					<Script-Binding />
 				</options>
             </control>
             <control>
@@ -476,7 +475,7 @@
                 <status>0x90</status>
 				<midino>0x1A</midino>
                 <options>
-					<Script-Binding/>
+					<Script-Binding />
 				</options>
             </control>
             <control>
@@ -485,7 +484,7 @@
                 <status>0x90</status>
 				<midino>0x3B</midino>
                 <options>
-					<Script-Binding/>
+					<Script-Binding />
 				</options>
             </control>
             <control>
@@ -506,7 +505,7 @@
 					<Button />
 				</options>
             </control>
-            <!--Playlist Bank-->
+            
             <control>
 				<group>[Playlist]</group>
 				<key>SelectTrackKnob</key>
@@ -570,14 +569,14 @@
 					<Button />
 				</options>
             </control>
-            <!--Strip Search-->
+            
             <control>
 				<group>[Channel1]</group>
 				<key>NumarkV7.StripSearchA</key>
                 <status>0xB0</status>
 				<midino>0x45</midino>
                 <options>
-					<Script-Binding/>
+					<Script-Binding />
 				</options>
             </control>
             <control>
@@ -586,17 +585,17 @@
                 <status>0xB0</status>
 				<midino>0x4D</midino>
                 <options>
-					<Script-Binding/>
+					<Script-Binding />
 				</options>
             </control>
-            <!--Loop Controls-->
+            
             <control>
 				<group>[Channel1]</group>
 				<key>NumarkV7.LoopModeA</key>
                 <status>0x90</status>
 				<midino>0x27</midino>
                 <options>
-					<Script-Binding/>
+					<Script-Binding />
 				</options>
             </control>
             <control>
@@ -605,7 +604,7 @@
                 <status>0x90</status>
 				<midino>0x48</midino>
                 <options>
-					<Script-Binding/>
+					<Script-Binding />
 				</options>
             </control>
             <control>
@@ -632,7 +631,7 @@
                 <status>0x90</status>
 				<midino>0x28</midino>
                 <options>
-					<Script-Binding/>
+					<Script-Binding />
 				</options>
             </control>
             <control>
@@ -641,7 +640,7 @@
                 <status>0x90</status>
 				<midino>0x29</midino>
                 <options>
-					<Script-Binding/>
+					<Script-Binding />
 				</options>
             </control>
             <control>
@@ -650,7 +649,7 @@
                 <status>0x90</status>
 				<midino>0x49</midino>
                 <options>
-					<Script-Binding/>
+					<Script-Binding />
 				</options>
             </control>
             <control>
@@ -659,7 +658,7 @@
                 <status>0x90</status>
 				<midino>0x4A</midino>
                 <options>
-					<Script-Binding/>
+					<Script-Binding />
 				</options>
             </control>
             <control>
@@ -704,7 +703,7 @@
                 <status>0x90</status>
 				<midino>0x2A</midino>
                 <options>
-					<Script-Binding/>
+					<Script-Binding />
 				</options>
             </control>
             <control>
@@ -713,7 +712,7 @@
                 <status>0x90</status>
 				<midino>0x4B</midino>
                 <options>
-					<Script-Binding/>
+					<Script-Binding />
 				</options>
             </control>
             <control>
@@ -722,7 +721,7 @@
                 <status>0x90</status>
 				<midino>0x2B</midino>
                 <options>
-					<Script-Binding/>
+					<Script-Binding />
 				</options>
             </control>
             <control>
@@ -731,7 +730,7 @@
                 <status>0x90</status>
 				<midino>0x4C</midino>
                 <options>
-					<Script-Binding/>
+					<Script-Binding />
 				</options>
             </control>
             <control>
@@ -740,7 +739,7 @@
                 <status>0x90</status>
 				<midino>0x26</midino>
                 <options>
-					<Script-Binding/>
+					<Script-Binding />
 				</options>
             </control>
             <control>
@@ -749,7 +748,7 @@
                 <status>0x90</status>
 				<midino>0x25</midino>
                 <options>
-					<Script-Binding/>
+					<Script-Binding />
 				</options>
             </control>
             <control>
@@ -758,7 +757,7 @@
                 <status>0x90</status>
 				<midino>0x47</midino>
                 <options>
-					<Script-Binding/>
+					<Script-Binding />
 				</options>
             </control>
             <control>
@@ -767,17 +766,17 @@
                 <status>0x90</status>
 				<midino>0x46</midino>
                 <options>
-					<Script-Binding/>
+					<Script-Binding />
 				</options>
             </control>
-            <!--Master section-->
+            
             <control>
 				<group>[Channel1]</group>
 				<key>NumarkV7.DeckSelectL</key>
                 <status>0x90</status>
 				<midino>0x5C</midino>
                 <options>
-					<Script-Binding/>
+					<Script-Binding />
 				</options>
             </control>
             <control>
@@ -786,7 +785,7 @@
                 <status>0x90</status>
 				<midino>0x7D</midino>
                 <options>
-					<Script-Binding/>
+					<Script-Binding />
 				</options>
             </control>
             <control>
@@ -795,7 +794,7 @@
                 <status>0x90</status>
 				<midino>0x54</midino>
                 <options>
-					<Script-Binding/>
+					<Script-Binding />
 				</options>
             </control>
             <control>
@@ -804,17 +803,17 @@
                 <status>0x90</status>
 				<midino>0x5B</midino>
                 <options>
-					<Script-Binding/>
+					<Script-Binding />
 				</options>
             </control>
-            <!--Vinyl-->
+            
             <control>
 				<group>[Channel1]</group>
 				<key>NumarkV7.ScratchA</key>
                 <status>0xB0</status>
 				<midino>0x00</midino>
                 <options>
-					<Script-Binding/>
+					<Script-Binding />
 				</options>
             </control>
             <control>
@@ -823,7 +822,7 @@
                 <status>0xB0</status>
 				<midino>0x02</midino>
                 <options>
-					<Script-Binding/>
+					<Script-Binding />
 				</options>
             </control>
         </controls>

@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <MixxxMIDIPreset mixxxVersion="1.10.1+" schemaVersion="1">
     <info>
         <name>DJ-Tech Mixer One</name>
@@ -8,17 +7,17 @@
     </info>
     <controller id="MIXER1">
         <scriptfiles>
-            <file functionprefix="MIXER1" filename="DJ-Tech-Mixer-One-scripts.js"/>
+            <file filename="DJ-Tech-Mixer-One-scripts.js" functionprefix="MIXER1" />
         </scriptfiles>
-        <controls>
-<!--MIDDLE STRIP (Everything done twice for channels 5 and 7)-->
+        <picfiles><pic name="DJ-Tech Mixer One.jpg" /></picfiles><controls>
+
             <control>
                 <group>[Master]</group>
                 <key>volume</key>
                 <status>0xB5</status>
                 <midino>0x0B</midino>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -27,7 +26,7 @@
                 <status>0xB7</status>
                 <midino>0x0B</midino>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -36,7 +35,7 @@
                 <status>0xB5</status>
                 <midino>0x0C</midino>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -45,7 +44,7 @@
                 <status>0xB7</status>
                 <midino>0x0C</midino>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -54,7 +53,7 @@
                 <status>0xB5</status>
                 <midino>0x0D</midino>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -63,7 +62,7 @@
                 <status>0xB7</status>
                 <midino>0x0D</midino>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -72,7 +71,7 @@
                 <status>0xB5</status>
                 <midino>0x0F</midino>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -81,7 +80,7 @@
                 <status>0xB7</status>
                 <midino>0x0F</midino>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -90,7 +89,7 @@
                 <status>0x97</status>
                 <midino>0x0A</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -99,7 +98,7 @@
                 <status>0x95</status>
                 <midino>0x0A</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -108,7 +107,7 @@
                 <status>0xB5</status>
                 <midino>0x0E</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -117,7 +116,7 @@
                 <status>0xB7</status>
                 <midino>0x0E</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -126,7 +125,7 @@
                 <status>0x97</status>
                 <midino>0x05</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -135,21 +134,21 @@
                 <status>0x95</status>
                 <midino>0x05</midino>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
 
 
 
 
-<!--CHANNEL A-->
+
             <control>
                 <group>[Channel1]</group>
                 <key>pregain</key>
                 <status>0xB5</status>
                 <midino>0x10</midino>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -158,7 +157,7 @@
                 <status>0xB5</status>
                 <midino>0x11</midino>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -167,7 +166,7 @@
                 <status>0xB5</status>
                 <midino>0x12</midino>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -176,7 +175,7 @@
                 <status>0xB5</status>
                 <midino>0x13</midino>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -185,7 +184,7 @@
                 <status>0x95</status>
                 <midino>0x08</midino>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -194,7 +193,7 @@
                 <status>0x95</status>
                 <midino>0x09</midino>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -203,7 +202,7 @@
                 <status>0x95</status>
                 <midino>0x06</midino>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -212,7 +211,7 @@
                 <status>0x95</status>
                 <midino>0x07</midino>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -221,18 +220,18 @@
                 <status>0xB5</status>
                 <midino>0x14</midino>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
 
- <!--CHANNEL C-->
+ 
             <control>
                 <group>[Channel3]</group>
                 <key>pregain</key>
                 <status>0xB7</status>
                 <midino>0x10</midino>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -241,7 +240,7 @@
                 <status>0xB7</status>
                 <midino>0x11</midino>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -250,7 +249,7 @@
                 <status>0xB7</status>
                 <midino>0x12</midino>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -259,7 +258,7 @@
                 <status>0xB7</status>
                 <midino>0x13</midino>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -268,7 +267,7 @@
                 <status>0x97</status>
                 <midino>0x08</midino>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -277,7 +276,7 @@
                 <status>0x97</status>
                 <midino>0x09</midino>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -286,7 +285,7 @@
                 <status>0x97</status>
                 <midino>0x06</midino>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -295,7 +294,7 @@
                 <status>0x97</status>
                 <midino>0x07</midino>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -304,18 +303,18 @@
                 <status>0xB7</status>
                 <midino>0x14</midino>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
 
-<!--CHANNEL B-->
+
             <control>
                 <group>[Channel2]</group>
                 <key>pregain</key>
                 <status>0xB6</status>
                 <midino>0x15</midino>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -324,7 +323,7 @@
                 <status>0xB6</status>
                 <midino>0x16</midino>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -333,7 +332,7 @@
                 <status>0xB6</status>
                 <midino>0x17</midino>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -342,7 +341,7 @@
                 <status>0xB6</status>
                 <midino>0x18</midino>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -351,7 +350,7 @@
                 <status>0x96</status>
                 <midino>0x04</midino>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -360,7 +359,7 @@
                 <status>0x96</status>
                 <midino>0x01</midino>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -369,7 +368,7 @@
                 <status>0x96</status>
                 <midino>0x02</midino>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -378,7 +377,7 @@
                 <status>0x96</status>
                 <midino>0x03</midino>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -387,18 +386,18 @@
                 <status>0xB6</status>
                 <midino>0x19</midino>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
 
-<!--CHANNEL D-->
+
             <control>
                 <group>[Channel4]</group>
                 <key>pregain</key>
                 <status>0xB8</status>
                 <midino>0x15</midino>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -407,7 +406,7 @@
                 <status>0xB8</status>
                 <midino>0x16</midino>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -416,7 +415,7 @@
                 <status>0xB8</status>
                 <midino>0x17</midino>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -425,7 +424,7 @@
                 <status>0xB8</status>
                 <midino>0x18</midino>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -434,7 +433,7 @@
                 <status>0x98</status>
                 <midino>0x04</midino>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -443,7 +442,7 @@
                 <status>0x98</status>
                 <midino>0x01</midino>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -452,7 +451,7 @@
                 <status>0x98</status>
                 <midino>0x02</midino>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -461,7 +460,7 @@
                 <status>0x98</status>
                 <midino>0x03</midino>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -470,7 +469,7 @@
                 <status>0xB8</status>
                 <midino>0x19</midino>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
 
@@ -479,159 +478,159 @@
 
         </controls>
         <outputs>
-<!--Channel A-->
+
 			<output>
 				<group>[Channel1]</group>
 				<key>filterLowKill</key>
-				<status>0x95</status>  <!-- First byte sent to device -->
-				<midino>0x08</midino>  <!-- Second byte -->
-				<on>0x7F</on>  <!-- Third byte. If not specified, 0x7F is used. -->
-				<off>0x00</off> <!-- Alternate third byte. 0x00 is the default. If set to 0xFF, nothing is sent.-->
+				<status>0x95</status>  
+				<midino>0x08</midino>  
+				<on>0x7F</on>  
+				<off>0x00</off> 
 				<minimum>.5</minimum>
 			</output>
 			<output>
 				<group>[Channel1]</group>
 				<key>filterMidKill</key>
-				<status>0x95</status>  <!-- First byte sent to device -->
-				<midino>0x09</midino>  <!-- Second byte -->
-				<on>0x7F</on>  <!-- Third byte. If not specified, 0x7F is used. -->
-				<off>0x00</off> <!-- Alternate third byte. 0x00 is the default. If set to 0xFF, nothing is sent.-->
+				<status>0x95</status>  
+				<midino>0x09</midino>  
+				<on>0x7F</on>  
+				<off>0x00</off> 
 				<minimum>.5</minimum>
 			</output>
 			<output>
 				<group>[Channel1]</group>
 				<key>filterHighKill</key>
-				<status>0x95</status>  <!-- First byte sent to device -->
-				<midino>0x06</midino>  <!-- Second byte -->
-				<on>0x7F</on>  <!-- Third byte. If not specified, 0x7F is used. -->
-				<off>0x00</off> <!-- Alternate third byte. 0x00 is the default. If set to 0xFF, nothing is sent.-->
+				<status>0x95</status>  
+				<midino>0x06</midino>  
+				<on>0x7F</on>  
+				<off>0x00</off> 
 				<minimum>.5</minimum>
 			</output>
 			<output>
 				<group>[Channel1]</group>
 				<key>pfl</key>
-				<status>0x95</status>  <!-- First byte sent to device -->
-				<midino>0x07</midino>  <!-- Second byte -->
-				<on>0x7F</on>  <!-- Third byte. If not specified, 0x7F is used. -->
-				<off>0x00</off> <!-- Alternate third byte. 0x00 is the default. If set to 0xFF, nothing is sent.-->
+				<status>0x95</status>  
+				<midino>0x07</midino>  
+				<on>0x7F</on>  
+				<off>0x00</off> 
 				<minimum>.5</minimum>
 			</output>
 
 
 
-<!--Channel C-->
+
 			<output>
 				<group>[Channel3]</group>
 				<key>filterLowKill</key>
-				<status>0x97</status>  <!-- First byte sent to device -->
-				<midino>0x08</midino>  <!-- Second byte -->
-				<on>0x7F</on>  <!-- Third byte. If not specified, 0x7F is used. -->
-				<off>0x00</off> <!-- Alternate third byte. 0x00 is the default. If set to 0xFF, nothing is sent.-->
+				<status>0x97</status>  
+				<midino>0x08</midino>  
+				<on>0x7F</on>  
+				<off>0x00</off> 
 				<minimum>.5</minimum>
 			</output>
 			<output>
 				<group>[Channel3]</group>
 				<key>filterMidKill</key>
-				<status>0x97</status>  <!-- First byte sent to device -->
-				<midino>0x09</midino>  <!-- Second byte -->
-				<on>0x7F</on>  <!-- Third byte. If not specified, 0x7F is used. -->
-				<off>0x00</off> <!-- Alternate third byte. 0x00 is the default. If set to 0xFF, nothing is sent.-->
+				<status>0x97</status>  
+				<midino>0x09</midino>  
+				<on>0x7F</on>  
+				<off>0x00</off> 
 				<minimum>.5</minimum>
 			</output>
 			<output>
 				<group>[Channel3]</group>
 				<key>filterHighKill</key>
-				<status>0x97</status>  <!-- First byte sent to device -->
-				<midino>0x06</midino>  <!-- Second byte -->
-				<on>0x7F</on>  <!-- Third byte. If not specified, 0x7F is used. -->
-				<off>0x00</off> <!-- Alternate third byte. 0x00 is the default. If set to 0xFF, nothing is sent.-->
+				<status>0x97</status>  
+				<midino>0x06</midino>  
+				<on>0x7F</on>  
+				<off>0x00</off> 
 				<minimum>.5</minimum>
 			</output>
 			<output>
 				<group>[Channel3]</group>
 				<key>pfl</key>
-				<status>0x97</status>  <!-- First byte sent to device -->
-				<midino>0x07</midino>  <!-- Second byte -->
-				<on>0x7F</on>  <!-- Third byte. If not specified, 0x7F is used. -->
-				<off>0x00</off> <!-- Alternate third byte. 0x00 is the default. If set to 0xFF, nothing is sent.-->
+				<status>0x97</status>  
+				<midino>0x07</midino>  
+				<on>0x7F</on>  
+				<off>0x00</off> 
 				<minimum>.5</minimum>
 			</output>
 
-<!--Channel B-->
+
 			<output>
 				<group>[Channel2]</group>
 				<key>filterLowKill</key>
-				<status>0x96</status>  <!-- First byte sent to device -->
-				<midino>0x04</midino>  <!-- Second byte -->
-				<on>0x7F</on>  <!-- Third byte. If not specified, 0x7F is used. -->
-				<off>0x00</off> <!-- Alternate third byte. 0x00 is the default. If set to 0xFF, nothing is sent.-->
+				<status>0x96</status>  
+				<midino>0x04</midino>  
+				<on>0x7F</on>  
+				<off>0x00</off> 
 				<minimum>.5</minimum>
 			</output>
 			<output>
 				<group>[Channel2]</group>
 				<key>filterMidKill</key>
-				<status>0x96</status>  <!-- First byte sent to device -->
-				<midino>0x01</midino>  <!-- Second byte -->
-				<on>0x7F</on>  <!-- Third byte. If not specified, 0x7F is used. -->
-				<off>0x00</off> <!-- Alternate third byte. 0x00 is the default. If set to 0xFF, nothing is sent.-->
+				<status>0x96</status>  
+				<midino>0x01</midino>  
+				<on>0x7F</on>  
+				<off>0x00</off> 
 				<minimum>.5</minimum>
 			</output>
 			<output>
 				<group>[Channel2]</group>
 				<key>filterHighKill</key>
-				<status>0x96</status>  <!-- First byte sent to device -->
-				<midino>0x02</midino>  <!-- Second byte -->
-				<on>0x7F</on>  <!-- Third byte. If not specified, 0x7F is used. -->
-				<off>0x00</off> <!-- Alternate third byte. 0x00 is the default. If set to 0xFF, nothing is sent.-->
+				<status>0x96</status>  
+				<midino>0x02</midino>  
+				<on>0x7F</on>  
+				<off>0x00</off> 
 				<minimum>.5</minimum>
 			</output>
 			<output>
 				<group>[Channel2]</group>
 				<key>pfl</key>
-				<status>0x96</status>  <!-- First byte sent to device -->
-				<midino>0x03</midino>  <!-- Second byte -->
-				<on>0x7F</on>  <!-- Third byte. If not specified, 0x7F is used. -->
-				<off>0x00</off> <!-- Alternate third byte. 0x00 is the default. If set to 0xFF, nothing is sent.-->
+				<status>0x96</status>  
+				<midino>0x03</midino>  
+				<on>0x7F</on>  
+				<off>0x00</off> 
 				<minimum>.5</minimum>
 			</output>
 
 
 
-<!--Channel D-->
+
 			<output>
 				<group>[Channel4]</group>
 				<key>filterLowKill</key>
-				<status>0x98</status>  <!-- First byte sent to device -->
-				<midino>0x04</midino>  <!-- Second byte -->
-				<on>0x7F</on>  <!-- Third byte. If not specified, 0x7F is used. -->
-				<off>0x00</off> <!-- Alternate third byte. 0x00 is the default. If set to 0xFF, nothing is sent.-->
+				<status>0x98</status>  
+				<midino>0x04</midino>  
+				<on>0x7F</on>  
+				<off>0x00</off> 
 				<minimum>.5</minimum>
 			</output>
 			<output>
 				<group>[Channel4]</group>
 				<key>filterMidKill</key>
-				<status>0x98</status>  <!-- First byte sent to device -->
-				<midino>0x01</midino>  <!-- Second byte -->
-				<on>0x7F</on>  <!-- Third byte. If not specified, 0x7F is used. -->
-				<off>0x00</off> <!-- Alternate third byte. 0x00 is the default. If set to 0xFF, nothing is sent.-->
+				<status>0x98</status>  
+				<midino>0x01</midino>  
+				<on>0x7F</on>  
+				<off>0x00</off> 
 				<minimum>.5</minimum>
 			</output>
 			<output>
 				<group>[Channel4]</group>
 				<key>filterHighKill</key>
-				<status>0x98</status>  <!-- First byte sent to device -->
-				<midino>0x02</midino>  <!-- Second byte -->
-				<on>0x7F</on>  <!-- Third byte. If not specified, 0x7F is used. -->
-				<off>0x00</off> <!-- Alternate third byte. 0x00 is the default. If set to 0xFF, nothing is sent.-->
+				<status>0x98</status>  
+				<midino>0x02</midino>  
+				<on>0x7F</on>  
+				<off>0x00</off> 
 				<minimum>.5</minimum>
 			</output>
 			<output>
 				<group>[Channel4]</group>
 				<key>pfl</key>
-				<status>0x98</status>  <!-- First byte sent to device -->
-				<midino>0x03</midino>  <!-- Second byte -->
-				<on>0x7F</on>  <!-- Third byte. If not specified, 0x7F is used. -->
-				<off>0x00</off> <!-- Alternate third byte. 0x00 is the default. If set to 0xFF, nothing is sent.-->
+				<status>0x98</status>  
+				<midino>0x03</midino>  
+				<on>0x7F</on>  
+				<off>0x00</off> 
 				<minimum>.5</minimum>
 			</output>
 

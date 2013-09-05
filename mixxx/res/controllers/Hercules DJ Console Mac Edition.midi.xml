@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<MixxxMIDIPreset schemaVersion="1" mixxxVersion="1.6.2+">
+<MixxxMIDIPreset mixxxVersion="1.6.2+" schemaVersion="1">
   <info>
     <name>Hercules DJ Console Mac Edition</name>
     <author>Daniel Svensson</author>
@@ -224,5 +223,5 @@
 			</options>
       </control>
     </controls>
-  </controller>
+  <picfiles><pic name="" /></picfiles></controller>
 </MixxxMIDIPreset>

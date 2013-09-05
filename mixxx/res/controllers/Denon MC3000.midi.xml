@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <MixxxMIDIPreset mixxxVersion="1.10.0" schemaVersion="1">
 	<info>
 		<name>Denon MC3000 v0.995</name>
@@ -7,11 +6,11 @@
 	</info>
 	<controller id="MC3000 MIDI 1">	
 	<scriptfiles>
-		<file filename="Denon-MC3000-scripts.js" functionprefix="mc3000"/>
+		<file filename="Denon-MC3000-scripts.js" functionprefix="mc3000" />
 	</scriptfiles>
 
-<controls>
-<!-- CROSFADER / FADER / PREGAIN / HI / MID /LOW -->
+<picfiles><pic name="Denon MC3000.jpg" /></picfiles><controls>
+
 	<control>
 		<status>0xb0</status>
                 <midino>0x16</midino>
@@ -164,7 +163,7 @@
                 <key>filterLow</key>
 	</control>
 
-<!-- JOG WHEEL -->
+
 	<control>
                 <status>0xb0</status>
                 <midino>0x51</midino>
@@ -172,7 +171,7 @@
 		<description>JogWheel deck1 (A)</description>
                 <key>mc3000.jogWheel</key>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
 	</control>
 	<control>
@@ -182,7 +181,7 @@
 		<description>JogWheel deck2 (B)</description>
                 <key>mc3000.jogWheel</key>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
 	</control>
 	<control>
@@ -192,7 +191,7 @@
 		<description>JogWheel deck3 (C)</description>
                 <key>mc3000.jogWheel</key>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
 	</control>
 	<control>
@@ -202,11 +201,11 @@
 		<description>JogWheel deck4 (D)</description>
                 <key>mc3000.jogWheel</key>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
 	</control>
 
-<!-- TOUCH WHEEL -->
+
 	<control>
                 <status>0x90</status>
                 <midino>81</midino>
@@ -214,7 +213,7 @@
 		<description>TouchWheel pressed deck1 (A)</description>
                 <key>mc3000.wheelTouch</key>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
 	</control>
 	<control>
@@ -224,7 +223,7 @@
 		<description>TouchWheel released deck1 (A)</description>
                 <key>mc3000.wheelTouch</key>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
 	</control>
 	<control>
@@ -234,7 +233,7 @@
 		<description>TouchWheel pressed deck2 (B)</description>
                 <key>mc3000.wheelTouch</key>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
 	</control>
 	<control>
@@ -244,7 +243,7 @@
 		<description>TouchWheel released deck2 (B)</description>
                 <key>mc3000.wheelTouch</key>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
 	</control>
 	<control>
@@ -254,7 +253,7 @@
 		<description>TouchWheel pressed deck3 (C)</description>
                 <key>mc3000.wheelTouch</key>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
 	</control>
 	<control>
@@ -264,7 +263,7 @@
 		<description>TouchWheel released deck3 (C)</description>
                 <key>mc3000.wheelTouch</key>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
 	</control>
 	<control>
@@ -274,7 +273,7 @@
 		<description>TouchWheel pressed deck4 (D)</description>
                 <key>mc3000.wheelTouch</key>
                 <options>
-			<script-binding/>
+			<script-binding />
                 </options>
 	</control>
 	<control>
@@ -284,18 +283,18 @@
 		<description>TouchWheel released deck4 (D)</description>
                 <key>mc3000.wheelTouch</key>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
 	</control>
 
-<!--PITCH SLIDER -->       
+       
 	<control>
                 <status>0xe0</status>
                 <midino>0x50</midino>
                 <group>[Channel1]</group>
                 <key>mc3000.rate</key>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
 	</control>
 	<control>
@@ -304,11 +303,11 @@
                 <group>[Channel2]</group>
                 <key>mc3000.rate</key>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
 	</control>
 
-<!-- PFL -->       
+       
 	<control>
 		<status>0x90</status>
 		<midino>1</midino>
@@ -338,14 +337,14 @@
 		<key>pfl</key>
 	</control>
 
-<!-- EFX 1-4 FOR BEATLOOP_X -->       
+       
 	<control>
                 <status>0x90</status>
                 <midino>21</midino>
                 <group>[Channel1]</group>
                 <key>mc3000.efx_beatLoopX</key>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
 	</control>
 	<control>
@@ -354,7 +353,7 @@
                 <group>[Channel1]</group>
                 <key>mc3000.efx_beatLoopX</key>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
 	</control>
 	<control>
@@ -363,7 +362,7 @@
                 <group>[Channel1]</group>
                 <key>mc3000.efx_beatLoopX</key>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
 	</control><control>
                 <status>0x90</status>
@@ -371,7 +370,7 @@
                 <group>[Channel1]</group>
                 <key>mc3000.efx_beatLoopX</key>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
 	</control>
 	<control>
@@ -380,7 +379,7 @@
                 <group>[Channel2]</group>
                 <key>mc3000.efx_beatLoopX</key>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
 	</control>
 	<control>
@@ -389,7 +388,7 @@
                 <group>[Channel2]</group>
                 <key>mc3000.efx_beatLoopX</key>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
 	</control>
 	<control>
@@ -398,7 +397,7 @@
                 <group>[Channel2]</group>
                 <key>mc3000.efx_beatLoopX</key>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
 	</control>
 	<control>
@@ -407,18 +406,18 @@
                 <group>[Channel2]</group>
                 <key>mc3000.efx_beatLoopX</key>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
 	</control>
 
-<!-- HOT CUE 1-4 -->       
+       
 	<control>
                 <status>0x90</status>
                 <midino>23</midino>
                 <group>[Channel1]</group>
                 <key>mc3000.hotcueset</key>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
 	</control>
 	<control>
@@ -427,7 +426,7 @@
                 <group>[Channel2]</group>
                 <key>mc3000.hotcueset</key>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
 	</control>
 	<control>
@@ -436,7 +435,7 @@
                 <group>[Channel1]</group>
                 <key>mc3000.hotcueset</key>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
 	</control>
 	<control>
@@ -445,7 +444,7 @@
                 <group>[Channel2]</group>
                 <key>mc3000.hotcueset</key>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -454,7 +453,7 @@
                 <group>[Channel1]</group>
                 <key>mc3000.hotcueset</key>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -463,7 +462,7 @@
                 <group>[Channel2]</group>
                 <key>mc3000.hotcueset</key>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -472,7 +471,7 @@
                 <group>[Channel1]</group>
                 <key>mc3000.hotcueset</key>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -481,18 +480,18 @@
                 <group>[Channel2]</group>
                 <key>mc3000.hotcueset</key>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
 
-<!-- HOT CUE 5-8 -->       
+       
 	<control>
                 <status>0x90</status>
                 <midino>72</midino>
                 <group>[Channel1]</group>
                 <key>mc3000.hotcueset</key>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
 	</control>
 	<control>
@@ -501,7 +500,7 @@
                 <group>[Channel2]</group>
                 <key>mc3000.hotcueset</key>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
 	</control>
 	<control>
@@ -510,7 +509,7 @@
 		<group>[Channel1]</group>
 		<key>mc3000.hotcueset</key>
 		<options>
-			<script-binding/>
+			<script-binding />
 		</options>
 	</control>
 	<control>
@@ -519,7 +518,7 @@
 		<group>[Channel2]</group>
 		<key>mc3000.hotcueset</key>
 		<options>
-			<script-binding/>
+			<script-binding />
 		</options>
 	</control>
 	<control>
@@ -528,7 +527,7 @@
 		<group>[Channel1]</group>
 		<key>mc3000.hotcueset</key>
 		<options>
-			<script-binding/>
+			<script-binding />
 		</options>
 	</control>
 	<control>
@@ -537,7 +536,7 @@
 		<group>[Channel2]</group>
 		<key>mc3000.hotcueset</key>
 		<options>
-			<script-binding/>
+			<script-binding />
 		</options>
 	</control>
 	<control>
@@ -546,7 +545,7 @@
 		<group>[Channel1]</group>
 		<key>mc3000.hotcueset</key>
 		<options>
-			<script-binding/>
+			<script-binding />
 		</options>
 	</control>
 	<control>
@@ -555,18 +554,18 @@
 		<group>[Channel2]</group>
 		<key>mc3000.hotcueset</key>
 		<options>
-			<script-binding/>
+			<script-binding />
 		</options>
 	</control>
 
-<!-- HOT CUE 1-4 RELEASED-->       
+       
 	<control>
                 <status>0x80</status>
                 <midino>23</midino>
                 <group>[Channel1]</group>
                 <key>mc3000.hotcueset</key>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
 	</control>
 	<control>
@@ -575,7 +574,7 @@
                 <group>[Channel2]</group>
                 <key>mc3000.hotcueset</key>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
 	</control>
 	<control>
@@ -584,7 +583,7 @@
                 <group>[Channel1]</group>
                 <key>mc3000.hotcueset</key>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
 	</control>
 	<control>
@@ -593,7 +592,7 @@
                 <group>[Channel2]</group>
                 <key>mc3000.hotcueset</key>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -602,7 +601,7 @@
                 <group>[Channel1]</group>
                 <key>mc3000.hotcueset</key>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -611,7 +610,7 @@
                 <group>[Channel2]</group>
                 <key>mc3000.hotcueset</key>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -620,7 +619,7 @@
                 <group>[Channel1]</group>
                 <key>mc3000.hotcueset</key>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -629,18 +628,18 @@
                 <group>[Channel2]</group>
                 <key>mc3000.hotcueset</key>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
 
-<!-- HOT CUE 5-8 RELEASED -->       
+       
 	<control>
                 <status>0x80</status>
                 <midino>72</midino>
                 <group>[Channel1]</group>
                 <key>mc3000.hotcueset</key>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
 	</control>
 	<control>
@@ -649,7 +648,7 @@
                 <group>[Channel2]</group>
                 <key>mc3000.hotcueset</key>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
 	</control>
 	<control>
@@ -658,7 +657,7 @@
 		<group>[Channel1]</group>
 		<key>mc3000.hotcueset</key>
 		<options>
-			<script-binding/>
+			<script-binding />
 		</options>
 	</control>
 	<control>
@@ -667,7 +666,7 @@
 		<group>[Channel2]</group>
 		<key>mc3000.hotcueset</key>
 		<options>
-			<script-binding/>
+			<script-binding />
 		</options>
 	</control>
 	<control>
@@ -676,7 +675,7 @@
 		<group>[Channel1]</group>
 		<key>mc3000.hotcueset</key>
 		<options>
-			<script-binding/>
+			<script-binding />
 		</options>
 	</control>
 	<control>
@@ -685,7 +684,7 @@
 		<group>[Channel2]</group>
 		<key>mc3000.hotcueset</key>
 		<options>
-			<script-binding/>
+			<script-binding />
 		</options>
 	</control>
 	<control>
@@ -694,7 +693,7 @@
 		<group>[Channel1]</group>
 		<key>mc3000.hotcueset</key>
 		<options>
-			<script-binding/>
+			<script-binding />
 		</options>
 	</control>
 	<control>
@@ -703,20 +702,20 @@
 		<group>[Channel2]</group>
 		<key>mc3000.hotcueset</key>
 		<options>
-			<script-binding/>
+			<script-binding />
 		</options>
 	</control>
 
 
-<!-- EFX KNOB FX1 : MICGAIN,LFO,DEPTH DELAY -->
+
 	<control>
 		<status>0xb0</status>
 		<midino>85</midino>
 		<group>[Flanger]</group>
 		<key>mc3000.lfoPeriod</key>
-		<description></description>
+		<description />
 		<options>
-			<script-binding/>
+			<script-binding />
 		</options>
 	</control>
 	<control>
@@ -724,9 +723,9 @@
 		<midino>86</midino>
 		<group>[Flanger]</group>
 		<key>mc3000.lfoDepth</key>
-		<description></description>
+		<description />
 		<options>
-			<script-binding/>
+			<script-binding />
 		</options>
         </control>
 	<control>
@@ -735,7 +734,7 @@
 		<group>[Flanger]</group>
 		<key>mc3000.lfoDelay</key>
 		<options>
-			<script-binding/>
+			<script-binding />
 		</options>
 	</control>
 	<control>
@@ -744,18 +743,18 @@
 		<group>[Flanger]</group>
 		<key>mc3000.micVolume</key>
 		<options>
-			<script-binding/>
+			<script-binding />
 		</options>
 	</control>
 
-<!-- EFX KNOB FX2 : HEADMIX -->
+
 	<control>
 		<status>0xb2</status>
 		<midino>89</midino>
 		<group>[Master]</group>
 		<key>mc3000.headMix</key>
 		<options>
-			<script-binding/>
+			<script-binding />
 		</options>
 	</control>
 	<control>
@@ -764,7 +763,7 @@
 		<group>[Master]</group>
 		<key>mc3000.headVolume</key>
 		<options>
-			<script-binding/>
+			<script-binding />
 		</options>
 	</control>
 	<control>
@@ -773,7 +772,7 @@
 		<group>[Master]</group>
 		<key>mc3000.masterBalance</key>
 		<options>
-			<script-binding/>
+			<script-binding />
 		</options>
 	</control>
 	<control>
@@ -782,11 +781,11 @@
 		<group>[Master]</group>
 		<key>mc3000.masterVolume</key>
 		<options>
-			<script-binding/>
+			<script-binding />
 		</options>
 	</control>
 
-<!-- EFX KNOB IN SAMPLE MODE-->
+
 	<control>
 		<status>0x90</status>
 		<midino>0x21</midino>
@@ -805,45 +804,45 @@
 		<midino>0x22</midino>
 		<group>[Sampler2]</group>
 		<key>play</key>
-		<description></description>
+		<description />
 	</control>
 	<control>
 		<status>0xb0</status>
 		<midino>0x31</midino>
 		<group>[Sampler2]</group>
 		<key>pregain</key>
-		<description></description>
+		<description />
 	</control>
 	<control>
 		<status>0x90</status>
 		<midino>0x23</midino>
                 <group>[Sampler3]</group>
 		<key>play</key>
-		<description></description>
+		<description />
 	</control>
 	<control>
 		<status>0xb0</status>
 		<midino>0x32</midino>
 		<group>[Sampler3]</group>
 		<key>pregain</key>
-		<description></description>
+		<description />
 	</control>
 	<control>
 		<status>0x90</status>
 		<midino>0x24</midino>
 		<group>[Sampler4]</group>
 		<key>play</key>
-		<description></description>
+		<description />
 	</control>
 	<control>
 		<status>0xb0</status>
 		<midino>0x33</midino>
 		<group>[Sampler4]</group>
 		<key>pregain</key>
-		<description></description>
+		<description />
 	</control>
 
-<!-- CUE DEFAULT --> 
+ 
 	<control>
 		<status>0x90</status>
 		<midino>0x42</midino>
@@ -851,7 +850,7 @@
 		<description>Cue BT pressed deck1 (A)</description>
 		<key>mc3000.cue_default</key>
 		<options>
-			<script-binding/>
+			<script-binding />
 		</options>
 	</control>
 	<control>
@@ -861,7 +860,7 @@
 		<description>Cue BT released deck1 (A)</description>
                 <key>mc3000.cue_default</key>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
 	</control>
 	<control>
@@ -871,7 +870,7 @@
 		<description>Cue BT pressed deck2 (B)</description>
                 <key>mc3000.cue_default</key>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
 	</control>
 	<control>
@@ -881,7 +880,7 @@
 		<description>Cue BT released deck2 (B)</description>
                 <key>mc3000.cue_default</key>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
 	</control>
 	<control>
@@ -891,7 +890,7 @@
 		<description>Cue BT pressed deck3 (C)</description>
                 <key>mc3000.cue_default</key>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
 	</control>
 	<control>
@@ -901,7 +900,7 @@
 		<description>Cue BT released deck3 (C)</description>
                 <key>mc3000.cue_default</key>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
 	</control>
 	<control>
@@ -911,7 +910,7 @@
 		<description>Cue BT pressed deck4 (D)</description>
                 <key>mc3000.cue_default</key>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
 	</control>
 	<control>
@@ -921,11 +920,11 @@
 		<description>Cue BT released deck4 (D)</description>
                 <key>mc3000.cue_default</key>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
 	</control>
 
-<!-- PLAY -->
+
 	<control>
                 <status>0x90</status>
                 <midino>0x43</midino>
@@ -956,14 +955,14 @@
 	</control>
 
 
-<!-- LOOP -->
+
 	<control>
 		<status>0x90</status>
 		<midino>0x37</midino>
 		<group>[Channel1]</group>
 		<key>mc3000.loopIn</key>
 		<options>
-			<script-binding/>
+			<script-binding />
 		</options>
 	</control>
 	<control>
@@ -972,7 +971,7 @@
                 <group>[Channel2]</group>
                 <key>mc3000.loopIn</key>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
 	</control>
 	<control>
@@ -981,7 +980,7 @@
                 <group>[Channel1]</group>
                 <key>mc3000.loopOut</key>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -990,7 +989,7 @@
                 <group>[Channel2]</group>
                 <key>mc3000.loopOut</key>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
 	</control>
 	<control>
@@ -999,7 +998,7 @@
                 <group>[Channel1]</group>
                 <key>mc3000.loopCutM</key>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
 	</control>
 	<control>
@@ -1008,7 +1007,7 @@
                 <group>[Channel2]</group>
                 <key>mc3000.loopCutM</key>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
 	</control>
 	<control>
@@ -1017,7 +1016,7 @@
                 <group>[Channel1]</group>
                 <key>mc3000.loopCutP</key>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
 	</control>
 	<control>
@@ -1026,18 +1025,18 @@
                 <group>[Channel2]</group>
                 <key>mc3000.loopCutP</key>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
 	</control>
 
-	<!-- AUTOLOOP BT -->
+	
 	<control>
                 <status>0x90</status>
                 <midino>29</midino>
                 <group>[Channel1]</group>
                 <key>mc3000.autoLoop</key>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
 	</control>
 	<control>
@@ -1046,7 +1045,7 @@
                 <group>[Channel2]</group>
                 <key>mc3000.autoLoop</key>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
 	</control>
 	<control>
@@ -1055,7 +1054,7 @@
                 <group>[Channel1]</group>
                 <key>mc3000.autoLoop</key>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
 	</control>
 	<control>
@@ -1064,18 +1063,18 @@
                 <group>[Channel2]</group>
                 <key>mc3000.autoLoop</key>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
 	</control>
 
-<!--MEDIA Chooser-->
+
 	<control>
                 <status>0x90</status>
                 <midino>76</midino>
                 <group>[Channel1]</group>
                 <key>mc3000.killMid</key>
 		 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>                
 		<description>BT Sample</description>
 	</control>
@@ -1085,7 +1084,7 @@
                 <group>[Channel2]</group>
                 <key>mc3000.killMid</key>
 		<options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
                 <description>BT EFX</description>
 	</control>
@@ -1096,7 +1095,7 @@
                 <group>[Channel1]</group>
                 <key>mc3000.killBass</key>
 		 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>                
 		<description> BT Browse</description>
 	</control>
@@ -1106,19 +1105,19 @@
                 <group>[Channel2]</group>
                 <key>mc3000.killBass</key>
 		<options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
                 <description>BT Record</description>
 	</control>
 
-<!--PlayList -->
+
 	<control>
                 <status>0x90</status>
                 <midino>27</midino>
                 <group>[Channel1]</group>
                 <key>mc3000.cfMode</key>
 		<options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
                 <description>BT CfMode</description>
 	</control>
@@ -1127,35 +1126,35 @@
                 <midino>0x62</midino>
                 <group>[Channel1]</group>
                 <key>LoadSelectedTrack</key>
-                <description></description>
+                <description />
 	</control>
 	<control>
                 <status>0x90</status>
                 <midino>0x63</midino>
                 <group>[Channel2]</group>
                 <key>LoadSelectedTrack</key>
-                <description></description>
+                <description />
 	</control>
 	<control>
                 <status>0x90</status>
                 <midino>0x30</midino>
                 <group>[Playlist]</group>
                 <key>SelectPrevPlaylist</key>
-                <description></description>
+                <description />
 	</control>
 	<control>
                 <status>0x90</status>
                 <midino>0x29</midino>
                 <group>[Playlist]</group>
                 <key>SelectNextPlaylist</key>
-                <description></description>
+                <description />
 	</control>
 	<control>
                 <status>0x90</status>
                 <midino>40</midino>
                 <group>[Playlist]</group>
                 <key>LoadSelectedIntoFirstStopped</key>
-                <description></description>
+                <description />
 	</control>
 	<control>
                 <status>0xb0</status>
@@ -1164,11 +1163,11 @@
                 <key>mc3000.selectKnob</key>
                 <description>Track select knob</description>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
 	</control>
 
-<!-- KEYLOCK / SYNC / VINYL MODE -->
+
 	<control>
                 <status>0x90</status>
                 <midino>6</midino>
@@ -1237,7 +1236,7 @@
                 <key>mc3000.vinylmode</key>
                 <description>VinylMode BT deck1 (A)</description>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
 	</control>
 	<control>
@@ -1247,7 +1246,7 @@
                 <key>mc3000.vinylmode</key>
                 <description>VinylMode BT deck2 (B)</description>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
 	</control>
 	<control>
@@ -1257,7 +1256,7 @@
                 <key>mc3000.vinylmode</key>
                 <description>VinylMode BT deck3 (C)</description>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
 	</control>
 	<control>
@@ -1267,19 +1266,19 @@
                 <key>mc3000.vinylmode</key>
                 <description>VinylMode BT deck4 (D)</description>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
 	</control>
 
-<!-- PITCH/RATE + FWD/BACK -->
-<!-- PRESSED CH1... -->
+
+
 	<control>
                 <status>0x90</status>
                 <midino>12</midino>
                 <group>[Channel1]</group>
                 <key>mc3000.bendUp</key>
                 <options>
-                   <script-binding/>
+                   <script-binding />
                 </options>
 	</control>
 		<control>
@@ -1288,17 +1287,17 @@
                 <group>[Channel1]</group>
                 <key>mc3000.bendDown</key>
                 <options>
-                   <script-binding/>
+                   <script-binding />
                 </options>
 	</control>
-<!-- RELEASED CH1... -->
+
 	<control>
 		<status>0x80</status>
                 <midino>12</midino>
                 <group>[Channel1]</group>
                 <key>mc3000.bendUp</key>
                 <options>
-                   <script-binding/>
+                   <script-binding />
                 </options>
 	</control>
 	<control>
@@ -1307,17 +1306,17 @@
                 <group>[Channel1]</group>
                 <key>mc3000.bendDown</key>
                 <options>
-                   <script-binding/>
+                   <script-binding />
                 </options>
 	</control>
-<!-- PRESSED CH2... -->
+
 	<control>
                 <status>0x92</status>
                 <midino>12</midino>
                 <group>[Channel2]</group>
                 <key>mc3000.bendUp</key>
                 <options>
-                   <script-binding/>
+                   <script-binding />
                 </options>
 	</control>
 	<control>
@@ -1326,17 +1325,17 @@
                 <group>[Channel2]</group>
                 <key>mc3000.bendDown</key>
                 <options>
-                   <script-binding/>
+                   <script-binding />
 		</options>
 	</control>
-<!-- RELEASED CH2... -->
+
 	<control>
                 <status>0x82</status>
                 <midino>12</midino>
                 <group>[Channel2]</group>
                 <key>mc3000.bendUp</key>
                 <options>
-                   <script-binding/>
+                   <script-binding />
                 </options>
 	</control>
 	<control>
@@ -1345,18 +1344,18 @@
                 <group>[Channel2]</group>
                 <key>mc3000.bendDown</key>
                 <options>
-                   <script-binding/>
+                   <script-binding />
                 </options>
 	</control>
             
-<!-- SHIFT -->
+
 	<control>
                 <status>0x90</status>
                 <midino>96</midino>
                 <group>[Channel1]</group>
                 <key>mc3000.shift</key>
                 <options>
-                   <script-binding/>
+                   <script-binding />
                 </options>
 	</control>
 	<control>
@@ -1365,7 +1364,7 @@
                 <group>[Channel2]</group>
                 <key>mc3000.shift</key>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
 	</control>
   	<control>
@@ -1374,7 +1373,7 @@
                 <group>[Channel1]</group>
                 <key>mc3000.shift</key>
                 <options>
-                   <script-binding/>
+                   <script-binding />
                 </options>
 	</control>
 	<control>
@@ -1383,17 +1382,17 @@
                 <group>[Channel2]</group>
                 <key>mc3000.shift</key>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
 	</control>
-<!-- FX ON 1 / FX ON 2 -->
+
 	<control>
                 <status>0x90</status>
                 <midino>86</midino>
                 <group>[Channel1]</group>
                 <key>mc3000.fxon1</key>
                 <options>
-                   <script-binding/>
+                   <script-binding />
                 </options>
 	</control>
 	<control>
@@ -1402,7 +1401,7 @@
                 <group>[Channel2]</group>
                 <key>mc3000.fxon1</key>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
 	</control>
 	<control>
@@ -1411,7 +1410,7 @@
                 <group>[Channel1]</group>
                 <key>mc3000.fxon2</key>
                 <options>
-                   <script-binding/>
+                   <script-binding />
                 </options>
 	</control>
 	<control>
@@ -1420,13 +1419,13 @@
                 <group>[Channel2]</group>
                 <key>mc3000.fxon2</key>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
 	</control>
 
         </controls>
 
-        <outputs></outputs>
+        <outputs />
 
     </controller>
 </MixxxMIDIPreset>

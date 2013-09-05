@@ -7,16 +7,16 @@
   </info>
   <controller id="DJ-Tech i-Mix Reload">
     <scriptfiles>
-      <file filename="DJ-Tech-i-Mix-Reload-scripts.js" functionprefix="DJTechiMixReload"/>
+      <file filename="DJ-Tech-i-Mix-Reload-scripts.js" functionprefix="DJTechiMixReload" />
     </scriptfiles>
-    <controls>
+    <picfiles><pic name="DJ-Tech i-Mix Reload.jpg" /></picfiles><controls>
       <control>
         <status>0x80</status>
         <midino>0x7</midino>
         <group>[Channel1]</group>
         <key>loop_in</key>
         <options>
-          <normal/>
+          <normal />
         </options>
       </control>
       <control>
@@ -25,7 +25,7 @@
         <group>[Channel1]</group>
         <key>cue_default</key>
         <options>
-          <normal/>
+          <normal />
         </options>
       </control>
       <control>
@@ -34,7 +34,7 @@
         <group>[Channel2]</group>
         <key>play</key>
         <options>
-          <normal/>
+          <normal />
         </options>
       </control>
       <control>
@@ -43,7 +43,7 @@
         <group>[Channel1]</group>
         <key>loop_out</key>
         <options>
-          <normal/>
+          <normal />
         </options>
       </control>
       <control>
@@ -52,7 +52,7 @@
         <group>[Channel1]</group>
         <key>loop_in</key>
         <options>
-          <normal/>
+          <normal />
         </options>
       </control>
       <control>
@@ -61,7 +61,7 @@
         <group>[Channel1]</group>
         <key>play</key>
         <options>
-          <normal/>
+          <normal />
         </options>
       </control>
       <control>
@@ -70,7 +70,7 @@
         <group>[Channel1]</group>
         <key>reloop_exit</key>
         <options>
-          <normal/>
+          <normal />
         </options>
       </control>
       <control>
@@ -79,7 +79,7 @@
         <group>[Channel1]</group>
         <key>cue_default</key>
         <options>
-          <normal/>
+          <normal />
         </options>
       </control>
       <control>
@@ -88,7 +88,7 @@
         <group>[Channel1]</group>
         <key>pfl</key>
         <options>
-          <normal/>
+          <normal />
         </options>
       </control>
       <control>
@@ -97,7 +97,7 @@
         <group>[Channel1]</group>
         <key>loop_out</key>
         <options>
-          <normal/>
+          <normal />
         </options>
       </control>
       <control>
@@ -106,7 +106,7 @@
         <group>[Master]</group>
         <key>crossfader</key>
         <options>
-          <normal/>
+          <normal />
         </options>
       </control>
       <control>
@@ -115,7 +115,7 @@
         <group>[Channel2]</group>
         <key>volume</key>
         <options>
-          <normal/>
+          <normal />
         </options>
       </control>
       <control>
@@ -124,7 +124,7 @@
         <group>[Channel2]</group>
         <key>pfl</key>
         <options>
-          <normal/>
+          <normal />
         </options>
       </control>
       <control>
@@ -133,7 +133,7 @@
         <group>[Channel1]</group>
         <key>volume</key>
         <options>
-          <normal/>
+          <normal />
         </options>
       </control>
       <control>
@@ -142,7 +142,7 @@
         <group>[Channel1]</group>
         <key>reloop_exit</key>
         <options>
-          <normal/>
+          <normal />
         </options>
       </control>
       <control>
@@ -151,7 +151,7 @@
         <group>[Channel1]</group>
         <key>rate</key>
         <options>
-          <normal/>
+          <normal />
         </options>
       </control>
       <control>
@@ -160,7 +160,7 @@
         <group>[Channel1]</group>
         <key>pfl</key>
         <options>
-          <normal/>
+          <normal />
         </options>
       </control>
       <control>
@@ -169,7 +169,7 @@
         <group>[Channel1]</group>
         <key>pregain</key>
         <options>
-          <normal/>
+          <normal />
         </options>
       </control>
       <control>
@@ -178,7 +178,7 @@
         <group>[Channel2]</group>
         <key>loop_in</key>
         <options>
-          <normal/>
+          <normal />
         </options>
       </control>
       <control>
@@ -187,7 +187,7 @@
         <group>[Channel2]</group>
         <key>filterMid</key>
         <options>
-          <normal/>
+          <normal />
         </options>
       </control>
       <control>
@@ -196,7 +196,7 @@
         <group>[Master]</group>
         <key>headVolume</key>
         <options>
-          <normal/>
+          <normal />
         </options>
       </control>
       <control>
@@ -205,7 +205,7 @@
         <group>[Master]</group>
         <key>headMix</key>
         <options>
-          <normal/>
+          <normal />
         </options>
       </control>
       <control>
@@ -214,7 +214,7 @@
         <group>[Channel2]</group>
         <key>rate</key>
         <options>
-          <normal/>
+          <normal />
         </options>
       </control>
       <control>
@@ -223,7 +223,7 @@
         <group>[Channel2]</group>
         <key>pfl</key>
         <options>
-          <normal/>
+          <normal />
         </options>
       </control>
       <control>
@@ -232,7 +232,7 @@
         <group>[Channel1]</group>
         <key>filterLow</key>
         <options>
-          <normal/>
+          <normal />
         </options>
       </control>
       <control>
@@ -241,7 +241,7 @@
         <group>[Channel2]</group>
         <key>loop_out</key>
         <options>
-          <normal/>
+          <normal />
         </options>
       </control>
       <control>
@@ -250,7 +250,7 @@
         <group>[Channel1]</group>
         <key>filterHigh</key>
         <options>
-          <normal/>
+          <normal />
         </options>
       </control>
       <control>
@@ -259,7 +259,7 @@
         <group>[Channel1]</group>
         <key>filterMid</key>
         <options>
-          <normal/>
+          <normal />
         </options>
       </control>
       <control>
@@ -268,7 +268,7 @@
         <group>[Channel2]</group>
         <key>filterHigh</key>
         <options>
-          <normal/>
+          <normal />
         </options>
       </control>
       <control>
@@ -277,7 +277,7 @@
         <group>[Channel2]</group>
         <key>loop_in</key>
         <options>
-          <normal/>
+          <normal />
         </options>
       </control>
       <control>
@@ -286,7 +286,7 @@
         <group>[Channel2]</group>
         <key>cue_default</key>
         <options>
-          <normal/>
+          <normal />
         </options>
       </control>
       <control>
@@ -295,7 +295,7 @@
         <group>[Channel2]</group>
         <key>pregain</key>
         <options>
-          <normal/>
+          <normal />
         </options>
       </control>
       <control>
@@ -304,7 +304,7 @@
         <group>[Channel2]</group>
         <key>filterLow</key>
         <options>
-          <normal/>
+          <normal />
         </options>
       </control>
       <control>
@@ -313,7 +313,7 @@
         <group>[Channel2]</group>
         <key>reloop_exit</key>
         <options>
-          <normal/>
+          <normal />
         </options>
       </control>
       <control>
@@ -322,7 +322,7 @@
         <group>[Channel1]</group>
         <key>fwd</key>
         <options>
-          <normal/>
+          <normal />
         </options>
       </control>
       <control>
@@ -331,7 +331,7 @@
         <group>[Channel1]</group>
         <key>back</key>
         <options>
-          <normal/>
+          <normal />
         </options>
       </control>
       <control>
@@ -340,7 +340,7 @@
         <group>[Channel1]</group>
         <key>rate_temp_down</key>
         <options>
-          <normal/>
+          <normal />
         </options>
       </control>
       <control>
@@ -349,7 +349,7 @@
         <group>[Channel1]</group>
         <key>rate_temp_up</key>
         <options>
-          <normal/>
+          <normal />
         </options>
       </control>
       <control>
@@ -358,7 +358,7 @@
         <group>[Channel2]</group>
         <key>loop_out</key>
         <options>
-          <normal/>
+          <normal />
         </options>
       </control>
       <control>
@@ -367,7 +367,7 @@
         <group>[Channel2]</group>
         <key>cue_default</key>
         <options>
-          <normal/>
+          <normal />
         </options>
       </control>
       <control>
@@ -376,7 +376,7 @@
         <group>[Channel2]</group>
         <key>fwd</key>
         <options>
-          <normal/>
+          <normal />
         </options>
       </control>
       <control>
@@ -385,7 +385,7 @@
         <group>[Channel2]</group>
         <key>back</key>
         <options>
-          <normal/>
+          <normal />
         </options>
       </control>
       <control>
@@ -394,7 +394,7 @@
         <group>[Channel2]</group>
         <key>rate_temp_down</key>
         <options>
-          <normal/>
+          <normal />
         </options>
       </control>
       <control>
@@ -403,7 +403,7 @@
         <group>[Channel2]</group>
         <key>rate_temp_up</key>
         <options>
-          <normal/>
+          <normal />
         </options>
       </control>
       <control>
@@ -412,7 +412,7 @@
         <group>[Channel2]</group>
         <key>reloop_exit</key>
         <options>
-          <normal/>
+          <normal />
         </options>
       </control>
       <control>
@@ -421,7 +421,7 @@
         <group>[Playlist]</group>
         <key>SelectPrevTrack</key>
         <options>
-          <normal/>
+          <normal />
         </options>
       </control>
       <control>
@@ -430,7 +430,7 @@
         <group>[Playlist]</group>
         <key>SelectNextTrack</key>
         <options>
-          <normal/>
+          <normal />
         </options>
       </control>
       <control>
@@ -439,7 +439,7 @@
         <group>[Playlist]</group>
         <key>LoadSelectedIntoFirstStopped</key>
         <options>
-          <normal/>
+          <normal />
         </options>
       </control>
       <control>
@@ -448,7 +448,7 @@
         <group>[Channel1]</group>
         <key>LoadSelectedTrack</key>
         <options>
-          <normal/>
+          <normal />
         </options>
       </control>
       <control>
@@ -457,7 +457,7 @@
         <group>[Channel2]</group>
         <key>LoadSelectedTrack</key>
         <options>
-          <normal/>
+          <normal />
         </options>
       </control>
       <control>
@@ -466,7 +466,7 @@
         <group>[Channel1]</group>
         <key>filterHighKill</key>
         <options>
-          <normal/>
+          <normal />
         </options>
       </control>
       <control>
@@ -475,7 +475,7 @@
         <group>[Channel1]</group>
         <key>filterMidKill</key>
         <options>
-          <normal/>
+          <normal />
         </options>
       </control>
       <control>
@@ -484,7 +484,7 @@
         <group>[Channel1]</group>
         <key>filterLowKill</key>
         <options>
-          <normal/>
+          <normal />
         </options>
       </control>
       <control>
@@ -493,7 +493,7 @@
         <group>[Channel2]</group>
         <key>filterHighKill</key>
         <options>
-          <normal/>
+          <normal />
         </options>
       </control>
       <control>
@@ -502,7 +502,7 @@
         <group>[Channel2]</group>
         <key>filterMidKill</key>
         <options>
-          <normal/>
+          <normal />
         </options>
       </control>
       <control>
@@ -511,7 +511,7 @@
         <group>[Channel2]</group>
         <key>filterLowKill</key>
         <options>
-          <normal/>
+          <normal />
         </options>
       </control>
       <control>
@@ -520,7 +520,7 @@
         <group>[Channel1]</group>
         <key>DJTechiMixReload.hotcuefunction</key>
         <options>
-	  <Script-Binding/>
+	  <Script-Binding />
         </options>
       </control>
       <control>
@@ -529,7 +529,7 @@
         <group>[Channel1]</group>
         <key>DJTechiMixReload.hotcuefunction</key>
         <options>
-	  <Script-Binding/>
+	  <Script-Binding />
         </options>
       </control>
       <control>
@@ -538,7 +538,7 @@
         <group>[Channel1]</group>
         <key>DJTechiMixReload.hotcuefunction</key>
         <options>
-	  <Script-Binding/>
+	  <Script-Binding />
         </options>
       </control>
       <control>
@@ -547,7 +547,7 @@
         <group>[Channel2]</group>
         <key>DJTechiMixReload.hotcuefunction</key>
         <options>
-	  <Script-Binding/>
+	  <Script-Binding />
         </options>
       </control>
       <control>
@@ -556,7 +556,7 @@
         <group>[Channel2]</group>
         <key>DJTechiMixReload.hotcuefunction</key>
         <options>
-	  <Script-Binding/>
+	  <Script-Binding />
         </options>
       </control>
       <control>
@@ -565,7 +565,7 @@
         <group>[Channel2]</group>
         <key>DJTechiMixReload.hotcuefunction</key>
         <options>
-	  <Script-Binding/>
+	  <Script-Binding />
         </options>
       </control>
       <control>
@@ -574,7 +574,7 @@
         <group>[Channel1]</group>
         <key>DJTechiMixReload.setfunction</key>
         <options>
-	  <Script-Binding/>
+	  <Script-Binding />
         </options>
       </control>
       <control>
@@ -583,7 +583,7 @@
         <group>[Channel2]</group>
         <key>DJTechiMixReload.setfunction</key>
         <options>
-	  <Script-Binding/>
+	  <Script-Binding />
         </options>
       </control>
       <control>
@@ -592,7 +592,7 @@
         <group>[Channel1]</group>
         <key>flanger</key>
         <options>
-	  <normal/>
+	  <normal />
         </options>
       </control>
       <control>
@@ -601,7 +601,7 @@
         <group>[Channel2]</group>
         <key>flanger</key>
         <options>
-	  <normal/>
+	  <normal />
         </options>
       </control>
       <control>
@@ -610,7 +610,7 @@
         <group>[Flanger]</group>
         <key>lfoDepth</key>
         <options>
-	  <normal/>
+	  <normal />
         </options>
       </control>
       <control>
@@ -619,7 +619,7 @@
         <group>[Flanger]</group>
         <key>lfoDelay</key>
         <options>
-	  <normal/>
+	  <normal />
         </options>
       </control>
       <control>
@@ -628,7 +628,7 @@
         <group>[Flanger]</group>
         <key>lfoPeriod</key>
         <options>
-	  <normal/>
+	  <normal />
         </options>
       </control>
       <control>
@@ -637,7 +637,7 @@
         <group>[Channel1]</group>
         <key>DJTechiMixReload.wheeltouch</key>
         <options>
-	  <Script-Binding/>
+	  <Script-Binding />
         </options>
       </control>
       <control>
@@ -646,7 +646,7 @@
         <group>[Channel1]</group>
         <key>DJTechiMixReload.scratch</key>
         <options>
-	  <Script-Binding/>
+	  <Script-Binding />
         </options>
       </control>
       <control>
@@ -655,7 +655,7 @@
         <group>[Channel1]</group>
         <key>DJTechiMixReload.scratch</key>
         <options>
-	  <Script-Binding/>
+	  <Script-Binding />
         </options>
       </control>
       <control>
@@ -664,7 +664,7 @@
         <group>[Channel2]</group>
         <key>DJTechiMixReload.wheeltouch</key>
         <options>
-	  <Script-Binding/>
+	  <Script-Binding />
         </options>
       </control>
       <control>
@@ -673,7 +673,7 @@
         <group>[Channel2]</group>
         <key>DJTechiMixReload.scratch</key>
         <options>
-	  <Script-Binding/>
+	  <Script-Binding />
         </options>
       </control>
       <control>
@@ -682,10 +682,10 @@
         <group>[Channel2]</group>
         <key>DJTechiMixReload.scratch</key>
         <options>
-	  <Script-Binding/>
+	  <Script-Binding />
         </options>
       </control>
     </controls>
-    <outputs/>
+    <outputs />
   </controller>
 </MixxxMIDIPreset>

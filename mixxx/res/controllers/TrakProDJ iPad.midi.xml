@@ -1,5 +1,4 @@
-<?xml version='1.0' encoding='utf-8'?>
-<MixxxMIDIPreset schemaVersion="1" mixxxVersion="1.10.0+">
+<MixxxMIDIPreset mixxxVersion="1.10.0+" schemaVersion="1">
   <info>
     <name>TrakProDJ iPad</name>
     <author>Ilkka Tuohela &lt;hile@iki.fi&gt;</author>
@@ -7,27 +6,27 @@
   </info>
   <controller id="Network" port="">
     <scriptfiles>
-      <file functionprefix="TrakProDJ" filename="TrakProDJ-iPad-scripts.js"/>
+      <file filename="TrakProDJ-iPad-scripts.js" functionprefix="TrakProDJ" />
     </scriptfiles>
-    <controls>
+    <picfiles><pic name="TrakProDJ iPad.png" /></picfiles><controls>
       <control>
-        <!--play-->
+        
         <group>[Channel1]</group>
         <key>TrakProDJ.button</key>
         <status>0XB0</status>
         <midino>0X01</midino>
         <options>
-          <Script-Binding/>
+          <Script-Binding />
         </options>
       </control>
       <control>
-        <!--play-->
+        
         <group>[Channel2]</group>
         <key>TrakProDJ.button</key>
         <status>0XB1</status>
         <midino>0X01</midino>
         <options>
-          <Script-Binding/>
+          <Script-Binding />
         </options>
       </control>
       <control>
@@ -36,7 +35,7 @@
         <status>0XB7</status>
         <midino>0X1F</midino>
         <options>
-          <Script-Binding/>
+          <Script-Binding />
         </options>
       </control>
       <control>
@@ -45,107 +44,107 @@
         <status>0XB7</status>
         <midino>0X20</midino>
         <options>
-          <Script-Binding/>
+          <Script-Binding />
         </options>
       </control>
       <control>
-        <!--cue_default-->
+        
         <group>[Channel1]</group>
         <key>TrakProDJ.button</key>
         <status>0XB0</status>
         <midino>0X02</midino>
         <options>
-          <Script-Binding/>
+          <Script-Binding />
         </options>
       </control>
       <control>
-        <!--cue_default-->
+        
         <group>[Channel2]</group>
         <key>TrakProDJ.button</key>
         <status>0XB1</status>
         <midino>0X02</midino>
         <options>
-          <Script-Binding/>
+          <Script-Binding />
         </options>
       </control>
       <control>
-        <!--hotcue_1_activate-->
+        
         <group>[Channel1]</group>
         <key>TrakProDJ.hotcue</key>
         <status>0XB0</status>
         <midino>0X1E</midino>
         <options>
-          <Script-Binding/>
+          <Script-Binding />
         </options>
       </control>
       <control>
-        <!--hotcue_2_activate-->
+        
         <group>[Channel1]</group>
         <key>TrakProDJ.hotcue</key>
         <status>0XB1</status>
         <midino>0X1E</midino>
         <options>
-          <Script-Binding/>
+          <Script-Binding />
         </options>
       </control>
       <control>
-        <!--hotcue_3_activate-->
+        
         <group>[Channel1]</group>
         <key>TrakProDJ.hotcue</key>
         <status>0XB2</status>
         <midino>0X1E</midino>
         <options>
-          <Script-Binding/>
+          <Script-Binding />
         </options>
       </control>
       <control>
-        <!--hotcue_4_activate-->
+        
         <group>[Channel1]</group>
         <key>TrakProDJ.hotcue</key>
         <status>0XB3</status>
         <midino>0X1E</midino>
         <options>
-          <Script-Binding/>
+          <Script-Binding />
         </options>
       </control>
       <control>
-        <!--hotcue_1_activate-->
+        
         <group>[Channel2]</group>
         <key>TrakProDJ.hotcue</key>
         <status>0XB4</status>
         <midino>0X1E</midino>
         <options>
-          <Script-Binding/>
+          <Script-Binding />
         </options>
       </control>
       <control>
-        <!--hotcue_2_activate-->
+        
         <group>[Channel2]</group>
         <key>TrakProDJ.hotcue</key>
         <status>0XB5</status>
         <midino>0X1E</midino>
         <options>
-          <Script-Binding/>
+          <Script-Binding />
         </options>
       </control>
       <control>
-        <!--hotcue_3_activate-->
+        
         <group>[Channel2]</group>
         <key>TrakProDJ.hotcue</key>
         <status>0XB6</status>
         <midino>0X1E</midino>
         <options>
-          <Script-Binding/>
+          <Script-Binding />
         </options>
       </control>
       <control>
-        <!--hotcue_4_activate-->
+        
         <group>[Channel2]</group>
         <key>TrakProDJ.hotcue</key>
         <status>0XB7</status>
         <midino>0X1E</midino>
         <options>
-          <Script-Binding/>
+          <Script-Binding />
         </options>
       </control>
       <control>
@@ -154,7 +153,7 @@
         <status>0XE0</status>
         <midino>0X00</midino>
         <options>
-          <Script-Binding/>
+          <Script-Binding />
         </options>
       </control>
       <control>
@@ -163,7 +162,7 @@
         <status>0XE1</status>
         <midino>0X00</midino>
         <options>
-          <Script-Binding/>
+          <Script-Binding />
         </options>
       </control>
       <control>
@@ -179,23 +178,23 @@
         <midino>0X10</midino>
       </control>
       <control>
-        <!--pfl-->
+        
         <group>[Channel1]</group>
         <key>TrakProDJ.button</key>
         <status>0XB0</status>
         <midino>0X11</midino>
         <options>
-          <Script-Binding/>
+          <Script-Binding />
         </options>
       </control>
       <control>
-        <!--pfl-->
+        
         <group>[Channel2]</group>
         <key>TrakProDJ.button</key>
         <status>0XB1</status>
         <midino>0X11</midino>
         <options>
-          <Script-Binding/>
+          <Script-Binding />
         </options>
       </control>
       <control>
@@ -216,7 +215,7 @@
         <status>0XB0</status>
         <midino>0X0B</midino>
         <options>
-          <Normal/>
+          <Normal />
         </options>
       </control>
       <control>
@@ -225,27 +224,27 @@
         <status>0XB1</status>
         <midino>0X0B</midino>
         <options>
-          <Normal/>
+          <Normal />
         </options>
       </control>
       <control>
-        <!--filterHighKill-->
+        
         <group>[Channel1]</group>
         <key>TrakProDJ.button</key>
         <status>0XB0</status>
         <midino>0X19</midino>
         <options>
-          <Script-Binding/>
+          <Script-Binding />
         </options>
       </control>
       <control>
-        <!--filterHighKill-->
+        
         <group>[Channel2]</group>
         <key>TrakProDJ.button</key>
         <status>0XB1</status>
         <midino>0X19</midino>
         <options>
-          <Script-Binding/>
+          <Script-Binding />
         </options>
       </control>
       <control>
@@ -254,7 +253,7 @@
         <status>0XB0</status>
         <midino>0X09</midino>
         <options>
-          <Normal/>
+          <Normal />
         </options>
       </control>
       <control>
@@ -263,27 +262,27 @@
         <status>0XB1</status>
         <midino>0X09</midino>
         <options>
-          <Normal/>
+          <Normal />
         </options>
       </control>
       <control>
-        <!--filterLowKill-->
+        
         <group>[Channel1]</group>
         <key>TrakProDJ.button</key>
         <status>0XB0</status>
         <midino>0X17</midino>
         <options>
-          <Script-Binding/>
+          <Script-Binding />
         </options>
       </control>
       <control>
-        <!--filterLowKill-->
+        
         <group>[Channel2]</group>
         <key>TrakProDJ.button</key>
         <status>0XB1</status>
         <midino>0X17</midino>
         <options>
-          <Script-Binding/>
+          <Script-Binding />
         </options>
       </control>
       <control>
@@ -292,7 +291,7 @@
         <status>0XB0</status>
         <midino>0X0A</midino>
         <options>
-          <Normal/>
+          <Normal />
         </options>
       </control>
       <control>
@@ -301,47 +300,47 @@
         <status>0XB1</status>
         <midino>0X0A</midino>
         <options>
-          <Normal/>
+          <Normal />
         </options>
       </control>
       <control>
-        <!--filterMidKill-->
+        
         <group>[Channel1]</group>
         <key>TrakProDJ.button</key>
         <status>0XB0</status>
         <midino>0X18</midino>
         <options>
-          <Script-Binding/>
+          <Script-Binding />
         </options>
       </control>
       <control>
-        <!--filterMidKill-->
+        
         <group>[Channel2]</group>
         <key>TrakProDJ.button</key>
         <status>0XB1</status>
         <midino>0X18</midino>
         <options>
-          <Script-Binding/>
+          <Script-Binding />
         </options>
       </control>
       <control>
-        <!--beatsync-->
+        
         <group>[Channel1]</group>
         <key>TrakProDJ.button</key>
         <status>0XB0</status>
         <midino>0X03</midino>
         <options>
-          <Script-Binding/>
+          <Script-Binding />
         </options>
       </control>
       <control>
-        <!--beatsync-->
+        
         <group>[Channel2]</group>
         <key>TrakProDJ.button</key>
         <status>0XB1</status>
         <midino>0X03</midino>
         <options>
-          <Script-Binding/>
+          <Script-Binding />
         </options>
       </control>
       <control>
@@ -350,7 +349,7 @@
         <status>0XB0</status>
         <midino>0X05</midino>
         <options>
-          <Invert/>
+          <Invert />
         </options>
       </control>
       <control>
@@ -359,7 +358,7 @@
         <status>0XB1</status>
         <midino>0X05</midino>
         <options>
-          <Invert/>
+          <Invert />
         </options>
       </control>
       <control>
@@ -368,7 +367,7 @@
         <status>0XE2</status>
         <midino>0X00</midino>
         <options>
-          <Script-Binding/>
+          <Script-Binding />
         </options>
       </control>
       <control>
@@ -377,7 +376,7 @@
         <status>0XE4</status>
         <midino>0X00</midino>
         <options>
-          <Script-Binding/>
+          <Script-Binding />
         </options>
       </control>
       <control>
@@ -386,7 +385,7 @@
         <status>0XE3</status>
         <midino>0X00</midino>
         <options>
-          <Script-Binding/>
+          <Script-Binding />
         </options>
       </control>
       <control>
@@ -395,7 +394,7 @@
         <status>0XE5</status>
         <midino>0X00</midino>
         <options>
-          <Script-Binding/>
+          <Script-Binding />
         </options>
       </control>
       <control>
@@ -422,7 +421,7 @@
         <status>0XB0</status>
         <midino>0X0C</midino>
         <options>
-          <Normal/>
+          <Normal />
         </options>
       </control>
       <control>
@@ -431,7 +430,7 @@
         <status>0XB0</status>
         <midino>0X0F</midino>
         <options>
-          <Normal/>
+          <Normal />
         </options>
       </control>
       <control>
@@ -440,7 +439,7 @@
         <status>0XB1</status>
         <midino>0X0D</midino>
         <options>
-          <Normal/>
+          <Normal />
         </options>
       </control>
       <control>
@@ -449,7 +448,7 @@
         <status>0XB0</status>
         <midino>0X0D</midino>
         <options>
-          <Normal/>
+          <Normal />
         </options>
       </control>
     </controls>

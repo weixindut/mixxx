@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<MixxxMIDIPreset schemaVersion="1" mixxxVersion="1.6.2+">
+<MixxxMIDIPreset mixxxVersion="1.6.2+" schemaVersion="1">
   <info>
     <name>FaderFox DJ2</name>
     <author>Sacha Berger</author>
@@ -57,7 +56,7 @@
         <options>
 
 	</options>
-        <!-- Not a valid mixxx 1.11 control <sensitivity>700</sensitivity> -->
+        
       </control>
       <control>
         <group>[Channel1]</group>
@@ -241,7 +240,7 @@
         <options>
 
     </options>
-        <!-- Not a valid mixxx 1.11 control <sensitivity>700</sensitivity> -->
+        
       </control>
       <control>
         <group>[Channel2]</group>
@@ -400,5 +399,5 @@
         <midino>0x33</midino>
       </control>
     </controls>
-  </controller>
+  <picfiles><pic name="FaderFoxDJ2.jpg" /></picfiles></controller>
 </MixxxMIDIPreset>

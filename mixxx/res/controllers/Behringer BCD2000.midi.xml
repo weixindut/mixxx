@@ -7,16 +7,16 @@
     </info>
     <controller id="BCD2000 MIDI 1">
         <scriptfiles>
-            <file functionprefix="BehringerBCD2000" filename="Behringer-BCD2000-scripts.js"/>
+            <file filename="Behringer-BCD2000-scripts.js" functionprefix="BehringerBCD2000" />
         </scriptfiles>
-        <controls>
+        <picfiles><pic name="Behringer BCD2000.png" /></picfiles><controls>
             <control>
                 <status>0x90</status>
                 <midino>0x0</midino>
                 <group>[Channel1]</group>
                 <key>back</key>
                 <options>
-                    <button/>
+                    <button />
                 </options>
             </control>
             <control>
@@ -25,7 +25,7 @@
                 <group>[Channel1]</group>
                 <key>fwd</key>
                 <options>
-                    <button/>
+                    <button />
                 </options>
             </control>
             <control>
@@ -34,7 +34,7 @@
                 <group>[Channel1]</group>
                 <key>rate_temp_down</key>
                 <options>
-                    <button/>
+                    <button />
                 </options>
             </control>
             <control>
@@ -43,7 +43,7 @@
                 <group>[Channel1]</group>
                 <key>rate_temp_up</key>
                 <options>
-                    <button/>
+                    <button />
                 </options>
             </control>
             <control>
@@ -52,7 +52,7 @@
                 <group>[Channel1]</group>
                 <key>beatloop_8</key>
                 <options>
-                    <button/>
+                    <button />
                 </options>
             </control>
             <control>
@@ -61,7 +61,7 @@
                 <group>[Channel1]</group>
                 <key>reloop_exit</key>
                 <options>
-                    <button/>
+                    <button />
                 </options>
             </control>
             <control>
@@ -70,7 +70,7 @@
                 <group>[Channel2]</group>
                 <key>back</key>
                 <options>
-                    <button/>
+                    <button />
                 </options>
             </control>
             <control>
@@ -79,7 +79,7 @@
                 <group>[Channel2]</group>
                 <key>fwd</key>
                 <options>
-                    <button/>
+                    <button />
                 </options>
             </control>
             <control>
@@ -88,7 +88,7 @@
                 <group>[Channel2]</group>
                 <key>rate_temp_down</key>
                 <options>
-                    <button/>
+                    <button />
                 </options>
             </control>
             <control>
@@ -97,7 +97,7 @@
                 <group>[Channel2]</group>
                 <key>rate_temp_up</key>
                 <options>
-                    <button/>
+                    <button />
                 </options>
             </control>
             <control>
@@ -106,7 +106,7 @@
                 <group>[Channel2]</group>
                 <key>beatloop_8</key>
                 <options>
-                    <button/>
+                    <button />
                 </options>
             </control>
             <control>
@@ -115,7 +115,7 @@
                 <group>[Channel2]</group>
                 <key>reloop_exit</key>
                 <options>
-                    <button/>
+                    <button />
                 </options>
             </control>
             <control>
@@ -124,7 +124,7 @@
                 <group>[Channel1]</group>
                 <key>filterLowKill</key>
                 <options>
-                    <button/>
+                    <button />
                 </options>
             </control>
             <control>
@@ -133,7 +133,7 @@
                 <group>[Channel1]</group>
                 <key>filterMidKill</key>
                 <options>
-                    <button/>
+                    <button />
                 </options>
             </control>
             <control>
@@ -142,7 +142,7 @@
                 <group>[Channel1]</group>
                 <key>filterHighKill</key>
                 <options>
-                    <button/>
+                    <button />
                 </options>
             </control>
            <control>
@@ -151,7 +151,7 @@
                 <group>[Channel1]</group>
                 <key>loop_halve</key>
                 <options>
-                    <button/>
+                    <button />
                 </options>
             </control>
             <control>
@@ -160,7 +160,7 @@
                 <group>[Channel1]</group>
                 <key>beatsync</key>
                 <options>
-                    <button/>
+                    <button />
                 </options>
             </control>
             <control>
@@ -169,7 +169,7 @@
                 <group>[Channel1]</group>
                 <key>BehringerBCD2000.scratchButton</key>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -178,7 +178,7 @@
                 <group>[Channel1]</group>
                 <key>volume</key>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -187,7 +187,7 @@
                 <group>[Channel1]</group>
                 <key>play</key>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -196,7 +196,7 @@
                 <group>[Master]</group>
                 <key>crossfader</key>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -205,7 +205,7 @@
                 <group>[Channel1]</group>
                 <key>cue_default</key>
                 <options>
-                    <button/>
+                    <button />
                 </options>
             </control>
             <control>
@@ -214,7 +214,7 @@
                 <group>[Channel2]</group>
                 <key>volume</key>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -223,7 +223,7 @@
                 <group>[Channel2]</group>
                 <key>filterLowKill</key>
                 <options>
-                    <button/>
+                    <button />
                 </options>
             </control>
             <control>
@@ -232,7 +232,7 @@
                 <group>[Channel1]</group>
                 <key>filterLow</key>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -241,7 +241,7 @@
                 <group>[Channel2]</group>
                 <key>filterMidKill</key>
                 <options>
-                    <button/>
+                    <button />
                 </options>
             </control>
             <control>
@@ -250,7 +250,7 @@
                 <group>[Channel1]</group>
                 <key>filterMid</key>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -259,7 +259,7 @@
                 <group>[Channel2]</group>
                 <key>filterHighKill</key>
                 <options>
-                    <button/>
+                    <button />
                 </options>
             </control>
             <control>
@@ -268,7 +268,7 @@
                 <group>[Channel1]</group>
                 <key>filterHigh</key>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -277,7 +277,7 @@
                 <group>[Channel2]</group>
                 <key>loop_halve</key>
                 <options>
-                    <button/>
+                    <button />
                 </options>
             </control>
 
@@ -287,7 +287,7 @@
                 <group>[Channel1]</group>
                 <key>pregain</key>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -296,7 +296,7 @@
                 <group>[Channel2]</group>
                 <key>beatsync</key>
                 <options>
-                    <button/>
+                    <button />
                 </options>
             </control>
             <control>
@@ -305,7 +305,7 @@
                 <group>[Channel2]</group>
                 <key>filterLow</key>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -314,7 +314,7 @@
                 <group>[Channel2]</group>
                 <key>BehringerBCD2000.scratchButton</key>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -323,7 +323,7 @@
                 <group>[Channel2]</group>
                 <key>filterMid</key>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -332,7 +332,7 @@
                 <group>[Channel2]</group>
                 <key>play</key>
                 <options>
-                    <button/>
+                    <button />
                 </options>
             </control>
             <control>
@@ -341,7 +341,7 @@
                 <group>[Channel2]</group>
                 <key>cue_default</key>
                 <options>
-                    <button/>
+                    <button />
                 </options>
             </control>
             <control>
@@ -350,7 +350,7 @@
                 <group>[Channel2]</group>
                 <key>filterHigh</key>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -359,7 +359,7 @@
                 <group>[Channel2]</group>
                 <key>pregain</key>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -368,7 +368,7 @@
                 <group>[Channel1]</group>
                 <key>rate</key>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -377,7 +377,7 @@
                 <group>[Channel2]</group>
                 <key>rate</key>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -386,7 +386,7 @@
                 <group>[Flanger]</group>
                 <key>lfoDelay</key>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -395,7 +395,7 @@
                 <group>[Channel1]</group>
                 <key>flanger</key>
                 <options>
-                    <button/>
+                    <button />
                 </options>
             </control>
             <control>
@@ -404,7 +404,7 @@
                 <group>[Flanger]</group>
                 <key>lfoDepth</key>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -413,7 +413,7 @@
                 <group>[Channel2]</group>
                 <key>flanger</key>
                 <options>
-                    <button/>
+                    <button />
                 </options>
             </control>
             <control>
@@ -422,7 +422,7 @@
                 <group>[Flanger]</group>
                 <key>lfoPeriod</key>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -431,7 +431,7 @@
                 <group>[Master]</group>
                 <key>volume</key>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -440,7 +440,7 @@
                 <group>[Channel1]</group>
                 <key>pfl</key>
                 <options>
-                    <button/>
+                    <button />
                 </options>
             </control>
             <control>
@@ -449,7 +449,7 @@
                 <group>[Master]</group>
                 <key>headMix</key>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -458,7 +458,7 @@
                 <group>[Channel2]</group>
                 <key>pfl</key>
                 <options>
-                    <button/>
+                    <button />
                 </options>
             </control>
             <control>
@@ -467,7 +467,7 @@
                 <group>[Channel2]</group>
                 <key>BehringerBCD2000.jogWheel</key>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -476,7 +476,7 @@
                 <group>[Channel1]</group>
                 <key>BehringerBCD2000.jogWheel</key>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
         </controls>

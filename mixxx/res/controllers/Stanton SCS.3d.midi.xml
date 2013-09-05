@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<MixxxMIDIPreset schemaVersion="1" mixxxVersion="1.9.0+">
+<MixxxMIDIPreset mixxxVersion="1.9.0+" schemaVersion="1">
     <info>
         <name>Stanton SCS.3d</name>
         <author>Sean M. Pappalardo</author>
@@ -8,17 +7,17 @@
     </info>
     <controller id="Stanton SCS.3d" port="">
         <scriptfiles>
-            <file filename="Stanton-SCS3d-scripts.js" functionprefix="StantonSCS3d"/>
+            <file filename="Stanton-SCS3d-scripts.js" functionprefix="StantonSCS3d" />
         </scriptfiles>
         
-        <controls>
+        <picfiles><pic name="Stanton SCS.3d.png" /></picfiles><controls>
             <control>   
                 <description>Device status inquiry response</description>
                 <status>0xf0</status>
                 <group>[Master]</group>
                 <key>StantonSCS3d.statusResponse</key>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
             <control>
@@ -28,7 +27,7 @@
                 <status>0xB0</status>
                 <midino>7</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
             <control>
@@ -38,7 +37,7 @@
                 <status>0xB0</status>
                 <midino>8</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
             <control>
@@ -48,7 +47,7 @@
                 <status>0xB0</status>
                 <midino>4</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
             <control>
@@ -58,7 +57,7 @@
                 <status>0xB0</status>
                 <midino>3</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
             <control>
@@ -68,7 +67,7 @@
                 <status>0x90</status>
                 <midino>3</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
             <control>
@@ -78,32 +77,32 @@
                 <status>0x80</status>
                 <midino>3</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
             <control>
                 <description>FX</description>
-                <!--<group>[Channel1]</group>-->
-                <!--<key>flanger</key> -->
+                
+                
                 <group>[Master]</group>
                 <key>StantonSCS3d.FX</key>
                 <status>0x90</status>
                 <midino>0x20</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
             <control>
                 <description>FX</description>
-                <!--<group>[Channel1]</group>-->
-                <!--<key>flanger</key> -->
+                
+                
                 <group>[Master]</group>
                 <key>StantonSCS3d.FX</key>
                 <status>0x80</status>
                 <midino>0x20</midino>
-                <!-- <controltype>button</controltype> -->
+                
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>            
             <control>
@@ -113,7 +112,7 @@
                 <status>0x90</status>
                 <midino>0x26</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
             <control>
@@ -123,7 +122,7 @@
                 <status>0x80</status>
                 <midino>0x26</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>            
             <control>
@@ -133,7 +132,7 @@
                 <status>0x90</status>
                 <midino>0x22</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
             <control>
@@ -143,7 +142,7 @@
                 <status>0x80</status>
                 <midino>0x22</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>            
             <control>
@@ -153,7 +152,7 @@
                 <status>0x90</status>
                 <midino>0x28</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
             <control>
@@ -163,31 +162,31 @@
                 <status>0x80</status>
                 <midino>0x28</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>            
             <control>
                 <description>Vinyl</description>
-                <!-- <group>[Channel1]</group> -->
-                <!-- <key>reverse</key> -->
+                
+                
                 <group>[Master]</group>
                 <key>StantonSCS3d.Vinyl</key>
                 <status>0x90</status>
                 <midino>0x24</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
             <control>
                 <description>Vinyl</description>
-                <!-- <group>[Channel1]</group> -->
-                <!-- <key>reverse</key> -->
+                
+                
                 <group>[Master]</group>
                 <key>StantonSCS3d.Vinyl</key>
                 <status>0x80</status>
                 <midino>0x24</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>            
             <control>
@@ -197,7 +196,7 @@
                 <status>0x90</status>
                 <midino>0x2A</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
             <control>
@@ -207,7 +206,7 @@
                 <status>0x80</status>
                 <midino>0x2A</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>            
             <control>
@@ -217,7 +216,7 @@
                 <status>0x90</status>
                 <midino>0x2C</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
             <control>
@@ -227,436 +226,436 @@
                 <status>0x80</status>
                 <midino>0x2C</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>            
             <control>
                 <description>B12</description>
-                <!-- <group>[Channel1]</group> -->
-                <!-- <key>rateRange</key> -->
+                
+                
                 <group>[Master]</group>
                 <key>StantonSCS3d.B12</key>
                 <status>0x90</status>
                 <midino>0x2E</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
             <control>
                 <description>B12</description>
-                <!-- <group>[Channel1]</group> -->
-                <!-- <key>rateRange</key> -->
+                
+                
                 <group>[Master]</group>
                 <key>StantonSCS3d.B12</key>
                 <status>0x80</status>
                 <midino>0x2E</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>            
-            <control>    <!--    B13    -->
+            <control>    
                 <group>[Master]</group>
                 <key>StantonSCS3d.B13</key>
                 <status>0x90</status>
                 <midino>0x30</midino>
-<!--                 <controltype>button</controltype> -->
+
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
-            <control>    <!--    B13    -->
+            <control>    
                 <group>[Master]</group>
                 <key>StantonSCS3d.B13</key>
                 <status>0x80</status>
                 <midino>0x30</midino>
-<!--                 <controltype>button</controltype> -->
+
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>            
-            <control>    <!--    B14    -->
+            <control>    
                 <group>[Master]</group>
                 <key>StantonSCS3d.B14</key>
                 <status>0x90</status>
                 <midino>0x32</midino>
-<!--                 <controltype>button</controltype> -->
+
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
-            <control>    <!--    B14    -->
+            <control>    
                 <group>[Master]</group>
                 <key>StantonSCS3d.B14</key>
                 <status>0x80</status>
                 <midino>0x32</midino>
-<!--                 <controltype>button</controltype> -->
+
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>            
-            <control>    <!--    C1 relative    -->
+            <control>    
                 <group>[Master]</group>
                 <key>StantonSCS3d.C1relative</key>
                 <status>0xB0</status>
                 <midino>0x63</midino>
-<!--                 <controltype>wheel</controltype> -->
+
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>            
-            <control>    <!--    C1 absolute    -->
+            <control>    
                 <group>[Master]</group>
                 <key>StantonSCS3d.C1absolute</key>
                 <status>0xB0</status>
                 <midino>0x62</midino>
-<!--                 <controltype>wheel</controltype> -->
+
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
-            <control>    <!--    C1 touch    -->
+            <control>    
                 <group>[Master]</group>
                 <key>StantonSCS3d.C1touch</key>
                 <status>0x90</status>
                 <midino>0x62</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
-            <control>    <!--    C1 touch    -->
+            <control>    
                 <group>[Master]</group>
                 <key>StantonSCS3d.C1touch</key>
                 <status>0x80</status>
                 <midino>0x62</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>            
-            <control>    <!--    S3 Absolute    -->
+            <control>    
                 <group>[Master]</group>
                 <key>StantonSCS3d.S3absolute</key>
                 <status>0xB0</status>
                 <midino>0x0C</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
-            <control>    <!--    S3 Touch    -->
+            <control>    
                 <group>[Master]</group>
                 <key>StantonSCS3d.S3touch</key>
                 <status>0x90</status>
                 <midino>0x0C</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
-            <control>    <!--    S3 Touch    -->
+            <control>    
                 <group>[Master]</group>
                 <key>StantonSCS3d.S3touch</key>
                 <status>0x80</status>
                 <midino>0x0C</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>            
-            <control>    <!--    S4 Relative   -->
+            <control>    
                 <group>[Master]</group>
                 <key>StantonSCS3d.S4relative</key>
                 <status>0xB0</status>
                 <midino>2</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
-            <control>    <!--    S4 Absolute    -->
+            <control>    
                 <group>[Master]</group>
                 <key>StantonSCS3d.S4absolute</key>
                 <status>0xB0</status>
                 <midino>1</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
-            <control> <!--       S4 touch    -->
+            <control> 
                 <group>[Master]</group>
                 <key>StantonSCS3d.S4touch</key>
                 <status>0x90</status>
                 <midino>1</midino>
-<!--                 <controltype>button</controltype> -->
+
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
-            <control> <!--       S4 touch    -->
+            <control> 
                 <group>[Master]</group>
                 <key>StantonSCS3d.S4touch</key>
                 <status>0x80</status>
                 <midino>1</midino>
-<!--                 <controltype>button</controltype> -->
+
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>            
-            <control>    <!--    S5 Absolute    -->
+            <control>    
                 <group>[Master]</group>
                 <key>StantonSCS3d.S5absolute</key>
                 <status>0xB0</status>
                 <midino>0x0E</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
-            <control>    <!--    S5 Relative    -->
+            <control>    
                 <group>[Master]</group>
                 <key>StantonSCS3d.S5relative</key>
                 <status>0xB0</status>
                 <midino>0x0F</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
-            <control>    <!--    S5 Touch    -->
+            <control>    
                 <group>[Master]</group>
                 <key>StantonSCS3d.S5touch</key>
                 <status>0x90</status>
                 <midino>0x0E</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
-            <control>    <!--    S5 Touch    -->
+            <control>    
                 <group>[Master]</group>
                 <key>StantonSCS3d.S5touch</key>
                 <status>0x80</status>
                 <midino>0x0E</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>            
-            <control>    <!--    Play    -->
+            <control>    
                 <group>[Master]</group>
                 <key>StantonSCS3d.playButton</key>
                 <status>0x90</status>
                 <midino>0x6D</midino>
-<!--                 <controltype>button</controltype> -->
+
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
-            <control>    <!--    Play    -->
+            <control>    
                 <group>[Master]</group>
                 <key>StantonSCS3d.playButton</key>
                 <status>0x80</status>
                 <midino>0x6D</midino>
-<!--                 <controltype>button</controltype> -->
+
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>            
-            <control>    <!--    Cue    -->
+            <control>    
                 <group>[Master]</group>
                 <key>StantonSCS3d.cueButton</key>
                 <status>0x90</status>
                 <midino>0x6E</midino>
-<!--                 <controltype>button</controltype> -->
+
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
-            <control>    <!--    Cue    -->
+            <control>    
                 <group>[Master]</group>
                 <key>StantonSCS3d.cueButton</key>
                 <status>0x80</status>
                 <midino>0x6E</midino>
-<!--                 <controltype>button</controltype> -->
+
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>            
-            <control>    <!--    Sync    -->
+            <control>    
                 <group>[Master]</group>
                 <key>StantonSCS3d.syncButton</key>
                 <status>0x90</status>
                 <midino>0x6F</midino>
-<!--                 <controltype>button</controltype> -->
+
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
-            <control>    <!--    Sync    -->
+            <control>    
                 <group>[Master]</group>
                 <key>StantonSCS3d.syncButton</key>
                 <status>0x80</status>
                 <midino>0x6F</midino>
-<!--                 <controltype>button</controltype> -->
+
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>            
-            <control>    <!--    Tap    -->
+            <control>    
                 <group>[Master]</group>
                 <key>StantonSCS3d.tapButton</key>
                 <status>0x90</status>
                 <midino>0x70</midino>
-<!--                 <controltype>button</controltype> -->
+
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
-            <control>    <!--    Tap    -->
+            <control>    
                 <group>[Master]</group>
                 <key>StantonSCS3d.tapButton</key>
                 <status>0x80</status>
                 <midino>0x70</midino>
-<!--                 <controltype>button</controltype> -->
+
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>            
-            <control>    <!--    B15 (left)   -->
+            <control>    
                 <group>[Master]</group>
                 <key>StantonSCS3d.SurfaceButton</key>
                 <status>0x90</status>
                 <midino>0x48</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
-            <control>    <!--    B15 (left)   -->
+            <control>    
                 <group>[Master]</group>
                 <key>StantonSCS3d.SurfaceButton</key>
                 <status>0x80</status>
                 <midino>0x48</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>            
-            <control>    <!--    B16 (left)   -->
+            <control>    
                 <group>[Master]</group>
                 <key>StantonSCS3d.SurfaceButton</key>
                 <status>0x90</status>
                 <midino>0x4A</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
-            <control>    <!--    B16 (left)   -->
+            <control>    
                 <group>[Master]</group>
                 <key>StantonSCS3d.SurfaceButton</key>
                 <status>0x80</status>
                 <midino>0x4A</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>            
-            <control>    <!--    B17 (left)   -->
+            <control>    
                 <group>[Master]</group>
                 <key>StantonSCS3d.SurfaceButton</key>
                 <status>0x90</status>
                 <midino>0x4C</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
-            <control>    <!--    B17 (left)   -->
+            <control>    
                 <group>[Master]</group>
                 <key>StantonSCS3d.SurfaceButton</key>
                 <status>0x80</status>
                 <midino>0x4C</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>            
-            <control>    <!--    B18 (left)   -->
+            <control>    
                 <group>[Master]</group>
                 <key>StantonSCS3d.SurfaceButton</key>
                 <status>0x90</status>
                 <midino>0x4E</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
-            <control>    <!--    B18 (left)   -->
+            <control>    
                 <group>[Master]</group>
                 <key>StantonSCS3d.SurfaceButton</key>
                 <status>0x80</status>
                 <midino>0x4E</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>            
-            <control>    <!--    B19 (right)   -->
+            <control>    
                 <group>[Master]</group>
                 <key>StantonSCS3d.SurfaceButton</key>
                 <status>0x90</status>
                 <midino>0x4F</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
-            <control>    <!--    B19 (right)   -->
+            <control>    
                 <group>[Master]</group>
                 <key>StantonSCS3d.SurfaceButton</key>
                 <status>0x80</status>
                 <midino>0x4F</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>            
-            <control>    <!--    B20 (right)   -->
+            <control>    
                 <group>[Master]</group>
                 <key>StantonSCS3d.SurfaceButton</key>
                 <status>0x90</status>
                 <midino>0x51</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
-            <control>    <!--    B20 (right)   -->
+            <control>    
                 <group>[Master]</group>
                 <key>StantonSCS3d.SurfaceButton</key>
                 <status>0x80</status>
                 <midino>0x51</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>            
-            <control>    <!--    B21 (right)   -->
+            <control>    
                 <group>[Master]</group>
                 <key>StantonSCS3d.SurfaceButton</key>
                 <status>0x90</status>
                 <midino>0x53</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
-            <control>    <!--    B21 (right)   -->
+            <control>    
                 <group>[Master]</group>
                 <key>StantonSCS3d.SurfaceButton</key>
                 <status>0x80</status>
                 <midino>0x53</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>            
-            <control>    <!--    B22 (right)   -->
+            <control>    
                 <group>[Master]</group>
                 <key>StantonSCS3d.SurfaceButton</key>
                 <status>0x90</status>
                 <midino>0x55</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
-            <control>    <!--    B22 (right)   -->
+            <control>    
                 <group>[Master]</group>
                 <key>StantonSCS3d.SurfaceButton</key>
                 <status>0x80</status>
                 <midino>0x55</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>            
         </controls>
     </controller>
-</MixxxMIDIPreset> 
+</MixxxMIDIPreset>

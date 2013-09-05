@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<MixxxMIDIPreset schemaVersion="1" mixxxVersion="1.9.0">
+<MixxxMIDIPreset mixxxVersion="1.9.0" schemaVersion="1">
    <info>
       <name>Numark NS7</name>
       <author>Anders Gunnarsson</author>
@@ -7,10 +6,10 @@
    </info>
    <controller id="Numark NS7 MIDI">
       <scriptfiles>
-         <file filename="Numark-NS7-scripts.js" functionprefix="NumarkNS7"/>
+         <file filename="Numark-NS7-scripts.js" functionprefix="NumarkNS7" />
       </scriptfiles>
-      <controls>
-         <!-- Deck A -->
+      <picfiles><pic name="Numark NS7.png" /></picfiles><controls>
+         
          <control>
             <group>[Channel1]</group>
             <key>rate</key>
@@ -149,7 +148,7 @@
             <status>0x90</status>
             <midino>0x21</midino>
             <options>
-               <Script-Binding/>
+               <Script-Binding />
             </options>
          </control>
          <control>
@@ -194,7 +193,7 @@
             <status>0xB0</status>
 			<midino>0x00</midino>
 			<options>
-               <Script-Binding/>
+               <Script-Binding />
             </options>
          </control>
          <control>
@@ -204,7 +203,7 @@
             <midino>0x45</midino>
          </control>
          
-         <!-- Deck B -->
+         
          <control>
             <group>[Channel2]</group>
             <key>rate</key>
@@ -343,7 +342,7 @@
             <status>0x90</status>
             <midino>0x42</midino>
             <options>
-               <Script-Binding/>
+               <Script-Binding />
             </options>
          </control>
          <control>
@@ -388,7 +387,7 @@
             <status>0xB0</status>
 			<midino>0x02</midino>
 			<options>
-               <Script-Binding/>
+               <Script-Binding />
             </options>
          </control>
          <control>
@@ -398,22 +397,14 @@
             <midino>0x4D</midino>
          </control>
          
-         <!-- Mixer main-->
+         
          <control>
             <group>[Master]</group>
             <key>crossfader</key>
             <status>0xB0</status>
             <midino>0x07</midino>
          </control>
-         <!-- <control>
-            <group>[Master]</group>
-            <key>NumarkNS7.crossfader_lsb</key>
-            <status>0xB0</status>
-            <midino>0x1F</midino>
-            <options>
-               <Script-Binding/>
-            </options>
-         </control> -->
+         
          <control>
             <group>[Master]</group>
             <key>headMix</key>
@@ -433,7 +424,7 @@
             <midino>0x40</midino>
          </control>
          
-         <!-- Mixer channel 1 -->
+         
          <control>
             <group>[Channel1]</group>
             <key>pregain</key>
@@ -465,7 +456,7 @@
             <midino>0x08</midino>
          </control>
          
-         <!-- Mixer channel 2 -->
+         
          <control>
             <group>[Channel2]</group>
             <key>pregain</key>
@@ -543,7 +534,7 @@
 	        <maximum>0.99</maximum>
 	      </output>
 	
-	<!-- Headphone Cue -->
+	
 			<output>
 			    <group>[Channel1]</group>
 			    <key>pfl</key>

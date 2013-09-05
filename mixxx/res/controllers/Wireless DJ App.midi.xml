@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <MixxxMIDIPreset mixxxVersion="1.8.0+" schemaVersion="1">
     <info>
 		<name>Wireless DJ App</name>
@@ -8,9 +7,9 @@
 	</info>
     <controller id="Network Wireless DJ">
         <scriptfiles>
-            <file filename="Wireless-DJ-scripts.js" functionprefix="WirelessDJ"/>
+            <file filename="Wireless-DJ-scripts.js" functionprefix="WirelessDJ" />
         </scriptfiles>
-        <controls>
+        <picfiles><pic name="" /></picfiles><controls>
             <control>
                 <status>0x90</status>
                 <midino>0x1</midino>
@@ -23,7 +22,7 @@
                 <group>[Channel1]</group>
                 <key>cue_default</key>
                 <options>
-                    <button/>
+                    <button />
                 </options>
             </control>
             <control>
@@ -32,7 +31,7 @@
                 <group>[Channel1]</group>
                 <key>cue_default</key>
                 <options>
-                    <button/>
+                    <button />
                 </options>
             </control>
             <control>
@@ -47,7 +46,7 @@
                 <group>[Channel1]</group>
                 <key>rate</key>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -56,7 +55,7 @@
                 <group>[Channel1]</group>
                 <key>volume</key>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -65,7 +64,7 @@
                 <group>[Channel1]</group>
                 <key>filterHigh</key>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -74,7 +73,7 @@
                 <group>[Channel1]</group>
                 <key>filterMid</key>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -83,7 +82,7 @@
                 <group>[Channel1]</group>
                 <key>filterLow</key>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -92,7 +91,7 @@
                 <group>[Flanger]</group>
                 <key>lfoDelay</key>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -101,7 +100,7 @@
                 <group>[Flanger]</group>
                 <key>lfoDepth</key>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -110,7 +109,7 @@
                 <group>[Flanger]</group>
                 <key>lfoPeriod</key>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -119,7 +118,7 @@
                 <group>[Channel1]</group>
                 <key>WirelessDJ.seek_on</key>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
             <control>
@@ -128,7 +127,7 @@
                 <group>[Channel1]</group>
                 <key>WirelessDJ.seek_on</key>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
             <control>
@@ -137,7 +136,7 @@
                 <group>[Channel1]</group>
                 <key>WirelessDJ.jog_on</key>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
             <control>
@@ -146,7 +145,7 @@
                 <group>[Channel1]</group>
                 <key>WirelessDJ.jog_on</key>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
             <control>
@@ -155,7 +154,7 @@
                 <group>[Channel1]</group>
                 <key>WirelessDJ.tempo_tuning</key>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
             <control>
@@ -176,7 +175,7 @@
                 <group>[Channel1]</group>
                 <key>WirelessDJ.magic_stripe_msb</key>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
             <control>
@@ -185,17 +184,17 @@
                 <group>[Channel1]</group>
                 <key>WirelessDJ.magic_stripe_lsb</key>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
-<!-- Channel 2 -->
+
             <control>
                 <status>0x91</status>
                 <midino>0x1</midino>
                 <group>[Channel2]</group>
                 <key>play</key>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -204,7 +203,7 @@
                 <group>[Channel2]</group>
                 <key>play</key>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -213,7 +212,7 @@
                 <group>[Channel2]</group>
                 <key>cue_default</key>
                 <options>
-                    <button/>
+                    <button />
                 </options>
             </control>
             <control>
@@ -222,7 +221,7 @@
                 <group>[Channel2]</group>
                 <key>cue_default</key>
                 <options>
-                    <button/>
+                    <button />
                 </options>
             </control>
             <control>
@@ -231,7 +230,7 @@
                 <group>[Channel2]</group>
                 <key>pfl</key>
                 <options>
-                    <button/>
+                    <button />
                 </options>
             </control>
             <control>
@@ -240,7 +239,7 @@
                 <group>[Channel2]</group>
                 <key>volume</key>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -249,7 +248,7 @@
                 <group>[Channel2]</group>
                 <key>rate</key>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -258,7 +257,7 @@
                 <group>[Channel2]</group>
                 <key>filterHigh</key>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -267,7 +266,7 @@
                 <group>[Channel2]</group>
                 <key>filterMid</key>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -276,7 +275,7 @@
                 <group>[Channel2]</group>
                 <key>filterLow</key>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -285,7 +284,7 @@
                 <group>[Flanger]</group>
                 <key>lfoDelay</key>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -294,7 +293,7 @@
                 <group>[Flanger]</group>
                 <key>lfoDepth</key>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -303,7 +302,7 @@
                 <group>[Flanger]</group>
                 <key>lfoPeriod</key>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -312,7 +311,7 @@
                 <group>[Channel2]</group>
                 <key>WirelessDJ.seek_on</key>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
             <control>
@@ -321,7 +320,7 @@
                 <group>[Channel2]</group>
                 <key>WirelessDJ.seek_on</key>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
             <control>
@@ -342,7 +341,7 @@
                 <group>[Channel2]</group>
                 <key>WirelessDJ.magic_stripe_msb</key>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
             <control>
@@ -351,17 +350,17 @@
                 <group>[Channel2]</group>
                 <key>WirelessDJ.magic_stripe_lsb</key>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
-<!-- Master -->
+
             <control>
                 <status>0xb0</status>
                 <midino>0x1a</midino>
                 <group>[Master]</group>
                 <key>crossfader</key>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -370,7 +369,7 @@
                 <group>[Master]</group>
                 <key>headMix</key>
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
         </controls>

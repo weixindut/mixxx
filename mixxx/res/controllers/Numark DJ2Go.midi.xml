@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-	<MixxxMIDIPreset schemaVersion="1" mixxxVersion="1.11.0 beta">
+<MixxxMIDIPreset mixxxVersion="1.11.0 beta" schemaVersion="1">
 		<info>
 			<name>Numark DJ2Go</name>
 			<author>Alimantado, mod by Coval</author>
@@ -8,17 +7,17 @@
 		</info>
 		<controller id="Numark DJ2Go MIDI 1" port="">
 		<scriptfiles>
-            		<file filename="Numark-DJ2Go-scripts.js" functionprefix="NumarkDJ2Go"/>
+            		<file filename="Numark-DJ2Go-scripts.js" functionprefix="NumarkDJ2Go" />
         	</scriptfiles>
-        		<controls>
-				<!-- Master vol, headphone vol and crossfader -->
+        		<picfiles><pic name="Numark DJ2Go.jpg" /></picfiles><controls>
+				
 				<control>
 					<group>[Master]</group>
 					<key>volume</key>
 					<status>0xB0</status>
                 			<midino>0x17</midino>
                 			<options>
-						<soft-takeover/>
+						<soft-takeover />
 					</options>
 				</control>
 				<control>
@@ -27,7 +26,7 @@
 					<status>0xB0</status>
                 			<midino>0x0B</midino>
                 			<options>
-						<soft-takeover/>
+						<soft-takeover />
 					</options>
 				</control>
 				<control>
@@ -36,17 +35,17 @@
 					<status>0xB0</status>
                 			<midino>0x0A</midino>
                 			<options>
-						<soft-takeover/>
+						<soft-takeover />
 					</options>
 				</control>
-				<!-- Track selection controls -->
+				
                                 <control>
                                          <group>[Playlist]</group>
                                          <key>NumarkDJ2Go.backBut</key>
                                          <status>0x80</status>
                                          <midino>0x59</midino>
                                          <options>
-                                                  <script-binding/>
+                                                  <script-binding />
                                          </options>
                                 </control>
                                 <control>
@@ -55,7 +54,7 @@
                                          <status>0x80</status>
                                          <midino>0x5A</midino>
                                          <options>
-                                                  <script-binding/>
+                                                  <script-binding />
                                          </options>
                                          </control>
 				<control>
@@ -64,7 +63,7 @@
 					<status>0x90</status>
                 			<midino>0x59</midino>
                 			<options>
-						<script-binding/>
+						<script-binding />
 					</options>
 				</control>
 				<control>
@@ -73,7 +72,7 @@
 					<status>0x90</status>
                 			<midino>0x5A</midino>
                 			<options>
-						<script-binding/>
+						<script-binding />
 					</options>
 				</control>
 				<control>
@@ -82,17 +81,17 @@
 					<status>0xB0</status>
                 			<midino>0x1A</midino>
                 			<options>
-						<script-binding/>
+						<script-binding />
 					</options>
 				</control>
-<!-- Channel 1 -->
+
 				<control>
 					<group>[Channel1]</group>
 					<key>NumarkDJ2Go.shiftA</key>
 					<status>0x90</status>
                 			<midino>0x4B</midino>
                 			<options>
-						<script-binding/>
+						<script-binding />
 					</options>
 				</control>
 				<control>
@@ -101,7 +100,7 @@
 					<status>0x80</status>
                 			<midino>0x4B</midino>
                 			<options>
-						<script-binding/>
+						<script-binding />
 					</options>
 				</control>
 				<control>
@@ -110,56 +109,19 @@
 					<status>0xB0</status>
                 			<midino>0x08</midino>
                 			<options>
-						<soft-takeover/>
+						<soft-takeover />
 					</options>
 				</control>
 
-<!-- Original pich bend control
-				<control>
-					<group>[Channel1]</group>
-					<key>NumarkDJ2Go.pitchBendPlus</key>
-					<status>0x90</status>
-                			<midino>0x43</midino>
-                			<options>
-						<script-binding/>
-					</options>
-				</control>
-				<control>
-					<group>[Channel1]</group>
-					<key>NumarkDJ2Go.pitchBendPlus</key>
-					<status>0x80</status>
-                			<midino>0x43</midino>
-                			<options>
-						<script-binding/>
-					</options>
-				</control>
-				<control>
-					<group>[Channel1]</group>
-					<key>NumarkDJ2Go.pitchBendMinus</key>
-					<status>0x90</status>
-                			<midino>0x44</midino>
-                			<options>
-						<script-binding/>
-					</options>
-				</control>
-				<control>
-					<group>[Channel1]</group>
-					<key>NumarkDJ2Go.pitchBendMinus</key>
-					<status>0x80</status>
-                			<midino>0x44</midino>
-                			<options>
-						<script-binding/>
-					</options>
-				</control>
--->
-<!-- DJCoval's Loop control -->
+
+
 				<control>
 					<group>[Channel1]</group>
 					<key>NumarkDJ2Go.loopOut</key>
 					<status>0x90</status>
                 			<midino>0x43</midino>
                 			<options>
-						<script-binding/>
+						<script-binding />
 					</options>
 				</control>
 				<control>
@@ -168,10 +130,10 @@
 					<status>0x90</status>
                 			<midino>0x44</midino>
                 			<options>
-						<script-binding/>
+						<script-binding />
 					</options>
 				</control>
-<!-- End Loop -->
+
 
 				<control>
 					<group>[Channel1]</group>
@@ -179,7 +141,7 @@
 					<status>0xB0</status>
                 			<midino>0x0D</midino>
                 			<options>
-						<soft-takeover/>
+						<soft-takeover />
 					</options>
 				</control>
 				<control>
@@ -188,7 +150,7 @@
 					<status>0x90</status>
                 			<midino>0x40</midino>
                 			<options>
-						<script-binding/>
+						<script-binding />
 					</options>
 				</control>
 				<control>
@@ -197,7 +159,7 @@
 					<status>0x90</status>
                 			<midino>0x65</midino>
                 			<options>
-						<script-binding/>
+						<script-binding />
 					</options>
 				</control>
 				<control>
@@ -206,25 +168,17 @@
 					<status>0x90</status>
                 			<midino>0x33</midino>
                 			<options>
-						<script-binding/>
+						<script-binding />
 					</options>
 				</control>
-<!--				<control>
-					<group>[Channel1]</group>
-					<key>NumarkDJ2Go.cue</key>
-					<status>0x80</status>
-                			<midino>0x33</midino>
-                			<options>
-						<script-binding/>
-					</options>
-				</control> -->
+
 				<control>
 					<group>[Channel1]</group>
 					<key>NumarkDJ2Go.play</key>
 					<status>0x90</status>
                 			<midino>0x3B</midino>
                 			<options>
-						<script-binding/>
+						<script-binding />
 					</options>
 				</control>
 				<control>
@@ -233,7 +187,7 @@
 					<status>0x80</status>
                 			<midino>0x3B</midino>
                 			<options>
-						<script-binding/>
+						<script-binding />
 					</options>
 				</control>
 				<control>
@@ -242,17 +196,17 @@
 					<status>0xB0</status>
                 			<midino>0x19</midino>
                 			<options>
-						<script-binding/>
+						<script-binding />
 					</options>
 				</control>
-<!-- Channel 2 -->
+
 				<control>
 					<group>[Channel2]</group>
 					<key>NumarkDJ2Go.shiftB</key>
 					<status>0x90</status>
                 			<midino>0x34</midino>
                 			<options>
-						<script-binding/>
+						<script-binding />
 					</options>
 				</control>
 				<control>
@@ -261,7 +215,7 @@
 					<status>0x80</status>
                 			<midino>0x34</midino>
                 			<options>
-						<script-binding/>
+						<script-binding />
 					</options>
 				</control>
 				<control>
@@ -270,54 +224,18 @@
 					<status>0xB0</status>
                 			<midino>0x09</midino>
                 			<options>
-						<soft-takeover/>
+						<soft-takeover />
 					</options>
 				</control>
-<!--				<control>
-					<group>[Channel2]</group>
-					<key>NumarkDJ2Go.pitchBendPlus</key>
-					<status>0x90</status>
-                			<midino>0x45</midino>
-                			<options>
-						<script-binding/>
-					</options>
-				</control>
-				<control>
-					<group>[Channel2]</group>
-					<key>NumarkDJ2Go.pitchBendPlus</key>
-					<status>0x80</status>
-                			<midino>0x45</midino>
-                			<options>
-						<script-binding/>
-					</options>
-				</control>
-				<control>
-					<group>[Channel2]</group>
-					<key>NumarkDJ2Go.pitchBendMinus</key>
-					<status>0x90</status>
-                			<midino>0x46</midino>
-                			<options>
-						<script-binding/>
-					</options>
-				</control>
-				<control>
-					<group>[Channel2]</group>
-					<key>NumarkDJ2Go.pitchBendMinus</key>
-					<status>0x80</status>
-                			<midino>0x46</midino>
-                			<options>
-						<script-binding/>
-					</options>
-				</control>
--->
-<!-- DJ Coval's Loop control -->
+
+
                                 <control>
 					<group>[Channel2]</group>
 					<key>NumarkDJ2Go.loopOut</key>
 					<status>0x90</status>
                 			<midino>0x45</midino>
                 			<options>
-						<script-binding/>
+						<script-binding />
 					</options>
 				</control>
 				<control>
@@ -326,17 +244,17 @@
 					<status>0x90</status>
                 			<midino>0x46</midino>
                 			<options>
-						<script-binding/>
+						<script-binding />
 					</options>
 				</control>
-<!-- End Loop-->
+
 				<control>
 					<group>[Channel2]</group>
 					<key>rate</key>
 					<status>0xB0</status>
                 			<midino>0x0E</midino>
                 			<options>
-						<soft-takeover/>
+						<soft-takeover />
 					</options>
 				</control>
 				<control>
@@ -345,7 +263,7 @@
 					<status>0x90</status>
                 			<midino>0x47</midino>
                 			<options>
-						<script-binding/>
+						<script-binding />
 					</options>
 				</control>
 				<control>
@@ -354,7 +272,7 @@
 					<status>0x90</status>
                 			<midino>0x66</midino>
                 			<options>
-						<script-binding/>
+						<script-binding />
 					</options>
 				</control>
 				<control>
@@ -363,7 +281,7 @@
 					<status>0x90</status>
                 			<midino>0x3C</midino>
                 			<options>
-						<script-binding/>
+						<script-binding />
 					</options>
 				</control>
 				<control>
@@ -372,7 +290,7 @@
 					<status>0x80</status>
                 			<midino>0x3C</midino>
                 			<options>
-						<script-binding/>
+						<script-binding />
 					</options>
 				</control>
 				<control>
@@ -381,7 +299,7 @@
 					<status>0x90</status>
                 			<midino>0x42</midino>
                 			<options>
-						<script-binding/>
+						<script-binding />
 					</options>
 				</control>
 				<control>
@@ -390,7 +308,7 @@
 					<status>0x80</status>
                 			<midino>0x42</midino>
                 			<options>
-						<script-binding/>
+						<script-binding />
 					</options>
 				</control>
 				<control>
@@ -399,10 +317,10 @@
 					<status>0xB0</status>
                 			<midino>0x18</midino>
                 			<options>
-						<script-binding/>
+						<script-binding />
 					</options>
 				</control>
 			</controls>
-			<outputs></outputs>
+			<outputs />
     		</controller>
 	</MixxxMIDIPreset>

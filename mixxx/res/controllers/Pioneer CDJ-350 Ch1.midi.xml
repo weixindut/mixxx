@@ -7,17 +7,17 @@
     </info>
     <controller id="USB Audio Device">
         <scriptfiles>
-            <file functionprefix="PioneerCDJ350" filename="Pioneer-CDJ-350-scripts.js"/>
+            <file filename="Pioneer-CDJ-350-scripts.js" functionprefix="PioneerCDJ350" />
         </scriptfiles>
-        <controls>
+        <picfiles><pic name="Pioneer CDJ-350 Ch1.jpg" /></picfiles><controls>
             <control>
                 <status>0xb0</status>
                 <midino>0x10</midino>
                 <group>[Channel1]</group>
                 <key>PioneerCDJ350.jog_wheel</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -25,9 +25,9 @@
                 <midino>0x16</midino>
                 <group>[Channel1]</group>
                 <key>loop_double</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -35,9 +35,9 @@
                 <midino>0x17</midino>
                 <group>[Channel1]</group>
                 <key>loop_halve</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -45,9 +45,9 @@
                 <midino>0x0</midino>
                 <group>[Channel1]</group>
                 <key>play</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -55,9 +55,9 @@
                 <midino>0x1</midino>
                 <group>[Channel1]</group>
                 <key>cue_default</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -65,9 +65,9 @@
                 <midino>0x26</midino>
                 <group>[Channel1]</group>
                 <key>beatsync</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -75,9 +75,9 @@
                 <midino>0x2</midino>
                 <group>[Channel1]</group>
                 <key>fwd</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -85,9 +85,9 @@
                 <midino>0x3</midino>
                 <group>[Channel1]</group>
                 <key>back</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -95,9 +95,9 @@
                 <midino>0x4</midino>
                 <group>[Channel1]</group>
                 <key>end</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -105,9 +105,9 @@
                 <midino>0x5</midino>
                 <group>[Channel1]</group>
                 <key>start</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -115,9 +115,9 @@
                 <midino>0x6</midino>
                 <group>[Channel1]</group>
                 <key>loop_in</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -125,9 +125,9 @@
                 <midino>0x7</midino>
                 <group>[Channel1]</group>
                 <key>loop_out</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -135,9 +135,9 @@
                 <midino>0x1d</midino>
                 <group>[Channel1]</group>
                 <key>rate</key>
-                <description></description>
+                <description />
                 <options>
-                    <invert/>
+                    <invert />
                 </options>
             </control>
             <control>
@@ -145,9 +145,9 @@
                 <midino>0x8</midino>
                 <group>[Channel1]</group>
                 <key>reloop_exit</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -155,9 +155,9 @@
                 <midino>0x2e</midino>
                 <group>[Channel1]</group>
                 <key>PioneerCDJ350.toggle_playlist</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -165,9 +165,9 @@
                 <midino>0x0</midino>
                 <group>[Channel1]</group>
                 <key>play</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -175,9 +175,9 @@
                 <midino>0x1</midino>
                 <group>[Channel1]</group>
                 <key>cue_default</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -185,9 +185,9 @@
                 <midino>0x26</midino>
                 <group>[Channel1]</group>
                 <key>beatsync</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -195,9 +195,9 @@
                 <midino>0x32</midino>
                 <group>[Channel1]</group>
                 <key>PioneerCDJ350.exit_playlist</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -205,9 +205,9 @@
                 <midino>0x2</midino>
                 <group>[Channel1]</group>
                 <key>fwd</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -215,9 +215,9 @@
                 <midino>0x33</midino>
                 <group>[Channel1]</group>
                 <key>PioneerCDJ350.select_push</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -225,9 +225,9 @@
                 <midino>0x3</midino>
                 <group>[Channel1]</group>
                 <key>back</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -235,9 +235,9 @@
                 <midino>0x10</midino>
                 <group>[Channel1]</group>
                 <key>PioneerCDJ350.tempo_btn</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -245,9 +245,9 @@
                 <midino>0x11</midino>
                 <group>[Channel1]</group>
                 <key>keylock</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -255,9 +255,9 @@
                 <midino>0x6</midino>
                 <group>[Channel1]</group>
                 <key>loop_in</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -265,9 +265,9 @@
                 <midino>0x7</midino>
                 <group>[Channel1]</group>
                 <key>loop_out</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -275,9 +275,9 @@
                 <midino>0x8</midino>
                 <group>[Channel1]</group>
                 <key>reloop_exit</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -285,9 +285,9 @@
                 <midino>0x4f</midino>
                 <group>[Playlist]</group>
                 <key>PioneerCDJ350.select_turn</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -295,9 +295,9 @@
                 <midino>0x16</midino>
                 <group>[Channel1]</group>
                 <key>loop_double</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -305,9 +305,9 @@
                 <midino>0x17</midino>
                 <group>[Channel1]</group>
                 <key>loop_halve</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -315,9 +315,9 @@
                 <midino>0x30</midino>
                 <group>[Channel1]</group>
                 <key>PioneerCDJ350.jog_wheel</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -325,12 +325,12 @@
                 <midino>0x11</midino>
                 <group>[Channel1]</group>
                 <key>keylock</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
         </controls>
-        <outputs/>
+        <outputs />
     </controller>
 </MixxxMIDIPreset>

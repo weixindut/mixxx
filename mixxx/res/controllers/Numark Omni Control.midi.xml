@@ -6,17 +6,17 @@
     </info>
     <controller id="Numark OMNI CONTROL MIDI">
         <scriptfiles>
-            <file functionprefix="NumarkTotalControl" filename="Numark-Omni-Control-scripts.js"/>
+            <file filename="Numark-Omni-Control-scripts.js" functionprefix="NumarkTotalControl" />
         </scriptfiles>
-        <controls>
+        <picfiles><pic name="Numark Omni Control.jpg" /></picfiles><controls>
             <control>
                 <status>0x90</status>
                 <midino>0x38</midino>
                 <group>[Channel1]</group>
                 <key>keylock</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -24,9 +24,9 @@
                 <midino>0x39</midino>
                 <group>[Channel1]</group>
                 <key>flanger</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -34,9 +34,9 @@
                 <midino>0x3a</midino>
                 <group>[Channel1]</group>
                 <key>NumarkTotalControl.tap</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -44,9 +44,9 @@
                 <midino>0x3b</midino>
                 <group>[Channel1]</group>
                 <key>NumarkTotalControl.setCue</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -54,9 +54,9 @@
                 <midino>0x3c</midino>
                 <group>[Channel2]</group>
                 <key>NumarkTotalControl.playFromCue</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -64,9 +64,9 @@
                 <midino>0x3d</midino>
                 <group>[Channel2]</group>
                 <key>flanger</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -74,9 +74,9 @@
                 <midino>0x3e</midino>
                 <group>[Channel2]</group>
                 <key>NumarkTotalControl.tap</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -84,9 +84,9 @@
                 <midino>0x3f</midino>
                 <group>[Channel2]</group>
                 <key>keylock</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -94,9 +94,9 @@
                 <midino>0x40</midino>
                 <group>[Channel1]</group>
                 <key>beatsync</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -104,9 +104,9 @@
                 <midino>0x41</midino>
                 <group>[Channel1]</group>
                 <key>NumarkTotalControl.leftFunction</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -114,9 +114,9 @@
                 <midino>0x42</midino>
                 <group>[Channel1]</group>
                 <key>NumarkTotalControl.rightFunction</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -124,9 +124,9 @@
                 <midino>0x43</midino>
                 <group>[Channel1]</group>
                 <key>play</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -134,9 +134,9 @@
                 <midino>0x44</midino>
                 <group>[Channel2]</group>
                 <key>NumarkTotalControl.setCue</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -144,9 +144,9 @@
                 <midino>0x45</midino>
                 <group>[Channel2]</group>
                 <key>NumarkTotalControl.leftFunction</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -154,9 +154,9 @@
                 <midino>0x46</midino>
                 <group>[Channel2]</group>
                 <key>NumarkTotalControl.rightFunction</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -164,9 +164,9 @@
                 <midino>0x47</midino>
                 <group>[Channel2]</group>
                 <key>beatsync</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -174,9 +174,9 @@
                 <midino>0x48</midino>
                 <group>[Playlist]</group>
                 <key>NumarkTotalControl.toggleDirectoryMode</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -184,9 +184,9 @@
                 <midino>0x49</midino>
                 <group>[Channel1]</group>
                 <key>NumarkTotalControl.loopIn</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -194,9 +194,9 @@
                 <midino>0x4a</midino>
                 <group>[Channel1]</group>
                 <key>NumarkTotalControl.loopOut</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -204,9 +204,9 @@
                 <midino>0x4b</midino>
                 <group>[Channel1]</group>
                 <key>LoadSelectedTrack</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -214,9 +214,9 @@
                 <midino>0x4c</midino>
                 <group>[Channel2]</group>
                 <key>play</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -224,9 +224,9 @@
                 <midino>0x4d</midino>
                 <group>[Channel2]</group>
                 <key>NumarkTotalControl.loopIn</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -234,9 +234,9 @@
                 <midino>0x4e</midino>
                 <group>[Channel2]</group>
                 <key>NumarkTotalControl.loopOut</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -244,9 +244,9 @@
                 <midino>0x4f</midino>
                 <group>[Playlist]</group>
                 <key>LoadSelectedIntoFirstStopped</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -254,9 +254,9 @@
                 <midino>0x50</midino>
                 <group>[Channel1]</group>
                 <key>filterHighKill</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -264,9 +264,9 @@
                 <midino>0x51</midino>
                 <group>[Channel2]</group>
                 <key>filterMidKill</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -274,9 +274,9 @@
                 <midino>0x52</midino>
                 <group>[Channel2]</group>
                 <key>filterHighKill</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -284,9 +284,9 @@
                 <midino>0x53</midino>
                 <group>[Channel1]</group>
                 <key>filterLowKill</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -294,9 +294,9 @@
                 <midino>0x54</midino>
                 <group>[Channel2]</group>
                 <key>filterLowKill</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -304,9 +304,9 @@
                 <midino>0x0</midino>
                 <group>[Flanger]</group>
                 <key>lfoDepth</key>
-                <description></description>
+                <description />
                 <options>
-                    <diff/>
+                    <diff />
                 </options>
             </control>
             <control>
@@ -314,9 +314,9 @@
                 <midino>0x55</midino>
                 <group>[Channel1]</group>
                 <key>filterMidKill</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -324,9 +324,9 @@
                 <midino>0x1</midino>
                 <group>[Flanger]</group>
                 <key>lfoPeriod</key>
-                <description></description>
+                <description />
                 <options>
-                    <diff/>
+                    <diff />
                 </options>
             </control>
             <control>
@@ -334,9 +334,9 @@
                 <midino>0x2</midino>
                 <group>[Flanger]</group>
                 <key>lfoDelay</key>
-                <description></description>
+                <description />
                 <options>
-                    <diff/>
+                    <diff />
                 </options>
             </control>
             <control>
@@ -344,9 +344,9 @@
                 <midino>0x3</midino>
                 <group>[Channel1]</group>
                 <key>NumarkTotalControl.finePitch</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -354,9 +354,9 @@
                 <midino>0x4</midino>
                 <group>[Flanger]</group>
                 <key>lfoDepth</key>
-                <description></description>
+                <description />
                 <options>
-                    <diff/>
+                    <diff />
                 </options>
             </control>
             <control>
@@ -364,9 +364,9 @@
                 <midino>0x5</midino>
                 <group>[Flanger]</group>
                 <key>lfoPeriod</key>
-                <description></description>
+                <description />
                 <options>
-                    <diff/>
+                    <diff />
                 </options>
             </control>
             <control>
@@ -374,9 +374,9 @@
                 <midino>0x6</midino>
                 <group>[Flanger]</group>
                 <key>lfoDelay</key>
-                <description></description>
+                <description />
                 <options>
-                    <diff/>
+                    <diff />
                 </options>
             </control>
             <control>
@@ -384,9 +384,9 @@
                 <midino>0x7</midino>
                 <group>[Channel2]</group>
                 <key>NumarkTotalControl.finePitch</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -394,9 +394,9 @@
                 <midino>0x8</midino>
                 <group>[Channel1]</group>
                 <key>volume</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -404,9 +404,9 @@
                 <midino>0x9</midino>
                 <group>[Channel2]</group>
                 <key>volume</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -414,9 +414,9 @@
                 <midino>0xa</midino>
                 <group>[Master]</group>
                 <key>crossfader</key>
-                <description></description>
+                <description />
                 <options>
-                    <invert/>
+                    <invert />
                 </options>
             </control>
             <control>
@@ -424,9 +424,9 @@
                 <midino>0xb</midino>
                 <group>[Channel1]</group>
                 <key>rate</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -434,9 +434,9 @@
                 <midino>0xc</midino>
                 <group>[Channel2]</group>
                 <key>rate</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -444,9 +444,9 @@
                 <midino>0xd</midino>
                 <group>[Channel1]</group>
                 <key>pregain</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -454,9 +454,9 @@
                 <midino>0xe</midino>
                 <group>[Channel2]</group>
                 <key>pregain</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -464,9 +464,9 @@
                 <midino>0xf</midino>
                 <group>[Master]</group>
                 <key>headVolume</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -474,9 +474,9 @@
                 <midino>0x10</midino>
                 <group>[Channel1]</group>
                 <key>filterHigh</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -484,9 +484,9 @@
                 <midino>0x11</midino>
                 <group>[Channel2]</group>
                 <key>filterHigh</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -494,9 +494,9 @@
                 <midino>0x12</midino>
                 <group>[Channel1]</group>
                 <key>filterMid</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -504,9 +504,9 @@
                 <midino>0x13</midino>
                 <group>[Channel2]</group>
                 <key>filterMid</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -514,9 +514,9 @@
                 <midino>0x14</midino>
                 <group>[Channel1]</group>
                 <key>filterLow</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -524,9 +524,9 @@
                 <midino>0x15</midino>
                 <group>[Channel2]</group>
                 <key>filterLow</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -534,9 +534,9 @@
                 <midino>0x16</midino>
                 <group>[Master]</group>
                 <key>headMix</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -544,9 +544,9 @@
                 <midino>0x17</midino>
                 <group>[Master]</group>
                 <key>volume</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -554,9 +554,9 @@
                 <midino>0x18</midino>
                 <group>[Channel1]</group>
                 <key>NumarkTotalControl.jogWheel</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -564,9 +564,9 @@
                 <midino>0x19</midino>
                 <group>[Channel2]</group>
                 <key>NumarkTotalControl.jogWheel</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -574,9 +574,9 @@
                 <midino>0x1a</midino>
                 <group>[Playlist]</group>
                 <key>NumarkTotalControl.selectKnob</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -584,9 +584,9 @@
                 <midino>0x30</midino>
                 <group>[Channel1]</group>
                 <key>pfl</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -594,9 +594,9 @@
                 <midino>0x31</midino>
                 <group>[Master]</group>
                 <key>NumarkTotalControl.toggleSimpleCue</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -604,9 +604,9 @@
                 <midino>0x32</midino>
                 <group>[Channel1]</group>
                 <key>NumarkTotalControl.toggleScratchMode</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -614,9 +614,9 @@
                 <midino>0x33</midino>
                 <group>[Channel1]</group>
                 <key>NumarkTotalControl.playFromCue</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -624,9 +624,9 @@
                 <midino>0x34</midino>
                 <group>[Channel2]</group>
                 <key>LoadSelectedTrack</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -634,9 +634,9 @@
                 <midino>0x35</midino>
                 <group>[Master]</group>
                 <key>NumarkTotalControl.toggleExtendedLooping</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -644,9 +644,9 @@
                 <midino>0x36</midino>
                 <group>[Channel2]</group>
                 <key>NumarkTotalControl.toggleQuantize</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -654,9 +654,9 @@
                 <midino>0x37</midino>
                 <group>[Channel2]</group>
                 <key>pfl</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
         </controls>
@@ -664,7 +664,7 @@
             <output>
                 <group>[Channel2]</group>
                 <key>filterLowKill</key>
-                <description></description>
+                <description />
                 <minimum>0</minimum>
                 <maximum>0.1</maximum>
                 <status>0x90</status>
@@ -675,7 +675,7 @@
             <output>
                 <group>[Channel2]</group>
                 <key>playposition</key>
-                <description></description>
+                <description />
                 <minimum>0.75</minimum>
                 <maximum>1</maximum>
                 <status>0x90</status>
@@ -686,7 +686,7 @@
             <output>
                 <group>[Channel1]</group>
                 <key>beat_active</key>
-                <description></description>
+                <description />
                 <minimum>0.1</minimum>
                 <maximum>1</maximum>
                 <status>0x90</status>
@@ -697,7 +697,7 @@
             <output>
                 <group>[Channel1]</group>
                 <key>pfl</key>
-                <description></description>
+                <description />
                 <minimum>0</minimum>
                 <maximum>0.1</maximum>
                 <status>0x90</status>
@@ -708,7 +708,7 @@
             <output>
                 <group>[Channel1]</group>
                 <key>cue_point</key>
-                <description></description>
+                <description />
                 <minimum>0</minimum>
                 <maximum>1</maximum>
                 <status>0x90</status>
@@ -719,7 +719,7 @@
             <output>
                 <group>[Channel2]</group>
                 <key>keylock</key>
-                <description></description>
+                <description />
                 <minimum>0.1</minimum>
                 <maximum>1</maximum>
                 <status>0x90</status>
@@ -730,7 +730,7 @@
             <output>
                 <group>[Channel1]</group>
                 <key>flanger</key>
-                <description></description>
+                <description />
                 <minimum>0</minimum>
                 <maximum>0.1</maximum>
                 <status>0x90</status>
@@ -741,7 +741,7 @@
             <output>
                 <group>[Channel1]</group>
                 <key>filterLowKill</key>
-                <description></description>
+                <description />
                 <minimum>0</minimum>
                 <maximum>0.1</maximum>
                 <status>0x90</status>
@@ -752,7 +752,7 @@
             <output>
                 <group>[Channel1]</group>
                 <key>keylock</key>
-                <description></description>
+                <description />
                 <minimum>0.1</minimum>
                 <maximum>1</maximum>
                 <status>0x90</status>
@@ -763,7 +763,7 @@
             <output>
                 <group>[Channel2]</group>
                 <key>flanger</key>
-                <description></description>
+                <description />
                 <minimum>0</minimum>
                 <maximum>0.1</maximum>
                 <status>0x90</status>
@@ -774,7 +774,7 @@
             <output>
                 <group>[Channel2]</group>
                 <key>rate</key>
-                <description></description>
+                <description />
                 <minimum>-0.05</minimum>
                 <maximum>0.05</maximum>
                 <status>0x90</status>
@@ -785,7 +785,7 @@
             <output>
                 <group>[Channel2]</group>
                 <key>filterHighKill</key>
-                <description></description>
+                <description />
                 <minimum>0</minimum>
                 <maximum>0.1</maximum>
                 <status>0x90</status>
@@ -796,7 +796,7 @@
             <output>
                 <group>[Channel2]</group>
                 <key>play</key>
-                <description></description>
+                <description />
                 <minimum>0.1</minimum>
                 <maximum>1</maximum>
                 <status>0x90</status>
@@ -807,7 +807,7 @@
             <output>
                 <group>[Channel2]</group>
                 <key>filterMidKill</key>
-                <description></description>
+                <description />
                 <minimum>0</minimum>
                 <maximum>0.1</maximum>
                 <status>0x90</status>
@@ -818,7 +818,7 @@
             <output>
                 <group>[Channel2]</group>
                 <key>cue_point</key>
-                <description></description>
+                <description />
                 <minimum>0</minimum>
                 <maximum>1</maximum>
                 <status>0x90</status>
@@ -829,7 +829,7 @@
             <output>
                 <group>[Channel1]</group>
                 <key>rate</key>
-                <description></description>
+                <description />
                 <minimum>-0.05</minimum>
                 <maximum>0.05</maximum>
                 <status>0x90</status>
@@ -840,7 +840,7 @@
             <output>
                 <group>[Channel1]</group>
                 <key>filterHighKill</key>
-                <description></description>
+                <description />
                 <minimum>0</minimum>
                 <maximum>0.1</maximum>
                 <status>0x90</status>
@@ -851,7 +851,7 @@
             <output>
                 <group>[Channel1]</group>
                 <key>play</key>
-                <description></description>
+                <description />
                 <minimum>0.1</minimum>
                 <maximum>1</maximum>
                 <status>0x90</status>
@@ -862,7 +862,7 @@
             <output>
                 <group>[Channel1]</group>
                 <key>filterMidKill</key>
-                <description></description>
+                <description />
                 <minimum>0</minimum>
                 <maximum>0.1</maximum>
                 <status>0x90</status>
@@ -873,7 +873,7 @@
             <output>
                 <group>[Channel2]</group>
                 <key>beat_active</key>
-                <description></description>
+                <description />
                 <minimum>0.1</minimum>
                 <maximum>1</maximum>
                 <status>0x90</status>
@@ -884,7 +884,7 @@
             <output>
                 <group>[Channel2]</group>
                 <key>pfl</key>
-                <description></description>
+                <description />
                 <minimum>0</minimum>
                 <maximum>0.1</maximum>
                 <status>0x90</status>
@@ -895,7 +895,7 @@
             <output>
                 <group>[Channel1]</group>
                 <key>playposition</key>
-                <description></description>
+                <description />
                 <minimum>0.75</minimum>
                 <maximum>1</maximum>
                 <status>0x90</status>
@@ -906,4 +906,3 @@
         </outputs>
     </controller>
 </MixxxMIDIPreset>
-

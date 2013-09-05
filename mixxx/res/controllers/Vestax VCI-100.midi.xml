@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<MixxxMIDIPreset schemaVersion="1" mixxxVersion="1.8.0+">
+<MixxxMIDIPreset mixxxVersion="1.8.0+" schemaVersion="1">
   <info>
     <name>Vestax VCI-100</name>
     <author>Anders Gunnarsson</author>
@@ -7,9 +6,9 @@
   </info>
   <controller id="Vestax VCI-100">
     <scriptfiles>
-       <file filename="Vestax-VCI-100-scripts.js" functionprefix="VestaxVCI100"/>
+       <file filename="Vestax-VCI-100-scripts.js" functionprefix="VestaxVCI100" />
     </scriptfiles>
-    <controls>
+    <picfiles><pic name="Vestax VCI-100.jpg" /></picfiles><controls>
       <control>
         <group>[Master]</group>
         <key>crossfader</key>
@@ -41,14 +40,14 @@
         <midino>0x1f</midino>
       </control>
 
-      <!-- Loop & Hotcues -->
+      
       <control>
         <group>[Master]</group>
         <key>VestaxVCI100.key1</key>
         <status>0x90</status>
         <midino>0x62</midino>
         <options>
-           <Script-Binding/>
+           <Script-Binding />
         </options>
       </control>
       <control>
@@ -57,7 +56,7 @@
         <status>0x80</status>
         <midino>0x62</midino>
         <options>
-           <Script-Binding/>
+           <Script-Binding />
         </options>
       </control>
       <control>
@@ -66,7 +65,7 @@
         <status>0x90</status>
         <midino>0x63</midino>
         <options>
-           <Script-Binding/>
+           <Script-Binding />
         </options>
       </control>
       <control>
@@ -75,7 +74,7 @@
         <status>0x80</status>
         <midino>0x63</midino>
         <options>
-           <Script-Binding/>
+           <Script-Binding />
         </options>
       </control>
       <control>
@@ -84,7 +83,7 @@
         <status>0x90</status>
         <midino>0x64</midino>
         <options>
-           <Script-Binding/>
+           <Script-Binding />
         </options>
       </control>
       <control>
@@ -93,7 +92,7 @@
         <status>0x80</status>
         <midino>0x64</midino>
         <options>
-           <Script-Binding/>
+           <Script-Binding />
         </options>
       </control>
 
@@ -103,7 +102,7 @@
         <status>0x90</status>
         <midino>0x65</midino>
         <options>
-           <Script-Binding/>
+           <Script-Binding />
         </options>
       </control>
       <control>
@@ -112,7 +111,7 @@
         <status>0x80</status>
         <midino>0x65</midino>
         <options>
-           <Script-Binding/>
+           <Script-Binding />
         </options>
       </control>
       <control>
@@ -121,7 +120,7 @@
         <status>0x90</status>
         <midino>0x66</midino>
         <options>
-           <Script-Binding/>
+           <Script-Binding />
         </options>
       </control>
       <control>
@@ -130,7 +129,7 @@
         <status>0x80</status>
         <midino>0x66</midino>
         <options>
-           <Script-Binding/>
+           <Script-Binding />
         </options>
       </control>
       <control>
@@ -139,7 +138,7 @@
         <status>0x90</status>
         <midino>0x67</midino>
         <options>
-           <Script-Binding/>
+           <Script-Binding />
         </options>
       </control>
       <control>
@@ -148,7 +147,7 @@
         <status>0x80</status>
         <midino>0x67</midino>
         <options>
-           <Script-Binding/>
+           <Script-Binding />
         </options>
       </control>
       <control>
@@ -157,7 +156,7 @@
         <status>0x90</status>
         <midino>0x68</midino>
         <options>
-           <Script-Binding/>
+           <Script-Binding />
         </options>
       </control>
       <control>
@@ -166,7 +165,7 @@
         <status>0x80</status>
         <midino>0x68</midino>
         <options>
-           <Script-Binding/>
+           <Script-Binding />
         </options>
       </control>
 
@@ -224,7 +223,7 @@
         <status>0xB0</status>
         <midino>0x0e</midino>
         <options>
-          <invert/>
+          <invert />
         </options>
       </control>
       <control>
@@ -233,7 +232,7 @@
         <status>0x90</status>
         <midino>0x30</midino>
         <options>
-           <Script-Binding/>
+           <Script-Binding />
         </options>
       </control>
       <control>
@@ -242,7 +241,7 @@
           <status>0xB0</status>
           <midino>0x10</midino>
           <options>
-              <Script-Binding/>
+              <Script-Binding />
           </options>
       </control>
       <control>
@@ -251,7 +250,7 @@
           <status>0xB0</status>
           <midino>0x12</midino>
           <options>
-              <Script-Binding/>
+              <Script-Binding />
           </options>
       </control>
       <control>
@@ -434,7 +433,7 @@
         <status>0xB0</status>
         <midino>0x0f</midino>
         <options>
-          <invert/>
+          <invert />
         </options>
       </control>
       <control>
@@ -443,7 +442,7 @@
          <status>0x90</status>
          <midino>0x31</midino>
          <options>
-            <Script-Binding/>
+            <Script-Binding />
          </options>
       </control>
       <control>
@@ -452,7 +451,7 @@
          <status>0xB0</status>
          <midino>0x11</midino>
          <options>
-            <Script-Binding/>
+            <Script-Binding />
          </options>
       </control>
       <control>
@@ -461,7 +460,7 @@
          <status>0xB0</status>
          <midino>0x13</midino>
          <options>
-            <Script-Binding/>
+            <Script-Binding />
          </options>
       </control>
       <control>

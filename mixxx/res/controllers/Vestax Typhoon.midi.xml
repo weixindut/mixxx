@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<MixxxMIDIPreset schemaVersion="1" mixxxVersion="1.8.0+">
+<MixxxMIDIPreset mixxxVersion="1.8.0+" schemaVersion="1">
   <info>
     <name>Vestax Typhoon</name>
     <author>Bill Good, based on the work of Anders Gunnarsson</author>
@@ -8,110 +7,110 @@
   </info>
   <controller id="Vestax Typhoon">
     <scriptfiles>
-       <file filename="Vestax-Typhoon-scripts.js" functionprefix="VestaxTyphoon"/>
+       <file filename="Vestax-Typhoon-scripts.js" functionprefix="VestaxTyphoon" />
     </scriptfiles>
-    <controls>
+    <picfiles><pic name="Vestax Typhoon.jpg" /></picfiles><controls>
       <control>
         <group>[Channel1]</group>
         <key>rate</key>
         <status>0xB0</status>
         <midino>0x0e</midino>
-        <options><Invert/></options>
+        <options><Invert /></options>
       </control>
       <control>
         <group>[Channel1]</group>
         <key>rate_temp_down</key>
         <status>0x90</status>
         <midino>0x22</midino>
-        <options/>
+        <options />
       </control>
       <control>
-        <!-- sync -->
+        
         <group>[Channel1]</group>
         <key>VestaxTyphoon.handleEvent</key>
         <status>0x90</status>
         <midino>0x46</midino>
-        <options><Script-Binding/></options>
+        <options><Script-Binding /></options>
       </control>
       <control>
         <group>[Channel1]</group>
         <key>rate_temp_up</key>
         <status>0x90</status>
         <midino>0x23</midino>
-        <options/>
+        <options />
       </control>
       <control>
         <group>[Channel1]</group>
         <key>reloop_exit</key>
         <status>0x90</status>
         <midino>0x20</midino>
-        <options/>
+        <options />
       </control>
       <control>
-        <!-- loop- -->
+        
         <group>[Channel1]</group>
         <key>VestaxTyphoon.handleEvent</key>
         <status>0x90</status>
         <midino>0x21</midino>
-        <options><Script-Binding/></options>
+        <options><Script-Binding /></options>
       </control>
       <control>
-        <!-- loop+ -->
+        
         <group>[Channel1]</group>
         <key>VestaxTyphoon.handleEvent</key>
         <status>0x90</status>
         <midino>0x42</midino>
-        <options><Script-Binding/></options>
+        <options><Script-Binding /></options>
       </control>
       <control>
         <group>[Channel1]</group>
         <key>filterLow</key>
         <status>0xB0</status>
         <midino>0x17</midino>
-        <options/>
+        <options />
       </control>
       <control>
         <group>[Channel1]</group>
         <key>filterMid</key>
         <status>0xB0</status>
         <midino>0x16</midino>
-        <options/>
+        <options />
       </control>
       <control>
         <group>[Channel1]</group>
         <key>filterHigh</key>
         <status>0xB0</status>
         <midino>0x15</midino>
-        <options/>
+        <options />
       </control>
       <control>
         <group>[Channel1]</group>
         <key>pregain</key>
         <status>0xB0</status>
         <midino>0x14</midino>
-        <options/>
+        <options />
       </control>
       <control>
-        <!-- filter -->
+        
         <group>[Channel1]</group>
         <key>VestaxTyphoon.handleEvent</key>
         <status>0x90</status>
         <midino>0x24</midino>
-        <options><Script-Binding/></options>
+        <options><Script-Binding /></options>
       </control>
       <control>
         <group>[Channel1]</group>
         <key>pfl</key>
         <status>0x90</status>
         <midino>0x25</midino>
-        <options/>
+        <options />
       </control>
       <control>
         <group>[Channel1]</group>
         <key>volume</key>
         <status>0xB0</status>
         <midino>0x0c</midino>
-        <options/>
+        <options />
       </control>
       <control>
         <group>[Channel1]</group>
@@ -120,86 +119,86 @@
         <midino>0x32</midino>
       </control>
       <control>
-        <!-- cue -->
+        
         <group>[Channel1]</group>
         <key>VestaxTyphoon.handleEvent</key>
         <status>0x90</status>
         <midino>0x35</midino>
-        <options><Script-Binding/></options>
+        <options><Script-Binding /></options>
       </control>
       <control>
-        <!-- cup -->
+        
         <group>[Channel1]</group>
         <key>VestaxTyphoon.handleEvent</key>
         <status>0x90</status>
         <midino>0x33</midino>
-        <options><Script-Binding/></options>
+        <options><Script-Binding /></options>
       </control>
       <control>
-        <!-- back -->
+        
         <group>[Channel1]</group>
         <key>VestaxTyphoon.handleEvent</key>
         <status>0x90</status>
         <midino>0x36</midino>
-        <options><Script-Binding/></options>
+        <options><Script-Binding /></options>
       </control>
       <control>
-        <!-- RR -->
+        
         <group>[Channel1]</group>
         <key>VestaxTyphoon.handleEvent</key>
         <status>0x90</status>
         <midino>0x37</midino>
-        <options><Script-Binding/></options>
+        <options><Script-Binding /></options>
       </control>
       <control>
-        <!-- FF -->
+        
         <group>[Channel1]</group>
         <key>VestaxTyphoon.handleEvent</key>
         <status>0x90</status>
         <midino>0x38</midino>
-        <options><Script-Binding/></options>
+        <options><Script-Binding /></options>
       </control>
       <control>
-        <!-- wheel touch -->
+        
         <group>[Channel1]</group>
         <key>VestaxTyphoon.handleEvent</key>
         <status>0x90</status>
         <midino>0x2e</midino>
-        <options><Script-Binding/></options>
+        <options><Script-Binding /></options>
       </control>
       <control>
-        <!-- wheel touch (filter) -->
+        
         <group>[Channel1]</group>
         <key>VestaxTyphoon.handleEvent</key>
         <status>0x90</status>
         <midino>0x2f</midino>
-        <options><Script-Binding/></options>
+        <options><Script-Binding /></options>
       </control>
       <control>
-        <!-- wheel jog -->
+        
         <group>[Channel1]</group>
         <key>VestaxTyphoon.handleEvent</key>
         <status>0xB0</status>
         <midino>0x10</midino>
-        <options><Script-Binding/></options>
+        <options><Script-Binding /></options>
       </control>
       <control>
-        <!-- wheel scratch -->
+        
         <group>[Channel1]</group>
         <key>VestaxTyphoon.handleEvent</key>
         <status>0xB0</status>
         <midino>0x11</midino>
-        <options><Script-Binding/></options>
+        <options><Script-Binding /></options>
       </control>
       <control>
-        <!-- fx1 (flanger chan 1 currently) -->
+        
         <group>[Channel1]</group>
         <key>flanger</key>
         <status>0x92</status>
         <midino>0x29</midino>
       </control>
       <control>
-        <!-- fx1 d/w (flanger depth currently) -->
+        
         <group>[Flanger]</group>
         <key>lfoDepth</key>
         <status>0xB2</status>
@@ -212,102 +211,102 @@
         <key>rate</key>
         <status>0xB1</status>
         <midino>0x0e</midino>
-        <options><Invert/></options>
+        <options><Invert /></options>
       </control>
       <control>
         <group>[Channel2]</group>
         <key>rate_temp_down</key>
         <status>0x91</status>
         <midino>0x22</midino>
-        <options/>
+        <options />
       </control>
       <control>
-        <!-- sync -->
+        
         <group>[Channel2]</group>
         <key>VestaxTyphoon.handleEvent</key>
         <status>0x91</status>
         <midino>0x46</midino>
-        <options><Script-Binding/></options>
+        <options><Script-Binding /></options>
       </control>
       <control>
         <group>[Channel2]</group>
         <key>rate_temp_up</key>
         <status>0x91</status>
         <midino>0x23</midino>
-        <options/>
+        <options />
       </control>
       <control>
         <group>[Channel2]</group>
         <key>reloop_exit</key>
         <status>0x91</status>
         <midino>0x20</midino>
-        <options/>
+        <options />
       </control>
       <control>
-        <!-- loop- -->
+        
         <group>[Channel2]</group>
         <key>VestaxTyphoon.handleEvent</key>
         <status>0x91</status>
         <midino>0x21</midino>
-        <options><Script-Binding/></options>
+        <options><Script-Binding /></options>
       </control>
       <control>
-        <!-- loop+ -->
+        
         <group>[Channel2]</group>
         <key>VestaxTyphoon.handleEvent</key>
         <status>0x91</status>
         <midino>0x42</midino>
-        <options><Script-Binding/></options>
+        <options><Script-Binding /></options>
       </control>
       <control>
         <group>[Channel2]</group>
         <key>filterLow</key>
         <status>0xB1</status>
         <midino>0x17</midino>
-        <options/>
+        <options />
       </control>
       <control>
         <group>[Channel2]</group>
         <key>filterMid</key>
         <status>0xB1</status>
         <midino>0x16</midino>
-        <options/>
+        <options />
       </control>
       <control>
         <group>[Channel2]</group>
         <key>filterHigh</key>
         <status>0xB1</status>
         <midino>0x15</midino>
-        <options/>
+        <options />
       </control>
       <control>
         <group>[Channel2]</group>
         <key>pregain</key>
         <status>0xB1</status>
         <midino>0x14</midino>
-        <options/>
+        <options />
       </control>
       <control>
-        <!-- filter -->
+        
         <group>[Channel2]</group>
         <key>VestaxTyphoon.handleEvent</key>
         <status>0x91</status>
         <midino>0x24</midino>
-        <options><Script-Binding/></options>
+        <options><Script-Binding /></options>
       </control>
       <control>
         <group>[Channel2]</group>
         <key>pfl</key>
         <status>0x91</status>
         <midino>0x25</midino>
-        <options/>
+        <options />
       </control>
       <control>
         <group>[Channel2]</group>
         <key>volume</key>
         <status>0xB1</status>
         <midino>0x0c</midino>
-        <options/>
+        <options />
       </control>
       <control>
         <group>[Channel2]</group>
@@ -316,86 +315,86 @@
         <midino>0x32</midino>
       </control>
       <control>
-        <!-- cue -->
+        
         <group>[Channel2]</group>
         <key>VestaxTyphoon.handleEvent</key>
         <status>0x91</status>
         <midino>0x35</midino>
-        <options><Script-Binding/></options>
+        <options><Script-Binding /></options>
       </control>
       <control>
-        <!-- cup -->
+        
         <group>[Channel2]</group>
         <key>VestaxTyphoon.handleEvent</key>
         <status>0x91</status>
         <midino>0x33</midino>
-        <options><Script-Binding/></options>
+        <options><Script-Binding /></options>
       </control>
       <control>
-        <!-- back -->
+        
         <group>[Channel2]</group>
         <key>VestaxTyphoon.handleEvent</key>
         <status>0x91</status>
         <midino>0x36</midino>
-        <options><Script-Binding/></options>
+        <options><Script-Binding /></options>
       </control>
       <control>
-        <!-- RR -->
+        
         <group>[Channel2]</group>
         <key>VestaxTyphoon.handleEvent</key>
         <status>0x91</status>
         <midino>0x37</midino>
-        <options><Script-Binding/></options>
+        <options><Script-Binding /></options>
       </control>
       <control>
-        <!-- FF -->
+        
         <group>[Channel2]</group>
         <key>VestaxTyphoon.handleEvent</key>
         <status>0x91</status>
         <midino>0x38</midino>
-        <options><Script-Binding/></options>
+        <options><Script-Binding /></options>
       </control>
       <control>
-        <!-- wheel touch -->
+        
         <group>[Channel2]</group>
         <key>VestaxTyphoon.handleEvent</key>
         <status>0x91</status>
         <midino>0x2e</midino>
-        <options><Script-Binding/></options>
+        <options><Script-Binding /></options>
       </control>
       <control>
-        <!-- wheel touch (filter) -->
+        
         <group>[Channel2]</group>
         <key>VestaxTyphoon.handleEvent</key>
         <status>0x91</status>
         <midino>0x2f</midino>
-        <options><Script-Binding/></options>
+        <options><Script-Binding /></options>
       </control>
       <control>
-        <!-- wheel jog -->
+        
         <group>[Channel2]</group>
         <key>VestaxTyphoon.handleEvent</key>
         <status>0xB1</status>
         <midino>0x10</midino>
-        <options><Script-Binding/></options>
+        <options><Script-Binding /></options>
       </control>
       <control>
-        <!-- wheel scratch -->
+        
         <group>[Channel2]</group>
         <key>VestaxTyphoon.handleEvent</key>
         <status>0xB1</status>
         <midino>0x11</midino>
-        <options><Script-Binding/></options>
+        <options><Script-Binding /></options>
       </control>
       <control>
-        <!-- fx2 (flanger chan 2 currently) -->
+        
         <group>[Channel2]</group>
         <key>flanger</key>
         <status>0x92</status>
         <midino>0x28</midino>
       </control>
       <control>
-        <!-- fx2 d/w (flanger period currently) -->
+        
         <group>[Flanger]</group>
         <key>lfoPeriod</key>
         <status>0xB2</status>
@@ -403,13 +402,13 @@
       </control>
 
 
-      <!-- channel >1: common controls -->
+      
       <control>
         <group>[Playlist]</group>
         <key>VestaxTyphoon.handleEvent</key>
         <status>0x92</status>
         <midino>0x26</midino>
-        <options><Script-Binding/></options>
+        <options><Script-Binding /></options>
       </control>
       <control>
         <group>[Playlist]</group>
@@ -446,7 +445,7 @@
     </controls>
 
 
-    <!-- LEDs below -->
+    
     <outputs>
       <output>
         <group>[Channel1]</group>
@@ -520,7 +519,7 @@
         <minimum>0.1</minimum>
       </output>
 
-      <!-- channel 2 -->
+      
       <output>
         <group>[Channel2]</group>
         <key>play</key>

@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<MixxxMIDIPreset schemaVersion="1" mixxxVersion="1.8.0+">
+<MixxxMIDIPreset mixxxVersion="1.8.0+" schemaVersion="1">
   <info>
     <name>Hercules DJ Control MP3 e2</name>
     <author>Gianfe</author>
@@ -7,16 +6,16 @@
   </info>
   <controller id="Hercules DJ Control MP3 e2" port="">
     <scriptfiles>
-      <file filename="Hercules DJ Control MP3 e2-scripts.js" functionprefix="HerculesMP3e2"/>
+      <file filename="Hercules DJ Control MP3 e2-scripts.js" functionprefix="HerculesMP3e2" />
     </scriptfiles>
-    <controls>
+    <picfiles><pic name="Hercules DJ Control MP3 e2.jpg" /></picfiles><controls>
       <control>
         <status>0x90</status>
         <midino>0x2E</midino>
         <group>[Channel1]</group>
         <key>HerculesMP3e2.automix</key>
         <options>
-          <Script-Binding/>
+          <Script-Binding />
         </options>
       </control>
       <control>
@@ -25,7 +24,7 @@
         <group>[Channel1]</group>
         <key>HerculesMP3e2.scratch</key>
         <options>
-          <Script-Binding/>
+          <Script-Binding />
         </options>
       </control>
       <control>
@@ -34,7 +33,7 @@
         <group>[Channel1]</group>
         <key>HerculesMP3e2.keyButton</key>
         <options>
-          <Script-Binding/>
+          <Script-Binding />
         </options>
       </control>
       <control>
@@ -43,7 +42,7 @@
         <group>[Channel1]</group>
         <key>HerculesMP3e2.keyButton</key>
         <options>
-          <Script-Binding/>
+          <Script-Binding />
         </options>
       </control>
       <control>
@@ -52,7 +51,7 @@
         <group>[Channel1]</group>
         <key>HerculesMP3e2.keyButton</key>
         <options>
-          <Script-Binding/>
+          <Script-Binding />
         </options>
       </control>
       <control>
@@ -61,7 +60,7 @@
         <group>[Channel1]</group>
         <key>HerculesMP3e2.keyButton</key>
         <options>
-          <Script-Binding/>
+          <Script-Binding />
         </options>
       </control>
       <control>
@@ -70,7 +69,7 @@
         <group>[Channel1]</group>
         <key>HerculesMP3e2.keyButton</key>
         <options>
-          <Script-Binding/>
+          <Script-Binding />
         </options>
       </control>
       <control>
@@ -79,7 +78,7 @@
         <group>[Channel1]</group>
         <key>HerculesMP3e2.keyButton</key>
         <options>
-          <Script-Binding/>
+          <Script-Binding />
         </options>
       </control>
       <control>
@@ -88,7 +87,7 @@
         <group>[Channel1]</group>
         <key>HerculesMP3e2.keyButton</key>
         <options>
-          <Script-Binding/>
+          <Script-Binding />
         </options>
       </control>
       <control>
@@ -97,7 +96,7 @@
         <group>[Channel1]</group>
         <key>HerculesMP3e2.keyButton</key>
         <options>
-          <Script-Binding/>
+          <Script-Binding />
         </options>
       </control>
       <control>
@@ -106,7 +105,7 @@
         <group>[Channel2]</group>
         <key>HerculesMP3e2.keyButton</key>
         <options>
-          <Script-Binding/>
+          <Script-Binding />
         </options>
       </control>
       <control>
@@ -115,7 +114,7 @@
         <group>[Channel2]</group>
         <key>HerculesMP3e2.keyButton</key>
         <options>
-          <Script-Binding/>
+          <Script-Binding />
         </options>
       </control>
       <control>
@@ -124,7 +123,7 @@
         <group>[Channel2]</group>
         <key>HerculesMP3e2.keyButton</key>
         <options>
-          <Script-Binding/>
+          <Script-Binding />
         </options>
       </control>
       <control>
@@ -133,7 +132,7 @@
         <group>[Channel2]</group>
         <key>HerculesMP3e2.keyButton</key>
         <options>
-          <Script-Binding/>
+          <Script-Binding />
         </options>
       </control>
       <control>
@@ -142,7 +141,7 @@
         <group>[Channel2]</group>
         <key>HerculesMP3e2.keyButton</key>
         <options>
-          <Script-Binding/>
+          <Script-Binding />
         </options>
       </control>
       <control>
@@ -151,7 +150,7 @@
         <group>[Channel2]</group>
         <key>HerculesMP3e2.keyButton</key>
         <options>
-          <Script-Binding/>
+          <Script-Binding />
         </options>
       </control>
       <control>
@@ -160,7 +159,7 @@
         <group>[Channel2]</group>
         <key>HerculesMP3e2.keyButton</key>
         <options>
-          <Script-Binding/>
+          <Script-Binding />
         </options>
       </control>
       <control>
@@ -169,7 +168,7 @@
         <group>[Channel2]</group>
         <key>HerculesMP3e2.keyButton</key>
         <options>
-          <Script-Binding/>
+          <Script-Binding />
         </options>
       </control>
       <control>
@@ -178,7 +177,7 @@
         <group>[Channel1]</group>
         <key>HerculesMP3e2.jogWheel</key>
         <options>
-          <Script-Binding/>
+          <Script-Binding />
         </options>
       </control>
       <control>
@@ -187,7 +186,7 @@
         <group>[Channel2]</group>
         <key>HerculesMP3e2.jogWheel</key>
         <options>
-          <Script-Binding/>
+          <Script-Binding />
         </options>
       </control>
       <control>
@@ -196,7 +195,7 @@
         <group>[Playlist]</group>
         <key>HerculesMP3e2.scroll</key>
         <options>
-          <Script-Binding/>
+          <Script-Binding />
         </options>
       </control>
       <control>
@@ -205,7 +204,7 @@
         <group>[Playlist]</group>
         <key>HerculesMP3e2.scroll</key>
         <options>
-          <Script-Binding/>
+          <Script-Binding />
         </options>
       </control>
       <control>
@@ -214,7 +213,7 @@
         <group>[Channel1]</group>
         <key>HerculesMP3e2.pitch</key>
         <options>
-          <Script-Binding/>
+          <Script-Binding />
         </options>
       </control>
       <control>
@@ -223,7 +222,7 @@
         <group>[Channel2]</group>
         <key>HerculesMP3e2.pitch</key>
         <options>
-          <Script-Binding/>
+          <Script-Binding />
         </options>
       </control>
       <control>
@@ -232,7 +231,7 @@
         <group>[Channel1]</group>
         <key>HerculesMP3e2.pitchbend</key>
         <options>
-          <Script-Binding/>
+          <Script-Binding />
         </options>
       </control>
       <control>
@@ -241,7 +240,7 @@
         <group>[Channel2]</group>
         <key>HerculesMP3e2.pitchbend</key>
         <options>
-          <Script-Binding/>
+          <Script-Binding />
         </options>
       </control>
       <control>
@@ -250,7 +249,7 @@
         <group>[Channel1]</group>
         <key>HerculesMP3e2.pitchbend</key>
         <options>
-          <Script-Binding/>
+          <Script-Binding />
         </options>
       </control>
       <control>
@@ -259,7 +258,7 @@
         <group>[Channel2]</group>
         <key>HerculesMP3e2.pitchbend</key>
         <options>
-          <Script-Binding/>
+          <Script-Binding />
         </options>
       </control>
       <control>
@@ -268,7 +267,7 @@
         <group>[Channel1]</group>
         <key>volume</key>
         <options>
-          <normal/>
+          <normal />
         </options>
       </control>
       <control>
@@ -277,7 +276,7 @@
         <group>[Channel1]</group>
         <key>filterHigh</key>
         <options>
-          <normal/>
+          <normal />
         </options>
       </control>
       <control>
@@ -286,7 +285,7 @@
         <group>[Channel1]</group>
         <key>filterMid</key>
         <options>
-          <normal/>
+          <normal />
         </options>
       </control>
       <control>
@@ -295,7 +294,7 @@
         <group>[Channel1]</group>
         <key>HerculesMP3e2.cue</key>
         <options>
-          <Script-Binding/>
+          <Script-Binding />
         </options>
       </control>
       <control>
@@ -304,7 +303,7 @@
         <group>[Channel1]</group>
         <key>filterLow</key>
         <options>
-          <normal/>
+          <normal />
         </options>
       </control>
       <control>
@@ -313,7 +312,7 @@
         <group>[Channel1]</group>
         <key>play</key>
         <options>
-          <Button/>
+          <Button />
         </options>
       </control>
       <control>
@@ -322,7 +321,7 @@
         <group>[Master]</group>
         <key>crossfader</key>
         <options>
-          <normal/>
+          <normal />
         </options>
       </control>
       <control>
@@ -331,7 +330,7 @@
         <group>[Channel2]</group>
         <key>volume</key>
         <options>
-          <normal/>
+          <normal />
         </options>
       </control>
       <control>
@@ -340,7 +339,7 @@
         <group>[Channel2]</group>
         <key>filterHigh</key>
         <options>
-          <normal/>
+          <normal />
         </options>
       </control>
       <control>
@@ -349,7 +348,7 @@
         <group>[Channel2]</group>
         <key>filterMid</key>
         <options>
-          <normal/>
+          <normal />
         </options>
       </control>
       <control>
@@ -358,7 +357,7 @@
         <group>[Channel2]</group>
         <key>filterLow</key>
         <options>
-          <normal/>
+          <normal />
         </options>
       </control>
       <control>
@@ -367,7 +366,7 @@
         <group>[Channel1]</group>
         <key>back</key>
         <options>
-          <Button/>
+          <Button />
         </options>
       </control>
       <control>
@@ -376,7 +375,7 @@
         <group>[Channel1]</group>
         <key>fwd</key>
         <options>
-          <Button/>
+          <Button />
         </options>
       </control>
       <control>
@@ -385,7 +384,7 @@
         <group>[Channel2]</group>
         <key>HerculesMP3e2.cue</key>
         <options>
-          <Script-Binding/>
+          <Script-Binding />
         </options>
       </control>
       <control>
@@ -394,7 +393,7 @@
         <group>[Channel1]</group>
         <key>HerculesMP3e2.sync</key>
         <options>
-          <Script-Binding/>
+          <Script-Binding />
         </options>
       </control>
       <control>
@@ -403,7 +402,7 @@
         <group>[Channel2]</group>
         <key>HerculesMP3e2.sync</key>
         <options>
-          <Script-Binding/>
+          <Script-Binding />
         </options>
       </control>
       <control>
@@ -412,7 +411,7 @@
         <group>[Channel1]</group>
         <key>pfl</key>
         <options>
-          <Button/>
+          <Button />
         </options>
       </control>
       <control>
@@ -421,7 +420,7 @@
         <group>[Channel1]</group>
         <key>HerculesMP3e2.loadTrack</key>
         <options>
-          <Script-Binding/>
+          <Script-Binding />
         </options>
       </control>
       <control>
@@ -430,7 +429,7 @@
         <group>[Channel2]</group>
         <key>HerculesMP3e2.loadTrack</key>
         <options>
-          <Script-Binding/>
+          <Script-Binding />
         </options>
       </control>
       <control>
@@ -439,7 +438,7 @@
         <group>[Channel1]</group>
         <key>HerculesMP3e2.masterTempo</key>
         <options>
-          <Script-Binding/>
+          <Script-Binding />
         </options>
       </control>
 		<control>
@@ -448,7 +447,7 @@
         <group>[Channel2]</group>
         <key>HerculesMP3e2.masterTempo</key>
         <options>
-          <Script-Binding/>
+          <Script-Binding />
         </options>
       </control>
       <control>
@@ -457,7 +456,7 @@
         <group>[Channel2]</group>
         <key>back</key>
         <options>
-          <Button/>
+          <Button />
         </options>
       </control>
       <control>
@@ -466,7 +465,7 @@
         <group>[Channel2]</group>
         <key>fwd</key>
         <options>
-          <Button/>
+          <Button />
         </options>
       </control>
       <control>
@@ -475,7 +474,7 @@
         <group>[Channel2]</group>
         <key>play</key>
         <options>
-          <Button/>
+          <Button />
         </options>
       </control>
       <control>
@@ -484,7 +483,7 @@
         <group>[Channel2]</group>
         <key>pfl</key>
         <options>
-          <Button/>
+          <Button />
         </options>
       </control>
 
@@ -494,7 +493,7 @@
         <group>[Playlist]</group>
         <key>SelectPrevTrack</key>
         <options>
-          <Button/>
+          <Button />
         </options>
       </control>
       <control>
@@ -503,11 +502,11 @@
         <group>[Playlist]</group>
         <key>SelectNextTrack</key>
         <options>
-          <Button/>
+          <Button />
         </options>
       </control>
     </controls>
-    <!-- LEDs CONFIGURATION -->
+    
     <outputs>
       <output>
         <group>[Channel1]</group>
@@ -661,22 +660,7 @@
         <minimum>0.5</minimum>
         <maximum>1</maximum>
       </output>
-      <!--<output>
-        <group>[Channel1]</group>
-        <key>playposition</key>
-        <status>0x90</status>
-        <midino>0x3F</midino>
-        <minimum>0.8</minimum>
-        <maximum>0.99</maximum>
-      </output>
-      <output>
-        <group>[Channel2]</group>
-        <key>playposition</key>
-        <status>0x90</status>
-        <midino>0x53</midino>
-        <minimum>0.8</minimum>
-        <maximum>0.99</maximum>
-      </output> -->
+      
     </outputs>
   </controller>
 </MixxxMIDIPreset>

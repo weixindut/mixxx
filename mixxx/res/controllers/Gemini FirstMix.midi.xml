@@ -6,17 +6,17 @@
     </info>
     <controller id=" firstmix  ">
         <scriptfiles>
-            <file functionprefix="firstmix" filename="Gemini-FirstMix-scripts.js"/>
+            <file filename="Gemini-FirstMix-scripts.js" functionprefix="firstmix" />
         </scriptfiles>
-        <controls>
+        <picfiles><pic name="Gemini FirstMix.jpg" /></picfiles><controls>
             <control>
                 <status>0x80</status>
                 <midino>0x42</midino>
                 <group>[Channel2]</group>
                 <key>cue_default</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -24,9 +24,9 @@
                 <midino>0x3b</midino>
                 <group>[Channel1]</group>
                 <key>cue_default</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -34,9 +34,9 @@
                 <midino>0x3c</midino>
                 <group>[Channel2]</group>
                 <key>beatsync</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -44,9 +44,9 @@
                 <midino>0x47</midino>
                 <group>[Channel2]</group>
                 <key>reverse</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -54,9 +54,9 @@
                 <midino>0x40</midino>
                 <group>[Channel1]</group>
                 <key>reverse</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -64,9 +64,9 @@
                 <midino>0x4a</midino>
                 <group>[Channel1]</group>
                 <key>play</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -74,9 +74,9 @@
                 <midino>0x42</midino>
                 <group>[Channel2]</group>
                 <key>cue_default</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -84,9 +84,9 @@
                 <midino>0x43</midino>
                 <group>[Channel1]</group>
                 <key>firstmix.pfl</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -94,9 +94,9 @@
                 <midino>0x4c</midino>
                 <group>[Channel2]</group>
                 <key>play</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -104,9 +104,9 @@
                 <midino>0x45</midino>
                 <group>[Channel2]</group>
                 <key>pfl</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -114,9 +114,9 @@
                 <midino>0x47</midino>
                 <group>[Channel2]</group>
                 <key>reverse</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -124,9 +124,9 @@
                 <midino>0x48</midino>
                 <group>[Channel1]</group>
                 <key>firstmix.scratch</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -134,9 +134,9 @@
                 <midino>0x4a</midino>
                 <group>[Channel1]</group>
                 <key>play</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -144,9 +144,9 @@
                 <midino>0x4b</midino>
                 <group>[Channel1]</group>
                 <key>LoadSelectedTrack</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -154,9 +154,9 @@
                 <midino>0x4c</midino>
                 <group>[Channel2]</group>
                 <key>play</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -164,9 +164,9 @@
                 <midino>0x4d</midino>
                 <group>[Channel1]</group>
                 <key>firstmix.wheelTouch</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -174,9 +174,9 @@
                 <midino>0x4e</midino>
                 <group>[Channel2]</group>
                 <key>firstmix.wheelTouch</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -184,9 +184,9 @@
                 <midino>0x4f</midino>
                 <group>[Playlist]</group>
                 <key>LoadSelectedIntoFirstStopped</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -194,9 +194,9 @@
                 <midino>0xd</midino>
                 <group>[Sample1]</group>
                 <key>firstmix.preview</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -204,9 +204,9 @@
                 <midino>0x8</midino>
                 <group>[Channel1]</group>
                 <key>filterHigh</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -214,9 +214,9 @@
                 <midino>0x9</midino>
                 <group>[Channel2]</group>
                 <key>filterHigh</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -224,9 +224,9 @@
                 <midino>0xa</midino>
                 <group>[Master]</group>
                 <key>crossfader</key>
-                <description></description>
+                <description />
                 <options>
-                    <invert/>
+                    <invert />
                 </options>
             </control>
             <control>
@@ -234,9 +234,9 @@
                 <midino>0x10</midino>
                 <group>[Channel1]</group>
                 <key>filterMid</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -244,9 +244,9 @@
                 <midino>0x11</midino>
                 <group>[Channel2]</group>
                 <key>filterMid</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -254,9 +254,9 @@
                 <midino>0x14</midino>
                 <group>[Channel1]</group>
                 <key>filterLow</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -264,9 +264,9 @@
                 <midino>0x15</midino>
                 <group>[Channel2]</group>
                 <key>filterLow</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -274,9 +274,9 @@
                 <midino>0x16</midino>
                 <group>[Channel1]</group>
                 <key>pregain</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -284,9 +284,9 @@
                 <midino>0x17</midino>
                 <group>[Master]</group>
                 <key>headMix</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -294,9 +294,9 @@
                 <midino>0x18</midino>
                 <group>[Channel2]</group>
                 <key>firstmix.jogWheel</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -304,9 +304,9 @@
                 <midino>0x33</midino>
                 <group>[Channel1]</group>
                 <key>beatsync</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -314,9 +314,9 @@
                 <midino>0x19</midino>
                 <group>[Channel1]</group>
                 <key>firstmix.jogWheel</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -324,9 +324,9 @@
                 <midino>0x1a</midino>
                 <group>[Playlist]</group>
                 <key>SelectTrackKnob</key>
-                <description></description>
+                <description />
                 <options>
-                    <selectknob/>
+                    <selectknob />
                 </options>
             </control>
             <control>
@@ -334,9 +334,9 @@
                 <midino>0x1c</midino>
                 <group>[Channel2]</group>
                 <key>pregain</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -344,9 +344,9 @@
                 <midino>0x3b</midino>
                 <group>[Channel1]</group>
                 <key>cue_default</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -354,9 +354,9 @@
                 <midino>0x3c</midino>
                 <group>[Channel2]</group>
                 <key>beatsync</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -364,9 +364,9 @@
                 <midino>0x33</midino>
                 <group>[Channel1]</group>
                 <key>beatsync</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -374,9 +374,9 @@
                 <midino>0x34</midino>
                 <group>[Channel2]</group>
                 <key>LoadSelectedTrack</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -384,9 +384,9 @@
                 <midino>0x35</midino>
                 <group>[Channel2]</group>
                 <key>firstmix.scratch</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -394,12 +394,12 @@
                 <midino>0x40</midino>
                 <group>[Channel1]</group>
                 <key>reverse</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
         </controls>
-        <outputs/>
+        <outputs />
     </controller>
 </MixxxMIDIPreset>

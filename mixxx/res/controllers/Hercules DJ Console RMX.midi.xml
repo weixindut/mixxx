@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<MixxxMIDIPreset schemaVersion="1" mixxxVersion="1.9.0">
+<MixxxMIDIPreset mixxxVersion="1.9.0" schemaVersion="1">
     <info>
         <name>Hercules DJ Console RMX</name>
         <author>Anders Gunnarsson</author>
@@ -7,29 +6,29 @@
     </info>
     <controller id="Hercules DJ Console RMX MIDI">
         <scriptfiles>
-            <file filename="Hercules-DJ-Console-RMX-scripts.js" functionprefix="HerculesRMX"/>
+            <file filename="Hercules-DJ-Console-RMX-scripts.js" functionprefix="HerculesRMX" />
         </scriptfiles>
-        <controls>
-<!-- TODO: Organization and cleanup -->
-<!-- Headphone Cue/Mix POTS Control -->
+        <picfiles><pic name="Hercules DJ Console RMX.jpg" /></picfiles><controls>
+
+
                <control>
                    <status>0xB0</status>
                    <midino>0x3A</midino>
                    <group>[Master]</group>
                    <key>HerculesRMX.headPhoneMix</key>
                    <options>
-                       <Script-Binding/>
+                       <Script-Binding />
                    </options>
                </control>
 
-<!-- Jog Wheels -->
+
             <control>
                 <group>[Channel1]</group>
                 <key>HerculesRMX.jog_wheel</key>
                 <status>0xB0</status>
                 <midino>0x2F</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
 
@@ -39,11 +38,11 @@
                 <status>0xB0</status>
                 <midino>0x30</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
 
-<!-- Play and CuePlay -->
+
             <control>
                 <group>[Channel1]</group>
                 <key>cue_default</key>
@@ -59,7 +58,7 @@
                 <status>0xB0</status>
                 <midino>0x24</midino>
                 <options>
-                    <Button/>
+                    <Button />
                 </options>
             </control>
 
@@ -83,14 +82,14 @@
             </control>
 
 
-<!-- Load Deck A/B -->
+
             <control>
                 <group>[Channel1]</group>
                 <key>HerculesRMX.load</key>
                 <status>0xB0</status>
                 <midino>0x12</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
 
@@ -100,18 +99,18 @@
                 <status>0xB0</status>
                 <midino>0x16</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
 
-<!-- Stop and Reset button -->
+
             <control>
                 <group>[Channel1]</group>
                 <key>HerculesRMX.stop</key>
                 <status>0xB0</status>
                 <midino>0x0D</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
 
@@ -121,18 +120,18 @@
                 <status>0xB0</status>
                 <midino>0x25</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
 
-<!-- Flanger -->
+
             <control>
                 <group>[Channel1]</group>
                 <key>flanger</key>
                 <status>0xB0</status>
                 <midino>0x01</midino>
                 <options>
-                    <Button/>
+                    <Button />
                 </options>
             </control>
 
@@ -142,7 +141,7 @@
                 <status>0xB0</status>
                 <midino>0x19</midino>
                 <options>
-                    <Button/>
+                    <Button />
                 </options>
             </control>
 
@@ -152,7 +151,7 @@
                 <status>0xB0</status>
                 <midino>0x39</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
             <control>
@@ -161,7 +160,7 @@
                 <status>0xB0</status>
                 <midino>0x37</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
             <control>
@@ -170,7 +169,7 @@
                 <status>0xB0</status>
                 <midino>0x09</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
             <control>
@@ -179,7 +178,7 @@
                 <status>0xB0</status>
                 <midino>0x0A</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
             <control>
@@ -188,7 +187,7 @@
                 <status>0xB0</status>
                 <midino>0x32</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
             <control>
@@ -197,7 +196,7 @@
                 <status>0xB0</status>
                 <midino>0x31</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
             <control>
@@ -206,7 +205,7 @@
                 <status>0xB0</status>
                 <midino>0x38</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
             <control>
@@ -215,7 +214,7 @@
                 <status>0xB0</status>
                 <midino>0x14</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
             <control>
@@ -224,7 +223,7 @@
                 <status>0xB0</status>
                 <midino>0x36</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
             <control>
@@ -233,7 +232,7 @@
                 <status>0xB0</status>
                 <midino>0x35</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
             <control>
@@ -242,7 +241,7 @@
                 <status>0xB0</status>
                 <midino>0x34</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
             <control>
@@ -251,7 +250,7 @@
                 <status>0xB0</status>
                 <midino>0x10</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
             <control>
@@ -260,7 +259,7 @@
                 <status>0xB0</status>
                 <midino>0x0F</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
             <control>
@@ -269,7 +268,7 @@
                 <status>0xB0</status>
                 <midino>0x0E</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
             <control>
@@ -278,7 +277,7 @@
                 <status>0xB0</status>
                 <midino>0x21</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
             <control>
@@ -287,7 +286,7 @@
                 <status>0xB0</status>
                 <midino>0x22</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
             <control>
@@ -296,7 +295,7 @@
                 <status>0xB0</status>
                 <midino>0x3C</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
             <control>
@@ -305,7 +304,7 @@
                 <status>0xB0</status>
                 <midino>0x3B</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
             <control>
@@ -314,7 +313,7 @@
                 <status>0xB0</status>
                 <midino>0x18</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
             <control>
@@ -323,7 +322,7 @@
                 <status>0xB0</status>
                 <midino>0x40</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
             <control>
@@ -332,7 +331,7 @@
                 <status>0xB0</status>
                 <midino>0x3F</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
             <control>
@@ -341,7 +340,7 @@
                 <status>0xB0</status>
                 <midino>0x3E</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
             <control>
@@ -350,7 +349,7 @@
                 <status>0xB0</status>
                 <midino>0x28</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
             <control>
@@ -359,7 +358,7 @@
                 <status>0xB0</status>
                 <midino>0x27</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
             <control>
@@ -368,17 +367,17 @@
                 <status>0xB0</status>
                 <midino>0x26</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
-<!-- A/B Gain  -->
+
             <control>
                 <group>[Channel1]</group>
                 <key>HerculesRMX.gain</key>
                 <status>0xB0</status>
                 <midino>0x33</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
             <control>
@@ -387,17 +386,17 @@
                 <status>0xB0</status>
                 <midino>0x3D</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
-<!-- Sync Buttons -->
+
             <control>
                 <group>[Channel1]</group>
                 <key>HerculesRMX.beatSync</key>
                 <status>0xB0</status>
                 <midino>0x07</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
             <control>
@@ -406,7 +405,7 @@
                 <status>0xB0</status>
                 <midino>0x1F</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
             <control>
@@ -415,7 +414,7 @@
                 <status>0xB0</status>
                 <midino>0x11</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
             <control>
@@ -424,7 +423,7 @@
                 <status>0xB0</status>
                 <midino>0x20</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
             <control>
@@ -451,7 +450,7 @@
                 <status>0xB0</status>
                 <midino>0x29</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
             <control>
@@ -460,7 +459,7 @@
                 <status>0xB0</status>
                 <midino>0x2A</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
             <control>
@@ -469,7 +468,7 @@
                 <status>0xB0</status>
                 <midino>0x2B</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
             <control>
@@ -478,7 +477,7 @@
                 <status>0xB0</status>
                 <midino>0x2C</midino>
                 <options>
-                    <Script-Binding/>
+                    <Script-Binding />
                 </options>
             </control>
             <control>
@@ -487,7 +486,7 @@
                 <status>0xB0</status>
                 <midino>0x2D</midino>
                 <options>
-                   <Script-Binding/>
+                   <Script-Binding />
                 </options>
             </control>
             <control>
@@ -496,7 +495,7 @@
                 <status>0xB0</status>
                 <midino>0x04</midino>
                 <options>
-                    <Button/>
+                    <Button />
                 </options>
             </control>
             <control>
@@ -505,7 +504,7 @@
                 <status>0xB0</status>
                 <midino>0x1C</midino>
                 <options>
-                    <Button/>
+                    <Button />
                 </options>
             </control>
     </controls>
@@ -555,7 +554,7 @@
         <maximum>0.99</maximum>
       </output>
 
-<!-- Headphone Cue -->
+
 		<output>
 		    <group>[Channel1]</group>
 		    <key>pfl</key>

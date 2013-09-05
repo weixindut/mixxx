@@ -7,17 +7,17 @@
     </info>
     <controller id="VMS2 AUDIO MIDI Device MIDI 1">
         <scriptfiles>
-            <file functionprefix="VMS4" filename="American-Audio-VMS4-scripts.js"/>
+            <file filename="American-Audio-VMS4-scripts.js" functionprefix="VMS4" />
         </scriptfiles>
-        <controls>
+        <picfiles><pic name="American Audio VMS2.jpg" /></picfiles><controls>
             <control>
                 <status>0xb0</status>
                 <midino>0x31</midino>
                 <group>[Channel1]</group>
                 <key>VMS4.jog_move_msb</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -25,9 +25,9 @@
                 <midino>0x11</midino>
                 <group>[Channel1]</group>
                 <key>beatsync</key>
-                <description></description>
+                <description />
                 <options>
-                    <button/>
+                    <button />
                 </options>
             </control>
             <control>
@@ -35,9 +35,9 @@
                 <midino>0x32</midino>
                 <group>[Channel2]</group>
                 <key>VMS4.jog_move_lsb</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -45,9 +45,9 @@
                 <midino>0x12</midino>
                 <group>[Channel1]</group>
                 <key>VMS4.hotCue</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -55,9 +55,9 @@
                 <midino>0x33</midino>
                 <group>[Channel2]</group>
                 <key>VMS4.jog_move_msb</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -65,9 +65,9 @@
                 <midino>0x13</midino>
                 <group>[Channel1]</group>
                 <key>VMS4.hotCue</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -75,9 +75,9 @@
                 <midino>0x14</midino>
                 <group>[Channel1]</group>
                 <key>VMS4.hotCue</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -85,9 +85,9 @@
                 <midino>0x15</midino>
                 <group>[Channel1]</group>
                 <key>VMS4.hotCue</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -95,9 +95,9 @@
                 <midino>0x16</midino>
                 <group>[Channel1]</group>
                 <key>VMS4.rate_range</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -105,9 +105,9 @@
                 <midino>0x17</midino>
                 <group>[Channel1]</group>
                 <key>VMS4.hotCue</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -115,9 +115,9 @@
                 <midino>0x18</midino>
                 <group>[Channel1]</group>
                 <key>VMS4.hotCue</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -125,9 +125,9 @@
                 <midino>0x19</midino>
                 <group>[Channel1]</group>
                 <key>VMS4.hotCue</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -135,9 +135,9 @@
                 <midino>0x1a</midino>
                 <group>[Channel1]</group>
                 <key>VMS4.hotCue</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -145,9 +145,9 @@
                 <midino>0x1b</midino>
                 <group>[Channel1]</group>
                 <key>flanger</key>
-                <description></description>
+                <description />
                 <options>
-                    <button/>
+                    <button />
                 </options>
             </control>
             <control>
@@ -155,9 +155,9 @@
                 <midino>0xd</midino>
                 <group>[Channel1]</group>
                 <key>VMS4.play</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -165,9 +165,9 @@
                 <midino>0xc</midino>
                 <group>[Channel1]</group>
                 <key>VMS4.cue</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -175,9 +175,9 @@
                 <midino>0x1d</midino>
                 <group>[Sampler1]</group>
                 <key>start_stop</key>
-                <description></description>
+                <description />
                 <options>
-                    <button/>
+                    <button />
                 </options>
             </control>
             <control>
@@ -185,9 +185,9 @@
                 <midino>0xd</midino>
                 <group>[Channel1]</group>
                 <key>VMS4.play</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -195,9 +195,9 @@
                 <midino>0x1d</midino>
                 <group>[Sampler1]</group>
                 <key>start_play</key>
-                <description></description>
+                <description />
                 <options>
-                    <button/>
+                    <button />
                 </options>
             </control>
             <control>
@@ -205,9 +205,9 @@
                 <midino>0xe</midino>
                 <group>[Channel1]</group>
                 <key>VMS4.pause</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -215,9 +215,9 @@
                 <midino>0xf</midino>
                 <group>[Channel1]</group>
                 <key>rate_temp_down</key>
-                <description></description>
+                <description />
                 <options>
-                    <spread64/>
+                    <spread64 />
                 </options>
             </control>
             <control>
@@ -225,9 +225,9 @@
                 <midino>0x1f</midino>
                 <group>[Channel1]</group>
                 <key>loop_in</key>
-                <description></description>
+                <description />
                 <options>
-                    <button/>
+                    <button />
                 </options>
             </control>
             <control>
@@ -235,9 +235,9 @@
                 <midino>0x10</midino>
                 <group>[Channel1]</group>
                 <key>rate_temp_up</key>
-                <description></description>
+                <description />
                 <options>
-                    <spread64/>
+                    <spread64 />
                 </options>
             </control>
             <control>
@@ -245,9 +245,9 @@
                 <midino>0x20</midino>
                 <group>[Channel1]</group>
                 <key>loop_out</key>
-                <description></description>
+                <description />
                 <options>
-                    <button/>
+                    <button />
                 </options>
             </control>
             <control>
@@ -255,9 +255,9 @@
                 <midino>0x11</midino>
                 <group>[Channel1]</group>
                 <key>beatsync</key>
-                <description></description>
+                <description />
                 <options>
-                    <spread64/>
+                    <spread64 />
                 </options>
             </control>
             <control>
@@ -265,9 +265,9 @@
                 <midino>0x21</midino>
                 <group>[Channel1]</group>
                 <key>reloop_exit</key>
-                <description></description>
+                <description />
                 <options>
-                    <button/>
+                    <button />
                 </options>
             </control>
             <control>
@@ -275,9 +275,9 @@
                 <midino>0x12</midino>
                 <group>[Channel1]</group>
                 <key>VMS4.hotCue</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -285,9 +285,9 @@
                 <midino>0x22</midino>
                 <group>[Channel1]</group>
                 <key>beatloop_4</key>
-                <description></description>
+                <description />
                 <options>
-                    <button/>
+                    <button />
                 </options>
             </control>
             <control>
@@ -295,9 +295,9 @@
                 <midino>0x13</midino>
                 <group>[Channel1]</group>
                 <key>VMS4.hotCue</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -305,9 +305,9 @@
                 <midino>0x14</midino>
                 <group>[Channel1]</group>
                 <key>VMS4.hotCue</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -315,9 +315,9 @@
                 <midino>0x15</midino>
                 <group>[Channel1]</group>
                 <key>VMS4.hotCue</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -325,9 +325,9 @@
                 <midino>0x16</midino>
                 <group>[Channel1]</group>
                 <key>VMS4.rate_range</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -335,9 +335,9 @@
                 <midino>0x27</midino>
                 <group>[Channel1]</group>
                 <key>VMS4.keylock</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -345,9 +345,9 @@
                 <midino>0x26</midino>
                 <group>[Channel1]</group>
                 <key>quantize</key>
-                <description></description>
+                <description />
                 <options>
-                    <button/>
+                    <button />
                 </options>
             </control>
             <control>
@@ -355,9 +355,9 @@
                 <midino>0x17</midino>
                 <group>[Channel1]</group>
                 <key>VMS4.hotCue</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -365,9 +365,9 @@
                 <midino>0x28</midino>
                 <group>[Channel1]</group>
                 <key>loop_halve</key>
-                <description></description>
+                <description />
                 <options>
-                    <button/>
+                    <button />
                 </options>
             </control>
             <control>
@@ -375,9 +375,9 @@
                 <midino>0x27</midino>
                 <group>[Channel1]</group>
                 <key>VMS4.vinyl</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -385,9 +385,9 @@
                 <midino>0x18</midino>
                 <group>[Channel1]</group>
                 <key>VMS4.hotCue</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -395,9 +395,9 @@
                 <midino>0x29</midino>
                 <group>[Channel1]</group>
                 <key>loop_double</key>
-                <description></description>
+                <description />
                 <options>
-                    <button/>
+                    <button />
                 </options>
             </control>
             <control>
@@ -405,9 +405,9 @@
                 <midino>0x28</midino>
                 <group>[Channel1]</group>
                 <key>back</key>
-                <description></description>
+                <description />
                 <options>
-                    <button/>
+                    <button />
                 </options>
             </control>
             <control>
@@ -415,9 +415,9 @@
                 <midino>0x19</midino>
                 <group>[Channel1]</group>
                 <key>VMS4.hotCue</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -425,9 +425,9 @@
                 <midino>0x29</midino>
                 <group>[Channel1]</group>
                 <key>fwd</key>
-                <description></description>
+                <description />
                 <options>
-                    <button/>
+                    <button />
                 </options>
             </control>
             <control>
@@ -435,9 +435,9 @@
                 <midino>0x1a</midino>
                 <group>[Channel1]</group>
                 <key>VMS4.hotCue</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -445,9 +445,9 @@
                 <midino>0x1b</midino>
                 <group>[Channel1]</group>
                 <key>flanger</key>
-                <description></description>
+                <description />
                 <options>
-                    <spread64/>
+                    <spread64 />
                 </options>
             </control>
             <control>
@@ -455,9 +455,9 @@
                 <midino>0x2b</midino>
                 <group>[Channel1]</group>
                 <key>pfl</key>
-                <description></description>
+                <description />
                 <options>
-                    <button/>
+                    <button />
                 </options>
             </control>
             <control>
@@ -465,9 +465,9 @@
                 <midino>0x1d</midino>
                 <group>[Sampler1]</group>
                 <key>start_stop</key>
-                <description></description>
+                <description />
                 <options>
-                    <spread64/>
+                    <spread64 />
                 </options>
             </control>
             <control>
@@ -475,9 +475,9 @@
                 <midino>0x2c</midino>
                 <group>[Channel2]</group>
                 <key>pfl</key>
-                <description></description>
+                <description />
                 <options>
-                    <button/>
+                    <button />
                 </options>
             </control>
             <control>
@@ -485,9 +485,9 @@
                 <midino>0x1d</midino>
                 <group>[Sampler1]</group>
                 <key>start_play</key>
-                <description></description>
+                <description />
                 <options>
-                    <spread64/>
+                    <spread64 />
                 </options>
             </control>
             <control>
@@ -495,9 +495,9 @@
                 <midino>0x2f</midino>
                 <group>[Channel2]</group>
                 <key>VMS4.play</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -505,9 +505,9 @@
                 <midino>0x2e</midino>
                 <group>[Channel2]</group>
                 <key>VMS4.cue</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -515,9 +515,9 @@
                 <midino>0x1f</midino>
                 <group>[Channel1]</group>
                 <key>loop_in</key>
-                <description></description>
+                <description />
                 <options>
-                    <spread64/>
+                    <spread64 />
                 </options>
             </control>
             <control>
@@ -525,9 +525,9 @@
                 <midino>0x2f</midino>
                 <group>[Channel2]</group>
                 <key>VMS4.play</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -535,9 +535,9 @@
                 <midino>0x20</midino>
                 <group>[Channel1]</group>
                 <key>loop_out</key>
-                <description></description>
+                <description />
                 <options>
-                    <spread64/>
+                    <spread64 />
                 </options>
             </control>
             <control>
@@ -545,9 +545,9 @@
                 <midino>0x30</midino>
                 <group>[Channel2]</group>
                 <key>VMS4.pause</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -555,9 +555,9 @@
                 <midino>0x21</midino>
                 <group>[Channel1]</group>
                 <key>reloop_exit</key>
-                <description></description>
+                <description />
                 <options>
-                    <spread64/>
+                    <spread64 />
                 </options>
             </control>
             <control>
@@ -565,9 +565,9 @@
                 <midino>0x31</midino>
                 <group>[Channel2]</group>
                 <key>rate_temp_down</key>
-                <description></description>
+                <description />
                 <options>
-                    <button/>
+                    <button />
                 </options>
             </control>
             <control>
@@ -575,9 +575,9 @@
                 <midino>0x32</midino>
                 <group>[Channel2]</group>
                 <key>rate_temp_up</key>
-                <description></description>
+                <description />
                 <options>
-                    <button/>
+                    <button />
                 </options>
             </control>
             <control>
@@ -585,9 +585,9 @@
                 <midino>0x33</midino>
                 <group>[Channel2]</group>
                 <key>beatsync</key>
-                <description></description>
+                <description />
                 <options>
-                    <button/>
+                    <button />
                 </options>
             </control>
             <control>
@@ -595,9 +595,9 @@
                 <midino>0x35</midino>
                 <group>[Channel2]</group>
                 <key>VMS4.hotCue</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -605,9 +605,9 @@
                 <midino>0x27</midino>
                 <group>[Channel1]</group>
                 <key>VMS4.keylock</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -615,9 +615,9 @@
                 <midino>0x26</midino>
                 <group>[Channel1]</group>
                 <key>quantize</key>
-                <description></description>
+                <description />
                 <options>
-                    <spread64/>
+                    <spread64 />
                 </options>
             </control>
             <control>
@@ -625,9 +625,9 @@
                 <midino>0x36</midino>
                 <group>[Channel2]</group>
                 <key>VMS4.hotCue</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -635,9 +635,9 @@
                 <midino>0x28</midino>
                 <group>[Channel1]</group>
                 <key>loop_halve</key>
-                <description></description>
+                <description />
                 <options>
-                    <spread64/>
+                    <spread64 />
                 </options>
             </control>
             <control>
@@ -645,9 +645,9 @@
                 <midino>0x27</midino>
                 <group>[Channel1]</group>
                 <key>VMS4.vinyl</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -655,9 +655,9 @@
                 <midino>0x37</midino>
                 <group>[Channel2]</group>
                 <key>VMS4.hotCue</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -665,9 +665,9 @@
                 <midino>0x29</midino>
                 <group>[Channel1]</group>
                 <key>loop_double</key>
-                <description></description>
+                <description />
                 <options>
-                    <spread64/>
+                    <spread64 />
                 </options>
             </control>
             <control>
@@ -675,9 +675,9 @@
                 <midino>0x28</midino>
                 <group>[Channel1]</group>
                 <key>back</key>
-                <description></description>
+                <description />
                 <options>
-                    <spread64/>
+                    <spread64 />
                 </options>
             </control>
             <control>
@@ -685,9 +685,9 @@
                 <midino>0x38</midino>
                 <group>[Channel2]</group>
                 <key>VMS4.rate_range</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -695,9 +695,9 @@
                 <midino>0x29</midino>
                 <group>[Channel1]</group>
                 <key>fwd</key>
-                <description></description>
+                <description />
                 <options>
-                    <spread64/>
+                    <spread64 />
                 </options>
             </control>
             <control>
@@ -705,9 +705,9 @@
                 <midino>0x39</midino>
                 <group>[Channel2]</group>
                 <key>VMS4.hotCue</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -715,9 +715,9 @@
                 <midino>0x3a</midino>
                 <group>[Channel2]</group>
                 <key>VMS4.hotCue</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -725,9 +725,9 @@
                 <midino>0x2b</midino>
                 <group>[Channel1]</group>
                 <key>pfl</key>
-                <description></description>
+                <description />
                 <options>
-                    <spread64/>
+                    <spread64 />
                 </options>
             </control>
             <control>
@@ -735,9 +735,9 @@
                 <midino>0x3b</midino>
                 <group>[Channel2]</group>
                 <key>VMS4.hotCue</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -745,9 +745,9 @@
                 <midino>0x2c</midino>
                 <group>[Channel2]</group>
                 <key>pfl</key>
-                <description></description>
+                <description />
                 <options>
-                    <spread64/>
+                    <spread64 />
                 </options>
             </control>
             <control>
@@ -755,9 +755,9 @@
                 <midino>0x3c</midino>
                 <group>[Channel2]</group>
                 <key>VMS4.hotCue</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -765,9 +765,9 @@
                 <midino>0x3d</midino>
                 <group>[Channel2]</group>
                 <key>flanger</key>
-                <description></description>
+                <description />
                 <options>
-                    <button/>
+                    <button />
                 </options>
             </control>
             <control>
@@ -775,9 +775,9 @@
                 <midino>0x2f</midino>
                 <group>[Channel2]</group>
                 <key>VMS4.play</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -785,9 +785,9 @@
                 <midino>0x2e</midino>
                 <group>[Channel2]</group>
                 <key>VMS4.cue</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -795,9 +795,9 @@
                 <midino>0x3f</midino>
                 <group>[Sampler2]</group>
                 <key>start_stop</key>
-                <description></description>
+                <description />
                 <options>
-                    <button/>
+                    <button />
                 </options>
             </control>
             <control>
@@ -805,9 +805,9 @@
                 <midino>0x2f</midino>
                 <group>[Channel2]</group>
                 <key>VMS4.play</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -815,9 +815,9 @@
                 <midino>0x3f</midino>
                 <group>[Sampler2]</group>
                 <key>start_play</key>
-                <description></description>
+                <description />
                 <options>
-                    <button/>
+                    <button />
                 </options>
             </control>
             <control>
@@ -825,9 +825,9 @@
                 <midino>0x30</midino>
                 <group>[Channel2]</group>
                 <key>VMS4.pause</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -835,9 +835,9 @@
                 <midino>0x31</midino>
                 <group>[Channel2]</group>
                 <key>rate_temp_down</key>
-                <description></description>
+                <description />
                 <options>
-                    <spread64/>
+                    <spread64 />
                 </options>
             </control>
             <control>
@@ -845,9 +845,9 @@
                 <midino>0x41</midino>
                 <group>[Channel2]</group>
                 <key>loop_in</key>
-                <description></description>
+                <description />
                 <options>
-                    <button/>
+                    <button />
                 </options>
             </control>
             <control>
@@ -855,9 +855,9 @@
                 <midino>0x32</midino>
                 <group>[Channel2]</group>
                 <key>rate_temp_up</key>
-                <description></description>
+                <description />
                 <options>
-                    <spread64/>
+                    <spread64 />
                 </options>
             </control>
             <control>
@@ -865,9 +865,9 @@
                 <midino>0x42</midino>
                 <group>[Channel2]</group>
                 <key>loop_out</key>
-                <description></description>
+                <description />
                 <options>
-                    <button/>
+                    <button />
                 </options>
             </control>
             <control>
@@ -875,9 +875,9 @@
                 <midino>0x33</midino>
                 <group>[Channel2]</group>
                 <key>beatsync</key>
-                <description></description>
+                <description />
                 <options>
-                    <spread64/>
+                    <spread64 />
                 </options>
             </control>
             <control>
@@ -885,9 +885,9 @@
                 <midino>0x43</midino>
                 <group>[Channel2]</group>
                 <key>reloop_exit</key>
-                <description></description>
+                <description />
                 <options>
-                    <button/>
+                    <button />
                 </options>
             </control>
             <control>
@@ -895,9 +895,9 @@
                 <midino>0x44</midino>
                 <group>[Channel2]</group>
                 <key>beatloop_4</key>
-                <description></description>
+                <description />
                 <options>
-                    <button/>
+                    <button />
                 </options>
             </control>
             <control>
@@ -905,9 +905,9 @@
                 <midino>0x35</midino>
                 <group>[Channel2]</group>
                 <key>VMS4.hotCue</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -915,9 +915,9 @@
                 <midino>0x36</midino>
                 <group>[Channel2]</group>
                 <key>VMS4.hotCue</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -925,9 +925,9 @@
                 <midino>0x37</midino>
                 <group>[Channel2]</group>
                 <key>VMS4.hotCue</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -935,9 +935,9 @@
                 <midino>0x38</midino>
                 <group>[Channel2]</group>
                 <key>VMS4.rate_range</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -945,9 +945,9 @@
                 <midino>0x49</midino>
                 <group>[Channel2]</group>
                 <key>VMS4.keylock</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -955,9 +955,9 @@
                 <midino>0x48</midino>
                 <group>[Channel2]</group>
                 <key>quantize</key>
-                <description></description>
+                <description />
                 <options>
-                    <button/>
+                    <button />
                 </options>
             </control>
             <control>
@@ -965,9 +965,9 @@
                 <midino>0x39</midino>
                 <group>[Channel2]</group>
                 <key>VMS4.hotCue</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -975,9 +975,9 @@
                 <midino>0x4a</midino>
                 <group>[Channel2]</group>
                 <key>loop_halve</key>
-                <description></description>
+                <description />
                 <options>
-                    <button/>
+                    <button />
                 </options>
             </control>
             <control>
@@ -985,9 +985,9 @@
                 <midino>0x49</midino>
                 <group>[Channel2]</group>
                 <key>VMS4.vinyl</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -995,9 +995,9 @@
                 <midino>0x3a</midino>
                 <group>[Channel2]</group>
                 <key>VMS4.hotCue</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -1005,9 +1005,9 @@
                 <midino>0x4b</midino>
                 <group>[Channel2]</group>
                 <key>loop_double</key>
-                <description></description>
+                <description />
                 <options>
-                    <button/>
+                    <button />
                 </options>
             </control>
             <control>
@@ -1015,9 +1015,9 @@
                 <midino>0x4a</midino>
                 <group>[Channel2]</group>
                 <key>back</key>
-                <description></description>
+                <description />
                 <options>
-                    <button/>
+                    <button />
                 </options>
             </control>
             <control>
@@ -1025,9 +1025,9 @@
                 <midino>0x3b</midino>
                 <group>[Channel2]</group>
                 <key>VMS4.hotCue</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -1035,9 +1035,9 @@
                 <midino>0x4b</midino>
                 <group>[Channel2]</group>
                 <key>fwd</key>
-                <description></description>
+                <description />
                 <options>
-                    <button/>
+                    <button />
                 </options>
             </control>
             <control>
@@ -1045,9 +1045,9 @@
                 <midino>0x3c</midino>
                 <group>[Channel2]</group>
                 <key>VMS4.hotCue</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -1055,9 +1055,9 @@
                 <midino>0x3d</midino>
                 <group>[Channel2]</group>
                 <key>flanger</key>
-                <description></description>
+                <description />
                 <options>
-                    <spread64/>
+                    <spread64 />
                 </options>
             </control>
             <control>
@@ -1065,9 +1065,9 @@
                 <midino>0x3f</midino>
                 <group>[Sampler2]</group>
                 <key>start_stop</key>
-                <description></description>
+                <description />
                 <options>
-                    <spread64/>
+                    <spread64 />
                 </options>
             </control>
             <control>
@@ -1075,9 +1075,9 @@
                 <midino>0x3f</midino>
                 <group>[Sampler2]</group>
                 <key>start_play</key>
-                <description></description>
+                <description />
                 <options>
-                    <spread64/>
+                    <spread64 />
                 </options>
             </control>
             <control>
@@ -1085,9 +1085,9 @@
                 <midino>0x4f</midino>
                 <group>[Channel1]</group>
                 <key>VMS4.jog_touch</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -1095,9 +1095,9 @@
                 <midino>0x50</midino>
                 <group>[Channel2]</group>
                 <key>VMS4.jog_touch</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -1105,9 +1105,9 @@
                 <midino>0x41</midino>
                 <group>[Channel2]</group>
                 <key>loop_in</key>
-                <description></description>
+                <description />
                 <options>
-                    <spread64/>
+                    <spread64 />
                 </options>
             </control>
             <control>
@@ -1115,9 +1115,9 @@
                 <midino>0x51</midino>
                 <group>[Channel1]</group>
                 <key>VMS4.pitchCenter</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -1125,9 +1125,9 @@
                 <midino>0x42</midino>
                 <group>[Channel2]</group>
                 <key>loop_out</key>
-                <description></description>
+                <description />
                 <options>
-                    <spread64/>
+                    <spread64 />
                 </options>
             </control>
             <control>
@@ -1135,9 +1135,9 @@
                 <midino>0x52</midino>
                 <group>[Channel2]</group>
                 <key>VMS4.pitchCenter</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -1145,9 +1145,9 @@
                 <midino>0x43</midino>
                 <group>[Channel2]</group>
                 <key>reloop_exit</key>
-                <description></description>
+                <description />
                 <options>
-                    <spread64/>
+                    <spread64 />
                 </options>
             </control>
             <control>
@@ -1155,9 +1155,9 @@
                 <midino>0x54</midino>
                 <group>[Sampler1]</group>
                 <key>eject</key>
-                <description></description>
+                <description />
                 <options>
-                    <button/>
+                    <button />
                 </options>
             </control>
             <control>
@@ -1165,9 +1165,9 @@
                 <midino>0x53</midino>
                 <group>[Channel1]</group>
                 <key>VMS4.effectSelectPress</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -1175,9 +1175,9 @@
                 <midino>0x54</midino>
                 <group>[Sampler1]</group>
                 <key>LoadSelectedTrack</key>
-                <description></description>
+                <description />
                 <options>
-                    <button/>
+                    <button />
                 </options>
             </control>
             <control>
@@ -1185,9 +1185,9 @@
                 <midino>0x56</midino>
                 <group>[Sampler2]</group>
                 <key>eject</key>
-                <description></description>
+                <description />
                 <options>
-                    <button/>
+                    <button />
                 </options>
             </control>
             <control>
@@ -1195,9 +1195,9 @@
                 <midino>0x55</midino>
                 <group>[Channel2]</group>
                 <key>VMS4.effectSelectPress</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -1205,9 +1205,9 @@
                 <midino>0x56</midino>
                 <group>[Sampler2]</group>
                 <key>LoadSelectedTrack</key>
-                <description></description>
+                <description />
                 <options>
-                    <button/>
+                    <button />
                 </options>
             </control>
             <control>
@@ -1215,9 +1215,9 @@
                 <midino>0x49</midino>
                 <group>[Channel2]</group>
                 <key>VMS4.keylock</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -1225,9 +1225,9 @@
                 <midino>0x48</midino>
                 <group>[Channel2]</group>
                 <key>quantize</key>
-                <description></description>
+                <description />
                 <options>
-                    <spread64/>
+                    <spread64 />
                 </options>
             </control>
             <control>
@@ -1235,9 +1235,9 @@
                 <midino>0x4a</midino>
                 <group>[Channel2]</group>
                 <key>loop_halve</key>
-                <description></description>
+                <description />
                 <options>
-                    <spread64/>
+                    <spread64 />
                 </options>
             </control>
             <control>
@@ -1245,9 +1245,9 @@
                 <midino>0x49</midino>
                 <group>[Channel2]</group>
                 <key>VMS4.vinyl</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -1255,9 +1255,9 @@
                 <midino>0x4b</midino>
                 <group>[Channel2]</group>
                 <key>loop_double</key>
-                <description></description>
+                <description />
                 <options>
-                    <spread64/>
+                    <spread64 />
                 </options>
             </control>
             <control>
@@ -1265,9 +1265,9 @@
                 <midino>0x4a</midino>
                 <group>[Channel2]</group>
                 <key>back</key>
-                <description></description>
+                <description />
                 <options>
-                    <spread64/>
+                    <spread64 />
                 </options>
             </control>
             <control>
@@ -1275,9 +1275,9 @@
                 <midino>0x4b</midino>
                 <group>[Channel2]</group>
                 <key>fwd</key>
-                <description></description>
+                <description />
                 <options>
-                    <spread64/>
+                    <spread64 />
                 </options>
             </control>
             <control>
@@ -1285,9 +1285,9 @@
                 <midino>0x4f</midino>
                 <group>[Channel1]</group>
                 <key>VMS4.jog_touch</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -1295,9 +1295,9 @@
                 <midino>0x50</midino>
                 <group>[Channel2]</group>
                 <key>VMS4.jog_touch</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -1305,9 +1305,9 @@
                 <midino>0x51</midino>
                 <group>[Channel1]</group>
                 <key>VMS4.pitchCenter</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -1315,9 +1315,9 @@
                 <midino>0x52</midino>
                 <group>[Channel2]</group>
                 <key>VMS4.pitchCenter</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -1325,9 +1325,9 @@
                 <midino>0x53</midino>
                 <group>[Channel1]</group>
                 <key>VMS4.effectSelectPress</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -1335,9 +1335,9 @@
                 <midino>0x54</midino>
                 <group>[Sampler1]</group>
                 <key>eject</key>
-                <description></description>
+                <description />
                 <options>
-                    <spread64/>
+                    <spread64 />
                 </options>
             </control>
             <control>
@@ -1345,9 +1345,9 @@
                 <midino>0x54</midino>
                 <group>[Sampler1]</group>
                 <key>LoadSelectedTrack</key>
-                <description></description>
+                <description />
                 <options>
-                    <spread64/>
+                    <spread64 />
                 </options>
             </control>
             <control>
@@ -1355,9 +1355,9 @@
                 <midino>0x65</midino>
                 <group>[Channel1]</group>
                 <key>LoadSelectedTrack</key>
-                <description></description>
+                <description />
                 <options>
-                    <button/>
+                    <button />
                 </options>
             </control>
             <control>
@@ -1365,9 +1365,9 @@
                 <midino>0x55</midino>
                 <group>[Channel2]</group>
                 <key>VMS4.effectSelectPress</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -1375,9 +1375,9 @@
                 <midino>0x56</midino>
                 <group>[Sampler2]</group>
                 <key>eject</key>
-                <description></description>
+                <description />
                 <options>
-                    <spread64/>
+                    <spread64 />
                 </options>
             </control>
             <control>
@@ -1385,9 +1385,9 @@
                 <midino>0x66</midino>
                 <group>[Channel2]</group>
                 <key>LoadSelectedTrack</key>
-                <description></description>
+                <description />
                 <options>
-                    <button/>
+                    <button />
                 </options>
             </control>
             <control>
@@ -1395,9 +1395,9 @@
                 <midino>0x56</midino>
                 <group>[Sampler2]</group>
                 <key>LoadSelectedTrack</key>
-                <description></description>
+                <description />
                 <options>
-                    <spread64/>
+                    <spread64 />
                 </options>
             </control>
             <control>
@@ -1405,9 +1405,9 @@
                 <midino>0x65</midino>
                 <group>[Channel1]</group>
                 <key>LoadSelectedTrack</key>
-                <description></description>
+                <description />
                 <options>
-                    <spread64/>
+                    <spread64 />
                 </options>
             </control>
             <control>
@@ -1415,9 +1415,9 @@
                 <midino>0x66</midino>
                 <group>[Channel2]</group>
                 <key>LoadSelectedTrack</key>
-                <description></description>
+                <description />
                 <options>
-                    <spread64/>
+                    <spread64 />
                 </options>
             </control>
             <control>
@@ -1425,9 +1425,9 @@
                 <midino>0x0</midino>
                 <group>[Channel1]</group>
                 <key>pregain</key>
-                <description></description>
+                <description />
                 <options>
-                    <soft-takeover/>
+                    <soft-takeover />
                 </options>
             </control>
             <control>
@@ -1435,9 +1435,9 @@
                 <midino>0x1</midino>
                 <group>[Channel1]</group>
                 <key>filterHigh</key>
-                <description></description>
+                <description />
                 <options>
-                    <soft-takeover/>
+                    <soft-takeover />
                 </options>
             </control>
             <control>
@@ -1445,9 +1445,9 @@
                 <midino>0x2</midino>
                 <group>[Channel1]</group>
                 <key>filterMid</key>
-                <description></description>
+                <description />
                 <options>
-                    <soft-takeover/>
+                    <soft-takeover />
                 </options>
             </control>
             <control>
@@ -1455,9 +1455,9 @@
                 <midino>0x3</midino>
                 <group>[Channel1]</group>
                 <key>filterLow</key>
-                <description></description>
+                <description />
                 <options>
-                    <soft-takeover/>
+                    <soft-takeover />
                 </options>
             </control>
             <control>
@@ -1465,9 +1465,9 @@
                 <midino>0x5</midino>
                 <group>[Channel2]</group>
                 <key>pregain</key>
-                <description></description>
+                <description />
                 <options>
-                    <soft-takeover/>
+                    <soft-takeover />
                 </options>
             </control>
             <control>
@@ -1475,9 +1475,9 @@
                 <midino>0x6</midino>
                 <group>[Channel2]</group>
                 <key>filterHigh</key>
-                <description></description>
+                <description />
                 <options>
-                    <soft-takeover/>
+                    <soft-takeover />
                 </options>
             </control>
             <control>
@@ -1485,9 +1485,9 @@
                 <midino>0x7</midino>
                 <group>[Channel2]</group>
                 <key>filterMid</key>
-                <description></description>
+                <description />
                 <options>
-                    <soft-takeover/>
+                    <soft-takeover />
                 </options>
             </control>
             <control>
@@ -1495,9 +1495,9 @@
                 <midino>0x8</midino>
                 <group>[Channel2]</group>
                 <key>filterLow</key>
-                <description></description>
+                <description />
                 <options>
-                    <soft-takeover/>
+                    <soft-takeover />
                 </options>
             </control>
             <control>
@@ -1505,9 +1505,9 @@
                 <midino>0x9</midino>
                 <group>[Channel1]</group>
                 <key>volume</key>
-                <description></description>
+                <description />
                 <options>
-                    <soft-takeover/>
+                    <soft-takeover />
                 </options>
             </control>
             <control>
@@ -1515,9 +1515,9 @@
                 <midino>0xe</midino>
                 <group>[Channel2]</group>
                 <key>volume</key>
-                <description></description>
+                <description />
                 <options>
-                    <soft-takeover/>
+                    <soft-takeover />
                 </options>
             </control>
             <control>
@@ -1525,9 +1525,9 @@
                 <midino>0x0</midino>
                 <group>[Channel1]</group>
                 <key>VMS4.pitch</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -1535,9 +1535,9 @@
                 <midino>0x0</midino>
                 <group>[Channel2]</group>
                 <key>VMS4.pitch</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -1545,9 +1545,9 @@
                 <midino>0x1c</midino>
                 <group>[Master]</group>
                 <key>volume</key>
-                <description></description>
+                <description />
                 <options>
-                    <soft-takeover/>
+                    <soft-takeover />
                 </options>
             </control>
             <control>
@@ -1555,9 +1555,9 @@
                 <midino>0x1d</midino>
                 <group>[Master]</group>
                 <key>balance</key>
-                <description></description>
+                <description />
                 <options>
-                    <soft-takeover/>
+                    <soft-takeover />
                 </options>
             </control>
             <control>
@@ -1565,9 +1565,9 @@
                 <midino>0x1f</midino>
                 <group>[Master]</group>
                 <key>crossfader</key>
-                <description></description>
+                <description />
                 <options>
-                    <invert/>
+                    <invert />
                 </options>
             </control>
             <control>
@@ -1575,9 +1575,9 @@
                 <midino>0x22</midino>
                 <group>[Master]</group>
                 <key>headMix</key>
-                <description></description>
+                <description />
                 <options>
-                    <soft-takeover/>
+                    <soft-takeover />
                 </options>
             </control>
             <control>
@@ -1585,9 +1585,9 @@
                 <midino>0x23</midino>
                 <group>[Master]</group>
                 <key>headVolume</key>
-                <description></description>
+                <description />
                 <options>
-                    <soft-takeover/>
+                    <soft-takeover />
                 </options>
             </control>
             <control>
@@ -1595,9 +1595,9 @@
                 <midino>0x24</midino>
                 <group>[Channel1]</group>
                 <key>VMS4.effectSelect</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -1605,9 +1605,9 @@
                 <midino>0x25</midino>
                 <group>[Flanger]</group>
                 <key>lfoDepth</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -1615,9 +1615,9 @@
                 <midino>0x26</midino>
                 <group>[Channel1]</group>
                 <key>VMS4.sampleSelect</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -1625,9 +1625,9 @@
                 <midino>0x27</midino>
                 <group>[Sampler1]</group>
                 <key>pregain</key>
-                <description></description>
+                <description />
                 <options>
-                    <soft-takeover/>
+                    <soft-takeover />
                 </options>
             </control>
             <control>
@@ -1635,9 +1635,9 @@
                 <midino>0x28</midino>
                 <group>[Channel1]</group>
                 <key>playposition</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -1645,9 +1645,9 @@
                 <midino>0x29</midino>
                 <group>[Channel2]</group>
                 <key>VMS4.effectSelect</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -1655,9 +1655,9 @@
                 <midino>0x2a</midino>
                 <group>[Flanger]</group>
                 <key>lfoDepth</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -1665,9 +1665,9 @@
                 <midino>0x2b</midino>
                 <group>[Channel2]</group>
                 <key>VMS4.sampleSelect</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -1675,9 +1675,9 @@
                 <midino>0xd</midino>
                 <group>[Channel1]</group>
                 <key>VMS4.play</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -1685,9 +1685,9 @@
                 <midino>0xc</midino>
                 <group>[Channel1]</group>
                 <key>VMS4.cue</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -1695,9 +1695,9 @@
                 <midino>0x2c</midino>
                 <group>[Sampler2]</group>
                 <key>pregain</key>
-                <description></description>
+                <description />
                 <options>
-                    <soft-takeover/>
+                    <soft-takeover />
                 </options>
             </control>
             <control>
@@ -1705,9 +1705,9 @@
                 <midino>0xd</midino>
                 <group>[Channel1]</group>
                 <key>VMS4.play</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -1715,9 +1715,9 @@
                 <midino>0x2d</midino>
                 <group>[Channel2]</group>
                 <key>playposition</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -1725,9 +1725,9 @@
                 <midino>0xe</midino>
                 <group>[Channel1]</group>
                 <key>VMS4.pause</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -1735,9 +1735,9 @@
                 <midino>0xf</midino>
                 <group>[Channel1]</group>
                 <key>rate_temp_down</key>
-                <description></description>
+                <description />
                 <options>
-                    <button/>
+                    <button />
                 </options>
             </control>
             <control>
@@ -1745,9 +1745,9 @@
                 <midino>0x30</midino>
                 <group>[Channel1]</group>
                 <key>VMS4.jog_move_lsb</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -1755,9 +1755,9 @@
                 <midino>0x10</midino>
                 <group>[Channel1]</group>
                 <key>rate_temp_up</key>
-                <description></description>
+                <description />
                 <options>
-                    <button/>
+                    <button />
                 </options>
             </control>
         </controls>
@@ -1765,9 +1765,9 @@
             <output>
                 <group>[Channel1]</group>
                 <key>flanger</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
                 <minimum>0.5</minimum>
                 <maximum>1</maximum>
@@ -1779,9 +1779,9 @@
             <output>
                 <group>[Channel2]</group>
                 <key>rate_temp_up</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
                 <minimum>0.5</minimum>
                 <maximum>1</maximum>
@@ -1793,9 +1793,9 @@
             <output>
                 <group>[Channel1]</group>
                 <key>back</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
                 <minimum>0.5</minimum>
                 <maximum>1</maximum>
@@ -1807,9 +1807,9 @@
             <output>
                 <group>[Channel2]</group>
                 <key>hotcue_7_enabled</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
                 <minimum>0.5</minimum>
                 <maximum>1</maximum>
@@ -1821,9 +1821,9 @@
             <output>
                 <group>[Channel2]</group>
                 <key>cue_default</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
                 <minimum>0.5</minimum>
                 <maximum>1</maximum>
@@ -1835,9 +1835,9 @@
             <output>
                 <group>[Channel1]</group>
                 <key>loop_out</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
                 <minimum>0.5</minimum>
                 <maximum>1</maximum>
@@ -1849,9 +1849,9 @@
             <output>
                 <group>[Channel1]</group>
                 <key>fwd</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
                 <minimum>0.5</minimum>
                 <maximum>1</maximum>
@@ -1863,9 +1863,9 @@
             <output>
                 <group>[Channel2]</group>
                 <key>loop_double</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
                 <minimum>0.5</minimum>
                 <maximum>1</maximum>
@@ -1877,9 +1877,9 @@
             <output>
                 <group>[Channel2]</group>
                 <key>hotcue_2_enabled</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
                 <minimum>0.5</minimum>
                 <maximum>1</maximum>
@@ -1891,9 +1891,9 @@
             <output>
                 <group>[Channel1]</group>
                 <key>rate_temp_up</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
                 <minimum>0.5</minimum>
                 <maximum>1</maximum>
@@ -1905,9 +1905,9 @@
             <output>
                 <group>[Sampler2]</group>
                 <key>play</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
                 <minimum>0.5</minimum>
                 <maximum>1</maximum>
@@ -1919,9 +1919,9 @@
             <output>
                 <group>[Channel1]</group>
                 <key>loop_double</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
                 <minimum>0.5</minimum>
                 <maximum>1</maximum>
@@ -1933,9 +1933,9 @@
             <output>
                 <group>[Channel1]</group>
                 <key>hotcue_4_enabled</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
                 <minimum>0.5</minimum>
                 <maximum>1</maximum>
@@ -1947,9 +1947,9 @@
             <output>
                 <group>[Channel2]</group>
                 <key>back</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
                 <minimum>0.5</minimum>
                 <maximum>1</maximum>
@@ -1961,9 +1961,9 @@
             <output>
                 <group>[Channel1]</group>
                 <key>hotcue_1_enabled</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
                 <minimum>0.5</minimum>
                 <maximum>1</maximum>
@@ -1975,9 +1975,9 @@
             <output>
                 <group>[Channel1]</group>
                 <key>hotcue_3_enabled</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
                 <minimum>0.5</minimum>
                 <maximum>1</maximum>
@@ -1989,9 +1989,9 @@
             <output>
                 <group>[Channel2]</group>
                 <key>keylock</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
                 <minimum>0.5</minimum>
                 <maximum>1</maximum>
@@ -2003,9 +2003,9 @@
             <output>
                 <group>[Channel1]</group>
                 <key>loop_in</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
                 <minimum>0.5</minimum>
                 <maximum>1</maximum>
@@ -2017,9 +2017,9 @@
             <output>
                 <group>[Channel1]</group>
                 <key>rate_temp_down</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
                 <minimum>0.5</minimum>
                 <maximum>1</maximum>
@@ -2031,9 +2031,9 @@
             <output>
                 <group>[Channel2]</group>
                 <key>pfl</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
                 <minimum>0.5</minimum>
                 <maximum>1</maximum>
@@ -2045,9 +2045,9 @@
             <output>
                 <group>[Channel1]</group>
                 <key>beatsync</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
                 <minimum>0.5</minimum>
                 <maximum>1</maximum>
@@ -2059,9 +2059,9 @@
             <output>
                 <group>[Channel1]</group>
                 <key>quantize</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
                 <minimum>0.5</minimum>
                 <maximum>1</maximum>
@@ -2073,9 +2073,9 @@
             <output>
                 <group>[Channel2]</group>
                 <key>flanger</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
                 <minimum>0.5</minimum>
                 <maximum>1</maximum>
@@ -2087,9 +2087,9 @@
             <output>
                 <group>[Channel2]</group>
                 <key>hotcue_4_enabled</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
                 <minimum>0.5</minimum>
                 <maximum>1</maximum>
@@ -2101,9 +2101,9 @@
             <output>
                 <group>[Channel1]</group>
                 <key>hotcue_6_enabled</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
                 <minimum>0.5</minimum>
                 <maximum>1</maximum>
@@ -2115,9 +2115,9 @@
             <output>
                 <group>[Channel2]</group>
                 <key>quantize</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
                 <minimum>0.5</minimum>
                 <maximum>1</maximum>
@@ -2129,9 +2129,9 @@
             <output>
                 <group>[Channel2]</group>
                 <key>hotcue_1_enabled</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
                 <minimum>0.5</minimum>
                 <maximum>1</maximum>
@@ -2143,9 +2143,9 @@
             <output>
                 <group>[Channel2]</group>
                 <key>beatsync</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
                 <minimum>0.5</minimum>
                 <maximum>1</maximum>
@@ -2157,9 +2157,9 @@
             <output>
                 <group>[Channel2]</group>
                 <key>hotcue_3_enabled</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
                 <minimum>0.5</minimum>
                 <maximum>1</maximum>
@@ -2171,9 +2171,9 @@
             <output>
                 <group>[Channel1]</group>
                 <key>hotcue_5_enabled</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
                 <minimum>0.5</minimum>
                 <maximum>1</maximum>
@@ -2185,9 +2185,9 @@
             <output>
                 <group>[Channel1]</group>
                 <key>loop_halve</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
                 <minimum>0.5</minimum>
                 <maximum>1</maximum>
@@ -2199,9 +2199,9 @@
             <output>
                 <group>[Channel2]</group>
                 <key>rate_temp_down</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
                 <minimum>0.5</minimum>
                 <maximum>1</maximum>
@@ -2213,9 +2213,9 @@
             <output>
                 <group>[Channel2]</group>
                 <key>fwd</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
                 <minimum>0.5</minimum>
                 <maximum>1</maximum>
@@ -2227,9 +2227,9 @@
             <output>
                 <group>[Channel1]</group>
                 <key>play</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
                 <minimum>0.5</minimum>
                 <maximum>1</maximum>
@@ -2241,9 +2241,9 @@
             <output>
                 <group>[Channel1]</group>
                 <key>play</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
                 <minimum>0</minimum>
                 <maximum>0.5</maximum>
@@ -2255,9 +2255,9 @@
             <output>
                 <group>[Channel2]</group>
                 <key>hotcue_6_enabled</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
                 <minimum>0.5</minimum>
                 <maximum>1</maximum>
@@ -2269,9 +2269,9 @@
             <output>
                 <group>[Channel2]</group>
                 <key>beatloop_4</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
                 <minimum>0.5</minimum>
                 <maximum>1</maximum>
@@ -2283,9 +2283,9 @@
             <output>
                 <group>[Channel1]</group>
                 <key>hotcue_8_enabled</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
                 <minimum>0.5</minimum>
                 <maximum>1</maximum>
@@ -2297,9 +2297,9 @@
             <output>
                 <group>[Channel2]</group>
                 <key>play</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
                 <minimum>0.5</minimum>
                 <maximum>1</maximum>
@@ -2311,9 +2311,9 @@
             <output>
                 <group>[Channel2]</group>
                 <key>play</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
                 <minimum>0</minimum>
                 <maximum>0.5</maximum>
@@ -2325,9 +2325,9 @@
             <output>
                 <group>[Channel2]</group>
                 <key>hotcue_5_enabled</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
                 <minimum>0.5</minimum>
                 <maximum>1</maximum>
@@ -2339,9 +2339,9 @@
             <output>
                 <group>[Sampler1]</group>
                 <key>play</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
                 <minimum>0.5</minimum>
                 <maximum>1</maximum>
@@ -2353,9 +2353,9 @@
             <output>
                 <group>[Channel1]</group>
                 <key>keylock</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
                 <minimum>0.5</minimum>
                 <maximum>1</maximum>
@@ -2367,9 +2367,9 @@
             <output>
                 <group>[Channel2]</group>
                 <key>loop_in</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
                 <minimum>0.5</minimum>
                 <maximum>1</maximum>
@@ -2381,9 +2381,9 @@
             <output>
                 <group>[Channel1]</group>
                 <key>hotcue_7_enabled</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
                 <minimum>0.5</minimum>
                 <maximum>1</maximum>
@@ -2395,9 +2395,9 @@
             <output>
                 <group>[Channel2]</group>
                 <key>loop_enabled</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
                 <minimum>0.5</minimum>
                 <maximum>1</maximum>
@@ -2409,9 +2409,9 @@
             <output>
                 <group>[Channel1]</group>
                 <key>pfl</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
                 <minimum>0.5</minimum>
                 <maximum>1</maximum>
@@ -2423,9 +2423,9 @@
             <output>
                 <group>[Channel1]</group>
                 <key>hotcue_2_enabled</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
                 <minimum>0.5</minimum>
                 <maximum>1</maximum>
@@ -2437,9 +2437,9 @@
             <output>
                 <group>[Channel1]</group>
                 <key>beatloop_4</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
                 <minimum>0.5</minimum>
                 <maximum>1</maximum>
@@ -2451,9 +2451,9 @@
             <output>
                 <group>[Channel1]</group>
                 <key>loop_enabled</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
                 <minimum>0.5</minimum>
                 <maximum>1</maximum>
@@ -2465,9 +2465,9 @@
             <output>
                 <group>[Channel2]</group>
                 <key>loop_out</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
                 <minimum>0.5</minimum>
                 <maximum>1</maximum>
@@ -2479,9 +2479,9 @@
             <output>
                 <group>[Channel1]</group>
                 <key>cue_default</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
                 <minimum>0.5</minimum>
                 <maximum>1</maximum>
@@ -2493,9 +2493,9 @@
             <output>
                 <group>[Channel2]</group>
                 <key>hotcue_8_enabled</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
                 <minimum>0.5</minimum>
                 <maximum>1</maximum>
@@ -2507,9 +2507,9 @@
             <output>
                 <group>[Channel2]</group>
                 <key>loop_halve</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
                 <minimum>0.5</minimum>
                 <maximum>1</maximum>

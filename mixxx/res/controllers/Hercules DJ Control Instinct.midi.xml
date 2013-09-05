@@ -2,23 +2,23 @@
     <info>
       <name>Hercules DJ Control Instinct</name>
       <author>Mich Wyser</author>
-      <description></description>
+      <description />
       <wiki>https://github.com/ratte/mixxxcontrollermapping</wiki>
       <forums>http://www.mixxx.org/forums/viewtopic.php?f=7&amp;t=3907</forums>
     </info>
     <controller id="Hercules DJControl Instinct MID" port="">
 	<scriptfiles>
-            <file functionprefix="HCInstinct" filename="Hercules-DJ-Control-Instinct-scripts.js"/>
+            <file filename="Hercules-DJ-Control-Instinct-scripts.js" functionprefix="HCInstinct" />
         </scriptfiles>
-        <controls>
+        <picfiles><pic name="Hercules DJ Control Instinct.jpg" /></picfiles><controls>
             <control>
                 <status>0x80</status>
                 <midino>0x1</midino>
                 <group>[Channel1]</group>
                 <key>flanger</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -26,9 +26,9 @@
                 <midino>0x5</midino>
                 <group>[Sampler1]</group>
                 <key>play</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -36,9 +36,9 @@
                 <midino>0x6</midino>
                 <group>[Sampler2]</group>
                 <key>play</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -46,9 +46,9 @@
                 <midino>0x7</midino>
                 <group>[Sampler3]</group>
                 <key>play</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -56,9 +56,9 @@
                 <midino>0x8</midino>
                 <group>[Sampler4]</group>
                 <key>play</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -66,9 +66,9 @@
                 <midino>0x9</midino>
                 <group>[Channel1]</group>
                 <key>loop_in</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -76,9 +76,9 @@
                 <midino>0xa</midino>
                 <group>[Channel1]</group>
                 <key>reloop_exit</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -86,9 +86,9 @@
                 <midino>0xb</midino>
                 <group>[Channel1]</group>
                 <key>loop_out</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -96,9 +96,9 @@
                 <midino>0xc</midino>
                 <group>[Channel1]</group>
                 <key>loop_halve</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -106,9 +106,9 @@
                 <midino>0xd</midino>
                 <group>[Channel1]</group>
                 <key>hotcue_1_activate</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -116,9 +116,9 @@
                 <midino>0xe</midino>
                 <group>[Channel1]</group>
                 <key>hotcue_2_activate</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -126,9 +126,9 @@
                 <midino>0xf</midino>
                 <group>[Channel1]</group>
                 <key>hotcue_1_clear</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -136,9 +136,9 @@
                 <midino>0x10</midino>
                 <group>[Channel1]</group>
                 <key>hotcue_2_clear</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -146,9 +146,9 @@
                 <midino>0x14</midino>
                 <group>[Channel1]</group>
                 <key>fwd</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -156,9 +156,9 @@
                 <midino>0x15</midino>
                 <group>[Channel1]</group>
                 <key>cue_default</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -166,9 +166,9 @@
                 <midino>0x16</midino>
                 <group>[Channel1]</group>
                 <key>play</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -176,9 +176,9 @@
                 <midino>0x17</midino>
                 <group>[Channel1]</group>
                 <key>beatsync</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -188,7 +188,7 @@
                 <key>HCInstinct.wheelTurn0</key>
                 <description>Left Jog Wheel pressed and turning</description>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -196,9 +196,9 @@
                 <midino>0x18</midino>
                 <group>[Channel1]</group>
                 <key>pfl</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -208,7 +208,7 @@
                 <key>HCInstinct.wheelTurn1</key>
                 <description>Right JogWheel pressed and turning</description>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -216,9 +216,9 @@
                 <midino>0x19</midino>
                 <group>[Channel1]</group>
                 <key>LoadSelectedTrack</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -228,7 +228,7 @@
                 <key>HCInstinct.tempPitch</key>
                 <description>A Pitch Click up/down</description>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -238,7 +238,7 @@
                 <key>HCInstinct.tempPitch</key>
                 <description>B Pitch Click up/down</description>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -246,9 +246,9 @@
                 <midino>0x1b</midino>
                 <group>[Channel2]</group>
                 <key>flanger</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -256,9 +256,9 @@
                 <midino>0x36</midino>
                 <group>[Channel1]</group>
                 <key>volume</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -266,9 +266,9 @@
                 <midino>0x37</midino>
                 <group>[Channel1]</group>
                 <key>filterHigh</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -276,9 +276,9 @@
                 <midino>0x38</midino>
                 <group>[Channel1]</group>
                 <key>filterMid</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -286,9 +286,9 @@
                 <midino>0x39</midino>
                 <group>[Channel1]</group>
                 <key>filterLow</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -296,9 +296,9 @@
                 <midino>0x1f</midino>
                 <group>[Sampler2]</group>
                 <key>play</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -306,9 +306,9 @@
                 <midino>0x3a</midino>
                 <group>[Master]</group>
                 <key>crossfader</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -316,9 +316,9 @@
                 <midino>0x3b</midino>
                 <group>[Channel2]</group>
                 <key>volume</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -326,9 +326,9 @@
                 <midino>0x3c</midino>
                 <group>[Channel2]</group>
                 <key>filterHigh</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -336,9 +336,9 @@
                 <midino>0x3d</midino>
                 <group>[Channel2]</group>
                 <key>filterMid</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -346,9 +346,9 @@
                 <midino>0x23</midino>
                 <group>[Channel2]</group>
                 <key>loop_in</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -356,9 +356,9 @@
                 <midino>0x1</midino>
                 <group>[Channel1]</group>
                 <key>flanger</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -366,9 +366,9 @@
                 <midino>0x3e</midino>
                 <group>[Channel2]</group>
                 <key>filterLow</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -376,9 +376,9 @@
                 <midino>0x24</midino>
                 <group>[Channel2]</group>
                 <key>reloop_exit</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -386,9 +386,9 @@
                 <midino>0x25</midino>
                 <group>[Channel2]</group>
                 <key>loop_out</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -396,9 +396,9 @@
                 <midino>0x26</midino>
                 <group>[Channel2]</group>
                 <key>loop_halve</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -406,9 +406,9 @@
                 <midino>0x27</midino>
                 <group>[Channel2]</group>
                 <key>hotcue_1_activate</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -416,9 +416,9 @@
                 <midino>0x5</midino>
                 <group>[Sampler1]</group>
                 <key>play</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -426,9 +426,9 @@
                 <midino>0x28</midino>
                 <group>[Channel2]</group>
                 <key>hotcue_2_activate</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -436,9 +436,9 @@
                 <midino>0x6</midino>
                 <group>[Sampler2]</group>
                 <key>play</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -446,9 +446,9 @@
                 <midino>0x29</midino>
                 <group>[Channel2]</group>
                 <key>hotcue_1_clear</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -456,9 +456,9 @@
                 <midino>0x7</midino>
                 <group>[Sampler3]</group>
                 <key>play</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -466,9 +466,9 @@
                 <midino>0x2a</midino>
                 <group>[Channel2]</group>
                 <key>hotcue_2_clear</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -476,9 +476,9 @@
                 <midino>0x8</midino>
                 <group>[Sampler4]</group>
                 <key>play</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -486,9 +486,9 @@
                 <midino>0x9</midino>
                 <group>[Channel1]</group>
                 <key>loop_in</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -496,9 +496,9 @@
                 <midino>0xb</midino>
                 <group>[Channel1]</group>
                 <key>reloop_exit</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -506,9 +506,9 @@
                 <midino>0x2d</midino>
                 <group>[Channel2]</group>
                 <key>back</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -516,9 +516,9 @@
                 <midino>0xa</midino>
                 <group>[Channel1]</group>
                 <key>loop_out</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -526,9 +526,9 @@
                 <midino>0x2e</midino>
                 <group>[Channel2]</group>
                 <key>fwd</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -536,9 +536,9 @@
                 <midino>0xc</midino>
                 <group>[Channel1]</group>
                 <key>loop_halve</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -546,9 +546,9 @@
                 <midino>0x2f</midino>
                 <group>[Channel2]</group>
                 <key>cue_default</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -556,9 +556,9 @@
                 <midino>0xd</midino>
                 <group>[Channel1]</group>
                 <key>hotcue_1_activate</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -566,9 +566,9 @@
                 <midino>0xe</midino>
                 <group>[Channel1]</group>
                 <key>hotcue_2_activate</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -576,9 +576,9 @@
                 <midino>0x31</midino>
                 <group>[Channel2]</group>
                 <key>beatsync</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -586,9 +586,9 @@
                 <midino>0xf</midino>
                 <group>[Channel1]</group>
                 <key>hotcue_1_clear</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -596,9 +596,9 @@
                 <midino>0x32</midino>
                 <group>[Channel2]</group>
                 <key>pfl</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -606,9 +606,9 @@
                 <midino>0x10</midino>
                 <group>[Channel1]</group>
                 <key>hotcue_2_clear</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -616,9 +616,9 @@
                 <midino>0x33</midino>
                 <group>[Channel2]</group>
                 <key>LoadSelectedTrack</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -628,7 +628,7 @@
                 <key>HCInstinct.pitch</key>
                 <description>A Pitch -</description>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -638,7 +638,7 @@
                 <key>HCInstinct.pitch</key>
                 <description>A Pitch +</description>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -646,9 +646,9 @@
                 <midino>0x35</midino>
                 <group>[Channel1]</group>
                 <key>hotcue_1_clear</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -656,9 +656,9 @@
                 <midino>0x13</midino>
                 <group>[Channel1]</group>
                 <key>back</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -666,9 +666,9 @@
                 <midino>0x36</midino>
                 <group>[Playlist]</group>
                 <key>SelectPrevTrack</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -676,9 +676,9 @@
                 <midino>0x14</midino>
                 <group>[Channel1]</group>
                 <key>fwd</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -686,9 +686,9 @@
                 <midino>0x37</midino>
                 <group>[Playlist]</group>
                 <key>SelectNextTrack</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -696,9 +696,9 @@
                 <midino>0x15</midino>
                 <group>[Channel1]</group>
                 <key>cue_default</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -706,9 +706,9 @@
                 <midino>0x38</midino>
                 <group>[Playlist]</group>
                 <key>SelectNextPlaylist</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -716,9 +716,9 @@
                 <midino>0x16</midino>
                 <group>[Channel1]</group>
                 <key>play</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -726,9 +726,9 @@
                 <midino>0x39</midino>
                 <group>[Playlist]</group>
                 <key>SelectPrevPlaylist</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -736,9 +736,9 @@
                 <midino>0x17</midino>
                 <group>[Channel1]</group>
                 <key>beatsync</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -746,9 +746,9 @@
                 <midino>0x18</midino>
                 <group>[Channel1]</group>
                 <key>pfl</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -756,9 +756,9 @@
                 <midino>0x19</midino>
                 <group>[Channel1]</group>
                 <key>LoadSelectedTrack</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -768,7 +768,7 @@
                 <key>HCInstinct.wheelTouch0</key>
                 <description>Left JogWheel switch </description>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -776,9 +776,9 @@
                 <midino>0x1b</midino>
                 <group>[Channel2]</group>
                 <key>flanger</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -786,9 +786,9 @@
                 <midino>0x41</midino>
                 <group>[Master]</group>
                 <key>headVolume</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -796,9 +796,9 @@
                 <midino>0x1f</midino>
                 <group>[Sampler2]</group>
                 <key>play</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -806,9 +806,9 @@
                 <midino>0x23</midino>
                 <group>[Channel2]</group>
                 <key>loop_in</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -816,9 +816,9 @@
                 <midino>0x25</midino>
                 <group>[Channel2]</group>
                 <key>reloop_exit</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -826,9 +826,9 @@
                 <midino>0x24</midino>
                 <group>[Channel2]</group>
                 <key>loop_out</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -836,9 +836,9 @@
                 <midino>0x26</midino>
                 <group>[Channel2]</group>
                 <key>loop_halve</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -846,9 +846,9 @@
                 <midino>0x27</midino>
                 <group>[Channel2]</group>
                 <key>hotcue_1_activate</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -856,9 +856,9 @@
                 <midino>0x28</midino>
                 <group>[Channel2]</group>
                 <key>hotcue_2_activate</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -866,9 +866,9 @@
                 <midino>0x29</midino>
                 <group>[Channel2]</group>
                 <key>hotcue_1_clear</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -876,9 +876,9 @@
                 <midino>0x2a</midino>
                 <group>[Channel2]</group>
                 <key>hotcue_2_clear</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -888,7 +888,7 @@
                 <key>HCInstinct.pitch</key>
                 <description>B Pitch -</description>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -898,7 +898,7 @@
                 <key>HCInstinct.pitch</key>
                 <description>B Pitch -</description>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -906,9 +906,9 @@
                 <midino>0x2d</midino>
                 <group>[Channel2]</group>
                 <key>back</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -916,9 +916,9 @@
                 <midino>0x2e</midino>
                 <group>[Channel2]</group>
                 <key>fwd</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -926,9 +926,9 @@
                 <midino>0x2f</midino>
                 <group>[Channel2]</group>
                 <key>cue_default</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -936,9 +936,9 @@
                 <midino>0x30</midino>
                 <group>[Channel2]</group>
                 <key>play</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -946,9 +946,9 @@
                 <midino>0x31</midino>
                 <group>[Channel2]</group>
                 <key>beatsync</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -956,9 +956,9 @@
                 <midino>0x32</midino>
                 <group>[Channel2]</group>
                 <key>pfl</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -966,9 +966,9 @@
                 <midino>0x33</midino>
                 <group>[Channel2]</group>
                 <key>LoadSelectedTrack</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -978,7 +978,7 @@
                 <key>HCInstinct.wheelTouch1</key>
                 <description>Right JogWheel switch </description>
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -986,9 +986,9 @@
                 <midino>0x35</midino>
                 <group>[Master]</group>
                 <key>HCInstinct.vinylButtonHandler</key>
-                <description></description>
+                <description />
                 <options>
-                    <script-binding/>
+                    <script-binding />
                 </options>
             </control>
             <control>
@@ -996,9 +996,9 @@
                 <midino>0x36</midino>
                 <group>[Playlist]</group>
                 <key>SelectPrevTrack</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -1006,9 +1006,9 @@
                 <midino>0x37</midino>
                 <group>[Playlist]</group>
                 <key>SelectNextTrack</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -1016,9 +1016,9 @@
                 <midino>0x38</midino>
                 <group>[Playlist]</group>
                 <key>SelectNextPlaylist</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -1026,9 +1026,9 @@
                 <midino>0x39</midino>
                 <group>[Playlist]</group>
                 <key>SelectPrevPlaylist</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
             <control>
@@ -1036,9 +1036,9 @@
                 <midino>0x41</midino>
                 <group>[Master]</group>
                 <key>headVolume</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
             </control>
         </controls>
@@ -1046,9 +1046,9 @@
             <output>
                 <group>[Channel2]</group>
                 <key>hotcue_4_enabled</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
                 <minimum>0.5</minimum>
                 <maximum>1</maximum>
@@ -1060,9 +1060,9 @@
             <output>
                 <group>[Channel1]</group>
                 <key>hotcue_1_enabled</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
                 <minimum>0.5</minimum>
                 <maximum>1</maximum>
@@ -1074,9 +1074,9 @@
             <output>
                 <group>[Channel1]</group>
                 <key>pfl</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
                 <minimum>0.5</minimum>
                 <maximum>1</maximum>
@@ -1088,9 +1088,9 @@
             <output>
                 <group>[Channel1]</group>
                 <key>hotcue_2_enabled</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
                 <minimum>0.5</minimum>
                 <maximum>1</maximum>
@@ -1102,9 +1102,9 @@
             <output>
                 <group>[Channel2]</group>
                 <key>hotcue_1_enabled</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
                 <minimum>0.5</minimum>
                 <maximum>1</maximum>
@@ -1116,9 +1116,9 @@
             <output>
                 <group>[Channel1]</group>
                 <key>flanger</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
                 <minimum>0.5</minimum>
                 <maximum>1</maximum>
@@ -1130,9 +1130,9 @@
             <output>
                 <group>[Channel1]</group>
                 <key>hotcue_3_enabled</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
                 <minimum>0.5</minimum>
                 <maximum>1</maximum>
@@ -1144,9 +1144,9 @@
             <output>
                 <group>[Channel2]</group>
                 <key>hotcue_2_enabled</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
                 <minimum>0.5</minimum>
                 <maximum>1</maximum>
@@ -1158,9 +1158,9 @@
             <output>
                 <group>[Channel2]</group>
                 <key>loop_start_position</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
                 <minimum>0</minimum>
                 <maximum>1e+07</maximum>
@@ -1172,9 +1172,9 @@
             <output>
                 <group>[Channel2]</group>
                 <key>flanger</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
                 <minimum>0.5</minimum>
                 <maximum>1</maximum>
@@ -1186,9 +1186,9 @@
             <output>
                 <group>[Channel1]</group>
                 <key>loop_enabled</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
                 <minimum>0.5</minimum>
                 <maximum>1</maximum>
@@ -1200,9 +1200,9 @@
             <output>
                 <group>[Channel1]</group>
                 <key>loop_enabled</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
                 <minimum>0.5</minimum>
                 <maximum>1</maximum>
@@ -1214,9 +1214,9 @@
             <output>
                 <group>[Channel2]</group>
                 <key>play</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
                 <minimum>0.5</minimum>
                 <maximum>1</maximum>
@@ -1228,9 +1228,9 @@
             <output>
                 <group>[Channel2]</group>
                 <key>hotcue_3_enabled</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
                 <minimum>0.5</minimum>
                 <maximum>1</maximum>
@@ -1242,9 +1242,9 @@
             <output>
                 <group>[Channel2]</group>
                 <key>loop_enabled</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
                 <minimum>0.5</minimum>
                 <maximum>1</maximum>
@@ -1256,9 +1256,9 @@
             <output>
                 <group>[Channel2]</group>
                 <key>loop_enabled</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
                 <minimum>0.5</minimum>
                 <maximum>1</maximum>
@@ -1270,9 +1270,9 @@
             <output>
                 <group>[Channel1]</group>
                 <key>play</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
                 <minimum>0.5</minimum>
                 <maximum>1</maximum>
@@ -1284,9 +1284,9 @@
             <output>
                 <group>[Channel1]</group>
                 <key>hotcue_4_enabled</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
                 <minimum>0.5</minimum>
                 <maximum>1</maximum>
@@ -1298,9 +1298,9 @@
             <output>
                 <group>[Channel2]</group>
                 <key>pfl</key>
-                <description></description>
+                <description />
                 <options>
-                    <normal/>
+                    <normal />
                 </options>
                 <minimum>0.5</minimum>
                 <maximum>1</maximum>
