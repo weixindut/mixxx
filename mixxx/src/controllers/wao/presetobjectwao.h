@@ -17,6 +17,7 @@ class PresetObjectWAO : public QObject{
     QList<MidiControllerPreset> getPresetByPresetName(QString destDirecotry, QString name);
     QList<MidiControllerPreset> getPresetByPresetID(QString destDirecotry, QString pid);
     QList<MidiControllerPreset> checkForUpdate(QString presetname, QString controller);
+    bool checkAvailableFileName(QString filename);
 
   private:
     QString generateQueryStr(QString name);

@@ -130,3 +130,19 @@ QString PresetObjectWAO::generateQueryStr(QString name) {
     url.append("&format=json");
     return url;
 }
+bool PresetObjectWAO::checkAvailableFileName(QString filename) {
+    QString url="http://127.0.0.1:8000/api/v1/presetfile/?file_name="+filename+"&format=json";
+    HttpClient httpClient;
+    bool ok;
+    QString data = httpClient.get(url);
+    qDebug() << "Print JsonObject:"+data;
+    QVariantMap result = QtJson::parse(data,ok).toMap();
+    if(!ok) {
+        qDebug()<<"There is something wrong with server side\n";
+    }
+    QList<QVariant> files=result["objects"].toList();
+    if(files.size()==0) {
+        return true;
+    }
+    return false;
+}

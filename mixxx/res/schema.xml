@@ -361,7 +361,7 @@ METADATA
         presetitem_id char(128) NOT NULL REFERENCES mapping_preset_object(uuid),
         type INTEGER NOT NULL,
         filesize INTEGER,
-        name varchar(48) NOT NULL);
+        name varchar(100) NOT NULL);
     </sql>
   </revision>
 </schema>

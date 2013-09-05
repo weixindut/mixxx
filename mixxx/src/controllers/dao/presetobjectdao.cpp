@@ -228,6 +228,7 @@ bool PresetObjectDAO::insertOnePreset(QString pid,QString xmlFile,
         return false;
     }
     foreach(QString file, picFiles) {
+    	qDebug()<<"insert pictures^^^^^^^^^^^^^^^^^^";
         if(!insertOneFile(pid,file,0)) {
         	transaction.rollback();
             return false;
@@ -259,7 +260,7 @@ void PresetObjectDAO::initialize(QString mapFile, QString directory) {
         QString pid = preset.toElement().attribute("pid");
         QString status = preset.toElement().attribute("status");
         if(!doesPresetExist(pid)) {
-            QString xmlPath = directory + filename+".midi.xml";
+            QString xmlPath = directory + filename;
             QFile xmlFile(xmlPath);
             QList<QString> jsFiles;
             QList<QString> picFiles;

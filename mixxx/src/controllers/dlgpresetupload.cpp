@@ -3,6 +3,7 @@
 #include "controllers/dlgpresetupload.h"
 #include "controllers/controllerpresetinfo.h"
 #include "controllers/dao/presetobjectdao.h"
+#include "controllers/wao/presetobjectwao.h"
 #include "controllers/json.h"
 using namespace QtJson;
 DlgPresetUpload::DlgPresetUpload(QWidget* parent):QDialog(parent) {
@@ -124,13 +125,22 @@ void DlgPresetUpload::slotSubmit() {
 }
 
 bool DlgPresetUpload::uploadCheck(QString& xmlFile, QList<QString>& picFiles, QList<QString>& jsFiles) {
-	PresetInfo presetInfo = PresetInfo(xmlFile);
+    QString message;
+    bool ok = true;
+    PresetObjectWAO pow;
+    QFileInfo fileinfo(xmlFile);
+    QString xmlName = fileinfo.fileName();
+    PresetInfo presetInfo = PresetInfo(xmlFile);
     QList<QString> pictures = presetInfo.getPicFileNames();
     QList<QString> scripts = presetInfo.getJsFileNames();
     if (pictures.size()!=picFiles.size()||scripts.size()!=jsFiles.size()) {
-    	QString message = "Please select correct pictures and scripts!";
-    	QMessageBox::information(this, tr("Info"), message);
-    	return false;
+        message.append("You have selected more files or missed some files according"
+                       " your mapping preset file"+xmlName+"!");
+        ok = false;
+    }
+    if (!pow.checkAvailableFileName(xmlName)) {
+        message.append("File with name "+xmlName+" has already existed in cloud server!");
+        ok = false;
     }
     // check whether selected file name is same with info inserted in
     // xml file by the preset writer
@@ -138,32 +148,39 @@ bool DlgPresetUpload::uploadCheck(QString& xmlFile, QList<QString>& picFiles, QL
         QFileInfo info(pic);
         QString picName = info.fileName();
         if (!pictures.contains(picName)) {
-        	QString message = "Please select correct pictures!";
-        	QMessageBox::information(this, tr("Info"), message);
-        	return false;
+            message.append("File "+picName+" does not match your mapping preset file!");
+            ok = false;
+        }
+        if (!pow.checkAvailableFileName(picName)) {
+            message.append("File with name "+picName+" has already existed in cloud server!");
+            ok = false;
         }
     }
     foreach(QString js, jsFiles) {
         QFileInfo info(js);
         QString jsName = info.fileName();
         if (!scripts.contains(jsName)) {
-            QString message = "Please select correct scripts!";
-            QMessageBox::information(this, tr("Info"), message);
-            return false;
+            message.append("File "+jsName+" does not match your mapping preset file!");
+            ok = false;
+        }
+        if (!pow.checkAvailableFileName(jsName)) {
+            message.append("File with name "+jsName+" has already existed in cloud server!");
+            ok = false;
         }
     }
-
     PresetObjectDAO pod(m_db);
     if(!pod.isPresetInsertable(xmlFile)) {
-        QString message = "Preset with same schema version has already existed!";
-        QMessageBox::information(this, tr("Info"), message);
-        return false;
+        message.append("Preset with same schema version has already existed in local database!");
+        ok = false;
     }
     if(!ableToTransferPresetFiles(xmlFile,picFiles,jsFiles)) {
         return false;
     }
-    return true;
-
+    if (ok == false) {
+        QMessageBox::information(this, tr("Info"), message);
+        return ok;
+    }
+    return ok;
 }
 bool DlgPresetUpload::ableToTransferPresetFiles(QString& xmlFile, QList<QString>& picFiles, QList<QString>& jsFiles) {
     QString destDir = "./res/controllers/";
