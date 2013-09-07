@@ -71,11 +71,11 @@ DlgMappingPresetManager::DlgMappingPresetManager(QWidget* parent,ConfigObject<Co
     getUi().btn_cloudright->setEnabled(false);
 
     getUi().label_statisticalresult->setText("...");
-    QString mapFilename = m_pConfig->getResourcePath();
-    mapFilename.append("mapScript.xml");
-    QString directory = m_pConfig->getResourcePath();
-    directory.append("controllers/");
-    m_presetObjectDAO.initialize(mapFilename,directory);
+    //QString mapFilename = m_pConfig->getResourcePath();
+    //mapFilename.append("mapScript.xml");
+    //QString directory = m_pConfig->getResourcePath();
+    //directory.append("controllers/");
+    //m_presetObjectDAO.initialize(mapFilename,directory);
     connect(getUi().btn_search, SIGNAL(clicked()),
             this, SLOT(slotSearch()));
     connect(getUi().tabWidget_results, SIGNAL(currentChanged(int)),
@@ -172,7 +172,9 @@ void DlgMappingPresetManager::showLocalSearchResults() {
         DlgControllerPreset* showpreset = new DlgControllerPreset(this);
         if (!m_presetListLocal[i].PictureFileNames().isEmpty()) {
         	//TODO(weixin): rewrite the path
-            showpreset->setCover("./res/controllers/"+m_presetListLocal[i].PictureFileNames()[0]);
+        	QString copath = "./res/controllers/"+m_presetListLocal[i].PictureFileNames()[0];
+        	qDebug()<<"=========copath============"+copath;
+            showpreset->setCover(copath);
         } else {
             showpreset->setCover("./res/images/mixxx-icon.png");
         }

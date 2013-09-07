@@ -38,6 +38,7 @@
 #include "library/librarytablemodel.h"
 #include "controllers/controllermanager.h"
 #include "controllers/dlgpresetupload.h"
+
 #include "mixxxkeyboard.h"
 #include "playermanager.h"
 #include "recording/defs_recording.h"
@@ -559,6 +560,7 @@ MixxxApp::MixxxApp(QApplication *pApp, const CmdlineArgs& args)
         m_pLibraryScanner->scan(
             m_pConfig->getValueString(ConfigKey("[Playlist]", "Directory")), this);
     }
+
 }
 
 MixxxApp::~MixxxApp()

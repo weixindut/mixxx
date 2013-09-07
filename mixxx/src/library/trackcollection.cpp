@@ -11,6 +11,7 @@
 #include "soundsourceproxy.h"
 #include "trackinfoobject.h"
 #include "xmlparse.h"
+#include "controllers/dao/presetobjectdao.h"
 
 TrackCollection::TrackCollection(ConfigObject<ConfigValue>* pConfig)
         : m_pConfig(pConfig),
@@ -108,7 +109,12 @@ bool TrackCollection::checkForTables() {
     m_playlistDao.initialize();
     m_crateDao.initialize();
     m_cueDao.initialize();
-
+    QString mapFilename = m_pConfig->getResourcePath();
+    mapFilename.append("mapScript.xml");
+    QString directory = m_pConfig->getResourcePath();
+    directory.append("controllers/");
+    PresetObjectDAO presetObjectDAO(m_db);
+    presetObjectDAO.initialize(mapFilename,directory);
     return true;
 }
 

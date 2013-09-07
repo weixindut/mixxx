@@ -18,7 +18,6 @@ class DlgMappingPresetManager : public QDialog {
   public:
     DlgMappingPresetManager(QWidget* parent,ConfigObject<ConfigValue>* pConfig);
     virtual ~DlgMappingPresetManager();
-    //bool checkForTables();
     void getJsonDataTest();
     void searchLocal();
     void searchCloud();
@@ -43,8 +42,9 @@ class DlgMappingPresetManager : public QDialog {
     void slotShowLocalNextPageResults();
 
   private:
-    QSqlDatabase m_db;
     Ui::DlgPresetManagerDlg m_ui;
+    ConfigObject<ConfigValue>* m_pConfig;
+    QSqlDatabase m_db;
     QList<MidiControllerPreset> m_presetListCloud;
     QList<MidiControllerPreset> m_presetListLocal;
     int m_currentCloudResultsPage;
@@ -53,7 +53,7 @@ class DlgMappingPresetManager : public QDialog {
     QList<QGridLayout* > m_gridLayoutListLocal;
     MidiControllerPreset m_selectedPreset;
     PresetObjectDAO m_presetObjectDAO;
-    ConfigObject<ConfigValue>* m_pConfig;
+
 };
 #endif
 

@@ -202,7 +202,11 @@ bool PresetObjectDAO::insertOneFile(QString pid,QString filePath, int type) {
         qDebug() << filePath + "does not exist!";
         return false;
     }
-    QString directory = fileInfo.path();
+    if(!fileInfo.isFile()) {
+        qDebug() << filePath + "is not a file!";
+        return false;
+    }
+    QString directory = fileInfo.absoluteFilePath();
     QString name = fileInfo.fileName();
     // fileInfo.size() return int64;
     int size = fileInfo.size();
@@ -227,13 +231,14 @@ bool PresetObjectDAO::insertOnePreset(QString pid,QString xmlFile,
     	transaction.rollback();
         return false;
     }
+
     foreach(QString file, picFiles) {
-    	qDebug()<<"insert pictures^^^^^^^^^^^^^^^^^^";
         if(!insertOneFile(pid,file,0)) {
         	transaction.rollback();
             return false;
         }
     }
+
     foreach(QString file, jsFiles) {
         if(!insertOneFile(pid,file,2)) {
         	transaction.rollback();
@@ -248,12 +253,12 @@ bool PresetObjectDAO::insertOnePreset(QString pid,QString xmlFile,
     return true;
 }
 void PresetObjectDAO::initialize(QString mapFile, QString directory) {
-    QDomElement root = XmlParse::openXMLFile(mapFile, "presets");
-    if (root.isNull()) {
+    QDomElement mapRoot = XmlParse::openXMLFile(mapFile, "presets");
+    if (mapRoot.isNull()) {
         qDebug() << "ERROR parsing" << mapFile;
         return;
     }
-    QDomNodeList presetList = root.childNodes();
+    QDomNodeList presetList = mapRoot.childNodes();
     for(int i=0; i<presetList.count();i++) {
         QDomNode preset = presetList.at(i);
         QString filename = preset.toElement().attribute("filename");
@@ -265,23 +270,25 @@ void PresetObjectDAO::initialize(QString mapFile, QString directory) {
             QList<QString> jsFiles;
             QList<QString> picFiles;
             if(xmlFile.exists()) {
-                QDomElement xmlroot = XmlParse::openXMLFile(mapFile, "controller");
-                QDomElement scripts = xmlroot.firstChildElement("scriptfiles");
+            	QDomElement root = XmlParse::openXMLFile(xmlPath, "presets");
+            	QDomElement controllerNode = root.firstChildElement("controller");
+            	QDomElement scripts = controllerNode.firstChildElement("scriptfiles");
                 QDomNodeList scriptList = scripts.childNodes();
-                for(int j=0; j<scriptList.count();j++) {
+                for(int j=0; j<scriptList.size();j++) {
                     QDomNode script = scriptList.at(j);
                     QString scriptName = directory + script.toElement().attribute("filename");
                     jsFiles.append(scriptName);
                 }
-                QDomElement pictures = xmlroot.firstChildElement("picfiles");
+                QDomElement pictures = controllerNode.firstChildElement("picfiles");
                 QDomNodeList picList = pictures.childNodes();
-                for(int j=0; j<picList.count();j++) {
+                for(int j=0; j<picList.size();j++) {
                     QDomNode pic = picList.at(j);
                     QString picName = directory + pic.toElement().attribute("name");
                     jsFiles.append(picName);
                 }
+                insertOnePreset(pid,xmlPath,picFiles,jsFiles,status);
             }
-            insertOnePreset(pid,xmlPath,picFiles,jsFiles,status);
+
         }
     }
 }
