@@ -35,7 +35,7 @@ QList<MidiControllerPreset> PresetObjectDAO::getPresetByPresetName(QString name)
         QString schema_version = query.value(query.record().indexOf("schema_version")).toString();
         float ratings = query.value(query.record().indexOf("ratings")).toFloat();
         QSqlQuery picQuery(m_database);
-        QString picStr = "SELECT name FROM Files_storage WHERE presetitem_id = '"+pid+"' AND type = 0";
+        QString picStr = "SELECT name FROM Files_storage WHERE presetitem_id = '"+pid+"' AND type = 3";
         picQuery.prepare(picStr);
         if (!picQuery.exec()) {
             LOG_FAILED_QUERY(picQuery);
@@ -196,7 +196,7 @@ bool PresetObjectDAO::insertOnePresetRecord(QString pid, QString xmlFilePath, QS
 	return true;
 }
 bool PresetObjectDAO::insertOneFile(QString pid,QString filePath, int type) {
-    // TODO(weixin):give a unified definition of type, currently type:0-pic,1-xml,2-js
+    // TODO(weixin):give a unified definition of type, currently type:1-xml,2-js,3-pic,
     QFileInfo fileInfo(filePath);
     if(!fileInfo.exists()) {
         qDebug() << filePath + "does not exist!";
@@ -233,7 +233,7 @@ bool PresetObjectDAO::insertOnePreset(QString pid,QString xmlFile,
     }
 
     foreach(QString file, picFiles) {
-        if(!insertOneFile(pid,file,0)) {
+        if(!insertOneFile(pid,file,3)) {
         	transaction.rollback();
             return false;
         }
@@ -245,6 +245,7 @@ bool PresetObjectDAO::insertOnePreset(QString pid,QString xmlFile,
             return false;
         }
     }
+
     if (!insertOneFile(pid,xmlFile,1)) {
     	transaction.rollback();
         return false;
@@ -284,7 +285,7 @@ void PresetObjectDAO::initialize(QString mapFile, QString directory) {
                 for(int j=0; j<picList.size();j++) {
                     QDomNode pic = picList.at(j);
                     QString picName = directory + pic.toElement().attribute("name");
-                    jsFiles.append(picName);
+                    picFiles.append(picName);
                 }
                 insertOnePreset(pid,xmlPath,picFiles,jsFiles,status);
             }

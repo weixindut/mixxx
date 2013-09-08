@@ -13,6 +13,7 @@
 #include "controllers/controller.h"
 #include "controllers/controllermanager.h"
 #include "controllers/defs_controllers.h"
+#include "controllers/dlgrating.h"
 #include "configobject.h"
 
 DlgPrefController::DlgPrefController(QWidget *parent, Controller* controller,
@@ -71,10 +72,10 @@ DlgPrefController::DlgPrefController(QWidget *parent, Controller* controller,
             this, SLOT(slotShowMappingPresetManagerDialog()));
     connect(this, SIGNAL(updateCurrentPreset()),
             this, SLOT(slotUpdateCurrentPreset()));
-    //connect(this, SIGNAL(updateCurrentPreset()),
-    //        this, SLOT(enumeratePresets()));
-    //connect(this, SIGNAL(openController(Controller*)),
-    //        this, SLOT(enumeratePresets()));
+    connect(getUi().btnCheckNewest, SIGNAL(clicked(ControllerPresetPointer)),
+            this, SLOT(slotAskForPresetUpdate(ControllerPresetPointer)));
+    connect(getUi().btnRating,SIGNAL(clicked(ControllerPresetPointer)),
+            this, SLOT(slotRating(ControllerPresetPointer)));
 }
 
 DlgPrefController::~DlgPrefController() {
@@ -103,7 +104,6 @@ void DlgPrefController::slotShowMappingPresetManagerDialog() {
         m_pMappingPresetManager->show();
         connect(m_pMappingPresetManager, SIGNAL(presetReturned(QString)),
         		this, SLOT(slotGetPreset(QString)));
-		//m_pMappingPresetManager->getJsonDataTest();
 	}
 }
 QString DlgPrefController::presetDescription(const ControllerPresetPointer pPreset) const {
@@ -126,7 +126,18 @@ QString DlgPrefController::presetCoverPath(const ControllerPresetPointer pPreset
     }
     return coverPath;
 }
-
+/*QString DlgPrefController::presetDeviceID(const ControllerPresetPointer pPreset) const {
+    if(pPreset) {
+    	return pPreset->deviceId();
+    }
+    return "";
+}
+QString DlgPrefController::presetSchemaVersion(const ControllerPresetPointer pPreset) const {
+    if(pPreset) {
+    	return pPreset->Pid();
+    }
+    return "";
+}*/
 QString DlgPrefController::presetForumLink(const ControllerPresetPointer pPreset) const {
     QString url;
     if (pPreset) {
@@ -297,4 +308,53 @@ void DlgPrefController::slotUpdateCurrentPreset() {
     if (index != -1)
         m_ui.comboBoxPreset->setCurrentIndex(index);
     slotLoadPreset(index);
+}
+void DlgPrefController::slotAskForPresetUpdate(ControllerPresetPointer preset) {
+	if(preset) {
+        QString sv = preset->schemaVersion();
+        bool ok;
+        int schemaVersion=sv.toInt(&ok,10);
+        int schemaVersionNewest;
+        if(!ok) {
+        	qDebug()<<"shcema version not a number";
+        	return;
+        }
+        QString presetName = preset->name();
+        QString deviceID = preset->deviceId();
+        PresetObjectWAO pow;
+        QList<MidiControllerPreset> presetCloud = pow.checkForUpdate(presetName,deviceID);
+        if (presetCloud.isEmpty()) {
+        	QString message = "Maybe there is something with network, sorry for failed check!";
+        	QMessageBox::information(this, tr("Info"), message);
+        	return;
+        } else {
+            QString svn=presetCloud[0].schemaVersion();
+            bool okc;
+            schemaVersionNewest=svn.toInt(&okc,10);
+            if(!okc) {
+                qDebug()<<"shcema version not a number";
+                return;
+            }
+            if (schemaVersion>=schemaVersionNewest) {
+                QString message = "No newer version of preset!";
+                QMessageBox::information(this, tr("Info"), message);
+                return;
+            } else {
+                QMessageBox message(QMessageBox::NoIcon, "Question",
+                                    "Newer preset is found, try it?",
+                                    QMessageBox::Yes | QMessageBox::No, NULL);
+                if(message.exec() == QMessageBox::Yes) {
+                	PresetObjectWAO pow;
+                	pow.getPresetByPresetID("./res/controllers/",preset->Pid());
+                	qDebug()<<"filePath:====="+ preset->filePath();
+                	slotGetPreset(preset->filePath());
+                }
+            }
+        }
+	}
+}
+void DlgPrefController::slotRating(ControllerPresetPointer preset) {
+    DlgRating dlgrating = new DlgRating(this,(MidiControllerPreset&)(*preset.data()));
+    dlgrating.show();
+
 }

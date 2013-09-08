@@ -48,6 +48,8 @@ class DlgPrefController : public QWidget {
     void slotGetPreset(QString);
     // update current preset after new preset is returned
     void slotUpdateCurrentPreset();
+    void slotAskForPresetUpdate(ControllerPresetPointer preset);
+    void slotRating(ControllerPresetPointer preset);
   signals:
     void deviceStateChanged(DlgPrefController*, bool);
     void openController(Controller* pController);
@@ -82,6 +84,7 @@ class DlgPrefController : public QWidget {
     QString presetForumLink(const ControllerPresetPointer pPreset) const;
     QString presetWikiLink(const ControllerPresetPointer pPreset) const;
     QString presetCoverPath(const ControllerPresetPointer pPreset) const;
+    //QString presetDeviceID(const ControllerPresetPointer pPreset) const;
     void savePreset(QString path);
 
     void enableDevice();
