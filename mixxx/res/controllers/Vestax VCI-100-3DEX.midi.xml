@@ -8,7 +8,7 @@
     <scriptfiles>
        <file filename="Vestax-VCI-100-3DEX-scripts.js" functionprefix="VestaxVCI1003DEX" />
     </scriptfiles>
-    <picfiles><pic name="" /></picfiles><controls>
+    <picfiles /><controls>
       <control>
         <group>[Master]</group>
         <key>crossfader</key>

@@ -8,7 +8,7 @@
     <scriptfiles>
       <file filename="Vestax-VCI-100-hile.js" functionprefix="HileVci100" />
     </scriptfiles>
-    <picfiles><pic name="" /></picfiles><controls>
+    <picfiles /><controls>
       
       <control><status>0xB0</status><midino>0x07</midino><group>[Master]</group><key>HileVci100.faders</key><options><Script-Binding /></options></control>
       <control><status>0xB0</status><midino>0x08</midino><group>[Master]</group><key>HileVci100.faders</key><options><Script-Binding /></options></control>
