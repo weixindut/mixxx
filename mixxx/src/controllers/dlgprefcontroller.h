@@ -17,6 +17,7 @@
 #include "configobject.h"
 #include "controllers/midi/midicontrollerpreset.h"
 #include "controllers/dlgmappingpresetmanager.h"
+#include "controllers/dlgrating.h"
 
 // Forward declarations
 class Controller;
@@ -48,8 +49,8 @@ class DlgPrefController : public QWidget {
     void slotGetPreset(QString);
     // update current preset after new preset is returned
     void slotUpdateCurrentPreset();
-    void slotAskForPresetUpdate(ControllerPresetPointer preset);
-    void slotRating(ControllerPresetPointer preset);
+    void slotAskForPresetUpdate();
+    void slotShowRatingDlg();
   signals:
     void deviceStateChanged(DlgPrefController*, bool);
     void openController(Controller* pController);
@@ -76,7 +77,7 @@ class DlgPrefController : public QWidget {
     }
   private slots:
     void slotPresetLoaded(ControllerPresetPointer preset);
-    //void slotUpdateCurrntPreset();
+
 
   private:
     QString presetShortName(const ControllerPresetPointer pPreset) const;
@@ -84,7 +85,6 @@ class DlgPrefController : public QWidget {
     QString presetForumLink(const ControllerPresetPointer pPreset) const;
     QString presetWikiLink(const ControllerPresetPointer pPreset) const;
     QString presetCoverPath(const ControllerPresetPointer pPreset) const;
-    //QString presetDeviceID(const ControllerPresetPointer pPreset) const;
     void savePreset(QString path);
 
     void enableDevice();
@@ -98,6 +98,7 @@ class DlgPrefController : public QWidget {
     QSpacerItem* m_pVerticalSpacer;
     bool m_bDirty;
     DlgMappingPresetManager* m_pMappingPresetManager;
+    DlgRating* m_dlgrating;
     QString m_presetPath;
 };
 

@@ -40,47 +40,13 @@
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <widget class="QRadioButton" name="rbtnScore5">
+     <widget class="QRadioButton" name="rbtnScore1">
       <property name="text">
        <string/>
       </property>
       <property name="icon">
        <iconset>
-        <normaloff>../../res/images/controllers/5stars.png</normaloff>../../res/images/controllers/5stars.png</iconset>
-      </property>
-      <property name="iconSize">
-       <size>
-        <width>150</width>
-        <height>16</height>
-       </size>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QRadioButton" name="rbtnScore4">
-      <property name="text">
-       <string/>
-      </property>
-      <property name="icon">
-       <iconset>
-        <normaloff>../../res/images/controllers/4stars.png</normaloff>../../res/images/controllers/4stars.png</iconset>
-      </property>
-      <property name="iconSize">
-       <size>
-        <width>150</width>
-        <height>16</height>
-       </size>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QRadioButton" name="rbtnScore3">
-      <property name="text">
-       <string/>
-      </property>
-      <property name="icon">
-       <iconset>
-        <normaloff>../../res/images/controllers/3stars.png</normaloff>../../res/images/controllers/3stars.png</iconset>
+        <normaloff>../../res/images/controllers/1stars.png</normaloff>../../res/images/controllers/1stars.png</iconset>
       </property>
       <property name="iconSize">
        <size>
@@ -108,13 +74,47 @@
      </widget>
     </item>
     <item>
-     <widget class="QRadioButton" name="rbtnScore1">
+     <widget class="QRadioButton" name="rbtnScore3">
       <property name="text">
        <string/>
       </property>
       <property name="icon">
        <iconset>
-        <normaloff>../../res/images/controllers/1stars.png</normaloff>../../res/images/controllers/1stars.png</iconset>
+        <normaloff>../../res/images/controllers/3stars.png</normaloff>../../res/images/controllers/3stars.png</iconset>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>150</width>
+        <height>16</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QRadioButton" name="rbtnScore4">
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normaloff>../../res/images/controllers/4stars.png</normaloff>../../res/images/controllers/4stars.png</iconset>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>150</width>
+        <height>16</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QRadioButton" name="rbtnScore5">
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normaloff>../../res/images/controllers/5stars.png</normaloff>../../res/images/controllers/5stars.png</iconset>
       </property>
       <property name="iconSize">
        <size>

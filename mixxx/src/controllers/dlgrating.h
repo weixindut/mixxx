@@ -1,16 +1,19 @@
-#ifndef DLGRATING_H
-#define DLGRATING_H
+#ifndef DLGRATING_H_
+#define DLGRATING_H_
 #include <QtGui>
+#include <QButtonGroup>
 #include "controllers/ui_dlgrating.h"
-#include "controllers/midi/midicontrollerpreset.h"
-#include "controllers/wao/presetobjectwao.h"
+
 class DlgRating: public QDialog {
     Q_OBJECT
   public:
-    DlgRating(QWidget* parent, MidiControllerPreset& preset);
+    DlgRating(QWidget* parent, QString pid);
     virtual ~DlgRating(){};
+  public slots:
+    void slotRating();
   private:
     Ui::DlgRatingDlg m_ui;
-    MidiControllerPreset& m_preset;
+    QString m_pid;
+    QButtonGroup* m_buttonGroup;
 };
 #endif

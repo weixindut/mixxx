@@ -13,7 +13,9 @@
 #include "controllers/controller.h"
 #include "controllers/controllermanager.h"
 #include "controllers/defs_controllers.h"
+#include "controllers/wao/presetobjectwao.h"
 #include "controllers/dlgrating.h"
+
 #include "configobject.h"
 
 DlgPrefController::DlgPrefController(QWidget *parent, Controller* controller,
@@ -72,10 +74,10 @@ DlgPrefController::DlgPrefController(QWidget *parent, Controller* controller,
             this, SLOT(slotShowMappingPresetManagerDialog()));
     connect(this, SIGNAL(updateCurrentPreset()),
             this, SLOT(slotUpdateCurrentPreset()));
-    connect(getUi().btnCheckNewest, SIGNAL(clicked(ControllerPresetPointer)),
-            this, SLOT(slotAskForPresetUpdate(ControllerPresetPointer)));
-    connect(getUi().btnRating,SIGNAL(clicked(ControllerPresetPointer)),
-            this, SLOT(slotRating(ControllerPresetPointer)));
+    connect(getUi().btnCheckNewest, SIGNAL(clicked()),
+            this, SLOT(slotAskForPresetUpdate()));
+    connect(getUi().btnRating,SIGNAL(clicked()),
+            this, SLOT(slotShowRatingDlg()));
 }
 
 DlgPrefController::~DlgPrefController() {
@@ -309,7 +311,8 @@ void DlgPrefController::slotUpdateCurrentPreset() {
         m_ui.comboBoxPreset->setCurrentIndex(index);
     slotLoadPreset(index);
 }
-void DlgPrefController::slotAskForPresetUpdate(ControllerPresetPointer preset) {
+void DlgPrefController::slotAskForPresetUpdate() {
+    const ControllerPresetPointer preset = m_pController->getPreset();
 	if(preset) {
         QString sv = preset->schemaVersion();
         bool ok;
@@ -353,8 +356,8 @@ void DlgPrefController::slotAskForPresetUpdate(ControllerPresetPointer preset) {
         }
 	}
 }
-void DlgPrefController::slotRating(ControllerPresetPointer preset) {
-    DlgRating dlgrating = new DlgRating(this,(MidiControllerPreset&)(*preset.data()));
-    dlgrating.show();
-
+void DlgPrefController::slotShowRatingDlg() {
+	QString pid = "haha";
+	m_dlgrating = new DlgRating(this,pid);
+	m_dlgrating->show();
 }
