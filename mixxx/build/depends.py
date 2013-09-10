@@ -452,6 +452,7 @@ class MixxxCore(Feature):
                    "controllers/dlgcontrollerlearning.cpp",
                    "controllers/dlgprefnocontrollers.cpp",
                    "controllers/dlgmappingpresetmanager.cpp",
+                   "controllers/dlgrating.cpp",
                    "controllers/httpclient.cpp",
 
                    "dlgprefplaylist.cpp",
@@ -528,7 +529,6 @@ class MixxxCore(Feature):
                    "controllers/dao/presetobjectdao.cpp",
                    "controllers/dlgcontrollerpreset.cpp",
                    "controllers/dlgpresetupload.cpp",
-                   "controllers/dlgrating.cpp",
                    "main.cpp",
                    "mixxx.cpp",
                    "errordialoghandler.cpp",

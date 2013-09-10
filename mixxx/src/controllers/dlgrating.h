@@ -8,7 +8,7 @@ class DlgRating: public QDialog {
     Q_OBJECT
   public:
     DlgRating(QWidget* parent, QString pid);
-    virtual ~DlgRating(){};
+    virtual ~DlgRating(){delete m_buttonGroup;};
   public slots:
     void slotRating();
   private:

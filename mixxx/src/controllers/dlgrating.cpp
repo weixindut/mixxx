@@ -1,7 +1,8 @@
 #include <QIcon>
 #include <QDebug>
-
+#include <QByteArray>
 #include "controllers/dlgrating.h"
+#include "httpclient.h"
 
 DlgRating::DlgRating(QWidget* parent, QString pid)
         :QDialog(parent),
@@ -14,15 +15,25 @@ DlgRating::DlgRating(QWidget* parent, QString pid)
     m_ui.rbtnScore3->setIcon(QIcon("./res/images/controllers/3stars.png"));
     m_ui.rbtnScore4->setIcon(QIcon("./res/images/controllers/4stars.png"));
     m_ui.rbtnScore5->setIcon(QIcon("./res/images/controllers/5stars.png"));
-    m_buttonGroup->addButton( m_ui.rbtnScore1, 0 );
-    m_buttonGroup->addButton( m_ui.rbtnScore2, 0 );
-    m_buttonGroup->addButton( m_ui.rbtnScore3, 0 );
-    m_buttonGroup->addButton( m_ui.rbtnScore4, 0 );
-    m_buttonGroup->addButton( m_ui.rbtnScore5, 0 );
+    m_buttonGroup->addButton( m_ui.rbtnScore1, 1 );
+    m_buttonGroup->addButton( m_ui.rbtnScore2, 2 );
+    m_buttonGroup->addButton( m_ui.rbtnScore3, 3 );
+    m_buttonGroup->addButton( m_ui.rbtnScore4, 4 );
+    m_buttonGroup->addButton( m_ui.rbtnScore5, 5 );
     connect(m_ui.buttonBox, SIGNAL(accepted()), this, SLOT(slotRating()));
     connect(m_ui.buttonBox, SIGNAL(rejected()), this, SLOT(close()));
 }
 void DlgRating::slotRating() {
 	int id = m_buttonGroup->checkedId();
-    printf("hhhhhhhhhhhhhhh%d", id);
+	if (id == 1) {
+		qDebug()<<"one star only!";
+	}
+	QString message = "Thank you!";
+	QMessageBox::information(this, tr("Info"),message);
+	HttpClient hc;
+	QString url = "http://127.0.0.1:8000/api/v1/comment/?format=json";
+	QByteArray postData;
+	postData.append("rating=").append(id);
+	postData.append("&pid=").append(m_pid);
+	hc.post(url,postData);
 }

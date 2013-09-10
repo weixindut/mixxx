@@ -21,7 +21,8 @@ HttpClient::~HttpClient() {
 QString HttpClient::post(const QString& url, const QByteArray& postData) {
     QNetworkRequest request;
     request.setUrl(QUrl(url));
-    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
+    //request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
     QNetworkReply* reply = m_manager->post(request, postData);
     waitForFinish(reply);
