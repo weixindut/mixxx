@@ -357,7 +357,8 @@ void DlgPrefController::slotAskForPresetUpdate() {
 	}
 }
 void DlgPrefController::slotShowRatingDlg() {
-	QString pid = "haha";
+	const ControllerPresetPointer preset = m_pController->getPreset();
+	QString pid = preset->Pid();
 	m_dlgrating = new DlgRating(this,pid);
 	m_dlgrating->show();
 }

@@ -31,9 +31,9 @@ void DlgRating::slotRating() {
 	QString message = "Thank you!";
 	QMessageBox::information(this, tr("Info"),message);
 	HttpClient hc;
-	QString url = "http://127.0.0.1:8000/api/v1/comment/?format=json";
-	QByteArray postData;
-	postData.append("rating=").append(id);
-	postData.append("&pid=").append(m_pid);
+	QString url = "http://127.0.0.1:8000/api/v1/comment/rating/?format=json";
+	QMap<QString, QString> postData;
+	postData.insert("rating",QString::number(id));
+	postData.insert("pid",m_pid);
 	hc.post(url,postData);
 }
