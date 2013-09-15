@@ -16,7 +16,7 @@
 class DlgMappingPresetManager : public QDialog {
     Q_OBJECT
   public:
-    DlgMappingPresetManager(QWidget* parent,ConfigObject<ConfigValue>* pConfig);
+    DlgMappingPresetManager(QWidget* parent,ConfigObject<ConfigValue>* pConfig, QSqlDatabase& db);
     virtual ~DlgMappingPresetManager();
     void getJsonDataTest();
     void searchLocal();
@@ -44,7 +44,7 @@ class DlgMappingPresetManager : public QDialog {
   private:
     Ui::DlgPresetManagerDlg m_ui;
     ConfigObject<ConfigValue>* m_pConfig;
-    QSqlDatabase m_db;
+    QSqlDatabase& m_db;
     QList<MidiControllerPreset> m_presetListCloud;
     QList<MidiControllerPreset> m_presetListLocal;
     int m_currentCloudResultsPage;

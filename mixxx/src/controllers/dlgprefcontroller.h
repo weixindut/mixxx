@@ -10,6 +10,8 @@
 
 #include <QtGui>
 #include <QHash>
+#include <QSqlDatabase>
+#include <QSqlError>
 
 #include "controllers/controllerpreset.h"
 #include "controllers/controllerpresetinfo.h"
@@ -92,6 +94,7 @@ class DlgPrefController : public QWidget {
 
     Ui::DlgPrefControllerDlg m_ui;
     ConfigObject<ConfigValue>* m_pConfig;
+    QSqlDatabase m_db;
     ControllerManager* m_pControllerManager;
     Controller* m_pController;
     QGridLayout* m_pLayout;

@@ -295,7 +295,7 @@ void PresetObjectDAO::initialize(QString mapFile, QString directory) {
 }
 bool PresetObjectDAO::doesPresetExist(QString pid) {
     QSqlQuery query(m_database);
-    query.prepare(" SELECT pid FROM mapping_preset_object WHERE pid = :pid");
+    query.prepare("SELECT pid FROM mapping_preset_object WHERE pid = :pid");
     query.bindValue(":pid", pid);
     if (!query.exec()) {
         LOG_FAILED_QUERY(query);
@@ -305,4 +305,21 @@ bool PresetObjectDAO::doesPresetExist(QString pid) {
         return true;
     }
     return false;
+}
+QString PresetObjectDAO::getPid(QString controllName, QString presetName, QString schemaVersion) {
+    QSqlQuery query(m_database);
+    query.prepare("SELECT pid FROM mapping_preset_object WHERE controller_name = :controllername "
+                  " AND preset_name = :presetname "
+                  " AND schema_version =:schemaversion");
+    query.bindValue(":controllername", controllName);
+    query.bindValue(":presetname", presetName);
+    query.bindValue(":schemaversion", schemaVersion);
+    if (!query.exec()) {
+        LOG_FAILED_QUERY(query);
+        return "";
+    }
+    if(query.next()) {
+        return query.value(query.record().indexOf("pid")).toString();
+    }
+    return "";
 }

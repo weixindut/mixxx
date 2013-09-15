@@ -23,9 +23,21 @@ DlgPrefController::DlgPrefController(QWidget *parent, Controller* controller,
                                      ConfigObject<ConfigValue> *pConfig)
         : QWidget(parent),
           m_pConfig(pConfig),
+          m_db(QSqlDatabase::addDatabase("QSQLITE","PrefController")),
           m_pControllerManager(controllerManager),
           m_pController(controller),
           m_bDirty(false) {
+    if (!m_db.isOpen()) {
+        m_db.setHostName("localhost");
+        m_db.setDatabaseName(m_pConfig->getSettingsPath().append("/mixxxdb.sqlite"));
+        m_db.setUserName("mixxx");
+        m_db.setPassword("mixxx");
+        //Open the database connection in this thread.
+        if (!m_db.open()) {
+            qDebug()<< "Failed to open database from PrefController."
+                    << m_db.lastError();
+        }
+    }
 
     connect(m_pController, SIGNAL(presetLoaded(ControllerPresetPointer)),
             this, SLOT(slotPresetLoaded(ControllerPresetPointer)));
@@ -102,7 +114,7 @@ QString DlgPrefController::presetShortName(const ControllerPresetPointer pPreset
 void DlgPrefController::slotShowMappingPresetManagerDialog() {
 
     if (isEnabled() && !getController()->isOpen()) {
-        m_pMappingPresetManager = new DlgMappingPresetManager(this,getConfigObject());
+        m_pMappingPresetManager = new DlgMappingPresetManager(this,getConfigObject(), m_db);
         m_pMappingPresetManager->show();
         connect(m_pMappingPresetManager, SIGNAL(presetReturned(QString)),
         		this, SLOT(slotGetPreset(QString)));
@@ -128,18 +140,7 @@ QString DlgPrefController::presetCoverPath(const ControllerPresetPointer pPreset
     }
     return coverPath;
 }
-/*QString DlgPrefController::presetDeviceID(const ControllerPresetPointer pPreset) const {
-    if(pPreset) {
-    	return pPreset->deviceId();
-    }
-    return "";
-}
-QString DlgPrefController::presetSchemaVersion(const ControllerPresetPointer pPreset) const {
-    if(pPreset) {
-    	return pPreset->Pid();
-    }
-    return "";
-}*/
+
 QString DlgPrefController::presetForumLink(const ControllerPresetPointer pPreset) const {
     QString url;
     if (pPreset) {
@@ -243,7 +244,6 @@ void DlgPrefController::slotApply() {
 }
 
 void DlgPrefController::slotLoadPreset(int chosenIndex) {
-    qDebug()<<"============slotLoadPreset===============";
     if (chosenIndex == 0) {
         // User picked ...
         return;
@@ -297,13 +297,11 @@ void DlgPrefController::disableDevice() {
 }
 
 void  DlgPrefController::slotGetPreset(QString presetpath) {
-    qDebug()<<"============slotGetPreset==============="+presetpath;
     m_presetPath = presetpath;
     emit(updateCurrentPreset());
 }
 
 void DlgPrefController::slotUpdateCurrentPreset() {
-    qDebug()<<"============slotUpdateCurrentPreset===============";
     PresetInfo match(m_presetPath);
     m_ui.comboBoxPreset->addItem(nameForPreset(match), match.getPath());
     int index = m_ui.comboBoxPreset->findText(nameForPreset(match));
@@ -313,23 +311,23 @@ void DlgPrefController::slotUpdateCurrentPreset() {
 }
 void DlgPrefController::slotAskForPresetUpdate() {
     const ControllerPresetPointer preset = m_pController->getPreset();
-	if(preset) {
+    if(preset) {
         QString sv = preset->schemaVersion();
         bool ok;
         int schemaVersion=sv.toInt(&ok,10);
         int schemaVersionNewest;
         if(!ok) {
-        	qDebug()<<"shcema version not a number";
-        	return;
+            qDebug()<<"shcema version not a number";
+            return;
         }
         QString presetName = preset->name();
         QString deviceID = preset->deviceId();
         PresetObjectWAO pow;
         QList<MidiControllerPreset> presetCloud = pow.checkForUpdate(presetName,deviceID);
         if (presetCloud.isEmpty()) {
-        	QString message = "Maybe there is something with network, sorry for failed check!";
-        	QMessageBox::information(this, tr("Info"), message);
-        	return;
+            QString message = "Maybe there is something with network, sorry for failed check!";
+            QMessageBox::information(this, tr("Info"), message);
+            return;
         } else {
             QString svn=presetCloud[0].schemaVersion();
             bool okc;
@@ -347,18 +345,27 @@ void DlgPrefController::slotAskForPresetUpdate() {
                                     "Newer preset is found, try it?",
                                     QMessageBox::Yes | QMessageBox::No, NULL);
                 if(message.exec() == QMessageBox::Yes) {
-                	PresetObjectWAO pow;
-                	pow.getPresetByPresetID("./res/controllers/",preset->Pid());
-                	qDebug()<<"filePath:====="+ preset->filePath();
-                	slotGetPreset(preset->filePath());
+                    PresetObjectWAO pow;
+                    pow.getPresetByPresetID("./res/controllers/",preset->Pid());
+                    slotGetPreset(preset->filePath());
                 }
             }
         }
-	}
+    }
 }
 void DlgPrefController::slotShowRatingDlg() {
-	const ControllerPresetPointer preset = m_pController->getPreset();
-	QString pid = preset->Pid();
-	m_dlgrating = new DlgRating(this,pid);
-	m_dlgrating->show();
+    const ControllerPresetPointer preset = m_pController->getPreset();
+    //get preset pid from database
+    QString controllerName = preset->deviceId();
+    QString presetName = preset->name();
+    QString schemaVersion = preset->schemaVersion();
+    PresetObjectDAO pod(m_db);
+    QString pid = pod.getPid(controllerName,presetName,schemaVersion);
+    if (pid.isEmpty()) {
+        qDebug() << " pid return null!";
+        return ;
+    }
+    preset->setPid(pid);
+    m_dlgrating = new DlgRating(this,pid);
+    m_dlgrating->show();
 }

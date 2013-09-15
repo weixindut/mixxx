@@ -25,6 +25,7 @@ class PresetObjectDAO: public QObject{
     void initialize(QString mapFile, QString directory);
     // check whether a preset exists in database
     bool doesPresetExist(QString pid);
+    QString getPid(QString controllName, QString presetName, QString schemaVersion);
   private:
     QString generateQueryStr(QString name);
 

@@ -18,23 +18,11 @@
 #include "controllers/dlgcontrollerpreset.h"
 using namespace QtJson;
 
-DlgMappingPresetManager::DlgMappingPresetManager(QWidget* parent,ConfigObject<ConfigValue>* pConfig)
+DlgMappingPresetManager::DlgMappingPresetManager(QWidget* parent,ConfigObject<ConfigValue>* pConfig, QSqlDatabase& db)
         :QDialog(parent),
          m_pConfig(pConfig),
-         m_db(QSqlDatabase::addDatabase("QSQLITE","MAPPING_PRESET_MANAGER")),
+         m_db(db),
          m_presetObjectDAO(m_db) {
-
-    if (!m_db.isOpen()) {
-        m_db.setHostName("localhost");
-        m_db.setDatabaseName(m_pConfig->getSettingsPath().append("/mixxxdb.sqlite"));
-        m_db.setUserName("mixxx");
-        m_db.setPassword("mixxx");
-        //Open the database connection in this thread.
-        if (!m_db.open()) {
-            qDebug()<< "Failed to open database from mapping preset manager thread."
-                    << m_db.lastError();
-        }
-    }
 
     m_ui.setupUi(this);
     getUi().tabWidget_results->setCurrentIndex(0);
@@ -71,11 +59,7 @@ DlgMappingPresetManager::DlgMappingPresetManager(QWidget* parent,ConfigObject<Co
     getUi().btn_cloudright->setEnabled(false);
 
     getUi().label_statisticalresult->setText("...");
-    //QString mapFilename = m_pConfig->getResourcePath();
-    //mapFilename.append("mapScript.xml");
-    //QString directory = m_pConfig->getResourcePath();
-    //directory.append("controllers/");
-    //m_presetObjectDAO.initialize(mapFilename,directory);
+
     connect(getUi().btn_search, SIGNAL(clicked()),
             this, SLOT(slotSearch()));
     connect(getUi().tabWidget_results, SIGNAL(currentChanged(int)),
@@ -123,8 +107,7 @@ void DlgMappingPresetManager::searchLocal() {
         getUi().stackedWidgetLocal->removeWidget(getUi().stackedWidgetLocal->widget(i));
     }
     QString searchcontent=getUi().lineEdit_search->text();
-    //PresetObjectDAO pod(m_db);
-    //m_presetListLocal=pod.getPresetByPresetName(searchcontent);
+
     m_presetListLocal=m_presetObjectDAO.getPresetByPresetName(searchcontent);
 
     showLocalSearchResults();
@@ -173,7 +156,7 @@ void DlgMappingPresetManager::showLocalSearchResults() {
         if (!m_presetListLocal[i].PictureFileNames().isEmpty()) {
         	//TODO(weixin): rewrite the path
         	QString copath = "./res/controllers/"+m_presetListLocal[i].PictureFileNames()[0];
-        	qDebug()<<"=========copath============"+copath;
+
             showpreset->setCover(copath);
         } else {
             showpreset->setCover("./res/images/mixxx-icon.png");
@@ -188,7 +171,6 @@ void DlgMappingPresetManager::showLocalSearchResults() {
     getUi().stackedWidgetLocal->setCurrentIndex(m_currentLocalResultsPage);
 }
 void DlgMappingPresetManager::showCloudSearchResults() {
-	qDebug()<<"================slotShowCloudSearchResults()=============";
     QString result = "WoW, "+QString::number(m_presetListCloud.size())+" presets!";
     getUi().label_statisticalresult->setText(result);
     connect(getUi().btn_cloudleft,SIGNAL(clicked()),
@@ -216,7 +198,6 @@ void DlgMappingPresetManager::showCloudSearchResults() {
         DlgControllerPreset* showpreset = new DlgControllerPreset(this);
         if (!m_presetListCloud[i].PictureFileNames().isEmpty()) {
         	//TODO(weixin): rewrite the path
-        	qDebug()<<"================showpreset->setCover=============";
             showpreset->setCover("./tmp/"+m_presetListCloud[i].PictureFileNames()[0]);
 
         } else {
@@ -302,7 +283,6 @@ void DlgMappingPresetManager::slotSetApplyText(int index) {
 void DlgMappingPresetManager::slotOk() {
     if(getUi().tabWidget_results->currentIndex()==0) {
         if(getSelectedPreset(m_gridLayoutListLocal,m_presetListLocal)==true) {
-            qDebug()<<"filePath:====="+ m_selectedPreset.filePath();
             emit(presetReturned(m_selectedPreset.filePath()));
             close();
         }
@@ -333,7 +313,6 @@ bool DlgMappingPresetManager::getSelectedPreset(QList<QGridLayout* > layoutList,
             }
         }
     }
-    //QList<MidiControllerPreset> res;
     if(pids.size()==0) {
         QString message = "Please select one preset!";
         QMessageBox::information(this, tr("Info"), message);
@@ -343,7 +322,6 @@ bool DlgMappingPresetManager::getSelectedPreset(QList<QGridLayout* > layoutList,
             if(presetList[i].Pid()==pids[0]) {
             	m_selectedPreset = presetList[i];
             	return true;
-                //res.append(presetList[i]);
             }
         }
         QString message = "Sorry, there's something wrong!";

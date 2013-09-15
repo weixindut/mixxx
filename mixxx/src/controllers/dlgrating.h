@@ -1,3 +1,9 @@
+/**
+  * @file dlgrating.h
+  * @author Xin Wei weixindlut@gmail.org
+  * @date Mon Sep 16 2013
+  * @brief A Dialog used for rating for current selected mapping preset.
+  */
 #ifndef DLGRATING_H_
 #define DLGRATING_H_
 #include <QtGui>

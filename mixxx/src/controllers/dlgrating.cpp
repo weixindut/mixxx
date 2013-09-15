@@ -1,6 +1,13 @@
+/**
+  * @file dlgrating.cpp
+  * @author Xin Wei weixindlut@gmail.org
+  * @date Mon Sep 16 2013
+  * @brief A Dialog used for rating for current selected mapping preset.
+  */
 #include <QIcon>
 #include <QDebug>
 #include <QByteArray>
+
 #include "controllers/dlgrating.h"
 #include "httpclient.h"
 
@@ -23,17 +30,16 @@ DlgRating::DlgRating(QWidget* parent, QString pid)
     connect(m_ui.buttonBox, SIGNAL(accepted()), this, SLOT(slotRating()));
     connect(m_ui.buttonBox, SIGNAL(rejected()), this, SLOT(close()));
 }
+
 void DlgRating::slotRating() {
-	int id = m_buttonGroup->checkedId();
-	if (id == 1) {
-		qDebug()<<"one star only!";
-	}
-	QString message = "Thank you!";
-	QMessageBox::information(this, tr("Info"),message);
-	HttpClient hc;
-	QString url = "http://127.0.0.1:8000/api/v1/comment/rating/?format=json";
-	QMap<QString, QString> postData;
-	postData.insert("rating",QString::number(id));
-	postData.insert("pid",m_pid);
-	hc.post(url,postData);
+    int id = m_buttonGroup->checkedId();
+    HttpClient hc;
+    QString url = "http://127.0.0.1:8000/api/v1/comment/rating/?format=json";
+    QMap<QString, QString> postData;
+    postData.insert("rating",QString::number(id));
+    postData.insert("pid",m_pid);
+    hc.post(url,postData);
+    QString message = "Thank you!";
+    QMessageBox::information(this, tr("Info"),message);
+    close();
 }
