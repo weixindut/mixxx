@@ -132,8 +132,7 @@ void HttpClient::waitForFinish(QNetworkReply* reply) {
     loop.exec();
 }
 
-QString HttpClient::doDownload(QString destDirecotry, const QUrl& url) {
-	QString fileName;
+QString HttpClient::doDownload(QString destDirecotry, const QUrl& url, QString fileName) {
 	QString filePath;
     QNetworkRequest request(url);
     QNetworkReply* reply = m_manager->get(request);
@@ -144,7 +143,6 @@ QString HttpClient::doDownload(QString destDirecotry, const QUrl& url) {
                 url.toEncoded().constData(),
                 qPrintable(reply->errorString()));
     } else {
-    	fileName = saveFileName(url);
         if (saveToDisk(destDirecotry, fileName, reply)) {
         	printf("Download of %s succeeded (saved to %s)\n",
         	        url.toEncoded().constData(), qPrintable(fileName));
@@ -159,26 +157,6 @@ QString HttpClient::doDownload(QString destDirecotry, const QUrl& url) {
         qDebug()<<"all downloads finished";
     }
     return filePath;
-}
-
-QString HttpClient::saveFileName(const QUrl& url) {
-    QString path = url.path();
-    QString basename = QFileInfo(path).fileName();
-
-    if (basename.isEmpty())
-        basename = "index.html";
-
-    if (QFile::exists(basename)) {
-        // already exists, don't overwrite
-        int i = 0;
-        basename += '.';
-        while (QFile::exists(basename + QString::number(i))) {
-            ++i;
-        }
-        basename += QString::number(i);
-    }
-
-    return basename;
 }
 
 bool HttpClient::saveToDisk(QString destDirecotry, const QString& filename, QIODevice* data) {
@@ -198,11 +176,11 @@ bool HttpClient::saveToDisk(QString destDirecotry, const QString& filename, QIOD
     return true;
 }
 
-QString HttpClient::downloadFile(QString destDirecotry,const QString path) {
+QString HttpClient::downloadFile(QString destDirecotry,const QString path, QString filename) {
     QUrl url;
     url.setHost("127.0.0.1");
     url.setPort(8000);
     url.setScheme("http");
     url.setPath(path);
-    return doDownload(destDirecotry, url);
+    return doDownload(destDirecotry, url, filename);
 }

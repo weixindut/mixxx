@@ -18,7 +18,7 @@ QList<MidiControllerPreset> PresetObjectWAO::getPresetByPresetID(QString destDir
 QList<MidiControllerPreset> PresetObjectWAO::checkForUpdate(QString presetname, QString controller) {
 	QString url="http://127.0.0.1:8000/api/v1/midi/preset/updatecheck?preset_name="
 	        +presetname+"&controller="+controller+"&format=json";
-	return getPresetByURL("/tmp/",url);
+	return getPresetByURL("./tmp/",url);
 }
 QList<MidiControllerPreset> PresetObjectWAO::getPresetByURL(QString destDirecotry, QString url) {
     QList<MidiControllerPreset> presetList;
@@ -53,22 +53,25 @@ QList<MidiControllerPreset> PresetObjectWAO::getPresetByURL(QString destDirecotr
         QString pictureFile = res["picture_file"].toString();
         QString jsFile = res["js_file"].toString();
         QString xmlFile = res["xml_file"].toString();
+        QString pictureFileName = res["picture_file_name"].toString();
+        QString jsFileName = res["js_file_name"].toString();
+        QString xmlFileName = res["xml_file_name"].toString();
         float avgRating = res["avg_ratings"].toFloat();
         QString picturePath;
         QString jsPath;
         QString xmlPath;
         if (!pictureFile.isEmpty()) {
-        	picturePath = httpClient.downloadFile(destDirecotry,pictureFile);
+        	picturePath = httpClient.downloadFile(destDirecotry,pictureFile,pictureFileName);
         } else {
         	picturePath = "";
         }
         if (!jsFile.isEmpty()) {
-        	jsPath = httpClient.downloadFile(destDirecotry,jsFile);
+        	jsPath = httpClient.downloadFile(destDirecotry,jsFile,jsFileName);
         } else {
         	jsPath = "";
         }
         if (!xmlFile.isEmpty()) {
-        	xmlPath = httpClient.downloadFile(destDirecotry,xmlFile);
+        	xmlPath = httpClient.downloadFile(destDirecotry,xmlFile,xmlFileName);
         	qDebug()<<"xmlpath:========="+xmlPath;
         } else {
         	xmlPath = "";

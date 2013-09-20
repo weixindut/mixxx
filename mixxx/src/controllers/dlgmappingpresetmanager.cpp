@@ -127,7 +127,7 @@ void DlgMappingPresetManager::searchCloud() {
     }
     QString searchcontent=getUi().lineEdit_search->text();
     PresetObjectWAO pow;
-    m_presetListCloud=pow.getPresetByPresetName("/tmp/",searchcontent);
+    m_presetListCloud=pow.getPresetByPresetName("./tmp/",searchcontent);
     //m_presetListCloud=pow.getPresetByURL("http://127.0.0.1:8000/api/v1/midi/preset/?format=json");
     showCloudSearchResults();
 }
@@ -275,7 +275,7 @@ void DlgMappingPresetManager::slotShowLocalNextPageResults() {
 }
 void DlgMappingPresetManager::getJsonDataTest() {
     PresetObjectWAO pow;
-    pow.getPresetByPresetName("/tmp/","Akai LPD8 - RK");
+    pow.getPresetByPresetName("./tmp/","Akai LPD8 - RK");
 }
 void DlgMappingPresetManager::slotSetApplyText(int index) {
     if(index == 0) {
