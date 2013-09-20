@@ -9,7 +9,9 @@ class PresetObjectDAO: public QObject{
   public:
     PresetObjectDAO(QSqlDatabase& database);
     virtual ~PresetObjectDAO() {}
+    QList<MidiControllerPreset> getPresetsByQuery(QString querystr);
     QList<MidiControllerPreset> getPresetByPresetName(QString name);
+    QList<MidiControllerPreset> getAllPresets();
     // insert preset data into table mapping_preset_object
     bool insertOnePresetRecord(QString pid, QString xmlFilePath, QString status);
     // insert info of a file into table files_storage

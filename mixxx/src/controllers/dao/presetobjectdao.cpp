@@ -12,10 +12,10 @@ PresetObjectDAO::PresetObjectDAO(QSqlDatabase& database)
 
 }
 
-QList<MidiControllerPreset> PresetObjectDAO::getPresetByPresetName(QString name) {
+QList<MidiControllerPreset> PresetObjectDAO::getPresetsByQuery(QString queryStr) {
     QList<MidiControllerPreset> presetList;
     QSqlQuery query(m_database);
-    QString queryStr = generateQueryStr(name);
+
     query.prepare(queryStr);
     if (!query.exec()) {
         LOG_FAILED_QUERY(query);
@@ -101,7 +101,14 @@ QList<MidiControllerPreset> PresetObjectDAO::getPresetByPresetName(QString name)
     }
     return presetList;
 }
-
+QList<MidiControllerPreset>  PresetObjectDAO::getPresetByPresetName(QString name) {
+    QString queryStr = generateQueryStr(name);
+    return getPresetsByQuery(queryStr);
+}
+QList<MidiControllerPreset> PresetObjectDAO::getAllPresets() {
+    QString queryStr = "SELECT * FROM Mapping_preset_object";
+    return getPresetsByQuery(queryStr);
+}
 QString PresetObjectDAO::generateQueryStr(QString name) {
 
     name.replace(" ",",");

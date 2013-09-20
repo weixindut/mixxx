@@ -66,6 +66,7 @@ DlgMappingPresetManager::DlgMappingPresetManager(QWidget* parent,ConfigObject<Co
             this, SLOT(slotSetApplyText(int)));
     connect(getUi().btn_apply, SIGNAL(clicked()),
             this, SLOT(slotOk()));
+    slotSearch();
 }
 DlgMappingPresetManager::~DlgMappingPresetManager() {
     for(int i=0;i<m_gridLayoutListCloud.size();i++) {
@@ -107,8 +108,11 @@ void DlgMappingPresetManager::searchLocal() {
         getUi().stackedWidgetLocal->removeWidget(getUi().stackedWidgetLocal->widget(i));
     }
     QString searchcontent=getUi().lineEdit_search->text();
-
-    m_presetListLocal=m_presetObjectDAO.getPresetByPresetName(searchcontent);
+    if (searchcontent.isEmpty()) {
+        m_presetListLocal=m_presetObjectDAO.getAllPresets();
+    } else {
+        m_presetListLocal=m_presetObjectDAO.getPresetByPresetName(searchcontent);
+    }
 
     showLocalSearchResults();
 }
